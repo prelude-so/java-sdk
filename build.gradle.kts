@@ -3,7 +3,7 @@ plugins {
 }
 
 allprojects {
-    group = "com.prelude_so.api"
+    group = "so.prelude.sdk"
     version = "0.0.1-alpha.0" 
 }
 
