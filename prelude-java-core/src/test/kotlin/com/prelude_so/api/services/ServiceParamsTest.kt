@@ -81,7 +81,7 @@ class ServiceParamsTest {
                         .deviceId("device_id")
                         .deviceModel("device_model")
                         .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.ANDROID)
-                        .ip("ip")
+                        .ip("8.8.8.8")
                         .isTrustedUser("is_trusted_user")
                         .osVersion("os_version")
                         .build()
