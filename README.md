@@ -1,6 +1,6 @@
 # Prelude Java API Library
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.prelude_so.api/prelude-java)](https://central.sonatype.com/artifact/com.prelude_so.api/prelude-java/0.0.1-alpha.0)
+[![Maven Central](https://img.shields.io/maven-central/v/so.prelude.sdk/prelude-java)](https://central.sonatype.com/artifact/so.prelude.sdk/prelude-java/0.0.1-alpha.0)
 
 The Prelude Java SDK provides convenient access to the Prelude REST API from applications written in Java. It includes helper classes with helpful types and documentation for every request and response property.
 
@@ -21,14 +21,14 @@ The REST API documentation can be found on [docs.prelude.so](https://docs.prelu
 #### Gradle
 
 ```kotlin
-implementation("com.prelude_so.api:prelude-java:0.0.1-alpha.0")
+implementation("so.prelude.sdk:prelude-java:0.0.1-alpha.0")
 ```
 
 #### Maven
 
 ```xml
 <dependency>
-    <groupId>com.prelude_so.api</groupId>
+    <groupId>so.prelude.sdk</groupId>
     <artifactId>prelude-java</artifactId>
     <version>0.0.1-alpha.0</version>
 </dependency>
@@ -39,8 +39,8 @@ implementation("com.prelude_so.api:prelude-java:0.0.1-alpha.0")
 Use `PreludeOkHttpClient.builder()` to configure the client. At a minimum you need to set `.apiToken()`:
 
 ```java
-import com.prelude_so.api.client.PreludeClient;
-import com.prelude_so.api.client.okhttp.PreludeOkHttpClient;
+import so.prelude.sdk.client.PreludeClient;
+import so.prelude.sdk.client.okhttp.PreludeOkHttpClient;
 
 PreludeClient client = PreludeOkHttpClient.builder()
     .apiToken("My API Token")
@@ -73,8 +73,8 @@ To create a new verification, first use the `VerificationCreateParams` builder t
 then pass that to the `create` method of the `verification` service.
 
 ```java
-import com.prelude_so.api.models.VerificationCreateParams;
-import com.prelude_so.api.models.VerificationCreateResponse;
+import so.prelude.sdk.models.VerificationCreateParams;
+import so.prelude.sdk.models.VerificationCreateResponse;
 
 VerificationCreateParams params = VerificationCreateParams.builder().build();
 VerificationCreateResponse verification = client.verification().create(params);
@@ -95,7 +95,7 @@ Sometimes, the API may support other properties that are not yet supported in th
 you can attach them using the `putAdditionalProperty` method.
 
 ```java
-import com.prelude_so.api.models.core.JsonValue;
+import so.prelude.sdk.models.core.JsonValue;
 VerificationCreateParams params = VerificationCreateParams.builder()
     // ... normal properties
     .putAdditionalProperty("secret_param", JsonValue.from("4242"))
