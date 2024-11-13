@@ -33,9 +33,9 @@ configure<PublishingExtension> {
                 }
 
                 scm {
-                    connection.set("scm:git:git://github.com/stainless-sdks/prelude-java.git")
-                    developerConnection.set("scm:git:git://github.com/stainless-sdks/prelude-java.git")
-                    url.set("https://github.com/stainless-sdks/prelude-java")
+                    connection.set("scm:git:git://github.com/prelude-so/java-sdk.git")
+                    developerConnection.set("scm:git:git://github.com/prelude-so/java-sdk.git")
+                    url.set("https://github.com/prelude-so/java-sdk")
                 }
 
                 versionMapping {
