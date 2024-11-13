@@ -4,7 +4,7 @@ plugins {
 
 allprojects {
     group = "so.prelude.sdk"
-    version = "0.0.1-alpha.0" 
+    version = "0.0.1-alpha.0" // x-release-please-version
 }
 
 nexusPublishing {
