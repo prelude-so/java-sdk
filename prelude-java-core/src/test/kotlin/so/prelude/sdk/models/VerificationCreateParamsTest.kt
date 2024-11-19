@@ -23,6 +23,7 @@ class VerificationCreateParamsTest {
             .options(
                 VerificationCreateParams.Options.builder()
                     .appRealm("app_realm")
+                    .customCode("custom_code")
                     .locale("el-GR")
                     .senderId("sender_id")
                     .templateId("template_id")
@@ -60,6 +61,7 @@ class VerificationCreateParamsTest {
                 .options(
                     VerificationCreateParams.Options.builder()
                         .appRealm("app_realm")
+                        .customCode("custom_code")
                         .locale("el-GR")
                         .senderId("sender_id")
                         .templateId("template_id")
@@ -94,6 +96,7 @@ class VerificationCreateParamsTest {
             .isEqualTo(
                 VerificationCreateParams.Options.builder()
                     .appRealm("app_realm")
+                    .customCode("custom_code")
                     .locale("el-GR")
                     .senderId("sender_id")
                     .templateId("template_id")

@@ -11,8 +11,8 @@ class TransactionalSendParamsTest {
     @Test
     fun createTransactionalSendParams() {
         TransactionalSendParams.builder()
-            .templateId("template_id")
-            .to("to")
+            .templateId("template_01jd1xq0cffycayqtdkdbv4d61")
+            .to("+30123456789")
             .callbackUrl("callback_url")
             .correlationId("correlation_id")
             .expiresAt("expires_at")
@@ -25,8 +25,8 @@ class TransactionalSendParamsTest {
     fun getBody() {
         val params =
             TransactionalSendParams.builder()
-                .templateId("template_id")
-                .to("to")
+                .templateId("template_01jd1xq0cffycayqtdkdbv4d61")
+                .to("+30123456789")
                 .callbackUrl("callback_url")
                 .correlationId("correlation_id")
                 .expiresAt("expires_at")
@@ -35,8 +35,8 @@ class TransactionalSendParamsTest {
                 .build()
         val body = params.getBody()
         assertThat(body).isNotNull
-        assertThat(body.templateId()).isEqualTo("template_id")
-        assertThat(body.to()).isEqualTo("to")
+        assertThat(body.templateId()).isEqualTo("template_01jd1xq0cffycayqtdkdbv4d61")
+        assertThat(body.to()).isEqualTo("+30123456789")
         assertThat(body.callbackUrl()).isEqualTo("callback_url")
         assertThat(body.correlationId()).isEqualTo("correlation_id")
         assertThat(body.expiresAt()).isEqualTo("expires_at")
@@ -46,10 +46,14 @@ class TransactionalSendParamsTest {
 
     @Test
     fun getBodyWithoutOptionalFields() {
-        val params = TransactionalSendParams.builder().templateId("template_id").to("to").build()
+        val params =
+            TransactionalSendParams.builder()
+                .templateId("template_01jd1xq0cffycayqtdkdbv4d61")
+                .to("+30123456789")
+                .build()
         val body = params.getBody()
         assertThat(body).isNotNull
-        assertThat(body.templateId()).isEqualTo("template_id")
-        assertThat(body.to()).isEqualTo("to")
+        assertThat(body.templateId()).isEqualTo("template_01jd1xq0cffycayqtdkdbv4d61")
+        assertThat(body.to()).isEqualTo("+30123456789")
     }
 }

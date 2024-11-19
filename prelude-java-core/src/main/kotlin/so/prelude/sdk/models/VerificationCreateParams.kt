@@ -596,6 +596,7 @@ constructor(
         private val locale: String?,
         private val senderId: String?,
         private val appRealm: String?,
+        private val customCode: String?,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
@@ -621,6 +622,13 @@ constructor(
          */
         @JsonProperty("app_realm") fun appRealm(): String? = appRealm
 
+        /**
+         * The custom code to use for OTP verification. This feature is only available for
+         * compatibility purposes and subject to Prelude’s approval. Contact us to discuss your use
+         * case.
+         */
+        @JsonProperty("custom_code") fun customCode(): String? = customCode
+
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
@@ -638,6 +646,7 @@ constructor(
             private var locale: String? = null
             private var senderId: String? = null
             private var appRealm: String? = null
+            private var customCode: String? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -646,6 +655,7 @@ constructor(
                 this.locale = options.locale
                 this.senderId = options.senderId
                 this.appRealm = options.appRealm
+                this.customCode = options.customCode
                 additionalProperties(options.additionalProperties)
             }
 
@@ -676,6 +686,14 @@ constructor(
             @JsonProperty("app_realm")
             fun appRealm(appRealm: String) = apply { this.appRealm = appRealm }
 
+            /**
+             * The custom code to use for OTP verification. This feature is only available for
+             * compatibility purposes and subject to Prelude’s approval. Contact us to discuss your
+             * use case.
+             */
+            @JsonProperty("custom_code")
+            fun customCode(customCode: String) = apply { this.customCode = customCode }
+
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
                 this.additionalProperties.putAll(additionalProperties)
@@ -696,6 +714,7 @@ constructor(
                     locale,
                     senderId,
                     appRealm,
+                    customCode,
                     additionalProperties.toImmutable(),
                 )
         }
@@ -705,20 +724,20 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Options && this.templateId == other.templateId && this.locale == other.locale && this.senderId == other.senderId && this.appRealm == other.appRealm && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Options && this.templateId == other.templateId && this.locale == other.locale && this.senderId == other.senderId && this.appRealm == other.appRealm && this.customCode == other.customCode && this.additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         private var hashCode: Int = 0
 
         override fun hashCode(): Int {
             if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(templateId, locale, senderId, appRealm, additionalProperties) /* spotless:on */
+                hashCode = /* spotless:off */ Objects.hash(templateId, locale, senderId, appRealm, customCode, additionalProperties) /* spotless:on */
             }
             return hashCode
         }
 
         override fun toString() =
-            "Options{templateId=$templateId, locale=$locale, senderId=$senderId, appRealm=$appRealm, additionalProperties=$additionalProperties}"
+            "Options{templateId=$templateId, locale=$locale, senderId=$senderId, appRealm=$appRealm, customCode=$customCode, additionalProperties=$additionalProperties}"
     }
 
     /** The signals used for anti-fraud. */
@@ -885,6 +904,10 @@ constructor(
 
                 @JvmField val IOS = DevicePlatform(JsonField.of("ios"))
 
+                @JvmField val IPADOS = DevicePlatform(JsonField.of("ipados"))
+
+                @JvmField val TVOS = DevicePlatform(JsonField.of("tvos"))
+
                 @JvmField val WEB = DevicePlatform(JsonField.of("web"))
 
                 @JvmStatic fun of(value: String) = DevicePlatform(JsonField.of(value))
@@ -893,12 +916,16 @@ constructor(
             enum class Known {
                 ANDROID,
                 IOS,
+                IPADOS,
+                TVOS,
                 WEB,
             }
 
             enum class Value {
                 ANDROID,
                 IOS,
+                IPADOS,
+                TVOS,
                 WEB,
                 _UNKNOWN,
             }
@@ -907,6 +934,8 @@ constructor(
                 when (this) {
                     ANDROID -> Value.ANDROID
                     IOS -> Value.IOS
+                    IPADOS -> Value.IPADOS
+                    TVOS -> Value.TVOS
                     WEB -> Value.WEB
                     else -> Value._UNKNOWN
                 }
@@ -915,6 +944,8 @@ constructor(
                 when (this) {
                     ANDROID -> Known.ANDROID
                     IOS -> Known.IOS
+                    IPADOS -> Known.IPADOS
+                    TVOS -> Known.TVOS
                     WEB -> Known.WEB
                     else -> throw PreludeInvalidDataException("Unknown DevicePlatform: $value")
                 }
