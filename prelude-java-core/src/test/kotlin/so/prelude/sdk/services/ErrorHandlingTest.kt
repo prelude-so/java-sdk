@@ -71,6 +71,7 @@ class ErrorHandlingTest {
                 .options(
                     VerificationCreateParams.Options.builder()
                         .appRealm("app_realm")
+                        .customCode("custom_code")
                         .locale("el-GR")
                         .senderId("sender_id")
                         .templateId("template_id")
@@ -125,6 +126,7 @@ class ErrorHandlingTest {
                 .options(
                     VerificationCreateParams.Options.builder()
                         .appRealm("app_realm")
+                        .customCode("custom_code")
                         .locale("el-GR")
                         .senderId("sender_id")
                         .templateId("template_id")
@@ -172,6 +174,7 @@ class ErrorHandlingTest {
                 .options(
                     VerificationCreateParams.Options.builder()
                         .appRealm("app_realm")
+                        .customCode("custom_code")
                         .locale("el-GR")
                         .senderId("sender_id")
                         .templateId("template_id")
@@ -219,6 +222,7 @@ class ErrorHandlingTest {
                 .options(
                     VerificationCreateParams.Options.builder()
                         .appRealm("app_realm")
+                        .customCode("custom_code")
                         .locale("el-GR")
                         .senderId("sender_id")
                         .templateId("template_id")
@@ -270,6 +274,7 @@ class ErrorHandlingTest {
                 .options(
                     VerificationCreateParams.Options.builder()
                         .appRealm("app_realm")
+                        .customCode("custom_code")
                         .locale("el-GR")
                         .senderId("sender_id")
                         .templateId("template_id")
@@ -317,6 +322,7 @@ class ErrorHandlingTest {
                 .options(
                     VerificationCreateParams.Options.builder()
                         .appRealm("app_realm")
+                        .customCode("custom_code")
                         .locale("el-GR")
                         .senderId("sender_id")
                         .templateId("template_id")
@@ -368,6 +374,7 @@ class ErrorHandlingTest {
                 .options(
                     VerificationCreateParams.Options.builder()
                         .appRealm("app_realm")
+                        .customCode("custom_code")
                         .locale("el-GR")
                         .senderId("sender_id")
                         .templateId("template_id")
@@ -415,6 +422,7 @@ class ErrorHandlingTest {
                 .options(
                     VerificationCreateParams.Options.builder()
                         .appRealm("app_realm")
+                        .customCode("custom_code")
                         .locale("el-GR")
                         .senderId("sender_id")
                         .templateId("template_id")
@@ -462,6 +470,7 @@ class ErrorHandlingTest {
                 .options(
                     VerificationCreateParams.Options.builder()
                         .appRealm("app_realm")
+                        .customCode("custom_code")
                         .locale("el-GR")
                         .senderId("sender_id")
                         .templateId("template_id")
@@ -514,6 +523,7 @@ class ErrorHandlingTest {
                 .options(
                     VerificationCreateParams.Options.builder()
                         .appRealm("app_realm")
+                        .customCode("custom_code")
                         .locale("el-GR")
                         .senderId("sender_id")
                         .templateId("template_id")
@@ -560,6 +570,7 @@ class ErrorHandlingTest {
                 .options(
                     VerificationCreateParams.Options.builder()
                         .appRealm("app_realm")
+                        .customCode("custom_code")
                         .locale("el-GR")
                         .senderId("sender_id")
                         .templateId("template_id")
