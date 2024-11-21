@@ -218,17 +218,14 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Metadata && this.correlationId == other.correlationId && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Metadata && correlationId == other.correlationId && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(correlationId, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(correlationId, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "Metadata{correlationId=$correlationId, additionalProperties=$additionalProperties}"
@@ -247,7 +244,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Status && this.value == other.value /* spotless:on */
+            return /* spotless:off */ other is Status && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -302,17 +299,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is VerificationCheckResponse && this.id == other.id && this.status == other.status && this.metadata == other.metadata && this.requestId == other.requestId && this.additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is VerificationCheckResponse && id == other.id && status == other.status && metadata == other.metadata && requestId == other.requestId && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
-    private var hashCode: Int = 0
+    /* spotless:off */
+    private val hashCode: Int by lazy { Objects.hash(id, status, metadata, requestId, additionalProperties) }
+    /* spotless:on */
 
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = /* spotless:off */ Objects.hash(id, status, metadata, requestId, additionalProperties) /* spotless:on */
-        }
-        return hashCode
-    }
+    override fun hashCode(): Int = hashCode
 
     override fun toString() =
         "VerificationCheckResponse{id=$id, status=$status, metadata=$metadata, requestId=$requestId, additionalProperties=$additionalProperties}"
