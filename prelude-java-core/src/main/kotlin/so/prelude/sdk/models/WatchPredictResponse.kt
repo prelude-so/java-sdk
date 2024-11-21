@@ -138,7 +138,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Prediction && this.value == other.value /* spotless:on */
+            return /* spotless:off */ other is Prediction && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -300,7 +300,7 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Cause && this.value == other.value /* spotless:on */
+                return /* spotless:off */ other is Cause && value == other.value /* spotless:on */
             }
 
             override fun hashCode() = value.hashCode()
@@ -361,17 +361,14 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Reasoning && this.cause == other.cause && this.score == other.score && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Reasoning && cause == other.cause && score == other.score && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(cause, score, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(cause, score, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "Reasoning{cause=$cause, score=$score, additionalProperties=$additionalProperties}"
@@ -382,17 +379,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is WatchPredictResponse && this.id == other.id && this.prediction == other.prediction && this.reasoning == other.reasoning && this.additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is WatchPredictResponse && id == other.id && prediction == other.prediction && reasoning == other.reasoning && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
-    private var hashCode: Int = 0
+    /* spotless:off */
+    private val hashCode: Int by lazy { Objects.hash(id, prediction, reasoning, additionalProperties) }
+    /* spotless:on */
 
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = /* spotless:off */ Objects.hash(id, prediction, reasoning, additionalProperties) /* spotless:on */
-        }
-        return hashCode
-    }
+    override fun hashCode(): Int = hashCode
 
     override fun toString() =
         "WatchPredictResponse{id=$id, prediction=$prediction, reasoning=$reasoning, additionalProperties=$additionalProperties}"

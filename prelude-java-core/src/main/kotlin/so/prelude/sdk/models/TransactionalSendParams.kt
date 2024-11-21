@@ -189,17 +189,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is TransactionalSendBody && this.templateId == other.templateId && this.to == other.to && this.callbackUrl == other.callbackUrl && this.correlationId == other.correlationId && this.expiresAt == other.expiresAt && this.from == other.from && this.variables == other.variables && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is TransactionalSendBody && templateId == other.templateId && to == other.to && callbackUrl == other.callbackUrl && correlationId == other.correlationId && expiresAt == other.expiresAt && from == other.from && variables == other.variables && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(templateId, to, callbackUrl, correlationId, expiresAt, from, variables, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(templateId, to, callbackUrl, correlationId, expiresAt, from, variables, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "TransactionalSendBody{templateId=$templateId, to=$to, callbackUrl=$callbackUrl, correlationId=$correlationId, expiresAt=$expiresAt, from=$from, variables=$variables, additionalProperties=$additionalProperties}"
@@ -216,12 +213,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is TransactionalSendParams && this.templateId == other.templateId && this.to == other.to && this.callbackUrl == other.callbackUrl && this.correlationId == other.correlationId && this.expiresAt == other.expiresAt && this.from == other.from && this.variables == other.variables && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is TransactionalSendParams && templateId == other.templateId && to == other.to && callbackUrl == other.callbackUrl && correlationId == other.correlationId && expiresAt == other.expiresAt && from == other.from && variables == other.variables && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(templateId, to, callbackUrl, correlationId, expiresAt, from, variables, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(templateId, to, callbackUrl, correlationId, expiresAt, from, variables, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
 
     override fun toString() =
         "TransactionalSendParams{templateId=$templateId, to=$to, callbackUrl=$callbackUrl, correlationId=$correlationId, expiresAt=$expiresAt, from=$from, variables=$variables, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
@@ -467,17 +462,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Variables && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Variables && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() = "Variables{additionalProperties=$additionalProperties}"
     }
