@@ -155,17 +155,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is VerificationCreateBody && this.target == other.target && this.metadata == other.metadata && this.options == other.options && this.signals == other.signals && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is VerificationCreateBody && target == other.target && metadata == other.metadata && options == other.options && signals == other.signals && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(target, metadata, options, signals, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(target, metadata, options, signals, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "VerificationCreateBody{target=$target, metadata=$metadata, options=$options, signals=$signals, additionalProperties=$additionalProperties}"
@@ -182,12 +179,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is VerificationCreateParams && this.target == other.target && this.metadata == other.metadata && this.options == other.options && this.signals == other.signals && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is VerificationCreateParams && target == other.target && metadata == other.metadata && options == other.options && signals == other.signals && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(target, metadata, options, signals, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(target, metadata, options, signals, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
 
     override fun toString() =
         "VerificationCreateParams{target=$target, metadata=$metadata, options=$options, signals=$signals, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
@@ -449,7 +444,7 @@ constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Type && this.value == other.value /* spotless:on */
+                return /* spotless:off */ other is Type && value == other.value /* spotless:on */
             }
 
             override fun hashCode() = value.hashCode()
@@ -492,17 +487,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Target && this.type == other.type && this.value == other.value && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Target && type == other.type && value == other.value && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(type, value, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(type, value, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "Target{type=$type, value=$value, additionalProperties=$additionalProperties}"
@@ -571,17 +563,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Metadata && this.correlationId == other.correlationId && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Metadata && correlationId == other.correlationId && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(correlationId, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(correlationId, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "Metadata{correlationId=$correlationId, additionalProperties=$additionalProperties}"
@@ -724,17 +713,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Options && this.templateId == other.templateId && this.locale == other.locale && this.senderId == other.senderId && this.appRealm == other.appRealm && this.customCode == other.customCode && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Options && templateId == other.templateId && locale == other.locale && senderId == other.senderId && appRealm == other.appRealm && customCode == other.customCode && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(templateId, locale, senderId, appRealm, customCode, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(templateId, locale, senderId, appRealm, customCode, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "Options{templateId=$templateId, locale=$locale, senderId=$senderId, appRealm=$appRealm, customCode=$customCode, additionalProperties=$additionalProperties}"
@@ -891,7 +877,7 @@ constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is DevicePlatform && this.value == other.value /* spotless:on */
+                return /* spotless:off */ other is DevicePlatform && value == other.value /* spotless:on */
             }
 
             override fun hashCode() = value.hashCode()
@@ -958,17 +944,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Signals && this.ip == other.ip && this.deviceId == other.deviceId && this.devicePlatform == other.devicePlatform && this.deviceModel == other.deviceModel && this.osVersion == other.osVersion && this.appVersion == other.appVersion && this.isTrustedUser == other.isTrustedUser && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Signals && ip == other.ip && deviceId == other.deviceId && devicePlatform == other.devicePlatform && deviceModel == other.deviceModel && osVersion == other.osVersion && appVersion == other.appVersion && isTrustedUser == other.isTrustedUser && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(ip, deviceId, devicePlatform, deviceModel, osVersion, appVersion, isTrustedUser, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(ip, deviceId, devicePlatform, deviceModel, osVersion, appVersion, isTrustedUser, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "Signals{ip=$ip, deviceId=$deviceId, devicePlatform=$devicePlatform, deviceModel=$deviceModel, osVersion=$osVersion, appVersion=$appVersion, isTrustedUser=$isTrustedUser, additionalProperties=$additionalProperties}"

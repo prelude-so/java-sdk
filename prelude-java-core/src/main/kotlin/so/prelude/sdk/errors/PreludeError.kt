@@ -19,20 +19,6 @@ private constructor(
     val additionalProperties: Map<String, JsonValue>,
 ) {
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is PreludeError && this.additionalProperties == other.additionalProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(additionalProperties) /* spotless:on */
-    }
-
-    override fun toString() = "PreludeError{additionalProperties=$additionalProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -71,4 +57,16 @@ private constructor(
 
         fun build(): PreludeError = PreludeError(additionalProperties.toImmutable())
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is PreludeError && additionalProperties == other.additionalProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(additionalProperties) /* spotless:on */
+
+    override fun toString() = "PreludeError{additionalProperties=$additionalProperties}"
 }
