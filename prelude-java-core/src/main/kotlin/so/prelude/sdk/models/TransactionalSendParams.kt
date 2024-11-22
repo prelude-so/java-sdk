@@ -44,6 +44,12 @@ constructor(
 
     fun variables(): Optional<Variables> = Optional.ofNullable(variables)
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     @JvmSynthetic
     internal fun getBody(): TransactionalSendBody {
         return TransactionalSendBody(
@@ -202,25 +208,6 @@ constructor(
             "TransactionalSendBody{templateId=$templateId, to=$to, callbackUrl=$callbackUrl, correlationId=$correlationId, expiresAt=$expiresAt, from=$from, variables=$variables, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is TransactionalSendParams && templateId == other.templateId && to == other.to && callbackUrl == other.callbackUrl && correlationId == other.correlationId && expiresAt == other.expiresAt && from == other.from && variables == other.variables && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(templateId, to, callbackUrl, correlationId, expiresAt, from, variables, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "TransactionalSendParams{templateId=$templateId, to=$to, callbackUrl=$callbackUrl, correlationId=$correlationId, expiresAt=$expiresAt, from=$from, variables=$variables, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -244,16 +231,17 @@ constructor(
 
         @JvmSynthetic
         internal fun from(transactionalSendParams: TransactionalSendParams) = apply {
-            this.templateId = transactionalSendParams.templateId
-            this.to = transactionalSendParams.to
-            this.callbackUrl = transactionalSendParams.callbackUrl
-            this.correlationId = transactionalSendParams.correlationId
-            this.expiresAt = transactionalSendParams.expiresAt
-            this.from = transactionalSendParams.from
-            this.variables = transactionalSendParams.variables
-            additionalHeaders(transactionalSendParams.additionalHeaders)
-            additionalQueryParams(transactionalSendParams.additionalQueryParams)
-            additionalBodyProperties(transactionalSendParams.additionalBodyProperties)
+            templateId = transactionalSendParams.templateId
+            to = transactionalSendParams.to
+            callbackUrl = transactionalSendParams.callbackUrl
+            correlationId = transactionalSendParams.correlationId
+            expiresAt = transactionalSendParams.expiresAt
+            from = transactionalSendParams.from
+            variables = transactionalSendParams.variables
+            additionalHeaders = transactionalSendParams.additionalHeaders.toBuilder()
+            additionalQueryParams = transactionalSendParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties =
+                transactionalSendParams.additionalBodyProperties.toMutableMap()
         }
 
         /** The template identifier. */
@@ -473,4 +461,17 @@ constructor(
 
         override fun toString() = "Variables{additionalProperties=$additionalProperties}"
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is TransactionalSendParams && templateId == other.templateId && to == other.to && callbackUrl == other.callbackUrl && correlationId == other.correlationId && expiresAt == other.expiresAt && from == other.from && variables == other.variables && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(templateId, to, callbackUrl, correlationId, expiresAt, from, variables, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "TransactionalSendParams{templateId=$templateId, to=$to, callbackUrl=$callbackUrl, correlationId=$correlationId, expiresAt=$expiresAt, from=$from, variables=$variables, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }
