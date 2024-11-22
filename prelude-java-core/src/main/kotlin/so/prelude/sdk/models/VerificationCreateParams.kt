@@ -39,6 +39,12 @@ constructor(
 
     fun signals(): Optional<Signals> = Optional.ofNullable(signals)
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     @JvmSynthetic
     internal fun getBody(): VerificationCreateBody {
         return VerificationCreateBody(
@@ -168,25 +174,6 @@ constructor(
             "VerificationCreateBody{target=$target, metadata=$metadata, options=$options, signals=$signals, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is VerificationCreateParams && target == other.target && metadata == other.metadata && options == other.options && signals == other.signals && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(target, metadata, options, signals, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "VerificationCreateParams{target=$target, metadata=$metadata, options=$options, signals=$signals, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -207,13 +194,14 @@ constructor(
 
         @JvmSynthetic
         internal fun from(verificationCreateParams: VerificationCreateParams) = apply {
-            this.target = verificationCreateParams.target
-            this.metadata = verificationCreateParams.metadata
-            this.options = verificationCreateParams.options
-            this.signals = verificationCreateParams.signals
-            additionalHeaders(verificationCreateParams.additionalHeaders)
-            additionalQueryParams(verificationCreateParams.additionalQueryParams)
-            additionalBodyProperties(verificationCreateParams.additionalBodyProperties)
+            target = verificationCreateParams.target
+            metadata = verificationCreateParams.metadata
+            options = verificationCreateParams.options
+            signals = verificationCreateParams.signals
+            additionalHeaders = verificationCreateParams.additionalHeaders.toBuilder()
+            additionalQueryParams = verificationCreateParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties =
+                verificationCreateParams.additionalBodyProperties.toMutableMap()
         }
 
         /** The target. Currently this can only be an E.164 formatted phone number. */
@@ -956,4 +944,17 @@ constructor(
         override fun toString() =
             "Signals{ip=$ip, deviceId=$deviceId, devicePlatform=$devicePlatform, deviceModel=$deviceModel, osVersion=$osVersion, appVersion=$appVersion, isTrustedUser=$isTrustedUser, additionalProperties=$additionalProperties}"
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is VerificationCreateParams && target == other.target && metadata == other.metadata && options == other.options && signals == other.signals && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(target, metadata, options, signals, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "VerificationCreateParams{target=$target, metadata=$metadata, options=$options, signals=$signals, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }
