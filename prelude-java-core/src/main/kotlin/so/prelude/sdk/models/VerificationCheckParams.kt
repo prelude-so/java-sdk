@@ -32,6 +32,12 @@ constructor(
 
     fun target(): Target = target
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     @JvmSynthetic
     internal fun getBody(): VerificationCheckBody {
         return VerificationCheckBody(
@@ -130,25 +136,6 @@ constructor(
             "VerificationCheckBody{code=$code, target=$target, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is VerificationCheckParams && code == other.code && target == other.target && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(code, target, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "VerificationCheckParams{code=$code, target=$target, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -167,11 +154,12 @@ constructor(
 
         @JvmSynthetic
         internal fun from(verificationCheckParams: VerificationCheckParams) = apply {
-            this.code = verificationCheckParams.code
-            this.target = verificationCheckParams.target
-            additionalHeaders(verificationCheckParams.additionalHeaders)
-            additionalQueryParams(verificationCheckParams.additionalQueryParams)
-            additionalBodyProperties(verificationCheckParams.additionalBodyProperties)
+            code = verificationCheckParams.code
+            target = verificationCheckParams.target
+            additionalHeaders = verificationCheckParams.additionalHeaders.toBuilder()
+            additionalQueryParams = verificationCheckParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties =
+                verificationCheckParams.additionalBodyProperties.toMutableMap()
         }
 
         /** The OTP code to validate. */
@@ -446,4 +434,17 @@ constructor(
         override fun toString() =
             "Target{type=$type, value=$value, additionalProperties=$additionalProperties}"
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is VerificationCheckParams && code == other.code && target == other.target && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(code, target, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "VerificationCheckParams{code=$code, target=$target, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }
