@@ -33,6 +33,12 @@ constructor(
 
     fun signals(): Optional<Signals> = Optional.ofNullable(signals)
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     @JvmSynthetic
     internal fun getBody(): WatchPredictBody {
         return WatchPredictBody(
@@ -137,25 +143,6 @@ constructor(
             "WatchPredictBody{target=$target, signals=$signals, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is WatchPredictParams && target == other.target && signals == other.signals && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(target, signals, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "WatchPredictParams{target=$target, signals=$signals, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -174,11 +161,11 @@ constructor(
 
         @JvmSynthetic
         internal fun from(watchPredictParams: WatchPredictParams) = apply {
-            this.target = watchPredictParams.target
-            this.signals = watchPredictParams.signals
-            additionalHeaders(watchPredictParams.additionalHeaders)
-            additionalQueryParams(watchPredictParams.additionalQueryParams)
-            additionalBodyProperties(watchPredictParams.additionalBodyProperties)
+            target = watchPredictParams.target
+            signals = watchPredictParams.signals
+            additionalHeaders = watchPredictParams.additionalHeaders.toBuilder()
+            additionalQueryParams = watchPredictParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties = watchPredictParams.additionalBodyProperties.toMutableMap()
         }
 
         /** The target. Currently this can only be an E.164 formatted phone number. */
@@ -570,4 +557,17 @@ constructor(
         override fun toString() =
             "Signals{ip=$ip, deviceId=$deviceId, deviceType=$deviceType, deviceModel=$deviceModel, additionalProperties=$additionalProperties}"
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is WatchPredictParams && target == other.target && signals == other.signals && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(target, signals, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "WatchPredictParams{target=$target, signals=$signals, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }
