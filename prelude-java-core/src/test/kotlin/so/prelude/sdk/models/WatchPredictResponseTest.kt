@@ -16,7 +16,7 @@ class WatchPredictResponseTest {
                 .reasoning(
                     WatchPredictResponse.Reasoning.builder()
                         .cause(WatchPredictResponse.Reasoning.Cause.NONE)
-                        .score(42.23)
+                        .score(0.0)
                         .build()
                 )
                 .build()
@@ -28,7 +28,7 @@ class WatchPredictResponseTest {
             .contains(
                 WatchPredictResponse.Reasoning.builder()
                     .cause(WatchPredictResponse.Reasoning.Cause.NONE)
-                    .score(42.23)
+                    .score(0.0)
                     .build()
             )
     }
