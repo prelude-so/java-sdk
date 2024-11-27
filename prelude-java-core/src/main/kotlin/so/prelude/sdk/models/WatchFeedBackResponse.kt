@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import java.util.Objects
-import java.util.Optional
 import so.prelude.sdk.core.ExcludeMissing
 import so.prelude.sdk.core.JsonField
 import so.prelude.sdk.core.JsonMissing
@@ -26,7 +25,7 @@ private constructor(
     private var validated: Boolean = false
 
     /** A unique identifier for your feedback request. */
-    fun id(): Optional<String> = Optional.ofNullable(id.getNullable("id"))
+    fun id(): String = id.getRequired("id")
 
     /** A unique identifier for your feedback request. */
     @JsonProperty("id") @ExcludeMissing fun _id() = id

@@ -11,6 +11,6 @@ class WatchFeedBackResponseTest {
     fun createWatchFeedBackResponse() {
         val watchFeedBackResponse = WatchFeedBackResponse.builder().id("id").build()
         assertThat(watchFeedBackResponse).isNotNull
-        assertThat(watchFeedBackResponse.id()).contains("id")
+        assertThat(watchFeedBackResponse.id()).isEqualTo("id")
     }
 }

@@ -33,13 +33,13 @@ private constructor(
     private var validated: Boolean = false
 
     /** The verification identifier. */
-    fun id(): Optional<String> = Optional.ofNullable(id.getNullable("id"))
+    fun id(): String = id.getRequired("id")
 
     /** The status of the verification. */
-    fun status(): Optional<Status> = Optional.ofNullable(status.getNullable("status"))
+    fun status(): Status = status.getRequired("status")
 
     /** The method used for verifying this phone number. */
-    fun method(): Optional<Method> = Optional.ofNullable(method.getNullable("method"))
+    fun method(): Method = method.getRequired("method")
 
     /** The metadata for this verification. */
     fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata.getNullable("metadata"))
@@ -162,94 +162,6 @@ private constructor(
             )
     }
 
-    /** The metadata for this verification. */
-    @JsonDeserialize(builder = Metadata.Builder::class)
-    @NoAutoDetect
-    class Metadata
-    private constructor(
-        private val correlationId: JsonField<String>,
-        private val additionalProperties: Map<String, JsonValue>,
-    ) {
-
-        private var validated: Boolean = false
-
-        fun correlationId(): Optional<String> =
-            Optional.ofNullable(correlationId.getNullable("correlation_id"))
-
-        @JsonProperty("correlation_id") @ExcludeMissing fun _correlationId() = correlationId
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        fun validate(): Metadata = apply {
-            if (!validated) {
-                correlationId()
-                validated = true
-            }
-        }
-
-        fun toBuilder() = Builder().from(this)
-
-        companion object {
-
-            @JvmStatic fun builder() = Builder()
-        }
-
-        class Builder {
-
-            private var correlationId: JsonField<String> = JsonMissing.of()
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(metadata: Metadata) = apply {
-                this.correlationId = metadata.correlationId
-                additionalProperties(metadata.additionalProperties)
-            }
-
-            fun correlationId(correlationId: String) = correlationId(JsonField.of(correlationId))
-
-            @JsonProperty("correlation_id")
-            @ExcludeMissing
-            fun correlationId(correlationId: JsonField<String>) = apply {
-                this.correlationId = correlationId
-            }
-
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            @JsonAnySetter
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun build(): Metadata = Metadata(correlationId, additionalProperties.toImmutable())
-        }
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Metadata && correlationId == other.correlationId && additionalProperties == other.additionalProperties /* spotless:on */
-        }
-
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(correlationId, additionalProperties) }
-        /* spotless:on */
-
-        override fun hashCode(): Int = hashCode
-
-        override fun toString() =
-            "Metadata{correlationId=$correlationId, additionalProperties=$additionalProperties}"
-    }
-
     class Method
     @JsonCreator
     private constructor(
@@ -362,6 +274,94 @@ private constructor(
             }
 
         fun asString(): String = _value().asStringOrThrow()
+    }
+
+    /** The metadata for this verification. */
+    @JsonDeserialize(builder = Metadata.Builder::class)
+    @NoAutoDetect
+    class Metadata
+    private constructor(
+        private val correlationId: JsonField<String>,
+        private val additionalProperties: Map<String, JsonValue>,
+    ) {
+
+        private var validated: Boolean = false
+
+        fun correlationId(): Optional<String> =
+            Optional.ofNullable(correlationId.getNullable("correlation_id"))
+
+        @JsonProperty("correlation_id") @ExcludeMissing fun _correlationId() = correlationId
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        fun validate(): Metadata = apply {
+            if (!validated) {
+                correlationId()
+                validated = true
+            }
+        }
+
+        fun toBuilder() = Builder().from(this)
+
+        companion object {
+
+            @JvmStatic fun builder() = Builder()
+        }
+
+        class Builder {
+
+            private var correlationId: JsonField<String> = JsonMissing.of()
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            @JvmSynthetic
+            internal fun from(metadata: Metadata) = apply {
+                this.correlationId = metadata.correlationId
+                additionalProperties(metadata.additionalProperties)
+            }
+
+            fun correlationId(correlationId: String) = correlationId(JsonField.of(correlationId))
+
+            @JsonProperty("correlation_id")
+            @ExcludeMissing
+            fun correlationId(correlationId: JsonField<String>) = apply {
+                this.correlationId = correlationId
+            }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            @JsonAnySetter
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                this.additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun build(): Metadata = Metadata(correlationId, additionalProperties.toImmutable())
+        }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Metadata && correlationId == other.correlationId && additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(correlationId, additionalProperties) }
+        /* spotless:on */
+
+        override fun hashCode(): Int = hashCode
+
+        override fun toString() =
+            "Metadata{correlationId=$correlationId, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {
