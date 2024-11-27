@@ -35,7 +35,7 @@ private constructor(
     fun id(): Optional<String> = Optional.ofNullable(id.getNullable("id"))
 
     /** The status of the check. */
-    fun status(): Optional<Status> = Optional.ofNullable(status.getNullable("status"))
+    fun status(): Status = status.getRequired("status")
 
     /** The metadata for this verification. */
     fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata.getNullable("metadata"))
@@ -143,6 +143,69 @@ private constructor(
             )
     }
 
+    class Status
+    @JsonCreator
+    private constructor(
+        private val value: JsonField<String>,
+    ) : Enum {
+
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Status && value == other.value /* spotless:on */
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
+
+        companion object {
+
+            @JvmField val SUCCESS = Status(JsonField.of("success"))
+
+            @JvmField val FAILURE = Status(JsonField.of("failure"))
+
+            @JvmField val EXPIRED_OR_NOT_FOUND = Status(JsonField.of("expired_or_not_found"))
+
+            @JvmStatic fun of(value: String) = Status(JsonField.of(value))
+        }
+
+        enum class Known {
+            SUCCESS,
+            FAILURE,
+            EXPIRED_OR_NOT_FOUND,
+        }
+
+        enum class Value {
+            SUCCESS,
+            FAILURE,
+            EXPIRED_OR_NOT_FOUND,
+            _UNKNOWN,
+        }
+
+        fun value(): Value =
+            when (this) {
+                SUCCESS -> Value.SUCCESS
+                FAILURE -> Value.FAILURE
+                EXPIRED_OR_NOT_FOUND -> Value.EXPIRED_OR_NOT_FOUND
+                else -> Value._UNKNOWN
+            }
+
+        fun known(): Known =
+            when (this) {
+                SUCCESS -> Known.SUCCESS
+                FAILURE -> Known.FAILURE
+                EXPIRED_OR_NOT_FOUND -> Known.EXPIRED_OR_NOT_FOUND
+                else -> throw PreludeInvalidDataException("Unknown Status: $value")
+            }
+
+        fun asString(): String = _value().asStringOrThrow()
+    }
+
     /** The metadata for this verification. */
     @JsonDeserialize(builder = Metadata.Builder::class)
     @NoAutoDetect
@@ -229,69 +292,6 @@ private constructor(
 
         override fun toString() =
             "Metadata{correlationId=$correlationId, additionalProperties=$additionalProperties}"
-    }
-
-    class Status
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) : Enum {
-
-        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Status && value == other.value /* spotless:on */
-        }
-
-        override fun hashCode() = value.hashCode()
-
-        override fun toString() = value.toString()
-
-        companion object {
-
-            @JvmField val SUCCESS = Status(JsonField.of("success"))
-
-            @JvmField val FAILURE = Status(JsonField.of("failure"))
-
-            @JvmField val EXPIRED = Status(JsonField.of("expired"))
-
-            @JvmStatic fun of(value: String) = Status(JsonField.of(value))
-        }
-
-        enum class Known {
-            SUCCESS,
-            FAILURE,
-            EXPIRED,
-        }
-
-        enum class Value {
-            SUCCESS,
-            FAILURE,
-            EXPIRED,
-            _UNKNOWN,
-        }
-
-        fun value(): Value =
-            when (this) {
-                SUCCESS -> Value.SUCCESS
-                FAILURE -> Value.FAILURE
-                EXPIRED -> Value.EXPIRED
-                else -> Value._UNKNOWN
-            }
-
-        fun known(): Known =
-            when (this) {
-                SUCCESS -> Known.SUCCESS
-                FAILURE -> Known.FAILURE
-                EXPIRED -> Known.EXPIRED
-                else -> throw PreludeInvalidDataException("Unknown Status: $value")
-            }
-
-        fun asString(): String = _value().asStringOrThrow()
     }
 
     override fun equals(other: Any?): Boolean {

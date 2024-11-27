@@ -31,13 +31,12 @@ private constructor(
     private var validated: Boolean = false
 
     /** A unique identifier for your prediction request. */
-    fun id(): Optional<String> = Optional.ofNullable(id.getNullable("id"))
+    fun id(): String = id.getRequired("id")
 
     /** A label indicating the trustworthiness of the phone number. */
-    fun prediction(): Optional<Prediction> =
-        Optional.ofNullable(prediction.getNullable("prediction"))
+    fun prediction(): Prediction = prediction.getRequired("prediction")
 
-    fun reasoning(): Optional<Reasoning> = Optional.ofNullable(reasoning.getNullable("reasoning"))
+    fun reasoning(): Reasoning = reasoning.getRequired("reasoning")
 
     /** A unique identifier for your prediction request. */
     @JsonProperty("id") @ExcludeMissing fun _id() = id
@@ -55,7 +54,7 @@ private constructor(
         if (!validated) {
             id()
             prediction()
-            reasoning().map { it.validate() }
+            reasoning().validate()
             validated = true
         }
     }

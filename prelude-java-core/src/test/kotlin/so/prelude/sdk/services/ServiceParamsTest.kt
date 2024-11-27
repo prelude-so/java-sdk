@@ -95,14 +95,14 @@ class ServiceParamsTest {
         val apiResponse =
             VerificationCreateResponse.builder()
                 .id("vrf_01jc0t6fwwfgfsq1md24mhyztj")
+                .method(VerificationCreateResponse.Method.MESSAGE)
+                .status(VerificationCreateResponse.Status.SUCCESS)
                 .metadata(
                     VerificationCreateResponse.Metadata.builder()
                         .correlationId("correlation_id")
                         .build()
                 )
-                .method(VerificationCreateResponse.Method.MESSAGE)
                 .requestId("request_id")
-                .status(VerificationCreateResponse.Status.SUCCESS)
                 .build()
 
         stubFor(
