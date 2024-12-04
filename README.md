@@ -84,7 +84,12 @@ then pass that to the `create` method of the `verification` service.
 import so.prelude.sdk.models.VerificationCreateParams;
 import so.prelude.sdk.models.VerificationCreateResponse;
 
-VerificationCreateParams params = VerificationCreateParams.builder().build();
+VerificationCreateParams params = VerificationCreateParams.builder()
+    .target(VerificationCreateParams.Target.builder()
+        .type(VerificationCreateParams.Target.Type.phone_number)
+        .value("+30123456789")
+        .build())
+    .build();
 VerificationCreateResponse verification = client.verification().create(params);
 ```
 
