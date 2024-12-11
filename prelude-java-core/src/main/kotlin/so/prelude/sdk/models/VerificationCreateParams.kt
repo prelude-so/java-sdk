@@ -725,7 +725,7 @@ constructor(
         private val deviceModel: String?,
         private val osVersion: String?,
         private val appVersion: String?,
-        private val isTrustedUser: String?,
+        private val isTrustedUser: Boolean?,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
@@ -754,7 +754,7 @@ constructor(
          * This signal should provide a higher level of trust, indicating that the user is genuine.
          * For more details, refer to [Signals](/guides/prevent-fraud#signals).
          */
-        @JsonProperty("is_trusted_user") fun isTrustedUser(): String? = isTrustedUser
+        @JsonProperty("is_trusted_user") fun isTrustedUser(): Boolean? = isTrustedUser
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -775,7 +775,7 @@ constructor(
             private var deviceModel: String? = null
             private var osVersion: String? = null
             private var appVersion: String? = null
-            private var isTrustedUser: String? = null
+            private var isTrustedUser: Boolean? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -823,7 +823,7 @@ constructor(
              * genuine. For more details, refer to [Signals](/guides/prevent-fraud#signals).
              */
             @JsonProperty("is_trusted_user")
-            fun isTrustedUser(isTrustedUser: String) = apply { this.isTrustedUser = isTrustedUser }
+            fun isTrustedUser(isTrustedUser: Boolean) = apply { this.isTrustedUser = isTrustedUser }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
