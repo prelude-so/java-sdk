@@ -83,7 +83,7 @@ class ServiceParamsTest {
                         .deviceModel("iPhone17,2")
                         .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.ANDROID)
                         .ip("192.0.2.1")
-                        .isTrustedUser("is_trusted_user")
+                        .isTrustedUser(false)
                         .osVersion("18.0.1")
                         .build()
                 )
