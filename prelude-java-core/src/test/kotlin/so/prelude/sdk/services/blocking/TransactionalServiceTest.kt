@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import so.prelude.sdk.TestServerExtension
 import so.prelude.sdk.client.okhttp.PreludeOkHttpClient
+import so.prelude.sdk.core.JsonValue
 import so.prelude.sdk.models.*
 
 @ExtendWith(TestServerExtension::class)
@@ -32,7 +33,11 @@ class TransactionalServiceTest {
                     .correlationId("correlation_id")
                     .expiresAt("expires_at")
                     .from("from")
-                    .variables(TransactionalSendParams.Variables.builder().build())
+                    .variables(
+                        TransactionalSendParams.Variables.builder()
+                            .putAdditionalProperty("foo", JsonValue.from("bar"))
+                            .build()
+                    )
                     .build()
             )
         println(transactionalSendResponse)

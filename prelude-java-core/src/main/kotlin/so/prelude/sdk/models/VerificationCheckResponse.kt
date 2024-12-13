@@ -151,25 +151,13 @@ private constructor(
 
         @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Status && value == other.value /* spotless:on */
-        }
-
-        override fun hashCode() = value.hashCode()
-
-        override fun toString() = value.toString()
-
         companion object {
 
-            @JvmField val SUCCESS = Status(JsonField.of("success"))
+            @JvmField val SUCCESS = of("success")
 
-            @JvmField val FAILURE = Status(JsonField.of("failure"))
+            @JvmField val FAILURE = of("failure")
 
-            @JvmField val EXPIRED_OR_NOT_FOUND = Status(JsonField.of("expired_or_not_found"))
+            @JvmField val EXPIRED_OR_NOT_FOUND = of("expired_or_not_found")
 
             @JvmStatic fun of(value: String) = Status(JsonField.of(value))
         }
@@ -204,6 +192,18 @@ private constructor(
             }
 
         fun asString(): String = _value().asStringOrThrow()
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Status && value == other.value /* spotless:on */
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
     }
 
     /** The metadata for this verification. */

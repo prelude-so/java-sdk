@@ -86,7 +86,7 @@ import so.prelude.sdk.models.VerificationCreateResponse;
 
 VerificationCreateParams params = VerificationCreateParams.builder()
     .target(VerificationCreateParams.Target.builder()
-        .type(VerificationCreateParams.Target.Type.phone_number)
+        .type(VerificationCreateParams.Target.Type.PHONE_NUMBER)
         .value("+30123456789")
         .build())
     .build();

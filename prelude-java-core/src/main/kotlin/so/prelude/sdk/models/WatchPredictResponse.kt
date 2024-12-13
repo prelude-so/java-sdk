@@ -132,23 +132,11 @@ private constructor(
 
         @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Prediction && value == other.value /* spotless:on */
-        }
-
-        override fun hashCode() = value.hashCode()
-
-        override fun toString() = value.toString()
-
         companion object {
 
-            @JvmField val ALLOW = Prediction(JsonField.of("allow"))
+            @JvmField val ALLOW = of("allow")
 
-            @JvmField val BLOCK = Prediction(JsonField.of("block"))
+            @JvmField val BLOCK = of("block")
 
             @JvmStatic fun of(value: String) = Prediction(JsonField.of(value))
         }
@@ -179,6 +167,18 @@ private constructor(
             }
 
         fun asString(): String = _value().asStringOrThrow()
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Prediction && value == other.value /* spotless:on */
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
     }
 
     @JsonDeserialize(builder = Reasoning.Builder::class)
@@ -294,27 +294,15 @@ private constructor(
 
             @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return /* spotless:off */ other is Cause && value == other.value /* spotless:on */
-            }
-
-            override fun hashCode() = value.hashCode()
-
-            override fun toString() = value.toString()
-
             companion object {
 
-                @JvmField val NONE = Cause(JsonField.of("none"))
+                @JvmField val NONE = of("none")
 
-                @JvmField val SMART_ANTIFRAUD = Cause(JsonField.of("smart_antifraud"))
+                @JvmField val SMART_ANTIFRAUD = of("smart_antifraud")
 
-                @JvmField val REPEAT_NUMBER = Cause(JsonField.of("repeat_number"))
+                @JvmField val REPEAT_NUMBER = of("repeat_number")
 
-                @JvmField val INVALID_LINE = Cause(JsonField.of("invalid_line"))
+                @JvmField val INVALID_LINE = of("invalid_line")
 
                 @JvmStatic fun of(value: String) = Cause(JsonField.of(value))
             }
@@ -353,6 +341,18 @@ private constructor(
                 }
 
             fun asString(): String = _value().asStringOrThrow()
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is Cause && value == other.value /* spotless:on */
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
         }
 
         override fun equals(other: Any?): Boolean {
