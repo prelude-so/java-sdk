@@ -170,21 +170,9 @@ private constructor(
 
         @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Method && value == other.value /* spotless:on */
-        }
-
-        override fun hashCode() = value.hashCode()
-
-        override fun toString() = value.toString()
-
         companion object {
 
-            @JvmField val MESSAGE = Method(JsonField.of("message"))
+            @JvmField val MESSAGE = of("message")
 
             @JvmStatic fun of(value: String) = Method(JsonField.of(value))
         }
@@ -211,6 +199,18 @@ private constructor(
             }
 
         fun asString(): String = _value().asStringOrThrow()
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Method && value == other.value /* spotless:on */
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
     }
 
     class Status
@@ -221,25 +221,13 @@ private constructor(
 
         @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Status && value == other.value /* spotless:on */
-        }
-
-        override fun hashCode() = value.hashCode()
-
-        override fun toString() = value.toString()
-
         companion object {
 
-            @JvmField val SUCCESS = Status(JsonField.of("success"))
+            @JvmField val SUCCESS = of("success")
 
-            @JvmField val RETRY = Status(JsonField.of("retry"))
+            @JvmField val RETRY = of("retry")
 
-            @JvmField val BLOCKED = Status(JsonField.of("blocked"))
+            @JvmField val BLOCKED = of("blocked")
 
             @JvmStatic fun of(value: String) = Status(JsonField.of(value))
         }
@@ -274,6 +262,18 @@ private constructor(
             }
 
         fun asString(): String = _value().asStringOrThrow()
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Status && value == other.value /* spotless:on */
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
     }
 
     /** The metadata for this verification. */

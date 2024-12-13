@@ -4,6 +4,7 @@ package so.prelude.sdk.models
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import so.prelude.sdk.core.JsonValue
 import so.prelude.sdk.models.*
 
 class TransactionalSendParamsTest {
@@ -17,7 +18,11 @@ class TransactionalSendParamsTest {
             .correlationId("correlation_id")
             .expiresAt("expires_at")
             .from("from")
-            .variables(TransactionalSendParams.Variables.builder().build())
+            .variables(
+                TransactionalSendParams.Variables.builder()
+                    .putAdditionalProperty("foo", JsonValue.from("bar"))
+                    .build()
+            )
             .build()
     }
 
@@ -31,7 +36,11 @@ class TransactionalSendParamsTest {
                 .correlationId("correlation_id")
                 .expiresAt("expires_at")
                 .from("from")
-                .variables(TransactionalSendParams.Variables.builder().build())
+                .variables(
+                    TransactionalSendParams.Variables.builder()
+                        .putAdditionalProperty("foo", JsonValue.from("bar"))
+                        .build()
+                )
                 .build()
         val body = params.getBody()
         assertThat(body).isNotNull
@@ -41,7 +50,12 @@ class TransactionalSendParamsTest {
         assertThat(body.correlationId()).isEqualTo("correlation_id")
         assertThat(body.expiresAt()).isEqualTo("expires_at")
         assertThat(body.from()).isEqualTo("from")
-        assertThat(body.variables()).isEqualTo(TransactionalSendParams.Variables.builder().build())
+        assertThat(body.variables())
+            .isEqualTo(
+                TransactionalSendParams.Variables.builder()
+                    .putAdditionalProperty("foo", JsonValue.from("bar"))
+                    .build()
+            )
     }
 
     @Test
