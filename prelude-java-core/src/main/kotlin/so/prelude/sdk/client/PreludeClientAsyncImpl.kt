@@ -4,8 +4,12 @@ package so.prelude.sdk.client
 
 import so.prelude.sdk.core.ClientOptions
 import so.prelude.sdk.core.getPackageVersion
-import so.prelude.sdk.models.*
-import so.prelude.sdk.services.async.*
+import so.prelude.sdk.services.async.TransactionalServiceAsync
+import so.prelude.sdk.services.async.TransactionalServiceAsyncImpl
+import so.prelude.sdk.services.async.VerificationServiceAsync
+import so.prelude.sdk.services.async.VerificationServiceAsyncImpl
+import so.prelude.sdk.services.async.WatchServiceAsync
+import so.prelude.sdk.services.async.WatchServiceAsyncImpl
 
 class PreludeClientAsyncImpl
 constructor(
