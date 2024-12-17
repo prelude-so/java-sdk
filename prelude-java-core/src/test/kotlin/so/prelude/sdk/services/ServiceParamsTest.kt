@@ -5,12 +5,10 @@ package so.prelude.sdk.services
 import com.fasterxml.jackson.databind.json.JsonMapper
 import com.github.tomakehurst.wiremock.client.WireMock.anyUrl
 import com.github.tomakehurst.wiremock.client.WireMock.equalTo
-import com.github.tomakehurst.wiremock.client.WireMock.get
 import com.github.tomakehurst.wiremock.client.WireMock.matchingJsonPath
 import com.github.tomakehurst.wiremock.client.WireMock.ok
 import com.github.tomakehurst.wiremock.client.WireMock.post
 import com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor
-import com.github.tomakehurst.wiremock.client.WireMock.put
 import com.github.tomakehurst.wiremock.client.WireMock.stubFor
 import com.github.tomakehurst.wiremock.client.WireMock.verify
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo
@@ -19,10 +17,10 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import so.prelude.sdk.client.PreludeClient
 import so.prelude.sdk.client.okhttp.PreludeOkHttpClient
-import so.prelude.sdk.core.JsonString
 import so.prelude.sdk.core.JsonValue
 import so.prelude.sdk.core.jsonMapper
-import so.prelude.sdk.models.*
+import so.prelude.sdk.models.VerificationCreateParams
+import so.prelude.sdk.models.VerificationCreateResponse
 
 @WireMockTest
 class ServiceParamsTest {
@@ -52,7 +50,7 @@ class ServiceParamsTest {
 
         val additionalBodyProperties = mutableMapOf<String, JsonValue>()
 
-        additionalBodyProperties.put("testBodyProperty", JsonString.of("ghi890"))
+        additionalBodyProperties.put("testBodyProperty", JsonValue.from("ghi890"))
 
         val params =
             VerificationCreateParams.builder()
