@@ -4,10 +4,8 @@ package so.prelude.sdk.services
 
 import com.fasterxml.jackson.databind.json.JsonMapper
 import com.github.tomakehurst.wiremock.client.WireMock.anyUrl
-import com.github.tomakehurst.wiremock.client.WireMock.get
 import com.github.tomakehurst.wiremock.client.WireMock.ok
 import com.github.tomakehurst.wiremock.client.WireMock.post
-import com.github.tomakehurst.wiremock.client.WireMock.put
 import com.github.tomakehurst.wiremock.client.WireMock.status
 import com.github.tomakehurst.wiremock.client.WireMock.stubFor
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo
@@ -19,7 +17,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import so.prelude.sdk.client.PreludeClient
 import so.prelude.sdk.client.okhttp.PreludeOkHttpClient
-import so.prelude.sdk.core.JsonString
+import so.prelude.sdk.core.JsonValue
 import so.prelude.sdk.core.http.Headers
 import so.prelude.sdk.core.jsonMapper
 import so.prelude.sdk.errors.BadRequestException
@@ -32,7 +30,8 @@ import so.prelude.sdk.errors.RateLimitException
 import so.prelude.sdk.errors.UnauthorizedException
 import so.prelude.sdk.errors.UnexpectedStatusCodeException
 import so.prelude.sdk.errors.UnprocessableEntityException
-import so.prelude.sdk.models.*
+import so.prelude.sdk.models.VerificationCreateParams
+import so.prelude.sdk.models.VerificationCreateResponse
 
 @WireMockTest
 class ErrorHandlingTest {
@@ -40,7 +39,7 @@ class ErrorHandlingTest {
     private val JSON_MAPPER: JsonMapper = jsonMapper()
 
     private val PRELUDE_ERROR: PreludeError =
-        PreludeError.builder().putAdditionalProperty("key", JsonString.of("value")).build()
+        PreludeError.builder().putAdditionalProperty("key", JsonValue.from("value")).build()
 
     private lateinit var client: PreludeClient
 

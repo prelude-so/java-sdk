@@ -2,8 +2,9 @@
 
 package so.prelude.sdk.client
 
-import so.prelude.sdk.models.*
-import so.prelude.sdk.services.blocking.*
+import so.prelude.sdk.services.blocking.TransactionalService
+import so.prelude.sdk.services.blocking.VerificationService
+import so.prelude.sdk.services.blocking.WatchService
 
 interface PreludeClient {
 

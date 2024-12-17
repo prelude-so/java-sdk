@@ -6,7 +6,8 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import so.prelude.sdk.TestServerExtension
 import so.prelude.sdk.client.okhttp.PreludeOkHttpClient
-import so.prelude.sdk.models.*
+import so.prelude.sdk.models.VerificationCheckParams
+import so.prelude.sdk.models.VerificationCreateParams
 
 @ExtendWith(TestServerExtension::class)
 class VerificationServiceTest {

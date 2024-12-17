@@ -14,7 +14,6 @@ import so.prelude.sdk.core.NoAutoDetect
 import so.prelude.sdk.core.http.Headers
 import so.prelude.sdk.core.http.QueryParams
 import so.prelude.sdk.core.toImmutable
-import so.prelude.sdk.models.*
 
 class TransactionalSendParams
 constructor(
