@@ -4,8 +4,12 @@ package so.prelude.sdk.client
 
 import so.prelude.sdk.core.ClientOptions
 import so.prelude.sdk.core.getPackageVersion
-import so.prelude.sdk.models.*
-import so.prelude.sdk.services.blocking.*
+import so.prelude.sdk.services.blocking.TransactionalService
+import so.prelude.sdk.services.blocking.TransactionalServiceImpl
+import so.prelude.sdk.services.blocking.VerificationService
+import so.prelude.sdk.services.blocking.VerificationServiceImpl
+import so.prelude.sdk.services.blocking.WatchService
+import so.prelude.sdk.services.blocking.WatchServiceImpl
 
 class PreludeClientImpl
 constructor(

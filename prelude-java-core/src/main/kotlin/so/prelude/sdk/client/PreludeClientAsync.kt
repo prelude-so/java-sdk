@@ -2,8 +2,9 @@
 
 package so.prelude.sdk.client
 
-import so.prelude.sdk.models.*
-import so.prelude.sdk.services.async.*
+import so.prelude.sdk.services.async.TransactionalServiceAsync
+import so.prelude.sdk.services.async.VerificationServiceAsync
+import so.prelude.sdk.services.async.WatchServiceAsync
 
 interface PreludeClientAsync {
 

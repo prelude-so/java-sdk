@@ -8,7 +8,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 import so.prelude.sdk.TestServerExtension
 import so.prelude.sdk.client.okhttp.PreludeOkHttpClient
 import so.prelude.sdk.core.JsonValue
-import so.prelude.sdk.models.*
+import so.prelude.sdk.models.TransactionalSendParams
 
 @ExtendWith(TestServerExtension::class)
 class TransactionalServiceTest {
