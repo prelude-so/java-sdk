@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import java.util.Objects
 import java.util.Optional
 import so.prelude.sdk.core.Enum
@@ -16,6 +15,7 @@ import so.prelude.sdk.core.JsonValue
 import so.prelude.sdk.core.NoAutoDetect
 import so.prelude.sdk.core.http.Headers
 import so.prelude.sdk.core.http.QueryParams
+import so.prelude.sdk.core.immutableEmptyMap
 import so.prelude.sdk.core.toImmutable
 import so.prelude.sdk.errors.PreludeInvalidDataException
 
@@ -51,13 +51,14 @@ constructor(
 
     @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
 
-    @JsonDeserialize(builder = WatchPredictBody.Builder::class)
     @NoAutoDetect
     class WatchPredictBody
+    @JsonCreator
     internal constructor(
-        private val target: Target,
-        private val signals: Signals?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("target") private val target: Target,
+        @JsonProperty("signals") private val signals: Signals?,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The target. Currently this can only be an E.164 formatted phone number. */
@@ -93,13 +94,12 @@ constructor(
             }
 
             /** The target. Currently this can only be an E.164 formatted phone number. */
-            @JsonProperty("target") fun target(target: Target) = apply { this.target = target }
+            fun target(target: Target) = apply { this.target = target }
 
             /**
              * It is highly recommended that you provide the signals to increase prediction
              * performance.
              */
-            @JsonProperty("signals")
             fun signals(signals: Signals) = apply { this.signals = signals }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -107,7 +107,6 @@ constructor(
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }
@@ -312,13 +311,14 @@ constructor(
     }
 
     /** The target. Currently this can only be an E.164 formatted phone number. */
-    @JsonDeserialize(builder = Target.Builder::class)
     @NoAutoDetect
     class Target
+    @JsonCreator
     private constructor(
-        private val type: Type,
-        private val value: String,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("type") private val type: Type,
+        @JsonProperty("value") private val value: String,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The type of the target. Currently this can only be "phone_number". */
@@ -352,17 +352,16 @@ constructor(
             }
 
             /** The type of the target. Currently this can only be "phone_number". */
-            @JsonProperty("type") fun type(type: Type) = apply { this.type = type }
+            fun type(type: Type) = apply { this.type = type }
 
             /** An E.164 formatted phone number to verify. */
-            @JsonProperty("value") fun value(value: String) = apply { this.value = value }
+            fun value(value: String) = apply { this.value = value }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }
@@ -455,15 +454,16 @@ constructor(
     }
 
     /** It is highly recommended that you provide the signals to increase prediction performance. */
-    @JsonDeserialize(builder = Signals.Builder::class)
     @NoAutoDetect
     class Signals
+    @JsonCreator
     private constructor(
-        private val ip: String?,
-        private val deviceId: String?,
-        private val deviceType: String?,
-        private val deviceModel: String?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("ip") private val ip: String?,
+        @JsonProperty("device_id") private val deviceId: String?,
+        @JsonProperty("device_type") private val deviceType: String?,
+        @JsonProperty("device_model") private val deviceModel: String?,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The IPv4 address of the user's device */
@@ -512,21 +512,18 @@ constructor(
             }
 
             /** The IPv4 address of the user's device */
-            @JsonProperty("ip") fun ip(ip: String) = apply { this.ip = ip }
+            fun ip(ip: String) = apply { this.ip = ip }
 
             /**
              * The unique identifier for the user's device. For Android, this corresponds to the
              * `ANDROID_ID` and for iOS, this corresponds to the `identifierForVendor`.
              */
-            @JsonProperty("device_id")
             fun deviceId(deviceId: String) = apply { this.deviceId = deviceId }
 
             /** The type of the user's device. */
-            @JsonProperty("device_type")
             fun deviceType(deviceType: String) = apply { this.deviceType = deviceType }
 
             /** The model of the user's device. */
-            @JsonProperty("device_model")
             fun deviceModel(deviceModel: String) = apply { this.deviceModel = deviceModel }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -534,7 +531,6 @@ constructor(
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }

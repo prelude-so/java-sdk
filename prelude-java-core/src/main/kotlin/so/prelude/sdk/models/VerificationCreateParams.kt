@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import java.util.Objects
 import java.util.Optional
 import so.prelude.sdk.core.Enum
@@ -16,6 +15,7 @@ import so.prelude.sdk.core.JsonValue
 import so.prelude.sdk.core.NoAutoDetect
 import so.prelude.sdk.core.http.Headers
 import so.prelude.sdk.core.http.QueryParams
+import so.prelude.sdk.core.immutableEmptyMap
 import so.prelude.sdk.core.toImmutable
 import so.prelude.sdk.errors.PreludeInvalidDataException
 
@@ -59,15 +59,16 @@ constructor(
 
     @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
 
-    @JsonDeserialize(builder = VerificationCreateBody.Builder::class)
     @NoAutoDetect
     class VerificationCreateBody
+    @JsonCreator
     internal constructor(
-        private val target: Target,
-        private val metadata: Metadata?,
-        private val options: Options?,
-        private val signals: Signals?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("target") private val target: Target,
+        @JsonProperty("metadata") private val metadata: Metadata?,
+        @JsonProperty("options") private val options: Options?,
+        @JsonProperty("signals") private val signals: Signals?,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The target. Currently this can only be an E.164 formatted phone number. */
@@ -114,21 +115,18 @@ constructor(
             }
 
             /** The target. Currently this can only be an E.164 formatted phone number. */
-            @JsonProperty("target") fun target(target: Target) = apply { this.target = target }
+            fun target(target: Target) = apply { this.target = target }
 
             /**
              * The metadata for this verification. This object will be returned with every response
              * or webhook sent that refers to this verification.
              */
-            @JsonProperty("metadata")
             fun metadata(metadata: Metadata) = apply { this.metadata = metadata }
 
             /** Verification options */
-            @JsonProperty("options")
             fun options(options: Options) = apply { this.options = options }
 
             /** The signals used for anti-fraud. */
-            @JsonProperty("signals")
             fun signals(signals: Signals) = apply { this.signals = signals }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -136,7 +134,6 @@ constructor(
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }
@@ -357,13 +354,14 @@ constructor(
     }
 
     /** The target. Currently this can only be an E.164 formatted phone number. */
-    @JsonDeserialize(builder = Target.Builder::class)
     @NoAutoDetect
     class Target
+    @JsonCreator
     private constructor(
-        private val type: Type,
-        private val value: String,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("type") private val type: Type,
+        @JsonProperty("value") private val value: String,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The type of the target. Currently this can only be "phone_number". */
@@ -397,17 +395,16 @@ constructor(
             }
 
             /** The type of the target. Currently this can only be "phone_number". */
-            @JsonProperty("type") fun type(type: Type) = apply { this.type = type }
+            fun type(type: Type) = apply { this.type = type }
 
             /** An E.164 formatted phone number to verify. */
-            @JsonProperty("value") fun value(value: String) = apply { this.value = value }
+            fun value(value: String) = apply { this.value = value }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }
@@ -503,12 +500,13 @@ constructor(
      * The metadata for this verification. This object will be returned with every response or
      * webhook sent that refers to this verification.
      */
-    @JsonDeserialize(builder = Metadata.Builder::class)
     @NoAutoDetect
     class Metadata
+    @JsonCreator
     private constructor(
-        private val correlationId: String?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("correlation_id") private val correlationId: String?,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** A user-defined identifier to correlate this verification with. */
@@ -538,7 +536,6 @@ constructor(
             }
 
             /** A user-defined identifier to correlate this verification with. */
-            @JsonProperty("correlation_id")
             fun correlationId(correlationId: String) = apply { this.correlationId = correlationId }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -546,7 +543,6 @@ constructor(
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }
@@ -583,16 +579,17 @@ constructor(
     }
 
     /** Verification options */
-    @JsonDeserialize(builder = Options.Builder::class)
     @NoAutoDetect
     class Options
+    @JsonCreator
     private constructor(
-        private val templateId: String?,
-        private val locale: String?,
-        private val senderId: String?,
-        private val appRealm: String?,
-        private val customCode: String?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("template_id") private val templateId: String?,
+        @JsonProperty("locale") private val locale: String?,
+        @JsonProperty("sender_id") private val senderId: String?,
+        @JsonProperty("app_realm") private val appRealm: String?,
+        @JsonProperty("custom_code") private val customCode: String?,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /**
@@ -660,7 +657,6 @@ constructor(
              * The identifier of a verification settings template. It is used to be able to switch
              * behavior for specific use cases. Contact us if you need to use this functionality.
              */
-            @JsonProperty("template_id")
             fun templateId(templateId: String) = apply { this.templateId = templateId }
 
             /**
@@ -668,19 +664,17 @@ constructor(
              * If there's no locale set, the language will be determined by the country code of the
              * phone number. If the language specified doesn't exist, it defaults to US English.
              */
-            @JsonProperty("locale") fun locale(locale: String) = apply { this.locale = locale }
+            fun locale(locale: String) = apply { this.locale = locale }
 
             /**
              * The Sender ID to use for this message. The Sender ID needs to be enabled by Prelude.
              */
-            @JsonProperty("sender_id")
             fun senderId(senderId: String) = apply { this.senderId = senderId }
 
             /**
              * The Android SMS Retriever API hash code that identifies your app. This allows you to
              * automatically retrieve and fill the OTP code on Android devices.
              */
-            @JsonProperty("app_realm")
             fun appRealm(appRealm: String) = apply { this.appRealm = appRealm }
 
             /**
@@ -688,7 +682,6 @@ constructor(
              * compatibility purposes and subject to Prelude’s approval. Contact us to discuss your
              * use case.
              */
-            @JsonProperty("custom_code")
             fun customCode(customCode: String) = apply { this.customCode = customCode }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -696,7 +689,6 @@ constructor(
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }
@@ -741,18 +733,19 @@ constructor(
     }
 
     /** The signals used for anti-fraud. */
-    @JsonDeserialize(builder = Signals.Builder::class)
     @NoAutoDetect
     class Signals
+    @JsonCreator
     private constructor(
-        private val ip: String?,
-        private val deviceId: String?,
-        private val devicePlatform: DevicePlatform?,
-        private val deviceModel: String?,
-        private val osVersion: String?,
-        private val appVersion: String?,
-        private val isTrustedUser: Boolean?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("ip") private val ip: String?,
+        @JsonProperty("device_id") private val deviceId: String?,
+        @JsonProperty("device_platform") private val devicePlatform: DevicePlatform?,
+        @JsonProperty("device_model") private val deviceModel: String?,
+        @JsonProperty("os_version") private val osVersion: String?,
+        @JsonProperty("app_version") private val appVersion: String?,
+        @JsonProperty("is_trusted_user") private val isTrustedUser: Boolean?,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The IP address of the user's device. */
@@ -822,38 +815,32 @@ constructor(
             }
 
             /** The IP address of the user's device. */
-            @JsonProperty("ip") fun ip(ip: String) = apply { this.ip = ip }
+            fun ip(ip: String) = apply { this.ip = ip }
 
             /**
              * The unique identifier for the user's device. For Android, this corresponds to the
              * `ANDROID_ID` and for iOS, this corresponds to the `identifierForVendor`.
              */
-            @JsonProperty("device_id")
             fun deviceId(deviceId: String) = apply { this.deviceId = deviceId }
 
             /** The type of the user's device. */
-            @JsonProperty("device_platform")
             fun devicePlatform(devicePlatform: DevicePlatform) = apply {
                 this.devicePlatform = devicePlatform
             }
 
             /** The model of the user's device. */
-            @JsonProperty("device_model")
             fun deviceModel(deviceModel: String) = apply { this.deviceModel = deviceModel }
 
             /** The version of the user's device operating system. */
-            @JsonProperty("os_version")
             fun osVersion(osVersion: String) = apply { this.osVersion = osVersion }
 
             /** The version of your application. */
-            @JsonProperty("app_version")
             fun appVersion(appVersion: String) = apply { this.appVersion = appVersion }
 
             /**
              * This signal should provide a higher level of trust, indicating that the user is
              * genuine. For more details, refer to [Signals](/guides/prevent-fraud#signals).
              */
-            @JsonProperty("is_trusted_user")
             fun isTrustedUser(isTrustedUser: Boolean) = apply { this.isTrustedUser = isTrustedUser }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -861,7 +848,6 @@ constructor(
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }

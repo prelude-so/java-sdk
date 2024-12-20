@@ -4,8 +4,8 @@ package so.prelude.sdk.models
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import java.time.OffsetDateTime
 import java.util.Objects
 import java.util.Optional
@@ -14,22 +14,35 @@ import so.prelude.sdk.core.JsonField
 import so.prelude.sdk.core.JsonMissing
 import so.prelude.sdk.core.JsonValue
 import so.prelude.sdk.core.NoAutoDetect
+import so.prelude.sdk.core.immutableEmptyMap
 import so.prelude.sdk.core.toImmutable
 
-@JsonDeserialize(builder = TransactionalSendResponse.Builder::class)
 @NoAutoDetect
 class TransactionalSendResponse
+@JsonCreator
 private constructor(
-    private val id: JsonField<String>,
-    private val from: JsonField<String>,
-    private val to: JsonField<String>,
-    private val templateId: JsonField<String>,
-    private val variables: JsonField<Variables>,
-    private val callbackUrl: JsonField<String>,
-    private val correlationId: JsonField<String>,
-    private val expiresAt: JsonField<OffsetDateTime>,
-    private val createdAt: JsonField<OffsetDateTime>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("from") @ExcludeMissing private val from: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("to") @ExcludeMissing private val to: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("template_id")
+    @ExcludeMissing
+    private val templateId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("variables")
+    @ExcludeMissing
+    private val variables: JsonField<Variables> = JsonMissing.of(),
+    @JsonProperty("callback_url")
+    @ExcludeMissing
+    private val callbackUrl: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("correlation_id")
+    @ExcludeMissing
+    private val correlationId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("expires_at")
+    @ExcludeMissing
+    private val expiresAt: JsonField<OffsetDateTime> = JsonMissing.of(),
+    @JsonProperty("created_at")
+    @ExcludeMissing
+    private val createdAt: JsonField<OffsetDateTime> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
     /** The message identifier. */
@@ -147,52 +160,42 @@ private constructor(
         fun id(id: String) = id(JsonField.of(id))
 
         /** The message identifier. */
-        @JsonProperty("id") @ExcludeMissing fun id(id: JsonField<String>) = apply { this.id = id }
+        fun id(id: JsonField<String>) = apply { this.id = id }
 
         /** The Sender ID. */
         fun from(from: String) = from(JsonField.of(from))
 
         /** The Sender ID. */
-        @JsonProperty("from")
-        @ExcludeMissing
         fun from(from: JsonField<String>) = apply { this.from = from }
 
         /** The recipient's phone number. */
         fun to(to: String) = to(JsonField.of(to))
 
         /** The recipient's phone number. */
-        @JsonProperty("to") @ExcludeMissing fun to(to: JsonField<String>) = apply { this.to = to }
+        fun to(to: JsonField<String>) = apply { this.to = to }
 
         /** The template identifier. */
         fun templateId(templateId: String) = templateId(JsonField.of(templateId))
 
         /** The template identifier. */
-        @JsonProperty("template_id")
-        @ExcludeMissing
         fun templateId(templateId: JsonField<String>) = apply { this.templateId = templateId }
 
         /** The variables to be replaced in the template. */
         fun variables(variables: Variables) = variables(JsonField.of(variables))
 
         /** The variables to be replaced in the template. */
-        @JsonProperty("variables")
-        @ExcludeMissing
         fun variables(variables: JsonField<Variables>) = apply { this.variables = variables }
 
         /** The callback URL. */
         fun callbackUrl(callbackUrl: String) = callbackUrl(JsonField.of(callbackUrl))
 
         /** The callback URL. */
-        @JsonProperty("callback_url")
-        @ExcludeMissing
         fun callbackUrl(callbackUrl: JsonField<String>) = apply { this.callbackUrl = callbackUrl }
 
         /** A unique, user-defined identifier that will be included in webhook events. */
         fun correlationId(correlationId: String) = correlationId(JsonField.of(correlationId))
 
         /** A unique, user-defined identifier that will be included in webhook events. */
-        @JsonProperty("correlation_id")
-        @ExcludeMissing
         fun correlationId(correlationId: JsonField<String>) = apply {
             this.correlationId = correlationId
         }
@@ -201,16 +204,12 @@ private constructor(
         fun expiresAt(expiresAt: OffsetDateTime) = expiresAt(JsonField.of(expiresAt))
 
         /** The message expiration date. */
-        @JsonProperty("expires_at")
-        @ExcludeMissing
         fun expiresAt(expiresAt: JsonField<OffsetDateTime>) = apply { this.expiresAt = expiresAt }
 
         /** The message creation date. */
         fun createdAt(createdAt: OffsetDateTime) = createdAt(JsonField.of(createdAt))
 
         /** The message creation date. */
-        @JsonProperty("created_at")
-        @ExcludeMissing
         fun createdAt(createdAt: JsonField<OffsetDateTime>) = apply { this.createdAt = createdAt }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -218,7 +217,6 @@ private constructor(
             putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
             additionalProperties.put(key, value)
         }
@@ -249,11 +247,12 @@ private constructor(
     }
 
     /** The variables to be replaced in the template. */
-    @JsonDeserialize(builder = Variables.Builder::class)
     @NoAutoDetect
     class Variables
+    @JsonCreator
     private constructor(
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         @JsonAnyGetter
@@ -289,7 +288,6 @@ private constructor(
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }
