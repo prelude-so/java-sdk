@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import java.util.Objects
 import java.util.Optional
 import so.prelude.sdk.core.Enum
@@ -15,19 +14,28 @@ import so.prelude.sdk.core.JsonField
 import so.prelude.sdk.core.JsonMissing
 import so.prelude.sdk.core.JsonValue
 import so.prelude.sdk.core.NoAutoDetect
+import so.prelude.sdk.core.immutableEmptyMap
 import so.prelude.sdk.core.toImmutable
 import so.prelude.sdk.errors.PreludeInvalidDataException
 
-@JsonDeserialize(builder = VerificationCreateResponse.Builder::class)
 @NoAutoDetect
 class VerificationCreateResponse
+@JsonCreator
 private constructor(
-    private val id: JsonField<String>,
-    private val status: JsonField<Status>,
-    private val method: JsonField<Method>,
-    private val metadata: JsonField<Metadata>,
-    private val requestId: JsonField<String>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("status")
+    @ExcludeMissing
+    private val status: JsonField<Status> = JsonMissing.of(),
+    @JsonProperty("method")
+    @ExcludeMissing
+    private val method: JsonField<Method> = JsonMissing.of(),
+    @JsonProperty("metadata")
+    @ExcludeMissing
+    private val metadata: JsonField<Metadata> = JsonMissing.of(),
+    @JsonProperty("request_id")
+    @ExcludeMissing
+    private val requestId: JsonField<String> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
     /** The verification identifier. */
@@ -105,36 +113,28 @@ private constructor(
         fun id(id: String) = id(JsonField.of(id))
 
         /** The verification identifier. */
-        @JsonProperty("id") @ExcludeMissing fun id(id: JsonField<String>) = apply { this.id = id }
+        fun id(id: JsonField<String>) = apply { this.id = id }
 
         /** The status of the verification. */
         fun status(status: Status) = status(JsonField.of(status))
 
         /** The status of the verification. */
-        @JsonProperty("status")
-        @ExcludeMissing
         fun status(status: JsonField<Status>) = apply { this.status = status }
 
         /** The method used for verifying this phone number. */
         fun method(method: Method) = method(JsonField.of(method))
 
         /** The method used for verifying this phone number. */
-        @JsonProperty("method")
-        @ExcludeMissing
         fun method(method: JsonField<Method>) = apply { this.method = method }
 
         /** The metadata for this verification. */
         fun metadata(metadata: Metadata) = metadata(JsonField.of(metadata))
 
         /** The metadata for this verification. */
-        @JsonProperty("metadata")
-        @ExcludeMissing
         fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
 
         fun requestId(requestId: String) = requestId(JsonField.of(requestId))
 
-        @JsonProperty("request_id")
-        @ExcludeMissing
         fun requestId(requestId: JsonField<String>) = apply { this.requestId = requestId }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -142,7 +142,6 @@ private constructor(
             putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
             additionalProperties.put(key, value)
         }
@@ -283,12 +282,15 @@ private constructor(
     }
 
     /** The metadata for this verification. */
-    @JsonDeserialize(builder = Metadata.Builder::class)
     @NoAutoDetect
     class Metadata
+    @JsonCreator
     private constructor(
-        private val correlationId: JsonField<String>,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("correlation_id")
+        @ExcludeMissing
+        private val correlationId: JsonField<String> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         fun correlationId(): Optional<String> =
@@ -329,8 +331,6 @@ private constructor(
 
             fun correlationId(correlationId: String) = correlationId(JsonField.of(correlationId))
 
-            @JsonProperty("correlation_id")
-            @ExcludeMissing
             fun correlationId(correlationId: JsonField<String>) = apply {
                 this.correlationId = correlationId
             }
@@ -340,7 +340,6 @@ private constructor(
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }

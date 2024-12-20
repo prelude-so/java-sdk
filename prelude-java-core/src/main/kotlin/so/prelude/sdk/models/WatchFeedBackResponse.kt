@@ -4,22 +4,23 @@ package so.prelude.sdk.models
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import java.util.Objects
 import so.prelude.sdk.core.ExcludeMissing
 import so.prelude.sdk.core.JsonField
 import so.prelude.sdk.core.JsonMissing
 import so.prelude.sdk.core.JsonValue
 import so.prelude.sdk.core.NoAutoDetect
+import so.prelude.sdk.core.immutableEmptyMap
 import so.prelude.sdk.core.toImmutable
 
-@JsonDeserialize(builder = WatchFeedBackResponse.Builder::class)
 @NoAutoDetect
 class WatchFeedBackResponse
+@JsonCreator
 private constructor(
-    private val id: JsonField<String>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
     /** A unique identifier for your feedback request. */
@@ -63,14 +64,13 @@ private constructor(
         fun id(id: String) = id(JsonField.of(id))
 
         /** A unique identifier for your feedback request. */
-        @JsonProperty("id") @ExcludeMissing fun id(id: JsonField<String>) = apply { this.id = id }
+        fun id(id: JsonField<String>) = apply { this.id = id }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
             putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
             additionalProperties.put(key, value)
         }

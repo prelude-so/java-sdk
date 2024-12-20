@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import java.util.Objects
 import java.util.Optional
 import so.prelude.sdk.core.Enum
@@ -15,17 +14,22 @@ import so.prelude.sdk.core.JsonField
 import so.prelude.sdk.core.JsonMissing
 import so.prelude.sdk.core.JsonValue
 import so.prelude.sdk.core.NoAutoDetect
+import so.prelude.sdk.core.immutableEmptyMap
 import so.prelude.sdk.core.toImmutable
 import so.prelude.sdk.errors.PreludeInvalidDataException
 
-@JsonDeserialize(builder = WatchPredictResponse.Builder::class)
 @NoAutoDetect
 class WatchPredictResponse
+@JsonCreator
 private constructor(
-    private val id: JsonField<String>,
-    private val prediction: JsonField<Prediction>,
-    private val reasoning: JsonField<Reasoning>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("prediction")
+    @ExcludeMissing
+    private val prediction: JsonField<Prediction> = JsonMissing.of(),
+    @JsonProperty("reasoning")
+    @ExcludeMissing
+    private val reasoning: JsonField<Reasoning> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
     /** A unique identifier for your prediction request. */
@@ -85,20 +89,16 @@ private constructor(
         fun id(id: String) = id(JsonField.of(id))
 
         /** A unique identifier for your prediction request. */
-        @JsonProperty("id") @ExcludeMissing fun id(id: JsonField<String>) = apply { this.id = id }
+        fun id(id: JsonField<String>) = apply { this.id = id }
 
         /** A label indicating the trustworthiness of the phone number. */
         fun prediction(prediction: Prediction) = prediction(JsonField.of(prediction))
 
         /** A label indicating the trustworthiness of the phone number. */
-        @JsonProperty("prediction")
-        @ExcludeMissing
         fun prediction(prediction: JsonField<Prediction>) = apply { this.prediction = prediction }
 
         fun reasoning(reasoning: Reasoning) = reasoning(JsonField.of(reasoning))
 
-        @JsonProperty("reasoning")
-        @ExcludeMissing
         fun reasoning(reasoning: JsonField<Reasoning>) = apply { this.reasoning = reasoning }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -106,7 +106,6 @@ private constructor(
             putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
             additionalProperties.put(key, value)
         }
@@ -187,13 +186,18 @@ private constructor(
         override fun toString() = value.toString()
     }
 
-    @JsonDeserialize(builder = Reasoning.Builder::class)
     @NoAutoDetect
     class Reasoning
+    @JsonCreator
     private constructor(
-        private val cause: JsonField<Cause>,
-        private val score: JsonField<Double>,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("cause")
+        @ExcludeMissing
+        private val cause: JsonField<Cause> = JsonMissing.of(),
+        @JsonProperty("score")
+        @ExcludeMissing
+        private val score: JsonField<Double> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** A label explaining why the phone number was classified as not trustworthy */
@@ -252,8 +256,6 @@ private constructor(
             fun cause(cause: Cause) = cause(JsonField.of(cause))
 
             /** A label explaining why the phone number was classified as not trustworthy */
-            @JsonProperty("cause")
-            @ExcludeMissing
             fun cause(cause: JsonField<Cause>) = apply { this.cause = cause }
 
             /**
@@ -266,8 +268,6 @@ private constructor(
              * Indicates the risk of the phone number being genuine or involved in fraudulent
              * patterns. The higher the riskier.
              */
-            @JsonProperty("score")
-            @ExcludeMissing
             fun score(score: JsonField<Double>) = apply { this.score = score }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -275,7 +275,6 @@ private constructor(
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }
