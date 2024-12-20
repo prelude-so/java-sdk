@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import java.util.Objects
 import so.prelude.sdk.core.Enum
 import so.prelude.sdk.core.ExcludeMissing
@@ -15,6 +14,7 @@ import so.prelude.sdk.core.JsonValue
 import so.prelude.sdk.core.NoAutoDetect
 import so.prelude.sdk.core.http.Headers
 import so.prelude.sdk.core.http.QueryParams
+import so.prelude.sdk.core.immutableEmptyMap
 import so.prelude.sdk.core.toImmutable
 import so.prelude.sdk.errors.PreludeInvalidDataException
 
@@ -50,13 +50,14 @@ constructor(
 
     @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
 
-    @JsonDeserialize(builder = VerificationCheckBody.Builder::class)
     @NoAutoDetect
     class VerificationCheckBody
+    @JsonCreator
     internal constructor(
-        private val code: String,
-        private val target: Target,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("code") private val code: String,
+        @JsonProperty("target") private val target: Target,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The OTP code to validate. */
@@ -90,17 +91,16 @@ constructor(
             }
 
             /** The OTP code to validate. */
-            @JsonProperty("code") fun code(code: String) = apply { this.code = code }
+            fun code(code: String) = apply { this.code = code }
 
             /** The target. Currently this can only be an E.164 formatted phone number. */
-            @JsonProperty("target") fun target(target: Target) = apply { this.target = target }
+            fun target(target: Target) = apply { this.target = target }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }
@@ -304,13 +304,14 @@ constructor(
     }
 
     /** The target. Currently this can only be an E.164 formatted phone number. */
-    @JsonDeserialize(builder = Target.Builder::class)
     @NoAutoDetect
     class Target
+    @JsonCreator
     private constructor(
-        private val type: Type,
-        private val value: String,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("type") private val type: Type,
+        @JsonProperty("value") private val value: String,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The type of the target. Currently this can only be "phone_number". */
@@ -344,17 +345,16 @@ constructor(
             }
 
             /** The type of the target. Currently this can only be "phone_number". */
-            @JsonProperty("type") fun type(type: Type) = apply { this.type = type }
+            fun type(type: Type) = apply { this.type = type }
 
             /** An E.164 formatted phone number to verify. */
-            @JsonProperty("value") fun value(value: String) = apply { this.value = value }
+            fun value(value: String) = apply { this.value = value }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }
