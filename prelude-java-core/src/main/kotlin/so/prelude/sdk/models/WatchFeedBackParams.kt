@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import java.util.Objects
 import so.prelude.sdk.core.Enum
 import so.prelude.sdk.core.ExcludeMissing
@@ -15,6 +14,7 @@ import so.prelude.sdk.core.JsonValue
 import so.prelude.sdk.core.NoAutoDetect
 import so.prelude.sdk.core.http.Headers
 import so.prelude.sdk.core.http.QueryParams
+import so.prelude.sdk.core.immutableEmptyMap
 import so.prelude.sdk.core.toImmutable
 import so.prelude.sdk.errors.PreludeInvalidDataException
 
@@ -50,13 +50,14 @@ constructor(
 
     @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
 
-    @JsonDeserialize(builder = WatchFeedBackBody.Builder::class)
     @NoAutoDetect
     class WatchFeedBackBody
+    @JsonCreator
     internal constructor(
-        private val feedback: Feedback,
-        private val target: Target,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("feedback") private val feedback: Feedback,
+        @JsonProperty("target") private val target: Target,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /**
@@ -96,18 +97,16 @@ constructor(
              * You should send a feedback event back to Watch API when your user demonstrates
              * authentic behavior.
              */
-            @JsonProperty("feedback")
             fun feedback(feedback: Feedback) = apply { this.feedback = feedback }
 
             /** The target. Currently this can only be an E.164 formatted phone number. */
-            @JsonProperty("target") fun target(target: Target) = apply { this.target = target }
+            fun target(target: Target) = apply { this.target = target }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }
@@ -316,12 +315,13 @@ constructor(
      * You should send a feedback event back to Watch API when your user demonstrates authentic
      * behavior.
      */
-    @JsonDeserialize(builder = Feedback.Builder::class)
     @NoAutoDetect
     class Feedback
+    @JsonCreator
     private constructor(
-        private val type: Type,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("type") private val type: Type,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /**
@@ -356,14 +356,13 @@ constructor(
              * `CONFIRM_TARGET` should be sent when you are sure that the user with this target
              * (e.g. phone number) is trustworthy.
              */
-            @JsonProperty("type") fun type(type: Type) = apply { this.type = type }
+            fun type(type: Type) = apply { this.type = type }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }
@@ -454,13 +453,14 @@ constructor(
     }
 
     /** The target. Currently this can only be an E.164 formatted phone number. */
-    @JsonDeserialize(builder = Target.Builder::class)
     @NoAutoDetect
     class Target
+    @JsonCreator
     private constructor(
-        private val type: Type,
-        private val value: String,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("type") private val type: Type,
+        @JsonProperty("value") private val value: String,
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The type of the target. Currently this can only be "phone_number". */
@@ -494,17 +494,16 @@ constructor(
             }
 
             /** The type of the target. Currently this can only be "phone_number". */
-            @JsonProperty("type") fun type(type: Type) = apply { this.type = type }
+            fun type(type: Type) = apply { this.type = type }
 
             /** An E.164 formatted phone number to verify. */
-            @JsonProperty("value") fun value(value: String) = apply { this.value = value }
+            fun value(value: String) = apply { this.value = value }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
                 putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
                 additionalProperties.put(key, value)
             }
