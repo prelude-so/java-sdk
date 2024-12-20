@@ -88,11 +88,11 @@ class VerificationCreateParamsTest {
                     .build()
             )
         assertThat(body.metadata())
-            .isEqualTo(
+            .contains(
                 VerificationCreateParams.Metadata.builder().correlationId("correlation_id").build()
             )
         assertThat(body.options())
-            .isEqualTo(
+            .contains(
                 VerificationCreateParams.Options.builder()
                     .appRealm("app_realm")
                     .customCode("custom_code")
@@ -102,7 +102,7 @@ class VerificationCreateParamsTest {
                     .build()
             )
         assertThat(body.signals())
-            .isEqualTo(
+            .contains(
                 VerificationCreateParams.Signals.builder()
                     .appVersion("1.2.34")
                     .deviceId("8F0B8FDD-C2CB-4387-B20A-56E9B2E5A0D2")

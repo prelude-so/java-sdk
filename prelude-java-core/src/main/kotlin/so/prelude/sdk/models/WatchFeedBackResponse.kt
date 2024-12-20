@@ -22,8 +22,6 @@ private constructor(
     private val additionalProperties: Map<String, JsonValue>,
 ) {
 
-    private var validated: Boolean = false
-
     /** A unique identifier for your feedback request. */
     fun id(): String = id.getRequired("id")
 
@@ -33,6 +31,8 @@ private constructor(
     @JsonAnyGetter
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+    private var validated: Boolean = false
 
     fun validate(): WatchFeedBackResponse = apply {
         if (!validated) {
@@ -55,8 +55,8 @@ private constructor(
 
         @JvmSynthetic
         internal fun from(watchFeedBackResponse: WatchFeedBackResponse) = apply {
-            this.id = watchFeedBackResponse.id
-            additionalProperties(watchFeedBackResponse.additionalProperties)
+            id = watchFeedBackResponse.id
+            additionalProperties = watchFeedBackResponse.additionalProperties.toMutableMap()
         }
 
         /** A unique identifier for your feedback request. */
@@ -67,16 +67,22 @@ private constructor(
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
         @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
+        }
+
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
         }
 
         fun build(): WatchFeedBackResponse =

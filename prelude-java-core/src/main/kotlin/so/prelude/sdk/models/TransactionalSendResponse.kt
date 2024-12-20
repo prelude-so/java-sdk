@@ -32,8 +32,6 @@ private constructor(
     private val additionalProperties: Map<String, JsonValue>,
 ) {
 
-    private var validated: Boolean = false
-
     /** The message identifier. */
     fun id(): String = id.getRequired("id")
 
@@ -94,6 +92,8 @@ private constructor(
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+    private var validated: Boolean = false
+
     fun validate(): TransactionalSendResponse = apply {
         if (!validated) {
             id()
@@ -131,16 +131,16 @@ private constructor(
 
         @JvmSynthetic
         internal fun from(transactionalSendResponse: TransactionalSendResponse) = apply {
-            this.id = transactionalSendResponse.id
-            this.from = transactionalSendResponse.from
-            this.to = transactionalSendResponse.to
-            this.templateId = transactionalSendResponse.templateId
-            this.variables = transactionalSendResponse.variables
-            this.callbackUrl = transactionalSendResponse.callbackUrl
-            this.correlationId = transactionalSendResponse.correlationId
-            this.expiresAt = transactionalSendResponse.expiresAt
-            this.createdAt = transactionalSendResponse.createdAt
-            additionalProperties(transactionalSendResponse.additionalProperties)
+            id = transactionalSendResponse.id
+            from = transactionalSendResponse.from
+            to = transactionalSendResponse.to
+            templateId = transactionalSendResponse.templateId
+            variables = transactionalSendResponse.variables
+            callbackUrl = transactionalSendResponse.callbackUrl
+            correlationId = transactionalSendResponse.correlationId
+            expiresAt = transactionalSendResponse.expiresAt
+            createdAt = transactionalSendResponse.createdAt
+            additionalProperties = transactionalSendResponse.additionalProperties.toMutableMap()
         }
 
         /** The message identifier. */
@@ -215,16 +215,22 @@ private constructor(
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
         @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
+        }
+
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
         }
 
         fun build(): TransactionalSendResponse =
@@ -250,11 +256,11 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var validated: Boolean = false
-
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
 
         fun validate(): Variables = apply {
             if (!validated) {
@@ -275,21 +281,27 @@ private constructor(
 
             @JvmSynthetic
             internal fun from(variables: Variables) = apply {
-                additionalProperties(variables.additionalProperties)
+                additionalProperties = variables.additionalProperties.toMutableMap()
             }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Variables = Variables(additionalProperties.toImmutable())
