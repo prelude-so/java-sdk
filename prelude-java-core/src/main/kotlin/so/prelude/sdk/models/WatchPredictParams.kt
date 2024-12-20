@@ -55,18 +55,18 @@ constructor(
     @NoAutoDetect
     class WatchPredictBody
     internal constructor(
-        private val target: Target?,
+        private val target: Target,
         private val signals: Signals?,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
         /** The target. Currently this can only be an E.164 formatted phone number. */
-        @JsonProperty("target") fun target(): Target? = target
+        @JsonProperty("target") fun target(): Target = target
 
         /**
          * It is highly recommended that you provide the signals to increase prediction performance.
          */
-        @JsonProperty("signals") fun signals(): Signals? = signals
+        @JsonProperty("signals") fun signals(): Optional<Signals> = Optional.ofNullable(signals)
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -87,9 +87,9 @@ constructor(
 
             @JvmSynthetic
             internal fun from(watchPredictBody: WatchPredictBody) = apply {
-                this.target = watchPredictBody.target
-                this.signals = watchPredictBody.signals
-                additionalProperties(watchPredictBody.additionalProperties)
+                target = watchPredictBody.target
+                signals = watchPredictBody.signals
+                additionalProperties = watchPredictBody.additionalProperties.toMutableMap()
             }
 
             /** The target. Currently this can only be an E.164 formatted phone number. */
@@ -104,16 +104,22 @@ constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): WatchPredictBody =
@@ -310,16 +316,16 @@ constructor(
     @NoAutoDetect
     class Target
     private constructor(
-        private val type: Type?,
-        private val value: String?,
+        private val type: Type,
+        private val value: String,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
         /** The type of the target. Currently this can only be "phone_number". */
-        @JsonProperty("type") fun type(): Type? = type
+        @JsonProperty("type") fun type(): Type = type
 
         /** An E.164 formatted phone number to verify. */
-        @JsonProperty("value") fun value(): String? = value
+        @JsonProperty("value") fun value(): String = value
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -340,9 +346,9 @@ constructor(
 
             @JvmSynthetic
             internal fun from(target: Target) = apply {
-                this.type = target.type
-                this.value = target.value
-                additionalProperties(target.additionalProperties)
+                type = target.type
+                value = target.value
+                additionalProperties = target.additionalProperties.toMutableMap()
             }
 
             /** The type of the target. Currently this can only be "phone_number". */
@@ -353,16 +359,22 @@ constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Target =
@@ -455,19 +467,21 @@ constructor(
     ) {
 
         /** The IPv4 address of the user's device */
-        @JsonProperty("ip") fun ip(): String? = ip
+        @JsonProperty("ip") fun ip(): Optional<String> = Optional.ofNullable(ip)
 
         /**
          * The unique identifier for the user's device. For Android, this corresponds to the
          * `ANDROID_ID` and for iOS, this corresponds to the `identifierForVendor`.
          */
-        @JsonProperty("device_id") fun deviceId(): String? = deviceId
+        @JsonProperty("device_id") fun deviceId(): Optional<String> = Optional.ofNullable(deviceId)
 
         /** The type of the user's device. */
-        @JsonProperty("device_type") fun deviceType(): String? = deviceType
+        @JsonProperty("device_type")
+        fun deviceType(): Optional<String> = Optional.ofNullable(deviceType)
 
         /** The model of the user's device. */
-        @JsonProperty("device_model") fun deviceModel(): String? = deviceModel
+        @JsonProperty("device_model")
+        fun deviceModel(): Optional<String> = Optional.ofNullable(deviceModel)
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -490,11 +504,11 @@ constructor(
 
             @JvmSynthetic
             internal fun from(signals: Signals) = apply {
-                this.ip = signals.ip
-                this.deviceId = signals.deviceId
-                this.deviceType = signals.deviceType
-                this.deviceModel = signals.deviceModel
-                additionalProperties(signals.additionalProperties)
+                ip = signals.ip
+                deviceId = signals.deviceId
+                deviceType = signals.deviceType
+                deviceModel = signals.deviceModel
+                additionalProperties = signals.additionalProperties.toMutableMap()
             }
 
             /** The IPv4 address of the user's device */
@@ -517,16 +531,22 @@ constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Signals =

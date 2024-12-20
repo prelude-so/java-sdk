@@ -29,8 +29,6 @@ private constructor(
     private val additionalProperties: Map<String, JsonValue>,
 ) {
 
-    private var validated: Boolean = false
-
     /** The verification identifier. */
     fun id(): Optional<String> = Optional.ofNullable(id.getNullable("id"))
 
@@ -56,6 +54,8 @@ private constructor(
     @JsonAnyGetter
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+    private var validated: Boolean = false
 
     fun validate(): VerificationCheckResponse = apply {
         if (!validated) {
@@ -84,11 +84,11 @@ private constructor(
 
         @JvmSynthetic
         internal fun from(verificationCheckResponse: VerificationCheckResponse) = apply {
-            this.id = verificationCheckResponse.id
-            this.status = verificationCheckResponse.status
-            this.metadata = verificationCheckResponse.metadata
-            this.requestId = verificationCheckResponse.requestId
-            additionalProperties(verificationCheckResponse.additionalProperties)
+            id = verificationCheckResponse.id
+            status = verificationCheckResponse.status
+            metadata = verificationCheckResponse.metadata
+            requestId = verificationCheckResponse.requestId
+            additionalProperties = verificationCheckResponse.additionalProperties.toMutableMap()
         }
 
         /** The verification identifier. */
@@ -121,16 +121,22 @@ private constructor(
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
         @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
+        }
+
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
         }
 
         fun build(): VerificationCheckResponse =
@@ -215,8 +221,6 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var validated: Boolean = false
-
         fun correlationId(): Optional<String> =
             Optional.ofNullable(correlationId.getNullable("correlation_id"))
 
@@ -225,6 +229,8 @@ private constructor(
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
 
         fun validate(): Metadata = apply {
             if (!validated) {
@@ -247,8 +253,8 @@ private constructor(
 
             @JvmSynthetic
             internal fun from(metadata: Metadata) = apply {
-                this.correlationId = metadata.correlationId
-                additionalProperties(metadata.additionalProperties)
+                correlationId = metadata.correlationId
+                additionalProperties = metadata.additionalProperties.toMutableMap()
             }
 
             fun correlationId(correlationId: String) = correlationId(JsonField.of(correlationId))
@@ -261,16 +267,22 @@ private constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Metadata = Metadata(correlationId, additionalProperties.toImmutable())

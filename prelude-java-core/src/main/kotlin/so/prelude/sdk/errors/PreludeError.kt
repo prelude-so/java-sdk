@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import java.util.Objects
+import so.prelude.sdk.core.ExcludeMissing
 import so.prelude.sdk.core.JsonValue
 import so.prelude.sdk.core.NoAutoDetect
 import so.prelude.sdk.core.toImmutable
@@ -15,6 +16,7 @@ import so.prelude.sdk.core.toImmutable
 class PreludeError
 private constructor(
     @JsonAnyGetter
+    @ExcludeMissing
     @get:JvmName("additionalProperties")
     val additionalProperties: Map<String, JsonValue>,
 ) {

@@ -63,7 +63,7 @@ constructor(
     @NoAutoDetect
     class VerificationCreateBody
     internal constructor(
-        private val target: Target?,
+        private val target: Target,
         private val metadata: Metadata?,
         private val options: Options?,
         private val signals: Signals?,
@@ -71,19 +71,19 @@ constructor(
     ) {
 
         /** The target. Currently this can only be an E.164 formatted phone number. */
-        @JsonProperty("target") fun target(): Target? = target
+        @JsonProperty("target") fun target(): Target = target
 
         /**
          * The metadata for this verification. This object will be returned with every response or
          * webhook sent that refers to this verification.
          */
-        @JsonProperty("metadata") fun metadata(): Metadata? = metadata
+        @JsonProperty("metadata") fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata)
 
         /** Verification options */
-        @JsonProperty("options") fun options(): Options? = options
+        @JsonProperty("options") fun options(): Optional<Options> = Optional.ofNullable(options)
 
         /** The signals used for anti-fraud. */
-        @JsonProperty("signals") fun signals(): Signals? = signals
+        @JsonProperty("signals") fun signals(): Optional<Signals> = Optional.ofNullable(signals)
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -106,11 +106,11 @@ constructor(
 
             @JvmSynthetic
             internal fun from(verificationCreateBody: VerificationCreateBody) = apply {
-                this.target = verificationCreateBody.target
-                this.metadata = verificationCreateBody.metadata
-                this.options = verificationCreateBody.options
-                this.signals = verificationCreateBody.signals
-                additionalProperties(verificationCreateBody.additionalProperties)
+                target = verificationCreateBody.target
+                metadata = verificationCreateBody.metadata
+                options = verificationCreateBody.options
+                signals = verificationCreateBody.signals
+                additionalProperties = verificationCreateBody.additionalProperties.toMutableMap()
             }
 
             /** The target. Currently this can only be an E.164 formatted phone number. */
@@ -133,16 +133,22 @@ constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): VerificationCreateBody =
@@ -355,16 +361,16 @@ constructor(
     @NoAutoDetect
     class Target
     private constructor(
-        private val type: Type?,
-        private val value: String?,
+        private val type: Type,
+        private val value: String,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
         /** The type of the target. Currently this can only be "phone_number". */
-        @JsonProperty("type") fun type(): Type? = type
+        @JsonProperty("type") fun type(): Type = type
 
         /** An E.164 formatted phone number to verify. */
-        @JsonProperty("value") fun value(): String? = value
+        @JsonProperty("value") fun value(): String = value
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -385,9 +391,9 @@ constructor(
 
             @JvmSynthetic
             internal fun from(target: Target) = apply {
-                this.type = target.type
-                this.value = target.value
-                additionalProperties(target.additionalProperties)
+                type = target.type
+                value = target.value
+                additionalProperties = target.additionalProperties.toMutableMap()
             }
 
             /** The type of the target. Currently this can only be "phone_number". */
@@ -398,16 +404,22 @@ constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Target =
@@ -500,7 +512,8 @@ constructor(
     ) {
 
         /** A user-defined identifier to correlate this verification with. */
-        @JsonProperty("correlation_id") fun correlationId(): String? = correlationId
+        @JsonProperty("correlation_id")
+        fun correlationId(): Optional<String> = Optional.ofNullable(correlationId)
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -520,8 +533,8 @@ constructor(
 
             @JvmSynthetic
             internal fun from(metadata: Metadata) = apply {
-                this.correlationId = metadata.correlationId
-                additionalProperties(metadata.additionalProperties)
+                correlationId = metadata.correlationId
+                additionalProperties = metadata.additionalProperties.toMutableMap()
             }
 
             /** A user-defined identifier to correlate this verification with. */
@@ -530,16 +543,22 @@ constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Metadata = Metadata(correlationId, additionalProperties.toImmutable())
@@ -580,30 +599,32 @@ constructor(
          * The identifier of a verification settings template. It is used to be able to switch
          * behavior for specific use cases. Contact us if you need to use this functionality.
          */
-        @JsonProperty("template_id") fun templateId(): String? = templateId
+        @JsonProperty("template_id")
+        fun templateId(): Optional<String> = Optional.ofNullable(templateId)
 
         /**
          * A BCP-47 formatted locale string with the language the text message will be sent to. If
          * there's no locale set, the language will be determined by the country code of the phone
          * number. If the language specified doesn't exist, it defaults to US English.
          */
-        @JsonProperty("locale") fun locale(): String? = locale
+        @JsonProperty("locale") fun locale(): Optional<String> = Optional.ofNullable(locale)
 
         /** The Sender ID to use for this message. The Sender ID needs to be enabled by Prelude. */
-        @JsonProperty("sender_id") fun senderId(): String? = senderId
+        @JsonProperty("sender_id") fun senderId(): Optional<String> = Optional.ofNullable(senderId)
 
         /**
          * The Android SMS Retriever API hash code that identifies your app. This allows you to
          * automatically retrieve and fill the OTP code on Android devices.
          */
-        @JsonProperty("app_realm") fun appRealm(): String? = appRealm
+        @JsonProperty("app_realm") fun appRealm(): Optional<String> = Optional.ofNullable(appRealm)
 
         /**
          * The custom code to use for OTP verification. This feature is only available for
          * compatibility purposes and subject to Prelude’s approval. Contact us to discuss your use
          * case.
          */
-        @JsonProperty("custom_code") fun customCode(): String? = customCode
+        @JsonProperty("custom_code")
+        fun customCode(): Optional<String> = Optional.ofNullable(customCode)
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -627,12 +648,12 @@ constructor(
 
             @JvmSynthetic
             internal fun from(options: Options) = apply {
-                this.templateId = options.templateId
-                this.locale = options.locale
-                this.senderId = options.senderId
-                this.appRealm = options.appRealm
-                this.customCode = options.customCode
-                additionalProperties(options.additionalProperties)
+                templateId = options.templateId
+                locale = options.locale
+                senderId = options.senderId
+                appRealm = options.appRealm
+                customCode = options.customCode
+                additionalProperties = options.additionalProperties.toMutableMap()
             }
 
             /**
@@ -672,16 +693,22 @@ constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Options =
@@ -729,31 +756,36 @@ constructor(
     ) {
 
         /** The IP address of the user's device. */
-        @JsonProperty("ip") fun ip(): String? = ip
+        @JsonProperty("ip") fun ip(): Optional<String> = Optional.ofNullable(ip)
 
         /**
          * The unique identifier for the user's device. For Android, this corresponds to the
          * `ANDROID_ID` and for iOS, this corresponds to the `identifierForVendor`.
          */
-        @JsonProperty("device_id") fun deviceId(): String? = deviceId
+        @JsonProperty("device_id") fun deviceId(): Optional<String> = Optional.ofNullable(deviceId)
 
         /** The type of the user's device. */
-        @JsonProperty("device_platform") fun devicePlatform(): DevicePlatform? = devicePlatform
+        @JsonProperty("device_platform")
+        fun devicePlatform(): Optional<DevicePlatform> = Optional.ofNullable(devicePlatform)
 
         /** The model of the user's device. */
-        @JsonProperty("device_model") fun deviceModel(): String? = deviceModel
+        @JsonProperty("device_model")
+        fun deviceModel(): Optional<String> = Optional.ofNullable(deviceModel)
 
         /** The version of the user's device operating system. */
-        @JsonProperty("os_version") fun osVersion(): String? = osVersion
+        @JsonProperty("os_version")
+        fun osVersion(): Optional<String> = Optional.ofNullable(osVersion)
 
         /** The version of your application. */
-        @JsonProperty("app_version") fun appVersion(): String? = appVersion
+        @JsonProperty("app_version")
+        fun appVersion(): Optional<String> = Optional.ofNullable(appVersion)
 
         /**
          * This signal should provide a higher level of trust, indicating that the user is genuine.
          * For more details, refer to [Signals](/guides/prevent-fraud#signals).
          */
-        @JsonProperty("is_trusted_user") fun isTrustedUser(): Boolean? = isTrustedUser
+        @JsonProperty("is_trusted_user")
+        fun isTrustedUser(): Optional<Boolean> = Optional.ofNullable(isTrustedUser)
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -779,14 +811,14 @@ constructor(
 
             @JvmSynthetic
             internal fun from(signals: Signals) = apply {
-                this.ip = signals.ip
-                this.deviceId = signals.deviceId
-                this.devicePlatform = signals.devicePlatform
-                this.deviceModel = signals.deviceModel
-                this.osVersion = signals.osVersion
-                this.appVersion = signals.appVersion
-                this.isTrustedUser = signals.isTrustedUser
-                additionalProperties(signals.additionalProperties)
+                ip = signals.ip
+                deviceId = signals.deviceId
+                devicePlatform = signals.devicePlatform
+                deviceModel = signals.deviceModel
+                osVersion = signals.osVersion
+                appVersion = signals.appVersion
+                isTrustedUser = signals.isTrustedUser
+                additionalProperties = signals.additionalProperties.toMutableMap()
             }
 
             /** The IP address of the user's device. */
@@ -826,16 +858,22 @@ constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Signals =
