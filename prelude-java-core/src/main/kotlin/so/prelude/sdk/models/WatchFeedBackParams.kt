@@ -54,8 +54,8 @@ constructor(
     @NoAutoDetect
     class WatchFeedBackBody
     internal constructor(
-        private val feedback: Feedback?,
-        private val target: Target?,
+        private val feedback: Feedback,
+        private val target: Target,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
@@ -63,10 +63,10 @@ constructor(
          * You should send a feedback event back to Watch API when your user demonstrates authentic
          * behavior.
          */
-        @JsonProperty("feedback") fun feedback(): Feedback? = feedback
+        @JsonProperty("feedback") fun feedback(): Feedback = feedback
 
         /** The target. Currently this can only be an E.164 formatted phone number. */
-        @JsonProperty("target") fun target(): Target? = target
+        @JsonProperty("target") fun target(): Target = target
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -87,9 +87,9 @@ constructor(
 
             @JvmSynthetic
             internal fun from(watchFeedBackBody: WatchFeedBackBody) = apply {
-                this.feedback = watchFeedBackBody.feedback
-                this.target = watchFeedBackBody.target
-                additionalProperties(watchFeedBackBody.additionalProperties)
+                feedback = watchFeedBackBody.feedback
+                target = watchFeedBackBody.target
+                additionalProperties = watchFeedBackBody.additionalProperties.toMutableMap()
             }
 
             /**
@@ -104,16 +104,22 @@ constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): WatchFeedBackBody =
@@ -314,7 +320,7 @@ constructor(
     @NoAutoDetect
     class Feedback
     private constructor(
-        private val type: Type?,
+        private val type: Type,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
@@ -322,7 +328,7 @@ constructor(
          * `CONFIRM_TARGET` should be sent when you are sure that the user with this target (e.g.
          * phone number) is trustworthy.
          */
-        @JsonProperty("type") fun type(): Type? = type
+        @JsonProperty("type") fun type(): Type = type
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -342,8 +348,8 @@ constructor(
 
             @JvmSynthetic
             internal fun from(feedback: Feedback) = apply {
-                this.type = feedback.type
-                additionalProperties(feedback.additionalProperties)
+                type = feedback.type
+                additionalProperties = feedback.additionalProperties.toMutableMap()
             }
 
             /**
@@ -354,16 +360,22 @@ constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Feedback =
@@ -446,16 +458,16 @@ constructor(
     @NoAutoDetect
     class Target
     private constructor(
-        private val type: Type?,
-        private val value: String?,
+        private val type: Type,
+        private val value: String,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
         /** The type of the target. Currently this can only be "phone_number". */
-        @JsonProperty("type") fun type(): Type? = type
+        @JsonProperty("type") fun type(): Type = type
 
         /** An E.164 formatted phone number to verify. */
-        @JsonProperty("value") fun value(): String? = value
+        @JsonProperty("value") fun value(): String = value
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -476,9 +488,9 @@ constructor(
 
             @JvmSynthetic
             internal fun from(target: Target) = apply {
-                this.type = target.type
-                this.value = target.value
-                additionalProperties(target.additionalProperties)
+                type = target.type
+                value = target.value
+                additionalProperties = target.additionalProperties.toMutableMap()
             }
 
             /** The type of the target. Currently this can only be "phone_number". */
@@ -489,16 +501,22 @@ constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Target =
