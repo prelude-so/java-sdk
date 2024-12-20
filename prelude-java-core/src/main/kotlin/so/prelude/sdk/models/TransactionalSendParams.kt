@@ -71,8 +71,8 @@ constructor(
     @NoAutoDetect
     class TransactionalSendBody
     internal constructor(
-        private val templateId: String?,
-        private val to: String?,
+        private val templateId: String,
+        private val to: String,
         private val callbackUrl: String?,
         private val correlationId: String?,
         private val expiresAt: String?,
@@ -82,25 +82,29 @@ constructor(
     ) {
 
         /** The template identifier. */
-        @JsonProperty("template_id") fun templateId(): String? = templateId
+        @JsonProperty("template_id") fun templateId(): String = templateId
 
         /** The recipient's phone number. */
-        @JsonProperty("to") fun to(): String? = to
+        @JsonProperty("to") fun to(): String = to
 
         /** The callback URL. */
-        @JsonProperty("callback_url") fun callbackUrl(): String? = callbackUrl
+        @JsonProperty("callback_url")
+        fun callbackUrl(): Optional<String> = Optional.ofNullable(callbackUrl)
 
         /** A unique, user-defined identifier that will be included in webhook events. */
-        @JsonProperty("correlation_id") fun correlationId(): String? = correlationId
+        @JsonProperty("correlation_id")
+        fun correlationId(): Optional<String> = Optional.ofNullable(correlationId)
 
         /** The message expiration date. */
-        @JsonProperty("expires_at") fun expiresAt(): String? = expiresAt
+        @JsonProperty("expires_at")
+        fun expiresAt(): Optional<String> = Optional.ofNullable(expiresAt)
 
         /** The Sender ID. */
-        @JsonProperty("from") fun from(): String? = from
+        @JsonProperty("from") fun from(): Optional<String> = Optional.ofNullable(from)
 
         /** The variables to be replaced in the template. */
-        @JsonProperty("variables") fun variables(): Variables? = variables
+        @JsonProperty("variables")
+        fun variables(): Optional<Variables> = Optional.ofNullable(variables)
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -126,14 +130,14 @@ constructor(
 
             @JvmSynthetic
             internal fun from(transactionalSendBody: TransactionalSendBody) = apply {
-                this.templateId = transactionalSendBody.templateId
-                this.to = transactionalSendBody.to
-                this.callbackUrl = transactionalSendBody.callbackUrl
-                this.correlationId = transactionalSendBody.correlationId
-                this.expiresAt = transactionalSendBody.expiresAt
-                this.from = transactionalSendBody.from
-                this.variables = transactionalSendBody.variables
-                additionalProperties(transactionalSendBody.additionalProperties)
+                templateId = transactionalSendBody.templateId
+                to = transactionalSendBody.to
+                callbackUrl = transactionalSendBody.callbackUrl
+                correlationId = transactionalSendBody.correlationId
+                expiresAt = transactionalSendBody.expiresAt
+                from = transactionalSendBody.from
+                variables = transactionalSendBody.variables
+                additionalProperties = transactionalSendBody.additionalProperties.toMutableMap()
             }
 
             /** The template identifier. */
@@ -164,16 +168,22 @@ constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): TransactionalSendBody =
@@ -424,21 +434,27 @@ constructor(
 
             @JvmSynthetic
             internal fun from(variables: Variables) = apply {
-                additionalProperties(variables.additionalProperties)
+                additionalProperties = variables.additionalProperties.toMutableMap()
             }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Variables = Variables(additionalProperties.toImmutable())

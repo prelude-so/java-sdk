@@ -45,12 +45,12 @@ class TransactionalSendParamsTest {
         assertThat(body).isNotNull
         assertThat(body.templateId()).isEqualTo("template_01jd1xq0cffycayqtdkdbv4d61")
         assertThat(body.to()).isEqualTo("+30123456789")
-        assertThat(body.callbackUrl()).isEqualTo("callback_url")
-        assertThat(body.correlationId()).isEqualTo("correlation_id")
-        assertThat(body.expiresAt()).isEqualTo("expires_at")
-        assertThat(body.from()).isEqualTo("from")
+        assertThat(body.callbackUrl()).contains("callback_url")
+        assertThat(body.correlationId()).contains("correlation_id")
+        assertThat(body.expiresAt()).contains("expires_at")
+        assertThat(body.from()).contains("from")
         assertThat(body.variables())
-            .isEqualTo(
+            .contains(
                 TransactionalSendParams.Variables.builder()
                     .putAdditionalProperty("foo", JsonValue.from("bar"))
                     .build()

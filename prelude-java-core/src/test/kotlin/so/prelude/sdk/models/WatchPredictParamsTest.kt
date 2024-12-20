@@ -56,7 +56,7 @@ class WatchPredictParamsTest {
                     .build()
             )
         assertThat(body.signals())
-            .isEqualTo(
+            .contains(
                 WatchPredictParams.Signals.builder()
                     .deviceId("device_id")
                     .deviceModel("device_model")

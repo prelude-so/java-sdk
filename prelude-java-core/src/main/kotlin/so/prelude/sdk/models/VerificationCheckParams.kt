@@ -54,16 +54,16 @@ constructor(
     @NoAutoDetect
     class VerificationCheckBody
     internal constructor(
-        private val code: String?,
-        private val target: Target?,
+        private val code: String,
+        private val target: Target,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
         /** The OTP code to validate. */
-        @JsonProperty("code") fun code(): String? = code
+        @JsonProperty("code") fun code(): String = code
 
         /** The target. Currently this can only be an E.164 formatted phone number. */
-        @JsonProperty("target") fun target(): Target? = target
+        @JsonProperty("target") fun target(): Target = target
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -84,9 +84,9 @@ constructor(
 
             @JvmSynthetic
             internal fun from(verificationCheckBody: VerificationCheckBody) = apply {
-                this.code = verificationCheckBody.code
-                this.target = verificationCheckBody.target
-                additionalProperties(verificationCheckBody.additionalProperties)
+                code = verificationCheckBody.code
+                target = verificationCheckBody.target
+                additionalProperties = verificationCheckBody.additionalProperties.toMutableMap()
             }
 
             /** The OTP code to validate. */
@@ -97,16 +97,22 @@ constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): VerificationCheckBody =
@@ -302,16 +308,16 @@ constructor(
     @NoAutoDetect
     class Target
     private constructor(
-        private val type: Type?,
-        private val value: String?,
+        private val type: Type,
+        private val value: String,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
         /** The type of the target. Currently this can only be "phone_number". */
-        @JsonProperty("type") fun type(): Type? = type
+        @JsonProperty("type") fun type(): Type = type
 
         /** An E.164 formatted phone number to verify. */
-        @JsonProperty("value") fun value(): String? = value
+        @JsonProperty("value") fun value(): String = value
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -332,9 +338,9 @@ constructor(
 
             @JvmSynthetic
             internal fun from(target: Target) = apply {
-                this.type = target.type
-                this.value = target.value
-                additionalProperties(target.additionalProperties)
+                type = target.type
+                value = target.value
+                additionalProperties = target.additionalProperties.toMutableMap()
             }
 
             /** The type of the target. Currently this can only be "phone_number". */
@@ -345,16 +351,22 @@ constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Target =

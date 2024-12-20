@@ -28,8 +28,6 @@ private constructor(
     private val additionalProperties: Map<String, JsonValue>,
 ) {
 
-    private var validated: Boolean = false
-
     /** A unique identifier for your prediction request. */
     fun id(): String = id.getRequired("id")
 
@@ -49,6 +47,8 @@ private constructor(
     @JsonAnyGetter
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+    private var validated: Boolean = false
 
     fun validate(): WatchPredictResponse = apply {
         if (!validated) {
@@ -75,10 +75,10 @@ private constructor(
 
         @JvmSynthetic
         internal fun from(watchPredictResponse: WatchPredictResponse) = apply {
-            this.id = watchPredictResponse.id
-            this.prediction = watchPredictResponse.prediction
-            this.reasoning = watchPredictResponse.reasoning
-            additionalProperties(watchPredictResponse.additionalProperties)
+            id = watchPredictResponse.id
+            prediction = watchPredictResponse.prediction
+            reasoning = watchPredictResponse.reasoning
+            additionalProperties = watchPredictResponse.additionalProperties.toMutableMap()
         }
 
         /** A unique identifier for your prediction request. */
@@ -103,16 +103,22 @@ private constructor(
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
         @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
+        }
+
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
         }
 
         fun build(): WatchPredictResponse =
@@ -190,8 +196,6 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var validated: Boolean = false
-
         /** A label explaining why the phone number was classified as not trustworthy */
         fun cause(): Optional<Cause> = Optional.ofNullable(cause.getNullable("cause"))
 
@@ -213,6 +217,8 @@ private constructor(
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
 
         fun validate(): Reasoning = apply {
             if (!validated) {
@@ -237,9 +243,9 @@ private constructor(
 
             @JvmSynthetic
             internal fun from(reasoning: Reasoning) = apply {
-                this.cause = reasoning.cause
-                this.score = reasoning.score
-                additionalProperties(reasoning.additionalProperties)
+                cause = reasoning.cause
+                score = reasoning.score
+                additionalProperties = reasoning.additionalProperties.toMutableMap()
             }
 
             /** A label explaining why the phone number was classified as not trustworthy */
@@ -266,16 +272,22 @@ private constructor(
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
             @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): Reasoning =
