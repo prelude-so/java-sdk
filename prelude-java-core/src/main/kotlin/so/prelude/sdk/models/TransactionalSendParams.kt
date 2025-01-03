@@ -18,51 +18,39 @@ import so.prelude.sdk.core.toImmutable
 
 class TransactionalSendParams
 constructor(
-    private val templateId: String,
-    private val to: String,
-    private val callbackUrl: String?,
-    private val correlationId: String?,
-    private val expiresAt: String?,
-    private val from: String?,
-    private val variables: Variables?,
+    private val body: TransactionalSendBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-    private val additionalBodyProperties: Map<String, JsonValue>,
 ) {
 
-    fun templateId(): String = templateId
+    /** The template identifier. */
+    fun templateId(): String = body.templateId()
 
-    fun to(): String = to
+    /** The recipient's phone number. */
+    fun to(): String = body.to()
 
-    fun callbackUrl(): Optional<String> = Optional.ofNullable(callbackUrl)
+    /** The callback URL. */
+    fun callbackUrl(): Optional<String> = body.callbackUrl()
 
-    fun correlationId(): Optional<String> = Optional.ofNullable(correlationId)
+    /** A unique, user-defined identifier that will be included in webhook events. */
+    fun correlationId(): Optional<String> = body.correlationId()
 
-    fun expiresAt(): Optional<String> = Optional.ofNullable(expiresAt)
+    /** The message expiration date. */
+    fun expiresAt(): Optional<String> = body.expiresAt()
 
-    fun from(): Optional<String> = Optional.ofNullable(from)
+    /** The Sender ID. */
+    fun from(): Optional<String> = body.from()
 
-    fun variables(): Optional<Variables> = Optional.ofNullable(variables)
+    /** The variables to be replaced in the template. */
+    fun variables(): Optional<Variables> = body.variables()
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
-    @JvmSynthetic
-    internal fun getBody(): TransactionalSendBody {
-        return TransactionalSendBody(
-            templateId,
-            to,
-            callbackUrl,
-            correlationId,
-            expiresAt,
-            from,
-            variables,
-            additionalBodyProperties,
-        )
-    }
+    @JvmSynthetic internal fun getBody(): TransactionalSendBody = body
 
     @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
 
@@ -223,52 +211,37 @@ constructor(
     @NoAutoDetect
     class Builder {
 
-        private var templateId: String? = null
-        private var to: String? = null
-        private var callbackUrl: String? = null
-        private var correlationId: String? = null
-        private var expiresAt: String? = null
-        private var from: String? = null
-        private var variables: Variables? = null
+        private var body: TransactionalSendBody.Builder = TransactionalSendBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
-        private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(transactionalSendParams: TransactionalSendParams) = apply {
-            templateId = transactionalSendParams.templateId
-            to = transactionalSendParams.to
-            callbackUrl = transactionalSendParams.callbackUrl
-            correlationId = transactionalSendParams.correlationId
-            expiresAt = transactionalSendParams.expiresAt
-            from = transactionalSendParams.from
-            variables = transactionalSendParams.variables
+            body = transactionalSendParams.body.toBuilder()
             additionalHeaders = transactionalSendParams.additionalHeaders.toBuilder()
             additionalQueryParams = transactionalSendParams.additionalQueryParams.toBuilder()
-            additionalBodyProperties =
-                transactionalSendParams.additionalBodyProperties.toMutableMap()
         }
 
         /** The template identifier. */
-        fun templateId(templateId: String) = apply { this.templateId = templateId }
+        fun templateId(templateId: String) = apply { body.templateId(templateId) }
 
         /** The recipient's phone number. */
-        fun to(to: String) = apply { this.to = to }
+        fun to(to: String) = apply { body.to(to) }
 
         /** The callback URL. */
-        fun callbackUrl(callbackUrl: String) = apply { this.callbackUrl = callbackUrl }
+        fun callbackUrl(callbackUrl: String) = apply { body.callbackUrl(callbackUrl) }
 
         /** A unique, user-defined identifier that will be included in webhook events. */
-        fun correlationId(correlationId: String) = apply { this.correlationId = correlationId }
+        fun correlationId(correlationId: String) = apply { body.correlationId(correlationId) }
 
         /** The message expiration date. */
-        fun expiresAt(expiresAt: String) = apply { this.expiresAt = expiresAt }
+        fun expiresAt(expiresAt: String) = apply { body.expiresAt(expiresAt) }
 
         /** The Sender ID. */
-        fun from(from: String) = apply { this.from = from }
+        fun from(from: String) = apply { body.from(from) }
 
         /** The variables to be replaced in the template. */
-        fun variables(variables: Variables) = apply { this.variables = variables }
+        fun variables(variables: Variables) = apply { body.variables(variables) }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -369,39 +342,29 @@ constructor(
         }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.clear()
-            putAllAdditionalBodyProperties(additionalBodyProperties)
+            body.additionalProperties(additionalBodyProperties)
         }
 
         fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            additionalBodyProperties.put(key, value)
+            body.putAdditionalProperty(key, value)
         }
 
         fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
             apply {
-                this.additionalBodyProperties.putAll(additionalBodyProperties)
+                body.putAllAdditionalProperties(additionalBodyProperties)
             }
 
-        fun removeAdditionalBodyProperty(key: String) = apply {
-            additionalBodyProperties.remove(key)
-        }
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
 
         fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalBodyProperty)
+            body.removeAllAdditionalProperties(keys)
         }
 
         fun build(): TransactionalSendParams =
             TransactionalSendParams(
-                checkNotNull(templateId) { "`templateId` is required but was not set" },
-                checkNotNull(to) { "`to` is required but was not set" },
-                callbackUrl,
-                correlationId,
-                expiresAt,
-                from,
-                variables,
+                body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
-                additionalBodyProperties.toImmutable(),
             )
     }
 
@@ -478,11 +441,11 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is TransactionalSendParams && templateId == other.templateId && to == other.to && callbackUrl == other.callbackUrl && correlationId == other.correlationId && expiresAt == other.expiresAt && from == other.from && variables == other.variables && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is TransactionalSendParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(templateId, to, callbackUrl, correlationId, expiresAt, from, variables, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "TransactionalSendParams{templateId=$templateId, to=$to, callbackUrl=$callbackUrl, correlationId=$correlationId, expiresAt=$expiresAt, from=$from, variables=$variables, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "TransactionalSendParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }
