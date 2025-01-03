@@ -21,39 +21,33 @@ import so.prelude.sdk.errors.PreludeInvalidDataException
 
 class VerificationCreateParams
 constructor(
-    private val target: Target,
-    private val metadata: Metadata?,
-    private val options: Options?,
-    private val signals: Signals?,
+    private val body: VerificationCreateBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-    private val additionalBodyProperties: Map<String, JsonValue>,
 ) {
 
-    fun target(): Target = target
+    /** The target. Currently this can only be an E.164 formatted phone number. */
+    fun target(): Target = body.target()
 
-    fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata)
+    /**
+     * The metadata for this verification. This object will be returned with every response or
+     * webhook sent that refers to this verification.
+     */
+    fun metadata(): Optional<Metadata> = body.metadata()
 
-    fun options(): Optional<Options> = Optional.ofNullable(options)
+    /** Verification options */
+    fun options(): Optional<Options> = body.options()
 
-    fun signals(): Optional<Signals> = Optional.ofNullable(signals)
+    /** The signals used for anti-fraud. */
+    fun signals(): Optional<Signals> = body.signals()
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
-    @JvmSynthetic
-    internal fun getBody(): VerificationCreateBody {
-        return VerificationCreateBody(
-            target,
-            metadata,
-            options,
-            signals,
-            additionalBodyProperties,
-        )
-    }
+    @JvmSynthetic internal fun getBody(): VerificationCreateBody = body
 
     @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
 
@@ -186,40 +180,31 @@ constructor(
     @NoAutoDetect
     class Builder {
 
-        private var target: Target? = null
-        private var metadata: Metadata? = null
-        private var options: Options? = null
-        private var signals: Signals? = null
+        private var body: VerificationCreateBody.Builder = VerificationCreateBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
-        private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(verificationCreateParams: VerificationCreateParams) = apply {
-            target = verificationCreateParams.target
-            metadata = verificationCreateParams.metadata
-            options = verificationCreateParams.options
-            signals = verificationCreateParams.signals
+            body = verificationCreateParams.body.toBuilder()
             additionalHeaders = verificationCreateParams.additionalHeaders.toBuilder()
             additionalQueryParams = verificationCreateParams.additionalQueryParams.toBuilder()
-            additionalBodyProperties =
-                verificationCreateParams.additionalBodyProperties.toMutableMap()
         }
 
         /** The target. Currently this can only be an E.164 formatted phone number. */
-        fun target(target: Target) = apply { this.target = target }
+        fun target(target: Target) = apply { body.target(target) }
 
         /**
          * The metadata for this verification. This object will be returned with every response or
          * webhook sent that refers to this verification.
          */
-        fun metadata(metadata: Metadata) = apply { this.metadata = metadata }
+        fun metadata(metadata: Metadata) = apply { body.metadata(metadata) }
 
         /** Verification options */
-        fun options(options: Options) = apply { this.options = options }
+        fun options(options: Options) = apply { body.options(options) }
 
         /** The signals used for anti-fraud. */
-        fun signals(signals: Signals) = apply { this.signals = signals }
+        fun signals(signals: Signals) = apply { body.signals(signals) }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -320,36 +305,29 @@ constructor(
         }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.clear()
-            putAllAdditionalBodyProperties(additionalBodyProperties)
+            body.additionalProperties(additionalBodyProperties)
         }
 
         fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            additionalBodyProperties.put(key, value)
+            body.putAdditionalProperty(key, value)
         }
 
         fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
             apply {
-                this.additionalBodyProperties.putAll(additionalBodyProperties)
+                body.putAllAdditionalProperties(additionalBodyProperties)
             }
 
-        fun removeAdditionalBodyProperty(key: String) = apply {
-            additionalBodyProperties.remove(key)
-        }
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
 
         fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalBodyProperty)
+            body.removeAllAdditionalProperties(keys)
         }
 
         fun build(): VerificationCreateParams =
             VerificationCreateParams(
-                checkNotNull(target) { "`target` is required but was not set" },
-                metadata,
-                options,
-                signals,
+                body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
-                additionalBodyProperties.toImmutable(),
             )
     }
 
@@ -973,11 +951,11 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is VerificationCreateParams && target == other.target && metadata == other.metadata && options == other.options && signals == other.signals && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is VerificationCreateParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(target, metadata, options, signals, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "VerificationCreateParams{target=$target, metadata=$metadata, options=$options, signals=$signals, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "VerificationCreateParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }
