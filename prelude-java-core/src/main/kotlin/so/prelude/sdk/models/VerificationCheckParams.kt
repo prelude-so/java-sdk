@@ -20,31 +20,24 @@ import so.prelude.sdk.errors.PreludeInvalidDataException
 
 class VerificationCheckParams
 constructor(
-    private val code: String,
-    private val target: Target,
+    private val body: VerificationCheckBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-    private val additionalBodyProperties: Map<String, JsonValue>,
 ) {
 
-    fun code(): String = code
+    /** The OTP code to validate. */
+    fun code(): String = body.code()
 
-    fun target(): Target = target
+    /** The target. Currently this can only be an E.164 formatted phone number. */
+    fun target(): Target = body.target()
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
-    @JvmSynthetic
-    internal fun getBody(): VerificationCheckBody {
-        return VerificationCheckBody(
-            code,
-            target,
-            additionalBodyProperties,
-        )
-    }
+    @JvmSynthetic internal fun getBody(): VerificationCheckBody = body
 
     @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
 
@@ -151,27 +144,22 @@ constructor(
     @NoAutoDetect
     class Builder {
 
-        private var code: String? = null
-        private var target: Target? = null
+        private var body: VerificationCheckBody.Builder = VerificationCheckBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
-        private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(verificationCheckParams: VerificationCheckParams) = apply {
-            code = verificationCheckParams.code
-            target = verificationCheckParams.target
+            body = verificationCheckParams.body.toBuilder()
             additionalHeaders = verificationCheckParams.additionalHeaders.toBuilder()
             additionalQueryParams = verificationCheckParams.additionalQueryParams.toBuilder()
-            additionalBodyProperties =
-                verificationCheckParams.additionalBodyProperties.toMutableMap()
         }
 
         /** The OTP code to validate. */
-        fun code(code: String) = apply { this.code = code }
+        fun code(code: String) = apply { body.code(code) }
 
         /** The target. Currently this can only be an E.164 formatted phone number. */
-        fun target(target: Target) = apply { this.target = target }
+        fun target(target: Target) = apply { body.target(target) }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -272,34 +260,29 @@ constructor(
         }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.clear()
-            putAllAdditionalBodyProperties(additionalBodyProperties)
+            body.additionalProperties(additionalBodyProperties)
         }
 
         fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            additionalBodyProperties.put(key, value)
+            body.putAdditionalProperty(key, value)
         }
 
         fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
             apply {
-                this.additionalBodyProperties.putAll(additionalBodyProperties)
+                body.putAllAdditionalProperties(additionalBodyProperties)
             }
 
-        fun removeAdditionalBodyProperty(key: String) = apply {
-            additionalBodyProperties.remove(key)
-        }
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
 
         fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalBodyProperty)
+            body.removeAllAdditionalProperties(keys)
         }
 
         fun build(): VerificationCheckParams =
             VerificationCheckParams(
-                checkNotNull(code) { "`code` is required but was not set" },
-                checkNotNull(target) { "`target` is required but was not set" },
+                body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
-                additionalBodyProperties.toImmutable(),
             )
     }
 
@@ -451,11 +434,11 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is VerificationCheckParams && code == other.code && target == other.target && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is VerificationCheckParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(code, target, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "VerificationCheckParams{code=$code, target=$target, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "VerificationCheckParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

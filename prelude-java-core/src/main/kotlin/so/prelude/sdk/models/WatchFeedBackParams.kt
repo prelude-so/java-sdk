@@ -20,31 +20,27 @@ import so.prelude.sdk.errors.PreludeInvalidDataException
 
 class WatchFeedBackParams
 constructor(
-    private val feedback: Feedback,
-    private val target: Target,
+    private val body: WatchFeedBackBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-    private val additionalBodyProperties: Map<String, JsonValue>,
 ) {
 
-    fun feedback(): Feedback = feedback
+    /**
+     * You should send a feedback event back to Watch API when your user demonstrates authentic
+     * behavior.
+     */
+    fun feedback(): Feedback = body.feedback()
 
-    fun target(): Target = target
+    /** The target. Currently this can only be an E.164 formatted phone number. */
+    fun target(): Target = body.target()
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
-    @JvmSynthetic
-    internal fun getBody(): WatchFeedBackBody {
-        return WatchFeedBackBody(
-            feedback,
-            target,
-            additionalBodyProperties,
-        )
-    }
+    @JvmSynthetic internal fun getBody(): WatchFeedBackBody = body
 
     @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
 
@@ -157,29 +153,25 @@ constructor(
     @NoAutoDetect
     class Builder {
 
-        private var feedback: Feedback? = null
-        private var target: Target? = null
+        private var body: WatchFeedBackBody.Builder = WatchFeedBackBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
-        private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(watchFeedBackParams: WatchFeedBackParams) = apply {
-            feedback = watchFeedBackParams.feedback
-            target = watchFeedBackParams.target
+            body = watchFeedBackParams.body.toBuilder()
             additionalHeaders = watchFeedBackParams.additionalHeaders.toBuilder()
             additionalQueryParams = watchFeedBackParams.additionalQueryParams.toBuilder()
-            additionalBodyProperties = watchFeedBackParams.additionalBodyProperties.toMutableMap()
         }
 
         /**
          * You should send a feedback event back to Watch API when your user demonstrates authentic
          * behavior.
          */
-        fun feedback(feedback: Feedback) = apply { this.feedback = feedback }
+        fun feedback(feedback: Feedback) = apply { body.feedback(feedback) }
 
         /** The target. Currently this can only be an E.164 formatted phone number. */
-        fun target(target: Target) = apply { this.target = target }
+        fun target(target: Target) = apply { body.target(target) }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -280,34 +272,29 @@ constructor(
         }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.clear()
-            putAllAdditionalBodyProperties(additionalBodyProperties)
+            body.additionalProperties(additionalBodyProperties)
         }
 
         fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            additionalBodyProperties.put(key, value)
+            body.putAdditionalProperty(key, value)
         }
 
         fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
             apply {
-                this.additionalBodyProperties.putAll(additionalBodyProperties)
+                body.putAllAdditionalProperties(additionalBodyProperties)
             }
 
-        fun removeAdditionalBodyProperty(key: String) = apply {
-            additionalBodyProperties.remove(key)
-        }
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
 
         fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalBodyProperty)
+            body.removeAllAdditionalProperties(keys)
         }
 
         fun build(): WatchFeedBackParams =
             WatchFeedBackParams(
-                checkNotNull(feedback) { "`feedback` is required but was not set" },
-                checkNotNull(target) { "`target` is required but was not set" },
+                body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
-                additionalBodyProperties.toImmutable(),
             )
     }
 
@@ -600,11 +587,11 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is WatchFeedBackParams && feedback == other.feedback && target == other.target && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is WatchFeedBackParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(feedback, target, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "WatchFeedBackParams{feedback=$feedback, target=$target, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "WatchFeedBackParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

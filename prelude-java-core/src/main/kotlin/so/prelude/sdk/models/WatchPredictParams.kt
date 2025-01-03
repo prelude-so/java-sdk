@@ -21,31 +21,24 @@ import so.prelude.sdk.errors.PreludeInvalidDataException
 
 class WatchPredictParams
 constructor(
-    private val target: Target,
-    private val signals: Signals?,
+    private val body: WatchPredictBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-    private val additionalBodyProperties: Map<String, JsonValue>,
 ) {
 
-    fun target(): Target = target
+    /** The target. Currently this can only be an E.164 formatted phone number. */
+    fun target(): Target = body.target()
 
-    fun signals(): Optional<Signals> = Optional.ofNullable(signals)
+    /** It is highly recommended that you provide the signals to increase prediction performance. */
+    fun signals(): Optional<Signals> = body.signals()
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
-    @JvmSynthetic
-    internal fun getBody(): WatchPredictBody {
-        return WatchPredictBody(
-            target,
-            signals,
-            additionalBodyProperties,
-        )
-    }
+    @JvmSynthetic internal fun getBody(): WatchPredictBody = body
 
     @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
 
@@ -157,28 +150,24 @@ constructor(
     @NoAutoDetect
     class Builder {
 
-        private var target: Target? = null
-        private var signals: Signals? = null
+        private var body: WatchPredictBody.Builder = WatchPredictBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
-        private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(watchPredictParams: WatchPredictParams) = apply {
-            target = watchPredictParams.target
-            signals = watchPredictParams.signals
+            body = watchPredictParams.body.toBuilder()
             additionalHeaders = watchPredictParams.additionalHeaders.toBuilder()
             additionalQueryParams = watchPredictParams.additionalQueryParams.toBuilder()
-            additionalBodyProperties = watchPredictParams.additionalBodyProperties.toMutableMap()
         }
 
         /** The target. Currently this can only be an E.164 formatted phone number. */
-        fun target(target: Target) = apply { this.target = target }
+        fun target(target: Target) = apply { body.target(target) }
 
         /**
          * It is highly recommended that you provide the signals to increase prediction performance.
          */
-        fun signals(signals: Signals) = apply { this.signals = signals }
+        fun signals(signals: Signals) = apply { body.signals(signals) }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -279,34 +268,29 @@ constructor(
         }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.clear()
-            putAllAdditionalBodyProperties(additionalBodyProperties)
+            body.additionalProperties(additionalBodyProperties)
         }
 
         fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            additionalBodyProperties.put(key, value)
+            body.putAdditionalProperty(key, value)
         }
 
         fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
             apply {
-                this.additionalBodyProperties.putAll(additionalBodyProperties)
+                body.putAllAdditionalProperties(additionalBodyProperties)
             }
 
-        fun removeAdditionalBodyProperty(key: String) = apply {
-            additionalBodyProperties.remove(key)
-        }
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
 
         fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalBodyProperty)
+            body.removeAllAdditionalProperties(keys)
         }
 
         fun build(): WatchPredictParams =
             WatchPredictParams(
-                checkNotNull(target) { "`target` is required but was not set" },
-                signals,
+                body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
-                additionalBodyProperties.toImmutable(),
             )
     }
 
@@ -578,11 +562,11 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is WatchPredictParams && target == other.target && signals == other.signals && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is WatchPredictParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(target, signals, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "WatchPredictParams{target=$target, signals=$signals, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "WatchPredictParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }
