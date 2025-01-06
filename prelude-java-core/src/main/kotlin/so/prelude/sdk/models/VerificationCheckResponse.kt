@@ -22,10 +22,10 @@ import so.prelude.sdk.errors.PreludeInvalidDataException
 class VerificationCheckResponse
 @JsonCreator
 private constructor(
-    @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
     @JsonProperty("status")
     @ExcludeMissing
     private val status: JsonField<Status> = JsonMissing.of(),
+    @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
     @JsonProperty("metadata")
     @ExcludeMissing
     private val metadata: JsonField<Metadata> = JsonMissing.of(),
@@ -35,22 +35,22 @@ private constructor(
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
-    /** The verification identifier. */
-    fun id(): Optional<String> = Optional.ofNullable(id.getNullable("id"))
-
     /** The status of the check. */
     fun status(): Status = status.getRequired("status")
+
+    /** The verification identifier. */
+    fun id(): Optional<String> = Optional.ofNullable(id.getNullable("id"))
 
     /** The metadata for this verification. */
     fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata.getNullable("metadata"))
 
     fun requestId(): Optional<String> = Optional.ofNullable(requestId.getNullable("request_id"))
 
-    /** The verification identifier. */
-    @JsonProperty("id") @ExcludeMissing fun _id() = id
-
     /** The status of the check. */
     @JsonProperty("status") @ExcludeMissing fun _status() = status
+
+    /** The verification identifier. */
+    @JsonProperty("id") @ExcludeMissing fun _id() = id
 
     /** The metadata for this verification. */
     @JsonProperty("metadata") @ExcludeMissing fun _metadata() = metadata
@@ -65,8 +65,8 @@ private constructor(
 
     fun validate(): VerificationCheckResponse = apply {
         if (!validated) {
-            id()
             status()
+            id()
             metadata().map { it.validate() }
             requestId()
             validated = true
@@ -82,32 +82,32 @@ private constructor(
 
     class Builder {
 
-        private var id: JsonField<String> = JsonMissing.of()
         private var status: JsonField<Status> = JsonMissing.of()
+        private var id: JsonField<String> = JsonMissing.of()
         private var metadata: JsonField<Metadata> = JsonMissing.of()
         private var requestId: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(verificationCheckResponse: VerificationCheckResponse) = apply {
-            id = verificationCheckResponse.id
             status = verificationCheckResponse.status
+            id = verificationCheckResponse.id
             metadata = verificationCheckResponse.metadata
             requestId = verificationCheckResponse.requestId
             additionalProperties = verificationCheckResponse.additionalProperties.toMutableMap()
         }
-
-        /** The verification identifier. */
-        fun id(id: String) = id(JsonField.of(id))
-
-        /** The verification identifier. */
-        fun id(id: JsonField<String>) = apply { this.id = id }
 
         /** The status of the check. */
         fun status(status: Status) = status(JsonField.of(status))
 
         /** The status of the check. */
         fun status(status: JsonField<Status>) = apply { this.status = status }
+
+        /** The verification identifier. */
+        fun id(id: String) = id(JsonField.of(id))
+
+        /** The verification identifier. */
+        fun id(id: JsonField<String>) = apply { this.id = id }
 
         /** The metadata for this verification. */
         fun metadata(metadata: Metadata) = metadata(JsonField.of(metadata))
@@ -140,8 +140,8 @@ private constructor(
 
         fun build(): VerificationCheckResponse =
             VerificationCheckResponse(
-                id,
                 status,
+                id,
                 metadata,
                 requestId,
                 additionalProperties.toImmutable(),
@@ -310,15 +310,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is VerificationCheckResponse && id == other.id && status == other.status && metadata == other.metadata && requestId == other.requestId && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is VerificationCheckResponse && status == other.status && id == other.id && metadata == other.metadata && requestId == other.requestId && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(id, status, metadata, requestId, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(status, id, metadata, requestId, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "VerificationCheckResponse{id=$id, status=$status, metadata=$metadata, requestId=$requestId, additionalProperties=$additionalProperties}"
+        "VerificationCheckResponse{status=$status, id=$id, metadata=$metadata, requestId=$requestId, additionalProperties=$additionalProperties}"
 }

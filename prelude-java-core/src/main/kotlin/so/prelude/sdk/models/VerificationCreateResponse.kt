@@ -23,12 +23,12 @@ class VerificationCreateResponse
 @JsonCreator
 private constructor(
     @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("status")
-    @ExcludeMissing
-    private val status: JsonField<Status> = JsonMissing.of(),
     @JsonProperty("method")
     @ExcludeMissing
     private val method: JsonField<Method> = JsonMissing.of(),
+    @JsonProperty("status")
+    @ExcludeMissing
+    private val status: JsonField<Status> = JsonMissing.of(),
     @JsonProperty("metadata")
     @ExcludeMissing
     private val metadata: JsonField<Metadata> = JsonMissing.of(),
@@ -41,11 +41,11 @@ private constructor(
     /** The verification identifier. */
     fun id(): String = id.getRequired("id")
 
-    /** The status of the verification. */
-    fun status(): Status = status.getRequired("status")
-
     /** The method used for verifying this phone number. */
     fun method(): Method = method.getRequired("method")
+
+    /** The status of the verification. */
+    fun status(): Status = status.getRequired("status")
 
     /** The metadata for this verification. */
     fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata.getNullable("metadata"))
@@ -55,11 +55,11 @@ private constructor(
     /** The verification identifier. */
     @JsonProperty("id") @ExcludeMissing fun _id() = id
 
-    /** The status of the verification. */
-    @JsonProperty("status") @ExcludeMissing fun _status() = status
-
     /** The method used for verifying this phone number. */
     @JsonProperty("method") @ExcludeMissing fun _method() = method
+
+    /** The status of the verification. */
+    @JsonProperty("status") @ExcludeMissing fun _status() = status
 
     /** The metadata for this verification. */
     @JsonProperty("metadata") @ExcludeMissing fun _metadata() = metadata
@@ -75,8 +75,8 @@ private constructor(
     fun validate(): VerificationCreateResponse = apply {
         if (!validated) {
             id()
-            status()
             method()
+            status()
             metadata().map { it.validate() }
             requestId()
             validated = true
@@ -93,8 +93,8 @@ private constructor(
     class Builder {
 
         private var id: JsonField<String> = JsonMissing.of()
-        private var status: JsonField<Status> = JsonMissing.of()
         private var method: JsonField<Method> = JsonMissing.of()
+        private var status: JsonField<Status> = JsonMissing.of()
         private var metadata: JsonField<Metadata> = JsonMissing.of()
         private var requestId: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -102,8 +102,8 @@ private constructor(
         @JvmSynthetic
         internal fun from(verificationCreateResponse: VerificationCreateResponse) = apply {
             id = verificationCreateResponse.id
-            status = verificationCreateResponse.status
             method = verificationCreateResponse.method
+            status = verificationCreateResponse.status
             metadata = verificationCreateResponse.metadata
             requestId = verificationCreateResponse.requestId
             additionalProperties = verificationCreateResponse.additionalProperties.toMutableMap()
@@ -115,17 +115,17 @@ private constructor(
         /** The verification identifier. */
         fun id(id: JsonField<String>) = apply { this.id = id }
 
-        /** The status of the verification. */
-        fun status(status: Status) = status(JsonField.of(status))
-
-        /** The status of the verification. */
-        fun status(status: JsonField<Status>) = apply { this.status = status }
-
         /** The method used for verifying this phone number. */
         fun method(method: Method) = method(JsonField.of(method))
 
         /** The method used for verifying this phone number. */
         fun method(method: JsonField<Method>) = apply { this.method = method }
+
+        /** The status of the verification. */
+        fun status(status: Status) = status(JsonField.of(status))
+
+        /** The status of the verification. */
+        fun status(status: JsonField<Status>) = apply { this.status = status }
 
         /** The metadata for this verification. */
         fun metadata(metadata: Metadata) = metadata(JsonField.of(metadata))
@@ -159,8 +159,8 @@ private constructor(
         fun build(): VerificationCreateResponse =
             VerificationCreateResponse(
                 id,
-                status,
                 method,
+                status,
                 metadata,
                 requestId,
                 additionalProperties.toImmutable(),
@@ -380,15 +380,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is VerificationCreateResponse && id == other.id && status == other.status && method == other.method && metadata == other.metadata && requestId == other.requestId && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is VerificationCreateResponse && id == other.id && method == other.method && status == other.status && metadata == other.metadata && requestId == other.requestId && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(id, status, method, metadata, requestId, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(id, method, status, metadata, requestId, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "VerificationCreateResponse{id=$id, status=$status, method=$method, metadata=$metadata, requestId=$requestId, additionalProperties=$additionalProperties}"
+        "VerificationCreateResponse{id=$id, method=$method, status=$status, metadata=$metadata, requestId=$requestId, additionalProperties=$additionalProperties}"
 }

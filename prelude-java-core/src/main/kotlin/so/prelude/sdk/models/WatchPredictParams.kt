@@ -442,16 +442,13 @@ constructor(
     class Signals
     @JsonCreator
     private constructor(
-        @JsonProperty("ip") private val ip: String?,
         @JsonProperty("device_id") private val deviceId: String?,
-        @JsonProperty("device_type") private val deviceType: String?,
         @JsonProperty("device_model") private val deviceModel: String?,
+        @JsonProperty("device_type") private val deviceType: String?,
+        @JsonProperty("ip") private val ip: String?,
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
-
-        /** The IPv4 address of the user's device */
-        @JsonProperty("ip") fun ip(): Optional<String> = Optional.ofNullable(ip)
 
         /**
          * The unique identifier for the user's device. For Android, this corresponds to the
@@ -459,13 +456,16 @@ constructor(
          */
         @JsonProperty("device_id") fun deviceId(): Optional<String> = Optional.ofNullable(deviceId)
 
+        /** The model of the user's device. */
+        @JsonProperty("device_model")
+        fun deviceModel(): Optional<String> = Optional.ofNullable(deviceModel)
+
         /** The type of the user's device. */
         @JsonProperty("device_type")
         fun deviceType(): Optional<String> = Optional.ofNullable(deviceType)
 
-        /** The model of the user's device. */
-        @JsonProperty("device_model")
-        fun deviceModel(): Optional<String> = Optional.ofNullable(deviceModel)
+        /** The IPv4 address of the user's device */
+        @JsonProperty("ip") fun ip(): Optional<String> = Optional.ofNullable(ip)
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -480,23 +480,20 @@ constructor(
 
         class Builder {
 
-            private var ip: String? = null
             private var deviceId: String? = null
-            private var deviceType: String? = null
             private var deviceModel: String? = null
+            private var deviceType: String? = null
+            private var ip: String? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(signals: Signals) = apply {
-                ip = signals.ip
                 deviceId = signals.deviceId
-                deviceType = signals.deviceType
                 deviceModel = signals.deviceModel
+                deviceType = signals.deviceType
+                ip = signals.ip
                 additionalProperties = signals.additionalProperties.toMutableMap()
             }
-
-            /** The IPv4 address of the user's device */
-            fun ip(ip: String) = apply { this.ip = ip }
 
             /**
              * The unique identifier for the user's device. For Android, this corresponds to the
@@ -504,11 +501,14 @@ constructor(
              */
             fun deviceId(deviceId: String) = apply { this.deviceId = deviceId }
 
+            /** The model of the user's device. */
+            fun deviceModel(deviceModel: String) = apply { this.deviceModel = deviceModel }
+
             /** The type of the user's device. */
             fun deviceType(deviceType: String) = apply { this.deviceType = deviceType }
 
-            /** The model of the user's device. */
-            fun deviceModel(deviceModel: String) = apply { this.deviceModel = deviceModel }
+            /** The IPv4 address of the user's device */
+            fun ip(ip: String) = apply { this.ip = ip }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -531,10 +531,10 @@ constructor(
 
             fun build(): Signals =
                 Signals(
-                    ip,
                     deviceId,
-                    deviceType,
                     deviceModel,
+                    deviceType,
+                    ip,
                     additionalProperties.toImmutable(),
                 )
         }
@@ -544,17 +544,17 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Signals && ip == other.ip && deviceId == other.deviceId && deviceType == other.deviceType && deviceModel == other.deviceModel && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Signals && deviceId == other.deviceId && deviceModel == other.deviceModel && deviceType == other.deviceType && ip == other.ip && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(ip, deviceId, deviceType, deviceModel, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(deviceId, deviceModel, deviceType, ip, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Signals{ip=$ip, deviceId=$deviceId, deviceType=$deviceType, deviceModel=$deviceModel, additionalProperties=$additionalProperties}"
+            "Signals{deviceId=$deviceId, deviceModel=$deviceModel, deviceType=$deviceType, ip=$ip, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {

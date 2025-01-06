@@ -561,31 +561,14 @@ constructor(
     class Options
     @JsonCreator
     private constructor(
-        @JsonProperty("template_id") private val templateId: String?,
-        @JsonProperty("locale") private val locale: String?,
-        @JsonProperty("sender_id") private val senderId: String?,
         @JsonProperty("app_realm") private val appRealm: String?,
         @JsonProperty("custom_code") private val customCode: String?,
+        @JsonProperty("locale") private val locale: String?,
+        @JsonProperty("sender_id") private val senderId: String?,
+        @JsonProperty("template_id") private val templateId: String?,
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
-
-        /**
-         * The identifier of a verification settings template. It is used to be able to switch
-         * behavior for specific use cases. Contact us if you need to use this functionality.
-         */
-        @JsonProperty("template_id")
-        fun templateId(): Optional<String> = Optional.ofNullable(templateId)
-
-        /**
-         * A BCP-47 formatted locale string with the language the text message will be sent to. If
-         * there's no locale set, the language will be determined by the country code of the phone
-         * number. If the language specified doesn't exist, it defaults to US English.
-         */
-        @JsonProperty("locale") fun locale(): Optional<String> = Optional.ofNullable(locale)
-
-        /** The Sender ID to use for this message. The Sender ID needs to be enabled by Prelude. */
-        @JsonProperty("sender_id") fun senderId(): Optional<String> = Optional.ofNullable(senderId)
 
         /**
          * The Android SMS Retriever API hash code that identifies your app. This allows you to
@@ -601,6 +584,23 @@ constructor(
         @JsonProperty("custom_code")
         fun customCode(): Optional<String> = Optional.ofNullable(customCode)
 
+        /**
+         * A BCP-47 formatted locale string with the language the text message will be sent to. If
+         * there's no locale set, the language will be determined by the country code of the phone
+         * number. If the language specified doesn't exist, it defaults to US English.
+         */
+        @JsonProperty("locale") fun locale(): Optional<String> = Optional.ofNullable(locale)
+
+        /** The Sender ID to use for this message. The Sender ID needs to be enabled by Prelude. */
+        @JsonProperty("sender_id") fun senderId(): Optional<String> = Optional.ofNullable(senderId)
+
+        /**
+         * The identifier of a verification settings template. It is used to be able to switch
+         * behavior for specific use cases. Contact us if you need to use this functionality.
+         */
+        @JsonProperty("template_id")
+        fun templateId(): Optional<String> = Optional.ofNullable(templateId)
+
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
@@ -614,28 +614,35 @@ constructor(
 
         class Builder {
 
-            private var templateId: String? = null
-            private var locale: String? = null
-            private var senderId: String? = null
             private var appRealm: String? = null
             private var customCode: String? = null
+            private var locale: String? = null
+            private var senderId: String? = null
+            private var templateId: String? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(options: Options) = apply {
-                templateId = options.templateId
-                locale = options.locale
-                senderId = options.senderId
                 appRealm = options.appRealm
                 customCode = options.customCode
+                locale = options.locale
+                senderId = options.senderId
+                templateId = options.templateId
                 additionalProperties = options.additionalProperties.toMutableMap()
             }
 
             /**
-             * The identifier of a verification settings template. It is used to be able to switch
-             * behavior for specific use cases. Contact us if you need to use this functionality.
+             * The Android SMS Retriever API hash code that identifies your app. This allows you to
+             * automatically retrieve and fill the OTP code on Android devices.
              */
-            fun templateId(templateId: String) = apply { this.templateId = templateId }
+            fun appRealm(appRealm: String) = apply { this.appRealm = appRealm }
+
+            /**
+             * The custom code to use for OTP verification. This feature is only available for
+             * compatibility purposes and subject to Prelude’s approval. Contact us to discuss your
+             * use case.
+             */
+            fun customCode(customCode: String) = apply { this.customCode = customCode }
 
             /**
              * A BCP-47 formatted locale string with the language the text message will be sent to.
@@ -650,17 +657,10 @@ constructor(
             fun senderId(senderId: String) = apply { this.senderId = senderId }
 
             /**
-             * The Android SMS Retriever API hash code that identifies your app. This allows you to
-             * automatically retrieve and fill the OTP code on Android devices.
+             * The identifier of a verification settings template. It is used to be able to switch
+             * behavior for specific use cases. Contact us if you need to use this functionality.
              */
-            fun appRealm(appRealm: String) = apply { this.appRealm = appRealm }
-
-            /**
-             * The custom code to use for OTP verification. This feature is only available for
-             * compatibility purposes and subject to Prelude’s approval. Contact us to discuss your
-             * use case.
-             */
-            fun customCode(customCode: String) = apply { this.customCode = customCode }
+            fun templateId(templateId: String) = apply { this.templateId = templateId }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -683,11 +683,11 @@ constructor(
 
             fun build(): Options =
                 Options(
-                    templateId,
-                    locale,
-                    senderId,
                     appRealm,
                     customCode,
+                    locale,
+                    senderId,
+                    templateId,
                     additionalProperties.toImmutable(),
                 )
         }
@@ -697,17 +697,17 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Options && templateId == other.templateId && locale == other.locale && senderId == other.senderId && appRealm == other.appRealm && customCode == other.customCode && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Options && appRealm == other.appRealm && customCode == other.customCode && locale == other.locale && senderId == other.senderId && templateId == other.templateId && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(templateId, locale, senderId, appRealm, customCode, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(appRealm, customCode, locale, senderId, templateId, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Options{templateId=$templateId, locale=$locale, senderId=$senderId, appRealm=$appRealm, customCode=$customCode, additionalProperties=$additionalProperties}"
+            "Options{appRealm=$appRealm, customCode=$customCode, locale=$locale, senderId=$senderId, templateId=$templateId, additionalProperties=$additionalProperties}"
     }
 
     /** The signals used for anti-fraud. */
@@ -715,19 +715,20 @@ constructor(
     class Signals
     @JsonCreator
     private constructor(
-        @JsonProperty("ip") private val ip: String?,
-        @JsonProperty("device_id") private val deviceId: String?,
-        @JsonProperty("device_platform") private val devicePlatform: DevicePlatform?,
-        @JsonProperty("device_model") private val deviceModel: String?,
-        @JsonProperty("os_version") private val osVersion: String?,
         @JsonProperty("app_version") private val appVersion: String?,
+        @JsonProperty("device_id") private val deviceId: String?,
+        @JsonProperty("device_model") private val deviceModel: String?,
+        @JsonProperty("device_platform") private val devicePlatform: DevicePlatform?,
+        @JsonProperty("ip") private val ip: String?,
         @JsonProperty("is_trusted_user") private val isTrustedUser: Boolean?,
+        @JsonProperty("os_version") private val osVersion: String?,
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** The IP address of the user's device. */
-        @JsonProperty("ip") fun ip(): Optional<String> = Optional.ofNullable(ip)
+        /** The version of your application. */
+        @JsonProperty("app_version")
+        fun appVersion(): Optional<String> = Optional.ofNullable(appVersion)
 
         /**
          * The unique identifier for the user's device. For Android, this corresponds to the
@@ -735,21 +736,16 @@ constructor(
          */
         @JsonProperty("device_id") fun deviceId(): Optional<String> = Optional.ofNullable(deviceId)
 
-        /** The type of the user's device. */
-        @JsonProperty("device_platform")
-        fun devicePlatform(): Optional<DevicePlatform> = Optional.ofNullable(devicePlatform)
-
         /** The model of the user's device. */
         @JsonProperty("device_model")
         fun deviceModel(): Optional<String> = Optional.ofNullable(deviceModel)
 
-        /** The version of the user's device operating system. */
-        @JsonProperty("os_version")
-        fun osVersion(): Optional<String> = Optional.ofNullable(osVersion)
+        /** The type of the user's device. */
+        @JsonProperty("device_platform")
+        fun devicePlatform(): Optional<DevicePlatform> = Optional.ofNullable(devicePlatform)
 
-        /** The version of your application. */
-        @JsonProperty("app_version")
-        fun appVersion(): Optional<String> = Optional.ofNullable(appVersion)
+        /** The IP address of the user's device. */
+        @JsonProperty("ip") fun ip(): Optional<String> = Optional.ofNullable(ip)
 
         /**
          * This signal should provide a higher level of trust, indicating that the user is genuine.
@@ -757,6 +753,10 @@ constructor(
          */
         @JsonProperty("is_trusted_user")
         fun isTrustedUser(): Optional<Boolean> = Optional.ofNullable(isTrustedUser)
+
+        /** The version of the user's device operating system. */
+        @JsonProperty("os_version")
+        fun osVersion(): Optional<String> = Optional.ofNullable(osVersion)
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -771,29 +771,29 @@ constructor(
 
         class Builder {
 
-            private var ip: String? = null
-            private var deviceId: String? = null
-            private var devicePlatform: DevicePlatform? = null
-            private var deviceModel: String? = null
-            private var osVersion: String? = null
             private var appVersion: String? = null
+            private var deviceId: String? = null
+            private var deviceModel: String? = null
+            private var devicePlatform: DevicePlatform? = null
+            private var ip: String? = null
             private var isTrustedUser: Boolean? = null
+            private var osVersion: String? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(signals: Signals) = apply {
-                ip = signals.ip
-                deviceId = signals.deviceId
-                devicePlatform = signals.devicePlatform
-                deviceModel = signals.deviceModel
-                osVersion = signals.osVersion
                 appVersion = signals.appVersion
+                deviceId = signals.deviceId
+                deviceModel = signals.deviceModel
+                devicePlatform = signals.devicePlatform
+                ip = signals.ip
                 isTrustedUser = signals.isTrustedUser
+                osVersion = signals.osVersion
                 additionalProperties = signals.additionalProperties.toMutableMap()
             }
 
-            /** The IP address of the user's device. */
-            fun ip(ip: String) = apply { this.ip = ip }
+            /** The version of your application. */
+            fun appVersion(appVersion: String) = apply { this.appVersion = appVersion }
 
             /**
              * The unique identifier for the user's device. For Android, this corresponds to the
@@ -801,25 +801,25 @@ constructor(
              */
             fun deviceId(deviceId: String) = apply { this.deviceId = deviceId }
 
+            /** The model of the user's device. */
+            fun deviceModel(deviceModel: String) = apply { this.deviceModel = deviceModel }
+
             /** The type of the user's device. */
             fun devicePlatform(devicePlatform: DevicePlatform) = apply {
                 this.devicePlatform = devicePlatform
             }
 
-            /** The model of the user's device. */
-            fun deviceModel(deviceModel: String) = apply { this.deviceModel = deviceModel }
-
-            /** The version of the user's device operating system. */
-            fun osVersion(osVersion: String) = apply { this.osVersion = osVersion }
-
-            /** The version of your application. */
-            fun appVersion(appVersion: String) = apply { this.appVersion = appVersion }
+            /** The IP address of the user's device. */
+            fun ip(ip: String) = apply { this.ip = ip }
 
             /**
              * This signal should provide a higher level of trust, indicating that the user is
              * genuine. For more details, refer to [Signals](/guides/prevent-fraud#signals).
              */
             fun isTrustedUser(isTrustedUser: Boolean) = apply { this.isTrustedUser = isTrustedUser }
+
+            /** The version of the user's device operating system. */
+            fun osVersion(osVersion: String) = apply { this.osVersion = osVersion }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -842,13 +842,13 @@ constructor(
 
             fun build(): Signals =
                 Signals(
-                    ip,
-                    deviceId,
-                    devicePlatform,
-                    deviceModel,
-                    osVersion,
                     appVersion,
+                    deviceId,
+                    deviceModel,
+                    devicePlatform,
+                    ip,
                     isTrustedUser,
+                    osVersion,
                     additionalProperties.toImmutable(),
                 )
         }
@@ -933,17 +933,17 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Signals && ip == other.ip && deviceId == other.deviceId && devicePlatform == other.devicePlatform && deviceModel == other.deviceModel && osVersion == other.osVersion && appVersion == other.appVersion && isTrustedUser == other.isTrustedUser && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Signals && appVersion == other.appVersion && deviceId == other.deviceId && deviceModel == other.deviceModel && devicePlatform == other.devicePlatform && ip == other.ip && isTrustedUser == other.isTrustedUser && osVersion == other.osVersion && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(ip, deviceId, devicePlatform, deviceModel, osVersion, appVersion, isTrustedUser, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(appVersion, deviceId, deviceModel, devicePlatform, ip, isTrustedUser, osVersion, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Signals{ip=$ip, deviceId=$deviceId, devicePlatform=$devicePlatform, deviceModel=$deviceModel, osVersion=$osVersion, appVersion=$appVersion, isTrustedUser=$isTrustedUser, additionalProperties=$additionalProperties}"
+            "Signals{appVersion=$appVersion, deviceId=$deviceId, deviceModel=$deviceModel, devicePlatform=$devicePlatform, ip=$ip, isTrustedUser=$isTrustedUser, osVersion=$osVersion, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {
