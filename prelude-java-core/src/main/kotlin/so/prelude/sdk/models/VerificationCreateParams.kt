@@ -115,13 +115,25 @@ constructor(
              * The metadata for this verification. This object will be returned with every response
              * or webhook sent that refers to this verification.
              */
-            fun metadata(metadata: Metadata) = apply { this.metadata = metadata }
+            fun metadata(metadata: Metadata?) = apply { this.metadata = metadata }
+
+            /**
+             * The metadata for this verification. This object will be returned with every response
+             * or webhook sent that refers to this verification.
+             */
+            fun metadata(metadata: Optional<Metadata>) = metadata(metadata.orElse(null))
 
             /** Verification options */
-            fun options(options: Options) = apply { this.options = options }
+            fun options(options: Options?) = apply { this.options = options }
+
+            /** Verification options */
+            fun options(options: Optional<Options>) = options(options.orElse(null))
 
             /** The signals used for anti-fraud. */
-            fun signals(signals: Signals) = apply { this.signals = signals }
+            fun signals(signals: Signals?) = apply { this.signals = signals }
+
+            /** The signals used for anti-fraud. */
+            fun signals(signals: Optional<Signals>) = signals(signals.orElse(null))
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -198,13 +210,25 @@ constructor(
          * The metadata for this verification. This object will be returned with every response or
          * webhook sent that refers to this verification.
          */
-        fun metadata(metadata: Metadata) = apply { body.metadata(metadata) }
+        fun metadata(metadata: Metadata?) = apply { body.metadata(metadata) }
+
+        /**
+         * The metadata for this verification. This object will be returned with every response or
+         * webhook sent that refers to this verification.
+         */
+        fun metadata(metadata: Optional<Metadata>) = metadata(metadata.orElse(null))
 
         /** Verification options */
-        fun options(options: Options) = apply { body.options(options) }
+        fun options(options: Options?) = apply { body.options(options) }
+
+        /** Verification options */
+        fun options(options: Optional<Options>) = options(options.orElse(null))
 
         /** The signals used for anti-fraud. */
-        fun signals(signals: Signals) = apply { body.signals(signals) }
+        fun signals(signals: Signals?) = apply { body.signals(signals) }
+
+        /** The signals used for anti-fraud. */
+        fun signals(signals: Optional<Signals>) = signals(signals.orElse(null))
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -514,7 +538,11 @@ constructor(
             }
 
             /** A user-defined identifier to correlate this verification with. */
-            fun correlationId(correlationId: String) = apply { this.correlationId = correlationId }
+            fun correlationId(correlationId: String?) = apply { this.correlationId = correlationId }
+
+            /** A user-defined identifier to correlate this verification with. */
+            fun correlationId(correlationId: Optional<String>) =
+                correlationId(correlationId.orElse(null))
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -635,32 +663,63 @@ constructor(
              * The Android SMS Retriever API hash code that identifies your app. This allows you to
              * automatically retrieve and fill the OTP code on Android devices.
              */
-            fun appRealm(appRealm: String) = apply { this.appRealm = appRealm }
+            fun appRealm(appRealm: String?) = apply { this.appRealm = appRealm }
+
+            /**
+             * The Android SMS Retriever API hash code that identifies your app. This allows you to
+             * automatically retrieve and fill the OTP code on Android devices.
+             */
+            fun appRealm(appRealm: Optional<String>) = appRealm(appRealm.orElse(null))
 
             /**
              * The custom code to use for OTP verification. This feature is only available for
              * compatibility purposes and subject to Prelude’s approval. Contact us to discuss your
              * use case.
              */
-            fun customCode(customCode: String) = apply { this.customCode = customCode }
+            fun customCode(customCode: String?) = apply { this.customCode = customCode }
+
+            /**
+             * The custom code to use for OTP verification. This feature is only available for
+             * compatibility purposes and subject to Prelude’s approval. Contact us to discuss your
+             * use case.
+             */
+            fun customCode(customCode: Optional<String>) = customCode(customCode.orElse(null))
 
             /**
              * A BCP-47 formatted locale string with the language the text message will be sent to.
              * If there's no locale set, the language will be determined by the country code of the
              * phone number. If the language specified doesn't exist, it defaults to US English.
              */
-            fun locale(locale: String) = apply { this.locale = locale }
+            fun locale(locale: String?) = apply { this.locale = locale }
+
+            /**
+             * A BCP-47 formatted locale string with the language the text message will be sent to.
+             * If there's no locale set, the language will be determined by the country code of the
+             * phone number. If the language specified doesn't exist, it defaults to US English.
+             */
+            fun locale(locale: Optional<String>) = locale(locale.orElse(null))
 
             /**
              * The Sender ID to use for this message. The Sender ID needs to be enabled by Prelude.
              */
-            fun senderId(senderId: String) = apply { this.senderId = senderId }
+            fun senderId(senderId: String?) = apply { this.senderId = senderId }
+
+            /**
+             * The Sender ID to use for this message. The Sender ID needs to be enabled by Prelude.
+             */
+            fun senderId(senderId: Optional<String>) = senderId(senderId.orElse(null))
 
             /**
              * The identifier of a verification settings template. It is used to be able to switch
              * behavior for specific use cases. Contact us if you need to use this functionality.
              */
-            fun templateId(templateId: String) = apply { this.templateId = templateId }
+            fun templateId(templateId: String?) = apply { this.templateId = templateId }
+
+            /**
+             * The identifier of a verification settings template. It is used to be able to switch
+             * behavior for specific use cases. Contact us if you need to use this functionality.
+             */
+            fun templateId(templateId: Optional<String>) = templateId(templateId.orElse(null))
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -793,33 +852,71 @@ constructor(
             }
 
             /** The version of your application. */
-            fun appVersion(appVersion: String) = apply { this.appVersion = appVersion }
+            fun appVersion(appVersion: String?) = apply { this.appVersion = appVersion }
+
+            /** The version of your application. */
+            fun appVersion(appVersion: Optional<String>) = appVersion(appVersion.orElse(null))
 
             /**
              * The unique identifier for the user's device. For Android, this corresponds to the
              * `ANDROID_ID` and for iOS, this corresponds to the `identifierForVendor`.
              */
-            fun deviceId(deviceId: String) = apply { this.deviceId = deviceId }
+            fun deviceId(deviceId: String?) = apply { this.deviceId = deviceId }
+
+            /**
+             * The unique identifier for the user's device. For Android, this corresponds to the
+             * `ANDROID_ID` and for iOS, this corresponds to the `identifierForVendor`.
+             */
+            fun deviceId(deviceId: Optional<String>) = deviceId(deviceId.orElse(null))
 
             /** The model of the user's device. */
-            fun deviceModel(deviceModel: String) = apply { this.deviceModel = deviceModel }
+            fun deviceModel(deviceModel: String?) = apply { this.deviceModel = deviceModel }
+
+            /** The model of the user's device. */
+            fun deviceModel(deviceModel: Optional<String>) = deviceModel(deviceModel.orElse(null))
 
             /** The type of the user's device. */
-            fun devicePlatform(devicePlatform: DevicePlatform) = apply {
+            fun devicePlatform(devicePlatform: DevicePlatform?) = apply {
                 this.devicePlatform = devicePlatform
             }
 
+            /** The type of the user's device. */
+            fun devicePlatform(devicePlatform: Optional<DevicePlatform>) =
+                devicePlatform(devicePlatform.orElse(null))
+
             /** The IP address of the user's device. */
-            fun ip(ip: String) = apply { this.ip = ip }
+            fun ip(ip: String?) = apply { this.ip = ip }
+
+            /** The IP address of the user's device. */
+            fun ip(ip: Optional<String>) = ip(ip.orElse(null))
 
             /**
              * This signal should provide a higher level of trust, indicating that the user is
              * genuine. For more details, refer to [Signals](/guides/prevent-fraud#signals).
              */
-            fun isTrustedUser(isTrustedUser: Boolean) = apply { this.isTrustedUser = isTrustedUser }
+            fun isTrustedUser(isTrustedUser: Boolean?) = apply {
+                this.isTrustedUser = isTrustedUser
+            }
+
+            /**
+             * This signal should provide a higher level of trust, indicating that the user is
+             * genuine. For more details, refer to [Signals](/guides/prevent-fraud#signals).
+             */
+            fun isTrustedUser(isTrustedUser: Boolean) = isTrustedUser(isTrustedUser as Boolean?)
+
+            /**
+             * This signal should provide a higher level of trust, indicating that the user is
+             * genuine. For more details, refer to [Signals](/guides/prevent-fraud#signals).
+             */
+            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+            fun isTrustedUser(isTrustedUser: Optional<Boolean>) =
+                isTrustedUser(isTrustedUser.orElse(null) as Boolean?)
 
             /** The version of the user's device operating system. */
-            fun osVersion(osVersion: String) = apply { this.osVersion = osVersion }
+            fun osVersion(osVersion: String?) = apply { this.osVersion = osVersion }
+
+            /** The version of the user's device operating system. */
+            fun osVersion(osVersion: Optional<String>) = osVersion(osVersion.orElse(null))
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()

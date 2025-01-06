@@ -93,7 +93,13 @@ constructor(
              * It is highly recommended that you provide the signals to increase prediction
              * performance.
              */
-            fun signals(signals: Signals) = apply { this.signals = signals }
+            fun signals(signals: Signals?) = apply { this.signals = signals }
+
+            /**
+             * It is highly recommended that you provide the signals to increase prediction
+             * performance.
+             */
+            fun signals(signals: Optional<Signals>) = signals(signals.orElse(null))
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -167,7 +173,12 @@ constructor(
         /**
          * It is highly recommended that you provide the signals to increase prediction performance.
          */
-        fun signals(signals: Signals) = apply { body.signals(signals) }
+        fun signals(signals: Signals?) = apply { body.signals(signals) }
+
+        /**
+         * It is highly recommended that you provide the signals to increase prediction performance.
+         */
+        fun signals(signals: Optional<Signals>) = signals(signals.orElse(null))
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -499,16 +510,31 @@ constructor(
              * The unique identifier for the user's device. For Android, this corresponds to the
              * `ANDROID_ID` and for iOS, this corresponds to the `identifierForVendor`.
              */
-            fun deviceId(deviceId: String) = apply { this.deviceId = deviceId }
+            fun deviceId(deviceId: String?) = apply { this.deviceId = deviceId }
+
+            /**
+             * The unique identifier for the user's device. For Android, this corresponds to the
+             * `ANDROID_ID` and for iOS, this corresponds to the `identifierForVendor`.
+             */
+            fun deviceId(deviceId: Optional<String>) = deviceId(deviceId.orElse(null))
 
             /** The model of the user's device. */
-            fun deviceModel(deviceModel: String) = apply { this.deviceModel = deviceModel }
+            fun deviceModel(deviceModel: String?) = apply { this.deviceModel = deviceModel }
+
+            /** The model of the user's device. */
+            fun deviceModel(deviceModel: Optional<String>) = deviceModel(deviceModel.orElse(null))
 
             /** The type of the user's device. */
-            fun deviceType(deviceType: String) = apply { this.deviceType = deviceType }
+            fun deviceType(deviceType: String?) = apply { this.deviceType = deviceType }
+
+            /** The type of the user's device. */
+            fun deviceType(deviceType: Optional<String>) = deviceType(deviceType.orElse(null))
 
             /** The IPv4 address of the user's device */
-            fun ip(ip: String) = apply { this.ip = ip }
+            fun ip(ip: String?) = apply { this.ip = ip }
+
+            /** The IPv4 address of the user's device */
+            fun ip(ip: Optional<String>) = ip(ip.orElse(null))
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()

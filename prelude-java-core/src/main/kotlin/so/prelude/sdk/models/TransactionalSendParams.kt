@@ -137,19 +137,35 @@ constructor(
             fun to(to: String) = apply { this.to = to }
 
             /** The callback URL. */
-            fun callbackUrl(callbackUrl: String) = apply { this.callbackUrl = callbackUrl }
+            fun callbackUrl(callbackUrl: String?) = apply { this.callbackUrl = callbackUrl }
+
+            /** The callback URL. */
+            fun callbackUrl(callbackUrl: Optional<String>) = callbackUrl(callbackUrl.orElse(null))
 
             /** A unique, user-defined identifier that will be included in webhook events. */
-            fun correlationId(correlationId: String) = apply { this.correlationId = correlationId }
+            fun correlationId(correlationId: String?) = apply { this.correlationId = correlationId }
+
+            /** A unique, user-defined identifier that will be included in webhook events. */
+            fun correlationId(correlationId: Optional<String>) =
+                correlationId(correlationId.orElse(null))
 
             /** The message expiration date. */
-            fun expiresAt(expiresAt: String) = apply { this.expiresAt = expiresAt }
+            fun expiresAt(expiresAt: String?) = apply { this.expiresAt = expiresAt }
+
+            /** The message expiration date. */
+            fun expiresAt(expiresAt: Optional<String>) = expiresAt(expiresAt.orElse(null))
 
             /** The Sender ID. */
-            fun from(from: String) = apply { this.from = from }
+            fun from(from: String?) = apply { this.from = from }
+
+            /** The Sender ID. */
+            fun from(from: Optional<String>) = from(from.orElse(null))
 
             /** The variables to be replaced in the template. */
-            fun variables(variables: Variables) = apply { this.variables = variables }
+            fun variables(variables: Variables?) = apply { this.variables = variables }
+
+            /** The variables to be replaced in the template. */
+            fun variables(variables: Optional<Variables>) = variables(variables.orElse(null))
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -229,19 +245,35 @@ constructor(
         fun to(to: String) = apply { body.to(to) }
 
         /** The callback URL. */
-        fun callbackUrl(callbackUrl: String) = apply { body.callbackUrl(callbackUrl) }
+        fun callbackUrl(callbackUrl: String?) = apply { body.callbackUrl(callbackUrl) }
+
+        /** The callback URL. */
+        fun callbackUrl(callbackUrl: Optional<String>) = callbackUrl(callbackUrl.orElse(null))
 
         /** A unique, user-defined identifier that will be included in webhook events. */
-        fun correlationId(correlationId: String) = apply { body.correlationId(correlationId) }
+        fun correlationId(correlationId: String?) = apply { body.correlationId(correlationId) }
+
+        /** A unique, user-defined identifier that will be included in webhook events. */
+        fun correlationId(correlationId: Optional<String>) =
+            correlationId(correlationId.orElse(null))
 
         /** The message expiration date. */
-        fun expiresAt(expiresAt: String) = apply { body.expiresAt(expiresAt) }
+        fun expiresAt(expiresAt: String?) = apply { body.expiresAt(expiresAt) }
+
+        /** The message expiration date. */
+        fun expiresAt(expiresAt: Optional<String>) = expiresAt(expiresAt.orElse(null))
 
         /** The Sender ID. */
-        fun from(from: String) = apply { body.from(from) }
+        fun from(from: String?) = apply { body.from(from) }
+
+        /** The Sender ID. */
+        fun from(from: Optional<String>) = from(from.orElse(null))
 
         /** The variables to be replaced in the template. */
-        fun variables(variables: Variables) = apply { body.variables(variables) }
+        fun variables(variables: Variables?) = apply { body.variables(variables) }
+
+        /** The variables to be replaced in the template. */
+        fun variables(variables: Optional<Variables>) = variables(variables.orElse(null))
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
