@@ -22,11 +22,16 @@ class TransactionalSendResponse
 @JsonCreator
 private constructor(
     @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("from") @ExcludeMissing private val from: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("to") @ExcludeMissing private val to: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("created_at")
+    @ExcludeMissing
+    private val createdAt: JsonField<OffsetDateTime> = JsonMissing.of(),
+    @JsonProperty("expires_at")
+    @ExcludeMissing
+    private val expiresAt: JsonField<OffsetDateTime> = JsonMissing.of(),
     @JsonProperty("template_id")
     @ExcludeMissing
     private val templateId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("to") @ExcludeMissing private val to: JsonField<String> = JsonMissing.of(),
     @JsonProperty("variables")
     @ExcludeMissing
     private val variables: JsonField<Variables> = JsonMissing.of(),
@@ -36,26 +41,24 @@ private constructor(
     @JsonProperty("correlation_id")
     @ExcludeMissing
     private val correlationId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("expires_at")
-    @ExcludeMissing
-    private val expiresAt: JsonField<OffsetDateTime> = JsonMissing.of(),
-    @JsonProperty("created_at")
-    @ExcludeMissing
-    private val createdAt: JsonField<OffsetDateTime> = JsonMissing.of(),
+    @JsonProperty("from") @ExcludeMissing private val from: JsonField<String> = JsonMissing.of(),
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
     /** The message identifier. */
     fun id(): String = id.getRequired("id")
 
-    /** The Sender ID. */
-    fun from(): Optional<String> = Optional.ofNullable(from.getNullable("from"))
+    /** The message creation date. */
+    fun createdAt(): OffsetDateTime = createdAt.getRequired("created_at")
 
-    /** The recipient's phone number. */
-    fun to(): String = to.getRequired("to")
+    /** The message expiration date. */
+    fun expiresAt(): OffsetDateTime = expiresAt.getRequired("expires_at")
 
     /** The template identifier. */
     fun templateId(): String = templateId.getRequired("template_id")
+
+    /** The recipient's phone number. */
+    fun to(): String = to.getRequired("to")
 
     /** The variables to be replaced in the template. */
     fun variables(): Variables = variables.getRequired("variables")
@@ -68,23 +71,23 @@ private constructor(
     fun correlationId(): Optional<String> =
         Optional.ofNullable(correlationId.getNullable("correlation_id"))
 
-    /** The message expiration date. */
-    fun expiresAt(): OffsetDateTime = expiresAt.getRequired("expires_at")
-
-    /** The message creation date. */
-    fun createdAt(): OffsetDateTime = createdAt.getRequired("created_at")
+    /** The Sender ID. */
+    fun from(): Optional<String> = Optional.ofNullable(from.getNullable("from"))
 
     /** The message identifier. */
     @JsonProperty("id") @ExcludeMissing fun _id() = id
 
-    /** The Sender ID. */
-    @JsonProperty("from") @ExcludeMissing fun _from() = from
+    /** The message creation date. */
+    @JsonProperty("created_at") @ExcludeMissing fun _createdAt() = createdAt
 
-    /** The recipient's phone number. */
-    @JsonProperty("to") @ExcludeMissing fun _to() = to
+    /** The message expiration date. */
+    @JsonProperty("expires_at") @ExcludeMissing fun _expiresAt() = expiresAt
 
     /** The template identifier. */
     @JsonProperty("template_id") @ExcludeMissing fun _templateId() = templateId
+
+    /** The recipient's phone number. */
+    @JsonProperty("to") @ExcludeMissing fun _to() = to
 
     /** The variables to be replaced in the template. */
     @JsonProperty("variables") @ExcludeMissing fun _variables() = variables
@@ -95,11 +98,8 @@ private constructor(
     /** A unique, user-defined identifier that will be included in webhook events. */
     @JsonProperty("correlation_id") @ExcludeMissing fun _correlationId() = correlationId
 
-    /** The message expiration date. */
-    @JsonProperty("expires_at") @ExcludeMissing fun _expiresAt() = expiresAt
-
-    /** The message creation date. */
-    @JsonProperty("created_at") @ExcludeMissing fun _createdAt() = createdAt
+    /** The Sender ID. */
+    @JsonProperty("from") @ExcludeMissing fun _from() = from
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -110,14 +110,14 @@ private constructor(
     fun validate(): TransactionalSendResponse = apply {
         if (!validated) {
             id()
-            from()
-            to()
+            createdAt()
+            expiresAt()
             templateId()
+            to()
             variables().validate()
             callbackUrl()
             correlationId()
-            expiresAt()
-            createdAt()
+            from()
             validated = true
         }
     }
@@ -132,27 +132,27 @@ private constructor(
     class Builder {
 
         private var id: JsonField<String> = JsonMissing.of()
-        private var from: JsonField<String> = JsonMissing.of()
-        private var to: JsonField<String> = JsonMissing.of()
+        private var createdAt: JsonField<OffsetDateTime> = JsonMissing.of()
+        private var expiresAt: JsonField<OffsetDateTime> = JsonMissing.of()
         private var templateId: JsonField<String> = JsonMissing.of()
+        private var to: JsonField<String> = JsonMissing.of()
         private var variables: JsonField<Variables> = JsonMissing.of()
         private var callbackUrl: JsonField<String> = JsonMissing.of()
         private var correlationId: JsonField<String> = JsonMissing.of()
-        private var expiresAt: JsonField<OffsetDateTime> = JsonMissing.of()
-        private var createdAt: JsonField<OffsetDateTime> = JsonMissing.of()
+        private var from: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(transactionalSendResponse: TransactionalSendResponse) = apply {
             id = transactionalSendResponse.id
-            from = transactionalSendResponse.from
-            to = transactionalSendResponse.to
+            createdAt = transactionalSendResponse.createdAt
+            expiresAt = transactionalSendResponse.expiresAt
             templateId = transactionalSendResponse.templateId
+            to = transactionalSendResponse.to
             variables = transactionalSendResponse.variables
             callbackUrl = transactionalSendResponse.callbackUrl
             correlationId = transactionalSendResponse.correlationId
-            expiresAt = transactionalSendResponse.expiresAt
-            createdAt = transactionalSendResponse.createdAt
+            from = transactionalSendResponse.from
             additionalProperties = transactionalSendResponse.additionalProperties.toMutableMap()
         }
 
@@ -162,23 +162,29 @@ private constructor(
         /** The message identifier. */
         fun id(id: JsonField<String>) = apply { this.id = id }
 
-        /** The Sender ID. */
-        fun from(from: String) = from(JsonField.of(from))
+        /** The message creation date. */
+        fun createdAt(createdAt: OffsetDateTime) = createdAt(JsonField.of(createdAt))
 
-        /** The Sender ID. */
-        fun from(from: JsonField<String>) = apply { this.from = from }
+        /** The message creation date. */
+        fun createdAt(createdAt: JsonField<OffsetDateTime>) = apply { this.createdAt = createdAt }
 
-        /** The recipient's phone number. */
-        fun to(to: String) = to(JsonField.of(to))
+        /** The message expiration date. */
+        fun expiresAt(expiresAt: OffsetDateTime) = expiresAt(JsonField.of(expiresAt))
 
-        /** The recipient's phone number. */
-        fun to(to: JsonField<String>) = apply { this.to = to }
+        /** The message expiration date. */
+        fun expiresAt(expiresAt: JsonField<OffsetDateTime>) = apply { this.expiresAt = expiresAt }
 
         /** The template identifier. */
         fun templateId(templateId: String) = templateId(JsonField.of(templateId))
 
         /** The template identifier. */
         fun templateId(templateId: JsonField<String>) = apply { this.templateId = templateId }
+
+        /** The recipient's phone number. */
+        fun to(to: String) = to(JsonField.of(to))
+
+        /** The recipient's phone number. */
+        fun to(to: JsonField<String>) = apply { this.to = to }
 
         /** The variables to be replaced in the template. */
         fun variables(variables: Variables) = variables(JsonField.of(variables))
@@ -200,17 +206,11 @@ private constructor(
             this.correlationId = correlationId
         }
 
-        /** The message expiration date. */
-        fun expiresAt(expiresAt: OffsetDateTime) = expiresAt(JsonField.of(expiresAt))
+        /** The Sender ID. */
+        fun from(from: String) = from(JsonField.of(from))
 
-        /** The message expiration date. */
-        fun expiresAt(expiresAt: JsonField<OffsetDateTime>) = apply { this.expiresAt = expiresAt }
-
-        /** The message creation date. */
-        fun createdAt(createdAt: OffsetDateTime) = createdAt(JsonField.of(createdAt))
-
-        /** The message creation date. */
-        fun createdAt(createdAt: JsonField<OffsetDateTime>) = apply { this.createdAt = createdAt }
+        /** The Sender ID. */
+        fun from(from: JsonField<String>) = apply { this.from = from }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -234,14 +234,14 @@ private constructor(
         fun build(): TransactionalSendResponse =
             TransactionalSendResponse(
                 id,
-                from,
-                to,
+                createdAt,
+                expiresAt,
                 templateId,
+                to,
                 variables,
                 callbackUrl,
                 correlationId,
-                expiresAt,
-                createdAt,
+                from,
                 additionalProperties.toImmutable(),
             )
     }
@@ -327,15 +327,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is TransactionalSendResponse && id == other.id && from == other.from && to == other.to && templateId == other.templateId && variables == other.variables && callbackUrl == other.callbackUrl && correlationId == other.correlationId && expiresAt == other.expiresAt && createdAt == other.createdAt && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is TransactionalSendResponse && id == other.id && createdAt == other.createdAt && expiresAt == other.expiresAt && templateId == other.templateId && to == other.to && variables == other.variables && callbackUrl == other.callbackUrl && correlationId == other.correlationId && from == other.from && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(id, from, to, templateId, variables, callbackUrl, correlationId, expiresAt, createdAt, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(id, createdAt, expiresAt, templateId, to, variables, callbackUrl, correlationId, from, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "TransactionalSendResponse{id=$id, from=$from, to=$to, templateId=$templateId, variables=$variables, callbackUrl=$callbackUrl, correlationId=$correlationId, expiresAt=$expiresAt, createdAt=$createdAt, additionalProperties=$additionalProperties}"
+        "TransactionalSendResponse{id=$id, createdAt=$createdAt, expiresAt=$expiresAt, templateId=$templateId, to=$to, variables=$variables, callbackUrl=$callbackUrl, correlationId=$correlationId, from=$from, additionalProperties=$additionalProperties}"
 }
