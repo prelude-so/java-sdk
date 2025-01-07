@@ -19,6 +19,11 @@ import so.prelude.sdk.core.immutableEmptyMap
 import so.prelude.sdk.core.toImmutable
 import so.prelude.sdk.errors.PreludeInvalidDataException
 
+/**
+ * Identify trustworthy phone numbers to mitigate fake traffic or traffic involved in fraud and
+ * international revenue share fraud (IRSF) patterns. This endpoint must be implemented in
+ * conjunction with the `watch/feedback` endpoint.
+ */
 class WatchPredictParams
 constructor(
     private val body: WatchPredictBody,
