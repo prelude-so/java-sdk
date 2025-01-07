@@ -27,7 +27,7 @@ private constructor(
     fun id(): String = id.getRequired("id")
 
     /** A unique identifier for your feedback request. */
-    @JsonProperty("id") @ExcludeMissing fun _id() = id
+    @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -51,7 +51,7 @@ private constructor(
 
     class Builder {
 
-        private var id: JsonField<String> = JsonMissing.of()
+        private var id: JsonField<String>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
@@ -86,7 +86,10 @@ private constructor(
         }
 
         fun build(): WatchFeedBackResponse =
-            WatchFeedBackResponse(id, additionalProperties.toImmutable())
+            WatchFeedBackResponse(
+                checkNotNull(id) { "`id` is required but was not set" },
+                additionalProperties.toImmutable()
+            )
     }
 
     override fun equals(other: Any?): Boolean {

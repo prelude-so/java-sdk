@@ -75,31 +75,39 @@ private constructor(
     fun from(): Optional<String> = Optional.ofNullable(from.getNullable("from"))
 
     /** The message identifier. */
-    @JsonProperty("id") @ExcludeMissing fun _id() = id
+    @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
     /** The message creation date. */
-    @JsonProperty("created_at") @ExcludeMissing fun _createdAt() = createdAt
+    @JsonProperty("created_at")
+    @ExcludeMissing
+    fun _createdAt(): JsonField<OffsetDateTime> = createdAt
 
     /** The message expiration date. */
-    @JsonProperty("expires_at") @ExcludeMissing fun _expiresAt() = expiresAt
+    @JsonProperty("expires_at")
+    @ExcludeMissing
+    fun _expiresAt(): JsonField<OffsetDateTime> = expiresAt
 
     /** The template identifier. */
-    @JsonProperty("template_id") @ExcludeMissing fun _templateId() = templateId
+    @JsonProperty("template_id") @ExcludeMissing fun _templateId(): JsonField<String> = templateId
 
     /** The recipient's phone number. */
-    @JsonProperty("to") @ExcludeMissing fun _to() = to
+    @JsonProperty("to") @ExcludeMissing fun _to(): JsonField<String> = to
 
     /** The variables to be replaced in the template. */
-    @JsonProperty("variables") @ExcludeMissing fun _variables() = variables
+    @JsonProperty("variables") @ExcludeMissing fun _variables(): JsonField<Variables> = variables
 
     /** The callback URL. */
-    @JsonProperty("callback_url") @ExcludeMissing fun _callbackUrl() = callbackUrl
+    @JsonProperty("callback_url")
+    @ExcludeMissing
+    fun _callbackUrl(): JsonField<String> = callbackUrl
 
     /** A unique, user-defined identifier that will be included in webhook events. */
-    @JsonProperty("correlation_id") @ExcludeMissing fun _correlationId() = correlationId
+    @JsonProperty("correlation_id")
+    @ExcludeMissing
+    fun _correlationId(): JsonField<String> = correlationId
 
     /** The Sender ID. */
-    @JsonProperty("from") @ExcludeMissing fun _from() = from
+    @JsonProperty("from") @ExcludeMissing fun _from(): JsonField<String> = from
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -131,12 +139,12 @@ private constructor(
 
     class Builder {
 
-        private var id: JsonField<String> = JsonMissing.of()
-        private var createdAt: JsonField<OffsetDateTime> = JsonMissing.of()
-        private var expiresAt: JsonField<OffsetDateTime> = JsonMissing.of()
-        private var templateId: JsonField<String> = JsonMissing.of()
-        private var to: JsonField<String> = JsonMissing.of()
-        private var variables: JsonField<Variables> = JsonMissing.of()
+        private var id: JsonField<String>? = null
+        private var createdAt: JsonField<OffsetDateTime>? = null
+        private var expiresAt: JsonField<OffsetDateTime>? = null
+        private var templateId: JsonField<String>? = null
+        private var to: JsonField<String>? = null
+        private var variables: JsonField<Variables>? = null
         private var callbackUrl: JsonField<String> = JsonMissing.of()
         private var correlationId: JsonField<String> = JsonMissing.of()
         private var from: JsonField<String> = JsonMissing.of()
@@ -233,12 +241,12 @@ private constructor(
 
         fun build(): TransactionalSendResponse =
             TransactionalSendResponse(
-                id,
-                createdAt,
-                expiresAt,
-                templateId,
-                to,
-                variables,
+                checkNotNull(id) { "`id` is required but was not set" },
+                checkNotNull(createdAt) { "`createdAt` is required but was not set" },
+                checkNotNull(expiresAt) { "`expiresAt` is required but was not set" },
+                checkNotNull(templateId) { "`templateId` is required but was not set" },
+                checkNotNull(to) { "`to` is required but was not set" },
+                checkNotNull(variables) { "`variables` is required but was not set" },
                 callbackUrl,
                 correlationId,
                 from,
