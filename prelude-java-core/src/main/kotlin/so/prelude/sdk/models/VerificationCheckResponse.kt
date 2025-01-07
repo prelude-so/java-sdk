@@ -47,15 +47,15 @@ private constructor(
     fun requestId(): Optional<String> = Optional.ofNullable(requestId.getNullable("request_id"))
 
     /** The status of the check. */
-    @JsonProperty("status") @ExcludeMissing fun _status() = status
+    @JsonProperty("status") @ExcludeMissing fun _status(): JsonField<Status> = status
 
     /** The verification identifier. */
-    @JsonProperty("id") @ExcludeMissing fun _id() = id
+    @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
     /** The metadata for this verification. */
-    @JsonProperty("metadata") @ExcludeMissing fun _metadata() = metadata
+    @JsonProperty("metadata") @ExcludeMissing fun _metadata(): JsonField<Metadata> = metadata
 
-    @JsonProperty("request_id") @ExcludeMissing fun _requestId() = requestId
+    @JsonProperty("request_id") @ExcludeMissing fun _requestId(): JsonField<String> = requestId
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -82,7 +82,7 @@ private constructor(
 
     class Builder {
 
-        private var status: JsonField<Status> = JsonMissing.of()
+        private var status: JsonField<Status>? = null
         private var id: JsonField<String> = JsonMissing.of()
         private var metadata: JsonField<Metadata> = JsonMissing.of()
         private var requestId: JsonField<String> = JsonMissing.of()
@@ -140,7 +140,7 @@ private constructor(
 
         fun build(): VerificationCheckResponse =
             VerificationCheckResponse(
-                status,
+                checkNotNull(status) { "`status` is required but was not set" },
                 id,
                 metadata,
                 requestId,
@@ -226,7 +226,9 @@ private constructor(
         fun correlationId(): Optional<String> =
             Optional.ofNullable(correlationId.getNullable("correlation_id"))
 
-        @JsonProperty("correlation_id") @ExcludeMissing fun _correlationId() = correlationId
+        @JsonProperty("correlation_id")
+        @ExcludeMissing
+        fun _correlationId(): JsonField<String> = correlationId
 
         @JsonAnyGetter
         @ExcludeMissing

@@ -11,6 +11,7 @@ import java.util.Optional
 import so.prelude.sdk.core.Enum
 import so.prelude.sdk.core.ExcludeMissing
 import so.prelude.sdk.core.JsonField
+import so.prelude.sdk.core.JsonMissing
 import so.prelude.sdk.core.JsonValue
 import so.prelude.sdk.core.NoAutoDetect
 import so.prelude.sdk.core.http.Headers
@@ -37,11 +38,17 @@ constructor(
     /** It is highly recommended that you provide the signals to increase prediction performance. */
     fun signals(): Optional<Signals> = body.signals()
 
+    /** The target. Currently this can only be an E.164 formatted phone number. */
+    fun _target(): JsonField<Target> = body._target()
+
+    /** It is highly recommended that you provide the signals to increase prediction performance. */
+    fun _signals(): JsonField<Signals> = body._signals()
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
+
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
     @JvmSynthetic internal fun getBody(): WatchPredictBody = body
 
@@ -53,23 +60,45 @@ constructor(
     class WatchPredictBody
     @JsonCreator
     internal constructor(
-        @JsonProperty("target") private val target: Target,
-        @JsonProperty("signals") private val signals: Signals?,
+        @JsonProperty("target")
+        @ExcludeMissing
+        private val target: JsonField<Target> = JsonMissing.of(),
+        @JsonProperty("signals")
+        @ExcludeMissing
+        private val signals: JsonField<Signals> = JsonMissing.of(),
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The target. Currently this can only be an E.164 formatted phone number. */
-        @JsonProperty("target") fun target(): Target = target
+        fun target(): Target = target.getRequired("target")
 
         /**
          * It is highly recommended that you provide the signals to increase prediction performance.
          */
-        @JsonProperty("signals") fun signals(): Optional<Signals> = Optional.ofNullable(signals)
+        fun signals(): Optional<Signals> = Optional.ofNullable(signals.getNullable("signals"))
+
+        /** The target. Currently this can only be an E.164 formatted phone number. */
+        @JsonProperty("target") @ExcludeMissing fun _target(): JsonField<Target> = target
+
+        /**
+         * It is highly recommended that you provide the signals to increase prediction performance.
+         */
+        @JsonProperty("signals") @ExcludeMissing fun _signals(): JsonField<Signals> = signals
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): WatchPredictBody = apply {
+            if (!validated) {
+                target().validate()
+                signals().map { it.validate() }
+                validated = true
+            }
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -80,8 +109,8 @@ constructor(
 
         class Builder {
 
-            private var target: Target? = null
-            private var signals: Signals? = null
+            private var target: JsonField<Target>? = null
+            private var signals: JsonField<Signals> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -92,19 +121,22 @@ constructor(
             }
 
             /** The target. Currently this can only be an E.164 formatted phone number. */
-            fun target(target: Target) = apply { this.target = target }
+            fun target(target: Target) = target(JsonField.of(target))
+
+            /** The target. Currently this can only be an E.164 formatted phone number. */
+            fun target(target: JsonField<Target>) = apply { this.target = target }
 
             /**
              * It is highly recommended that you provide the signals to increase prediction
              * performance.
              */
-            fun signals(signals: Signals?) = apply { this.signals = signals }
+            fun signals(signals: Signals) = signals(JsonField.of(signals))
 
             /**
              * It is highly recommended that you provide the signals to increase prediction
              * performance.
              */
-            fun signals(signals: Optional<Signals>) = signals(signals.orElse(null))
+            fun signals(signals: JsonField<Signals>) = apply { this.signals = signals }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -175,15 +207,37 @@ constructor(
         /** The target. Currently this can only be an E.164 formatted phone number. */
         fun target(target: Target) = apply { body.target(target) }
 
-        /**
-         * It is highly recommended that you provide the signals to increase prediction performance.
-         */
-        fun signals(signals: Signals?) = apply { body.signals(signals) }
+        /** The target. Currently this can only be an E.164 formatted phone number. */
+        fun target(target: JsonField<Target>) = apply { body.target(target) }
 
         /**
          * It is highly recommended that you provide the signals to increase prediction performance.
          */
-        fun signals(signals: Optional<Signals>) = signals(signals.orElse(null))
+        fun signals(signals: Signals) = apply { body.signals(signals) }
+
+        /**
+         * It is highly recommended that you provide the signals to increase prediction performance.
+         */
+        fun signals(signals: JsonField<Signals>) = apply { body.signals(signals) }
+
+        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
+            body.additionalProperties(additionalBodyProperties)
+        }
+
+        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
+            body.putAdditionalProperty(key, value)
+        }
+
+        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
+            apply {
+                body.putAllAdditionalProperties(additionalBodyProperties)
+            }
+
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
+
+        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
+            body.removeAllAdditionalProperties(keys)
+        }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -283,25 +337,6 @@ constructor(
             additionalQueryParams.removeAll(keys)
         }
 
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            body.additionalProperties(additionalBodyProperties)
-        }
-
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            body.putAdditionalProperty(key, value)
-        }
-
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
-            apply {
-                body.putAllAdditionalProperties(additionalBodyProperties)
-            }
-
-        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
-
-        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            body.removeAllAdditionalProperties(keys)
-        }
-
         fun build(): WatchPredictParams =
             WatchPredictParams(
                 body.build(),
@@ -315,21 +350,39 @@ constructor(
     class Target
     @JsonCreator
     private constructor(
-        @JsonProperty("type") private val type: Type,
-        @JsonProperty("value") private val value: String,
+        @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
+        @JsonProperty("value")
+        @ExcludeMissing
+        private val value: JsonField<String> = JsonMissing.of(),
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The type of the target. Currently this can only be "phone_number". */
-        @JsonProperty("type") fun type(): Type = type
+        fun type(): Type = type.getRequired("type")
 
         /** An E.164 formatted phone number to verify. */
-        @JsonProperty("value") fun value(): String = value
+        fun value(): String = value.getRequired("value")
+
+        /** The type of the target. Currently this can only be "phone_number". */
+        @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
+
+        /** An E.164 formatted phone number to verify. */
+        @JsonProperty("value") @ExcludeMissing fun _value(): JsonField<String> = value
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): Target = apply {
+            if (!validated) {
+                type()
+                value()
+                validated = true
+            }
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -340,8 +393,8 @@ constructor(
 
         class Builder {
 
-            private var type: Type? = null
-            private var value: String? = null
+            private var type: JsonField<Type>? = null
+            private var value: JsonField<String>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -352,10 +405,16 @@ constructor(
             }
 
             /** The type of the target. Currently this can only be "phone_number". */
-            fun type(type: Type) = apply { this.type = type }
+            fun type(type: Type) = type(JsonField.of(type))
+
+            /** The type of the target. Currently this can only be "phone_number". */
+            fun type(type: JsonField<Type>) = apply { this.type = type }
 
             /** An E.164 formatted phone number to verify. */
-            fun value(value: String) = apply { this.value = value }
+            fun value(value: String) = value(JsonField.of(value))
+
+            /** An E.164 formatted phone number to verify. */
+            fun value(value: JsonField<String>) = apply { this.value = value }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -458,10 +517,16 @@ constructor(
     class Signals
     @JsonCreator
     private constructor(
-        @JsonProperty("device_id") private val deviceId: String?,
-        @JsonProperty("device_model") private val deviceModel: String?,
-        @JsonProperty("device_type") private val deviceType: String?,
-        @JsonProperty("ip") private val ip: String?,
+        @JsonProperty("device_id")
+        @ExcludeMissing
+        private val deviceId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("device_model")
+        @ExcludeMissing
+        private val deviceModel: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("device_type")
+        @ExcludeMissing
+        private val deviceType: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("ip") @ExcludeMissing private val ip: JsonField<String> = JsonMissing.of(),
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
@@ -470,22 +535,53 @@ constructor(
          * The unique identifier for the user's device. For Android, this corresponds to the
          * `ANDROID_ID` and for iOS, this corresponds to the `identifierForVendor`.
          */
-        @JsonProperty("device_id") fun deviceId(): Optional<String> = Optional.ofNullable(deviceId)
+        fun deviceId(): Optional<String> = Optional.ofNullable(deviceId.getNullable("device_id"))
+
+        /** The model of the user's device. */
+        fun deviceModel(): Optional<String> =
+            Optional.ofNullable(deviceModel.getNullable("device_model"))
+
+        /** The type of the user's device. */
+        fun deviceType(): Optional<String> =
+            Optional.ofNullable(deviceType.getNullable("device_type"))
+
+        /** The IPv4 address of the user's device */
+        fun ip(): Optional<String> = Optional.ofNullable(ip.getNullable("ip"))
+
+        /**
+         * The unique identifier for the user's device. For Android, this corresponds to the
+         * `ANDROID_ID` and for iOS, this corresponds to the `identifierForVendor`.
+         */
+        @JsonProperty("device_id") @ExcludeMissing fun _deviceId(): JsonField<String> = deviceId
 
         /** The model of the user's device. */
         @JsonProperty("device_model")
-        fun deviceModel(): Optional<String> = Optional.ofNullable(deviceModel)
+        @ExcludeMissing
+        fun _deviceModel(): JsonField<String> = deviceModel
 
         /** The type of the user's device. */
         @JsonProperty("device_type")
-        fun deviceType(): Optional<String> = Optional.ofNullable(deviceType)
+        @ExcludeMissing
+        fun _deviceType(): JsonField<String> = deviceType
 
         /** The IPv4 address of the user's device */
-        @JsonProperty("ip") fun ip(): Optional<String> = Optional.ofNullable(ip)
+        @JsonProperty("ip") @ExcludeMissing fun _ip(): JsonField<String> = ip
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): Signals = apply {
+            if (!validated) {
+                deviceId()
+                deviceModel()
+                deviceType()
+                ip()
+                validated = true
+            }
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -496,10 +592,10 @@ constructor(
 
         class Builder {
 
-            private var deviceId: String? = null
-            private var deviceModel: String? = null
-            private var deviceType: String? = null
-            private var ip: String? = null
+            private var deviceId: JsonField<String> = JsonMissing.of()
+            private var deviceModel: JsonField<String> = JsonMissing.of()
+            private var deviceType: JsonField<String> = JsonMissing.of()
+            private var ip: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -515,31 +611,33 @@ constructor(
              * The unique identifier for the user's device. For Android, this corresponds to the
              * `ANDROID_ID` and for iOS, this corresponds to the `identifierForVendor`.
              */
-            fun deviceId(deviceId: String?) = apply { this.deviceId = deviceId }
+            fun deviceId(deviceId: String) = deviceId(JsonField.of(deviceId))
 
             /**
              * The unique identifier for the user's device. For Android, this corresponds to the
              * `ANDROID_ID` and for iOS, this corresponds to the `identifierForVendor`.
              */
-            fun deviceId(deviceId: Optional<String>) = deviceId(deviceId.orElse(null))
+            fun deviceId(deviceId: JsonField<String>) = apply { this.deviceId = deviceId }
 
             /** The model of the user's device. */
-            fun deviceModel(deviceModel: String?) = apply { this.deviceModel = deviceModel }
+            fun deviceModel(deviceModel: String) = deviceModel(JsonField.of(deviceModel))
 
             /** The model of the user's device. */
-            fun deviceModel(deviceModel: Optional<String>) = deviceModel(deviceModel.orElse(null))
+            fun deviceModel(deviceModel: JsonField<String>) = apply {
+                this.deviceModel = deviceModel
+            }
 
             /** The type of the user's device. */
-            fun deviceType(deviceType: String?) = apply { this.deviceType = deviceType }
+            fun deviceType(deviceType: String) = deviceType(JsonField.of(deviceType))
 
             /** The type of the user's device. */
-            fun deviceType(deviceType: Optional<String>) = deviceType(deviceType.orElse(null))
+            fun deviceType(deviceType: JsonField<String>) = apply { this.deviceType = deviceType }
 
             /** The IPv4 address of the user's device */
-            fun ip(ip: String?) = apply { this.ip = ip }
+            fun ip(ip: String) = ip(JsonField.of(ip))
 
             /** The IPv4 address of the user's device */
-            fun ip(ip: Optional<String>) = ip(ip.orElse(null))
+            fun ip(ip: JsonField<String>) = apply { this.ip = ip }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()

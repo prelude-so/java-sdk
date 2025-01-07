@@ -41,12 +41,14 @@ private constructor(
     fun reasoning(): Reasoning = reasoning.getRequired("reasoning")
 
     /** A unique identifier for your prediction request. */
-    @JsonProperty("id") @ExcludeMissing fun _id() = id
+    @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
     /** A label indicating the trustworthiness of the phone number. */
-    @JsonProperty("prediction") @ExcludeMissing fun _prediction() = prediction
+    @JsonProperty("prediction")
+    @ExcludeMissing
+    fun _prediction(): JsonField<Prediction> = prediction
 
-    @JsonProperty("reasoning") @ExcludeMissing fun _reasoning() = reasoning
+    @JsonProperty("reasoning") @ExcludeMissing fun _reasoning(): JsonField<Reasoning> = reasoning
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -72,9 +74,9 @@ private constructor(
 
     class Builder {
 
-        private var id: JsonField<String> = JsonMissing.of()
-        private var prediction: JsonField<Prediction> = JsonMissing.of()
-        private var reasoning: JsonField<Reasoning> = JsonMissing.of()
+        private var id: JsonField<String>? = null
+        private var prediction: JsonField<Prediction>? = null
+        private var reasoning: JsonField<Reasoning>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
@@ -122,9 +124,9 @@ private constructor(
 
         fun build(): WatchPredictResponse =
             WatchPredictResponse(
-                id,
-                prediction,
-                reasoning,
+                checkNotNull(id) { "`id` is required but was not set" },
+                checkNotNull(prediction) { "`prediction` is required but was not set" },
+                checkNotNull(reasoning) { "`reasoning` is required but was not set" },
                 additionalProperties.toImmutable(),
             )
     }
@@ -210,13 +212,13 @@ private constructor(
         fun score(): Optional<Double> = Optional.ofNullable(score.getNullable("score"))
 
         /** A label explaining why the phone number was classified as not trustworthy */
-        @JsonProperty("cause") @ExcludeMissing fun _cause() = cause
+        @JsonProperty("cause") @ExcludeMissing fun _cause(): JsonField<Cause> = cause
 
         /**
          * Indicates the risk of the phone number being genuine or involved in fraudulent patterns.
          * The higher the riskier.
          */
-        @JsonProperty("score") @ExcludeMissing fun _score() = score
+        @JsonProperty("score") @ExcludeMissing fun _score(): JsonField<Double> = score
 
         @JsonAnyGetter
         @ExcludeMissing
