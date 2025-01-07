@@ -9,6 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Objects
 import java.util.Optional
 import so.prelude.sdk.core.ExcludeMissing
+import so.prelude.sdk.core.JsonField
+import so.prelude.sdk.core.JsonMissing
 import so.prelude.sdk.core.JsonValue
 import so.prelude.sdk.core.NoAutoDetect
 import so.prelude.sdk.core.http.Headers
@@ -45,11 +47,32 @@ constructor(
     /** The variables to be replaced in the template. */
     fun variables(): Optional<Variables> = body.variables()
 
+    /** The template identifier. */
+    fun _templateId(): JsonField<String> = body._templateId()
+
+    /** The recipient's phone number. */
+    fun _to(): JsonField<String> = body._to()
+
+    /** The callback URL. */
+    fun _callbackUrl(): JsonField<String> = body._callbackUrl()
+
+    /** A unique, user-defined identifier that will be included in webhook events. */
+    fun _correlationId(): JsonField<String> = body._correlationId()
+
+    /** The message expiration date. */
+    fun _expiresAt(): JsonField<String> = body._expiresAt()
+
+    /** The Sender ID. */
+    fun _from(): JsonField<String> = body._from()
+
+    /** The variables to be replaced in the template. */
+    fun _variables(): JsonField<Variables> = body._variables()
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
+
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
     @JvmSynthetic internal fun getBody(): TransactionalSendBody = body
 
@@ -61,45 +84,100 @@ constructor(
     class TransactionalSendBody
     @JsonCreator
     internal constructor(
-        @JsonProperty("template_id") private val templateId: String,
-        @JsonProperty("to") private val to: String,
-        @JsonProperty("callback_url") private val callbackUrl: String?,
-        @JsonProperty("correlation_id") private val correlationId: String?,
-        @JsonProperty("expires_at") private val expiresAt: String?,
-        @JsonProperty("from") private val from: String?,
-        @JsonProperty("variables") private val variables: Variables?,
+        @JsonProperty("template_id")
+        @ExcludeMissing
+        private val templateId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("to") @ExcludeMissing private val to: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("callback_url")
+        @ExcludeMissing
+        private val callbackUrl: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("correlation_id")
+        @ExcludeMissing
+        private val correlationId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("expires_at")
+        @ExcludeMissing
+        private val expiresAt: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("from")
+        @ExcludeMissing
+        private val from: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("variables")
+        @ExcludeMissing
+        private val variables: JsonField<Variables> = JsonMissing.of(),
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The template identifier. */
-        @JsonProperty("template_id") fun templateId(): String = templateId
+        fun templateId(): String = templateId.getRequired("template_id")
 
         /** The recipient's phone number. */
-        @JsonProperty("to") fun to(): String = to
+        fun to(): String = to.getRequired("to")
+
+        /** The callback URL. */
+        fun callbackUrl(): Optional<String> =
+            Optional.ofNullable(callbackUrl.getNullable("callback_url"))
+
+        /** A unique, user-defined identifier that will be included in webhook events. */
+        fun correlationId(): Optional<String> =
+            Optional.ofNullable(correlationId.getNullable("correlation_id"))
+
+        /** The message expiration date. */
+        fun expiresAt(): Optional<String> = Optional.ofNullable(expiresAt.getNullable("expires_at"))
+
+        /** The Sender ID. */
+        fun from(): Optional<String> = Optional.ofNullable(from.getNullable("from"))
+
+        /** The variables to be replaced in the template. */
+        fun variables(): Optional<Variables> =
+            Optional.ofNullable(variables.getNullable("variables"))
+
+        /** The template identifier. */
+        @JsonProperty("template_id")
+        @ExcludeMissing
+        fun _templateId(): JsonField<String> = templateId
+
+        /** The recipient's phone number. */
+        @JsonProperty("to") @ExcludeMissing fun _to(): JsonField<String> = to
 
         /** The callback URL. */
         @JsonProperty("callback_url")
-        fun callbackUrl(): Optional<String> = Optional.ofNullable(callbackUrl)
+        @ExcludeMissing
+        fun _callbackUrl(): JsonField<String> = callbackUrl
 
         /** A unique, user-defined identifier that will be included in webhook events. */
         @JsonProperty("correlation_id")
-        fun correlationId(): Optional<String> = Optional.ofNullable(correlationId)
+        @ExcludeMissing
+        fun _correlationId(): JsonField<String> = correlationId
 
         /** The message expiration date. */
-        @JsonProperty("expires_at")
-        fun expiresAt(): Optional<String> = Optional.ofNullable(expiresAt)
+        @JsonProperty("expires_at") @ExcludeMissing fun _expiresAt(): JsonField<String> = expiresAt
 
         /** The Sender ID. */
-        @JsonProperty("from") fun from(): Optional<String> = Optional.ofNullable(from)
+        @JsonProperty("from") @ExcludeMissing fun _from(): JsonField<String> = from
 
         /** The variables to be replaced in the template. */
         @JsonProperty("variables")
-        fun variables(): Optional<Variables> = Optional.ofNullable(variables)
+        @ExcludeMissing
+        fun _variables(): JsonField<Variables> = variables
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): TransactionalSendBody = apply {
+            if (!validated) {
+                templateId()
+                to()
+                callbackUrl()
+                correlationId()
+                expiresAt()
+                from()
+                variables().map { it.validate() }
+                validated = true
+            }
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -110,13 +188,13 @@ constructor(
 
         class Builder {
 
-            private var templateId: String? = null
-            private var to: String? = null
-            private var callbackUrl: String? = null
-            private var correlationId: String? = null
-            private var expiresAt: String? = null
-            private var from: String? = null
-            private var variables: Variables? = null
+            private var templateId: JsonField<String>? = null
+            private var to: JsonField<String>? = null
+            private var callbackUrl: JsonField<String> = JsonMissing.of()
+            private var correlationId: JsonField<String> = JsonMissing.of()
+            private var expiresAt: JsonField<String> = JsonMissing.of()
+            private var from: JsonField<String> = JsonMissing.of()
+            private var variables: JsonField<Variables> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -132,41 +210,50 @@ constructor(
             }
 
             /** The template identifier. */
-            fun templateId(templateId: String) = apply { this.templateId = templateId }
+            fun templateId(templateId: String) = templateId(JsonField.of(templateId))
+
+            /** The template identifier. */
+            fun templateId(templateId: JsonField<String>) = apply { this.templateId = templateId }
 
             /** The recipient's phone number. */
-            fun to(to: String) = apply { this.to = to }
+            fun to(to: String) = to(JsonField.of(to))
+
+            /** The recipient's phone number. */
+            fun to(to: JsonField<String>) = apply { this.to = to }
 
             /** The callback URL. */
-            fun callbackUrl(callbackUrl: String?) = apply { this.callbackUrl = callbackUrl }
+            fun callbackUrl(callbackUrl: String) = callbackUrl(JsonField.of(callbackUrl))
 
             /** The callback URL. */
-            fun callbackUrl(callbackUrl: Optional<String>) = callbackUrl(callbackUrl.orElse(null))
+            fun callbackUrl(callbackUrl: JsonField<String>) = apply {
+                this.callbackUrl = callbackUrl
+            }
 
             /** A unique, user-defined identifier that will be included in webhook events. */
-            fun correlationId(correlationId: String?) = apply { this.correlationId = correlationId }
+            fun correlationId(correlationId: String) = correlationId(JsonField.of(correlationId))
 
             /** A unique, user-defined identifier that will be included in webhook events. */
-            fun correlationId(correlationId: Optional<String>) =
-                correlationId(correlationId.orElse(null))
+            fun correlationId(correlationId: JsonField<String>) = apply {
+                this.correlationId = correlationId
+            }
 
             /** The message expiration date. */
-            fun expiresAt(expiresAt: String?) = apply { this.expiresAt = expiresAt }
+            fun expiresAt(expiresAt: String) = expiresAt(JsonField.of(expiresAt))
 
             /** The message expiration date. */
-            fun expiresAt(expiresAt: Optional<String>) = expiresAt(expiresAt.orElse(null))
+            fun expiresAt(expiresAt: JsonField<String>) = apply { this.expiresAt = expiresAt }
 
             /** The Sender ID. */
-            fun from(from: String?) = apply { this.from = from }
+            fun from(from: String) = from(JsonField.of(from))
 
             /** The Sender ID. */
-            fun from(from: Optional<String>) = from(from.orElse(null))
+            fun from(from: JsonField<String>) = apply { this.from = from }
 
             /** The variables to be replaced in the template. */
-            fun variables(variables: Variables?) = apply { this.variables = variables }
+            fun variables(variables: Variables) = variables(JsonField.of(variables))
 
             /** The variables to be replaced in the template. */
-            fun variables(variables: Optional<Variables>) = variables(variables.orElse(null))
+            fun variables(variables: JsonField<Variables>) = apply { this.variables = variables }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -242,39 +329,65 @@ constructor(
         /** The template identifier. */
         fun templateId(templateId: String) = apply { body.templateId(templateId) }
 
+        /** The template identifier. */
+        fun templateId(templateId: JsonField<String>) = apply { body.templateId(templateId) }
+
         /** The recipient's phone number. */
         fun to(to: String) = apply { body.to(to) }
 
-        /** The callback URL. */
-        fun callbackUrl(callbackUrl: String?) = apply { body.callbackUrl(callbackUrl) }
+        /** The recipient's phone number. */
+        fun to(to: JsonField<String>) = apply { body.to(to) }
 
         /** The callback URL. */
-        fun callbackUrl(callbackUrl: Optional<String>) = callbackUrl(callbackUrl.orElse(null))
+        fun callbackUrl(callbackUrl: String) = apply { body.callbackUrl(callbackUrl) }
+
+        /** The callback URL. */
+        fun callbackUrl(callbackUrl: JsonField<String>) = apply { body.callbackUrl(callbackUrl) }
 
         /** A unique, user-defined identifier that will be included in webhook events. */
-        fun correlationId(correlationId: String?) = apply { body.correlationId(correlationId) }
+        fun correlationId(correlationId: String) = apply { body.correlationId(correlationId) }
 
         /** A unique, user-defined identifier that will be included in webhook events. */
-        fun correlationId(correlationId: Optional<String>) =
-            correlationId(correlationId.orElse(null))
+        fun correlationId(correlationId: JsonField<String>) = apply {
+            body.correlationId(correlationId)
+        }
 
         /** The message expiration date. */
-        fun expiresAt(expiresAt: String?) = apply { body.expiresAt(expiresAt) }
+        fun expiresAt(expiresAt: String) = apply { body.expiresAt(expiresAt) }
 
         /** The message expiration date. */
-        fun expiresAt(expiresAt: Optional<String>) = expiresAt(expiresAt.orElse(null))
+        fun expiresAt(expiresAt: JsonField<String>) = apply { body.expiresAt(expiresAt) }
 
         /** The Sender ID. */
-        fun from(from: String?) = apply { body.from(from) }
+        fun from(from: String) = apply { body.from(from) }
 
         /** The Sender ID. */
-        fun from(from: Optional<String>) = from(from.orElse(null))
+        fun from(from: JsonField<String>) = apply { body.from(from) }
 
         /** The variables to be replaced in the template. */
-        fun variables(variables: Variables?) = apply { body.variables(variables) }
+        fun variables(variables: Variables) = apply { body.variables(variables) }
 
         /** The variables to be replaced in the template. */
-        fun variables(variables: Optional<Variables>) = variables(variables.orElse(null))
+        fun variables(variables: JsonField<Variables>) = apply { body.variables(variables) }
+
+        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
+            body.additionalProperties(additionalBodyProperties)
+        }
+
+        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
+            body.putAdditionalProperty(key, value)
+        }
+
+        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
+            apply {
+                body.putAllAdditionalProperties(additionalBodyProperties)
+            }
+
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
+
+        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
+            body.removeAllAdditionalProperties(keys)
+        }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -374,25 +487,6 @@ constructor(
             additionalQueryParams.removeAll(keys)
         }
 
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            body.additionalProperties(additionalBodyProperties)
-        }
-
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            body.putAdditionalProperty(key, value)
-        }
-
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
-            apply {
-                body.putAllAdditionalProperties(additionalBodyProperties)
-            }
-
-        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
-
-        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            body.removeAllAdditionalProperties(keys)
-        }
-
         fun build(): TransactionalSendParams =
             TransactionalSendParams(
                 body.build(),
@@ -413,6 +507,14 @@ constructor(
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): Variables = apply {
+            if (!validated) {
+                validated = true
+            }
+        }
 
         fun toBuilder() = Builder().from(this)
 

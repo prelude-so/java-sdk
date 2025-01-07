@@ -53,18 +53,18 @@ private constructor(
     fun requestId(): Optional<String> = Optional.ofNullable(requestId.getNullable("request_id"))
 
     /** The verification identifier. */
-    @JsonProperty("id") @ExcludeMissing fun _id() = id
+    @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
     /** The method used for verifying this phone number. */
-    @JsonProperty("method") @ExcludeMissing fun _method() = method
+    @JsonProperty("method") @ExcludeMissing fun _method(): JsonField<Method> = method
 
     /** The status of the verification. */
-    @JsonProperty("status") @ExcludeMissing fun _status() = status
+    @JsonProperty("status") @ExcludeMissing fun _status(): JsonField<Status> = status
 
     /** The metadata for this verification. */
-    @JsonProperty("metadata") @ExcludeMissing fun _metadata() = metadata
+    @JsonProperty("metadata") @ExcludeMissing fun _metadata(): JsonField<Metadata> = metadata
 
-    @JsonProperty("request_id") @ExcludeMissing fun _requestId() = requestId
+    @JsonProperty("request_id") @ExcludeMissing fun _requestId(): JsonField<String> = requestId
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -92,9 +92,9 @@ private constructor(
 
     class Builder {
 
-        private var id: JsonField<String> = JsonMissing.of()
-        private var method: JsonField<Method> = JsonMissing.of()
-        private var status: JsonField<Status> = JsonMissing.of()
+        private var id: JsonField<String>? = null
+        private var method: JsonField<Method>? = null
+        private var status: JsonField<Status>? = null
         private var metadata: JsonField<Metadata> = JsonMissing.of()
         private var requestId: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -158,9 +158,9 @@ private constructor(
 
         fun build(): VerificationCreateResponse =
             VerificationCreateResponse(
-                id,
-                method,
-                status,
+                checkNotNull(id) { "`id` is required but was not set" },
+                checkNotNull(method) { "`method` is required but was not set" },
+                checkNotNull(status) { "`status` is required but was not set" },
                 metadata,
                 requestId,
                 additionalProperties.toImmutable(),
@@ -296,7 +296,9 @@ private constructor(
         fun correlationId(): Optional<String> =
             Optional.ofNullable(correlationId.getNullable("correlation_id"))
 
-        @JsonProperty("correlation_id") @ExcludeMissing fun _correlationId() = correlationId
+        @JsonProperty("correlation_id")
+        @ExcludeMissing
+        fun _correlationId(): JsonField<String> = correlationId
 
         @JsonAnyGetter
         @ExcludeMissing

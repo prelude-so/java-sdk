@@ -10,6 +10,7 @@ import java.util.Objects
 import so.prelude.sdk.core.Enum
 import so.prelude.sdk.core.ExcludeMissing
 import so.prelude.sdk.core.JsonField
+import so.prelude.sdk.core.JsonMissing
 import so.prelude.sdk.core.JsonValue
 import so.prelude.sdk.core.NoAutoDetect
 import so.prelude.sdk.core.http.Headers
@@ -32,11 +33,17 @@ constructor(
     /** The target. Currently this can only be an E.164 formatted phone number. */
     fun target(): Target = body.target()
 
+    /** The OTP code to validate. */
+    fun _code(): JsonField<String> = body._code()
+
+    /** The target. Currently this can only be an E.164 formatted phone number. */
+    fun _target(): JsonField<Target> = body._target()
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
+
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
     @JvmSynthetic internal fun getBody(): VerificationCheckBody = body
 
@@ -48,21 +55,41 @@ constructor(
     class VerificationCheckBody
     @JsonCreator
     internal constructor(
-        @JsonProperty("code") private val code: String,
-        @JsonProperty("target") private val target: Target,
+        @JsonProperty("code")
+        @ExcludeMissing
+        private val code: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("target")
+        @ExcludeMissing
+        private val target: JsonField<Target> = JsonMissing.of(),
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The OTP code to validate. */
-        @JsonProperty("code") fun code(): String = code
+        fun code(): String = code.getRequired("code")
 
         /** The target. Currently this can only be an E.164 formatted phone number. */
-        @JsonProperty("target") fun target(): Target = target
+        fun target(): Target = target.getRequired("target")
+
+        /** The OTP code to validate. */
+        @JsonProperty("code") @ExcludeMissing fun _code(): JsonField<String> = code
+
+        /** The target. Currently this can only be an E.164 formatted phone number. */
+        @JsonProperty("target") @ExcludeMissing fun _target(): JsonField<Target> = target
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): VerificationCheckBody = apply {
+            if (!validated) {
+                code()
+                target().validate()
+                validated = true
+            }
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -73,8 +100,8 @@ constructor(
 
         class Builder {
 
-            private var code: String? = null
-            private var target: Target? = null
+            private var code: JsonField<String>? = null
+            private var target: JsonField<Target>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -85,10 +112,16 @@ constructor(
             }
 
             /** The OTP code to validate. */
-            fun code(code: String) = apply { this.code = code }
+            fun code(code: String) = code(JsonField.of(code))
+
+            /** The OTP code to validate. */
+            fun code(code: JsonField<String>) = apply { this.code = code }
 
             /** The target. Currently this can only be an E.164 formatted phone number. */
-            fun target(target: Target) = apply { this.target = target }
+            fun target(target: Target) = target(JsonField.of(target))
+
+            /** The target. Currently this can only be an E.164 formatted phone number. */
+            fun target(target: JsonField<Target>) = apply { this.target = target }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -159,8 +192,33 @@ constructor(
         /** The OTP code to validate. */
         fun code(code: String) = apply { body.code(code) }
 
+        /** The OTP code to validate. */
+        fun code(code: JsonField<String>) = apply { body.code(code) }
+
         /** The target. Currently this can only be an E.164 formatted phone number. */
         fun target(target: Target) = apply { body.target(target) }
+
+        /** The target. Currently this can only be an E.164 formatted phone number. */
+        fun target(target: JsonField<Target>) = apply { body.target(target) }
+
+        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
+            body.additionalProperties(additionalBodyProperties)
+        }
+
+        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
+            body.putAdditionalProperty(key, value)
+        }
+
+        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
+            apply {
+                body.putAllAdditionalProperties(additionalBodyProperties)
+            }
+
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
+
+        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
+            body.removeAllAdditionalProperties(keys)
+        }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -260,25 +318,6 @@ constructor(
             additionalQueryParams.removeAll(keys)
         }
 
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            body.additionalProperties(additionalBodyProperties)
-        }
-
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            body.putAdditionalProperty(key, value)
-        }
-
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
-            apply {
-                body.putAllAdditionalProperties(additionalBodyProperties)
-            }
-
-        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
-
-        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            body.removeAllAdditionalProperties(keys)
-        }
-
         fun build(): VerificationCheckParams =
             VerificationCheckParams(
                 body.build(),
@@ -292,21 +331,39 @@ constructor(
     class Target
     @JsonCreator
     private constructor(
-        @JsonProperty("type") private val type: Type,
-        @JsonProperty("value") private val value: String,
+        @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
+        @JsonProperty("value")
+        @ExcludeMissing
+        private val value: JsonField<String> = JsonMissing.of(),
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The type of the target. Currently this can only be "phone_number". */
-        @JsonProperty("type") fun type(): Type = type
+        fun type(): Type = type.getRequired("type")
 
         /** An E.164 formatted phone number to verify. */
-        @JsonProperty("value") fun value(): String = value
+        fun value(): String = value.getRequired("value")
+
+        /** The type of the target. Currently this can only be "phone_number". */
+        @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
+
+        /** An E.164 formatted phone number to verify. */
+        @JsonProperty("value") @ExcludeMissing fun _value(): JsonField<String> = value
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): Target = apply {
+            if (!validated) {
+                type()
+                value()
+                validated = true
+            }
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -317,8 +374,8 @@ constructor(
 
         class Builder {
 
-            private var type: Type? = null
-            private var value: String? = null
+            private var type: JsonField<Type>? = null
+            private var value: JsonField<String>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -329,10 +386,16 @@ constructor(
             }
 
             /** The type of the target. Currently this can only be "phone_number". */
-            fun type(type: Type) = apply { this.type = type }
+            fun type(type: Type) = type(JsonField.of(type))
+
+            /** The type of the target. Currently this can only be "phone_number". */
+            fun type(type: JsonField<Type>) = apply { this.type = type }
 
             /** An E.164 formatted phone number to verify. */
-            fun value(value: String) = apply { this.value = value }
+            fun value(value: String) = value(JsonField.of(value))
+
+            /** An E.164 formatted phone number to verify. */
+            fun value(value: JsonField<String>) = apply { this.value = value }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
