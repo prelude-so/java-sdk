@@ -18,6 +18,10 @@ import so.prelude.sdk.core.immutableEmptyMap
 import so.prelude.sdk.core.toImmutable
 import so.prelude.sdk.errors.PreludeInvalidDataException
 
+/**
+ * Once the user with a trustworthy phone number demonstrates authentic behavior, call this endpoint
+ * to report their authenticity to our systems.
+ */
 class WatchFeedBackParams
 constructor(
     private val body: WatchFeedBackBody,
