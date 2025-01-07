@@ -16,6 +16,7 @@ import so.prelude.sdk.core.http.QueryParams
 import so.prelude.sdk.core.immutableEmptyMap
 import so.prelude.sdk.core.toImmutable
 
+/** Send a transactional message to your user. */
 class TransactionalSendParams
 constructor(
     private val body: TransactionalSendBody,

@@ -19,6 +19,11 @@ import so.prelude.sdk.core.immutableEmptyMap
 import so.prelude.sdk.core.toImmutable
 import so.prelude.sdk.errors.PreludeInvalidDataException
 
+/**
+ * Create a new verification for a specific phone number. If another non-expired verification exists
+ * (the request is performed within the verification window), this endpoint will perform a retry
+ * instead.
+ */
 class VerificationCreateParams
 constructor(
     private val body: VerificationCreateBody,

@@ -18,6 +18,7 @@ import so.prelude.sdk.core.immutableEmptyMap
 import so.prelude.sdk.core.toImmutable
 import so.prelude.sdk.errors.PreludeInvalidDataException
 
+/** Check the validity of a verification code. */
 class VerificationCheckParams
 constructor(
     private val body: VerificationCheckBody,
