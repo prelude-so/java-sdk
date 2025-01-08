@@ -67,7 +67,15 @@ class ServiceParamsTest {
                 )
                 .options(
                     VerificationCreateParams.Options.builder()
-                        .appRealm("app_realm")
+                        .appRealm(
+                            VerificationCreateParams.Options.AppRealm.builder()
+                                .platform(
+                                    VerificationCreateParams.Options.AppRealm.Platform.ANDROID
+                                )
+                                .value("value")
+                                .build()
+                        )
+                        .codeSize(5L)
                         .customCode("custom_code")
                         .locale("el-GR")
                         .senderId("sender_id")
