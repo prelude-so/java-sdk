@@ -694,7 +694,10 @@ constructor(
     private constructor(
         @JsonProperty("app_realm")
         @ExcludeMissing
-        private val appRealm: JsonField<String> = JsonMissing.of(),
+        private val appRealm: JsonField<AppRealm> = JsonMissing.of(),
+        @JsonProperty("code_size")
+        @ExcludeMissing
+        private val codeSize: JsonField<Long> = JsonMissing.of(),
         @JsonProperty("custom_code")
         @ExcludeMissing
         private val customCode: JsonField<String> = JsonMissing.of(),
@@ -712,10 +715,16 @@ constructor(
     ) {
 
         /**
-         * The Android SMS Retriever API hash code that identifies your app. This allows you to
-         * automatically retrieve and fill the OTP code on Android devices.
+         * This allows you to automatically retrieve and fill the OTP code on mobile apps. Currently
+         * only Android devices are supported.
          */
-        fun appRealm(): Optional<String> = Optional.ofNullable(appRealm.getNullable("app_realm"))
+        fun appRealm(): Optional<AppRealm> = Optional.ofNullable(appRealm.getNullable("app_realm"))
+
+        /**
+         * The size of the code generated. It should be between 4 and 8. Defaults to the code size
+         * specified from the Dashboard.
+         */
+        fun codeSize(): Optional<Long> = Optional.ofNullable(codeSize.getNullable("code_size"))
 
         /**
          * The custom code to use for OTP verification. This feature is only available for
@@ -743,10 +752,16 @@ constructor(
             Optional.ofNullable(templateId.getNullable("template_id"))
 
         /**
-         * The Android SMS Retriever API hash code that identifies your app. This allows you to
-         * automatically retrieve and fill the OTP code on Android devices.
+         * This allows you to automatically retrieve and fill the OTP code on mobile apps. Currently
+         * only Android devices are supported.
          */
-        @JsonProperty("app_realm") @ExcludeMissing fun _appRealm(): JsonField<String> = appRealm
+        @JsonProperty("app_realm") @ExcludeMissing fun _appRealm(): JsonField<AppRealm> = appRealm
+
+        /**
+         * The size of the code generated. It should be between 4 and 8. Defaults to the code size
+         * specified from the Dashboard.
+         */
+        @JsonProperty("code_size") @ExcludeMissing fun _codeSize(): JsonField<Long> = codeSize
 
         /**
          * The custom code to use for OTP verification. This feature is only available for
@@ -783,7 +798,8 @@ constructor(
 
         fun validate(): Options = apply {
             if (!validated) {
-                appRealm()
+                appRealm().map { it.validate() }
+                codeSize()
                 customCode()
                 locale()
                 senderId()
@@ -801,7 +817,8 @@ constructor(
 
         class Builder {
 
-            private var appRealm: JsonField<String> = JsonMissing.of()
+            private var appRealm: JsonField<AppRealm> = JsonMissing.of()
+            private var codeSize: JsonField<Long> = JsonMissing.of()
             private var customCode: JsonField<String> = JsonMissing.of()
             private var locale: JsonField<String> = JsonMissing.of()
             private var senderId: JsonField<String> = JsonMissing.of()
@@ -811,6 +828,7 @@ constructor(
             @JvmSynthetic
             internal fun from(options: Options) = apply {
                 appRealm = options.appRealm
+                codeSize = options.codeSize
                 customCode = options.customCode
                 locale = options.locale
                 senderId = options.senderId
@@ -819,16 +837,28 @@ constructor(
             }
 
             /**
-             * The Android SMS Retriever API hash code that identifies your app. This allows you to
-             * automatically retrieve and fill the OTP code on Android devices.
+             * This allows you to automatically retrieve and fill the OTP code on mobile apps.
+             * Currently only Android devices are supported.
              */
-            fun appRealm(appRealm: String) = appRealm(JsonField.of(appRealm))
+            fun appRealm(appRealm: AppRealm) = appRealm(JsonField.of(appRealm))
 
             /**
-             * The Android SMS Retriever API hash code that identifies your app. This allows you to
-             * automatically retrieve and fill the OTP code on Android devices.
+             * This allows you to automatically retrieve and fill the OTP code on mobile apps.
+             * Currently only Android devices are supported.
              */
-            fun appRealm(appRealm: JsonField<String>) = apply { this.appRealm = appRealm }
+            fun appRealm(appRealm: JsonField<AppRealm>) = apply { this.appRealm = appRealm }
+
+            /**
+             * The size of the code generated. It should be between 4 and 8. Defaults to the code
+             * size specified from the Dashboard.
+             */
+            fun codeSize(codeSize: Long) = codeSize(JsonField.of(codeSize))
+
+            /**
+             * The size of the code generated. It should be between 4 and 8. Defaults to the code
+             * size specified from the Dashboard.
+             */
+            fun codeSize(codeSize: JsonField<Long>) = apply { this.codeSize = codeSize }
 
             /**
              * The custom code to use for OTP verification. This feature is only available for
@@ -902,6 +932,7 @@ constructor(
             fun build(): Options =
                 Options(
                     appRealm,
+                    codeSize,
                     customCode,
                     locale,
                     senderId,
@@ -910,22 +941,203 @@ constructor(
                 )
         }
 
+        /**
+         * This allows you to automatically retrieve and fill the OTP code on mobile apps. Currently
+         * only Android devices are supported.
+         */
+        @NoAutoDetect
+        class AppRealm
+        @JsonCreator
+        private constructor(
+            @JsonProperty("platform")
+            @ExcludeMissing
+            private val platform: JsonField<Platform> = JsonMissing.of(),
+            @JsonProperty("value")
+            @ExcludeMissing
+            private val value: JsonField<String> = JsonMissing.of(),
+            @JsonAnySetter
+            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        ) {
+
+            /** The platform the SMS will be sent to. We are currently only supporting "android". */
+            fun platform(): Platform = platform.getRequired("platform")
+
+            /** The Android SMS Retriever API hash code that identifies your app. */
+            fun value(): String = value.getRequired("value")
+
+            /** The platform the SMS will be sent to. We are currently only supporting "android". */
+            @JsonProperty("platform")
+            @ExcludeMissing
+            fun _platform(): JsonField<Platform> = platform
+
+            /** The Android SMS Retriever API hash code that identifies your app. */
+            @JsonProperty("value") @ExcludeMissing fun _value(): JsonField<String> = value
+
+            @JsonAnyGetter
+            @ExcludeMissing
+            fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+            private var validated: Boolean = false
+
+            fun validate(): AppRealm = apply {
+                if (!validated) {
+                    platform()
+                    value()
+                    validated = true
+                }
+            }
+
+            fun toBuilder() = Builder().from(this)
+
+            companion object {
+
+                @JvmStatic fun builder() = Builder()
+            }
+
+            class Builder {
+
+                private var platform: JsonField<Platform>? = null
+                private var value: JsonField<String>? = null
+                private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+                @JvmSynthetic
+                internal fun from(appRealm: AppRealm) = apply {
+                    platform = appRealm.platform
+                    value = appRealm.value
+                    additionalProperties = appRealm.additionalProperties.toMutableMap()
+                }
+
+                /**
+                 * The platform the SMS will be sent to. We are currently only supporting "android".
+                 */
+                fun platform(platform: Platform) = platform(JsonField.of(platform))
+
+                /**
+                 * The platform the SMS will be sent to. We are currently only supporting "android".
+                 */
+                fun platform(platform: JsonField<Platform>) = apply { this.platform = platform }
+
+                /** The Android SMS Retriever API hash code that identifies your app. */
+                fun value(value: String) = value(JsonField.of(value))
+
+                /** The Android SMS Retriever API hash code that identifies your app. */
+                fun value(value: JsonField<String>) = apply { this.value = value }
+
+                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                    this.additionalProperties.clear()
+                    putAllAdditionalProperties(additionalProperties)
+                }
+
+                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                    additionalProperties.put(key, value)
+                }
+
+                fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                    apply {
+                        this.additionalProperties.putAll(additionalProperties)
+                    }
+
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
+
+                fun build(): AppRealm =
+                    AppRealm(
+                        checkNotNull(platform) { "`platform` is required but was not set" },
+                        checkNotNull(value) { "`value` is required but was not set" },
+                        additionalProperties.toImmutable(),
+                    )
+            }
+
+            class Platform
+            @JsonCreator
+            private constructor(
+                private val value: JsonField<String>,
+            ) : Enum {
+
+                @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+                companion object {
+
+                    @JvmField val ANDROID = of("android")
+
+                    @JvmStatic fun of(value: String) = Platform(JsonField.of(value))
+                }
+
+                enum class Known {
+                    ANDROID,
+                }
+
+                enum class Value {
+                    ANDROID,
+                    _UNKNOWN,
+                }
+
+                fun value(): Value =
+                    when (this) {
+                        ANDROID -> Value.ANDROID
+                        else -> Value._UNKNOWN
+                    }
+
+                fun known(): Known =
+                    when (this) {
+                        ANDROID -> Known.ANDROID
+                        else -> throw PreludeInvalidDataException("Unknown Platform: $value")
+                    }
+
+                fun asString(): String = _value().asStringOrThrow()
+
+                override fun equals(other: Any?): Boolean {
+                    if (this === other) {
+                        return true
+                    }
+
+                    return /* spotless:off */ other is Platform && value == other.value /* spotless:on */
+                }
+
+                override fun hashCode() = value.hashCode()
+
+                override fun toString() = value.toString()
+            }
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is AppRealm && platform == other.platform && value == other.value && additionalProperties == other.additionalProperties /* spotless:on */
+            }
+
+            /* spotless:off */
+            private val hashCode: Int by lazy { Objects.hash(platform, value, additionalProperties) }
+            /* spotless:on */
+
+            override fun hashCode(): Int = hashCode
+
+            override fun toString() =
+                "AppRealm{platform=$platform, value=$value, additionalProperties=$additionalProperties}"
+        }
+
         override fun equals(other: Any?): Boolean {
             if (this === other) {
                 return true
             }
 
-            return /* spotless:off */ other is Options && appRealm == other.appRealm && customCode == other.customCode && locale == other.locale && senderId == other.senderId && templateId == other.templateId && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Options && appRealm == other.appRealm && codeSize == other.codeSize && customCode == other.customCode && locale == other.locale && senderId == other.senderId && templateId == other.templateId && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(appRealm, customCode, locale, senderId, templateId, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(appRealm, codeSize, customCode, locale, senderId, templateId, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Options{appRealm=$appRealm, customCode=$customCode, locale=$locale, senderId=$senderId, templateId=$templateId, additionalProperties=$additionalProperties}"
+            "Options{appRealm=$appRealm, codeSize=$codeSize, customCode=$customCode, locale=$locale, senderId=$senderId, templateId=$templateId, additionalProperties=$additionalProperties}"
     }
 
     /** The signals used for anti-fraud. */
