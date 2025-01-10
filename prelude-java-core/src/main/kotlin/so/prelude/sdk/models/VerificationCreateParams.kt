@@ -131,13 +131,15 @@ constructor(
         private var validated: Boolean = false
 
         fun validate(): VerificationCreateBody = apply {
-            if (!validated) {
-                target().validate()
-                metadata().map { it.validate() }
-                options().map { it.validate() }
-                signals().map { it.validate() }
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            target().validate()
+            metadata().ifPresent { it.validate() }
+            options().ifPresent { it.validate() }
+            signals().ifPresent { it.validate() }
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -449,11 +451,13 @@ constructor(
         private var validated: Boolean = false
 
         fun validate(): Target = apply {
-            if (!validated) {
-                type()
-                value()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            type()
+            value()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -615,10 +619,12 @@ constructor(
         private var validated: Boolean = false
 
         fun validate(): Metadata = apply {
-            if (!validated) {
-                correlationId()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            correlationId()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -797,15 +803,17 @@ constructor(
         private var validated: Boolean = false
 
         fun validate(): Options = apply {
-            if (!validated) {
-                appRealm().map { it.validate() }
-                codeSize()
-                customCode()
-                locale()
-                senderId()
-                templateId()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            appRealm().ifPresent { it.validate() }
+            codeSize()
+            customCode()
+            locale()
+            senderId()
+            templateId()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -980,11 +988,13 @@ constructor(
             private var validated: Boolean = false
 
             fun validate(): AppRealm = apply {
-                if (!validated) {
-                    platform()
-                    value()
-                    validated = true
+                if (validated) {
+                    return@apply
                 }
+
+                platform()
+                value()
+                validated = true
             }
 
             fun toBuilder() = Builder().from(this)
@@ -1241,16 +1251,18 @@ constructor(
         private var validated: Boolean = false
 
         fun validate(): Signals = apply {
-            if (!validated) {
-                appVersion()
-                deviceId()
-                deviceModel()
-                devicePlatform()
-                ip()
-                isTrustedUser()
-                osVersion()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            appVersion()
+            deviceId()
+            deviceModel()
+            devicePlatform()
+            ip()
+            isTrustedUser()
+            osVersion()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
