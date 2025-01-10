@@ -116,18 +116,20 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): TransactionalSendResponse = apply {
-        if (!validated) {
-            id()
-            createdAt()
-            expiresAt()
-            templateId()
-            to()
-            variables().validate()
-            callbackUrl()
-            correlationId()
-            from()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        id()
+        createdAt()
+        expiresAt()
+        templateId()
+        to()
+        variables().validate()
+        callbackUrl()
+        correlationId()
+        from()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
@@ -270,9 +272,11 @@ private constructor(
         private var validated: Boolean = false
 
         fun validate(): Variables = apply {
-            if (!validated) {
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
