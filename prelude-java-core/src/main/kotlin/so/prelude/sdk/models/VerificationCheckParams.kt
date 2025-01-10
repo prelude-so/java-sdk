@@ -84,11 +84,13 @@ constructor(
         private var validated: Boolean = false
 
         fun validate(): VerificationCheckBody = apply {
-            if (!validated) {
-                code()
-                target().validate()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            code()
+            target().validate()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -358,11 +360,13 @@ constructor(
         private var validated: Boolean = false
 
         fun validate(): Target = apply {
-            if (!validated) {
-                type()
-                value()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            type()
+            value()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)

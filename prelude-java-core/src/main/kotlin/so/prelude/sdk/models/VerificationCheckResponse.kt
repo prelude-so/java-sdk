@@ -64,13 +64,15 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): VerificationCheckResponse = apply {
-        if (!validated) {
-            status()
-            id()
-            metadata().map { it.validate() }
-            requestId()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        status()
+        id()
+        metadata().ifPresent { it.validate() }
+        requestId()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
@@ -237,10 +239,12 @@ private constructor(
         private var validated: Boolean = false
 
         fun validate(): Metadata = apply {
-            if (!validated) {
-                correlationId()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            correlationId()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
