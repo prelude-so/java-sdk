@@ -57,12 +57,14 @@ private constructor(
     private var validated: Boolean = false
 
     fun validate(): WatchPredictResponse = apply {
-        if (!validated) {
-            id()
-            prediction()
-            reasoning().validate()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        id()
+        prediction()
+        reasoning().validate()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
@@ -227,11 +229,13 @@ private constructor(
         private var validated: Boolean = false
 
         fun validate(): Reasoning = apply {
-            if (!validated) {
-                cause()
-                score()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            cause()
+            score()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)

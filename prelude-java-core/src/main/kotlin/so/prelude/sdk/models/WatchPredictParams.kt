@@ -93,11 +93,13 @@ constructor(
         private var validated: Boolean = false
 
         fun validate(): WatchPredictBody = apply {
-            if (!validated) {
-                target().validate()
-                signals().map { it.validate() }
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            target().validate()
+            signals().ifPresent { it.validate() }
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -377,11 +379,13 @@ constructor(
         private var validated: Boolean = false
 
         fun validate(): Target = apply {
-            if (!validated) {
-                type()
-                value()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            type()
+            value()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -574,13 +578,15 @@ constructor(
         private var validated: Boolean = false
 
         fun validate(): Signals = apply {
-            if (!validated) {
-                deviceId()
-                deviceModel()
-                deviceType()
-                ip()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            deviceId()
+            deviceModel()
+            deviceType()
+            ip()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
