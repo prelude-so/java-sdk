@@ -14,6 +14,7 @@ import so.prelude.sdk.core.JsonField
 import so.prelude.sdk.core.JsonMissing
 import so.prelude.sdk.core.JsonValue
 import so.prelude.sdk.core.NoAutoDetect
+import so.prelude.sdk.core.checkRequired
 import so.prelude.sdk.core.immutableEmptyMap
 import so.prelude.sdk.core.toImmutable
 import so.prelude.sdk.errors.PreludeInvalidDataException
@@ -126,9 +127,9 @@ private constructor(
 
         fun build(): WatchPredictResponse =
             WatchPredictResponse(
-                checkNotNull(id) { "`id` is required but was not set" },
-                checkNotNull(prediction) { "`prediction` is required but was not set" },
-                checkNotNull(reasoning) { "`reasoning` is required but was not set" },
+                checkRequired("id", id),
+                checkRequired("prediction", prediction),
+                checkRequired("reasoning", reasoning),
                 additionalProperties.toImmutable(),
             )
     }

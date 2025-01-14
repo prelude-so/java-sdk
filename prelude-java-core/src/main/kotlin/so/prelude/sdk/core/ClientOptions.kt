@@ -159,8 +159,8 @@ private constructor(
         fun fromEnv() = apply { System.getenv("API_TOKEN")?.let { apiToken(it) } }
 
         fun build(): ClientOptions {
-            checkNotNull(httpClient) { "`httpClient` is required but was not set" }
-            checkNotNull(apiToken) { "`apiToken` is required but was not set" }
+            checkRequired("httpClient", httpClient)
+            checkRequired("apiToken", apiToken)
 
             val headers = Headers.builder()
             val queryParams = QueryParams.builder()

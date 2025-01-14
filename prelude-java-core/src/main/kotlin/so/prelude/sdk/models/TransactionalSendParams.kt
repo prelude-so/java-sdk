@@ -13,6 +13,7 @@ import so.prelude.sdk.core.JsonField
 import so.prelude.sdk.core.JsonMissing
 import so.prelude.sdk.core.JsonValue
 import so.prelude.sdk.core.NoAutoDetect
+import so.prelude.sdk.core.checkRequired
 import so.prelude.sdk.core.http.Headers
 import so.prelude.sdk.core.http.QueryParams
 import so.prelude.sdk.core.immutableEmptyMap
@@ -278,8 +279,8 @@ constructor(
 
             fun build(): TransactionalSendBody =
                 TransactionalSendBody(
-                    checkNotNull(templateId) { "`templateId` is required but was not set" },
-                    checkNotNull(to) { "`to` is required but was not set" },
+                    checkRequired("templateId", templateId),
+                    checkRequired("to", to),
                     callbackUrl,
                     correlationId,
                     expiresAt,
