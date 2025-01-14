@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.0-beta.3 (2025-01-14)
+
+Full Changelog: [v0.1.0-beta.2...v0.1.0-beta.3](https://github.com/prelude-so/java-sdk/compare/v0.1.0-beta.2...v0.1.0-beta.3)
+
+### Chores
+
+* remove custom code ([cfb03ee](https://github.com/prelude-so/java-sdk/commit/cfb03ee0d9af070198b799b6d8731f4f878140be))
+
 ## 0.1.0-beta.2 (2025-01-14)
 
 Full Changelog: [v0.1.0-beta.1...v0.1.0-beta.2](https://github.com/prelude-so/java-sdk/compare/v0.1.0-beta.1...v0.1.0-beta.2)
