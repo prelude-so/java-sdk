@@ -14,6 +14,7 @@ import so.prelude.sdk.core.JsonField
 import so.prelude.sdk.core.JsonMissing
 import so.prelude.sdk.core.JsonValue
 import so.prelude.sdk.core.NoAutoDetect
+import so.prelude.sdk.core.checkRequired
 import so.prelude.sdk.core.immutableEmptyMap
 import so.prelude.sdk.core.toImmutable
 
@@ -243,12 +244,12 @@ private constructor(
 
         fun build(): TransactionalSendResponse =
             TransactionalSendResponse(
-                checkNotNull(id) { "`id` is required but was not set" },
-                checkNotNull(createdAt) { "`createdAt` is required but was not set" },
-                checkNotNull(expiresAt) { "`expiresAt` is required but was not set" },
-                checkNotNull(templateId) { "`templateId` is required but was not set" },
-                checkNotNull(to) { "`to` is required but was not set" },
-                checkNotNull(variables) { "`variables` is required but was not set" },
+                checkRequired("id", id),
+                checkRequired("createdAt", createdAt),
+                checkRequired("expiresAt", expiresAt),
+                checkRequired("templateId", templateId),
+                checkRequired("to", to),
+                checkRequired("variables", variables),
                 callbackUrl,
                 correlationId,
                 from,

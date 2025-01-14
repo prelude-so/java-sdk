@@ -14,6 +14,7 @@ import so.prelude.sdk.core.JsonField
 import so.prelude.sdk.core.JsonMissing
 import so.prelude.sdk.core.JsonValue
 import so.prelude.sdk.core.NoAutoDetect
+import so.prelude.sdk.core.checkRequired
 import so.prelude.sdk.core.immutableEmptyMap
 import so.prelude.sdk.core.toImmutable
 import so.prelude.sdk.errors.PreludeInvalidDataException
@@ -142,7 +143,7 @@ private constructor(
 
         fun build(): VerificationCheckResponse =
             VerificationCheckResponse(
-                checkNotNull(status) { "`status` is required but was not set" },
+                checkRequired("status", status),
                 id,
                 metadata,
                 requestId,
