@@ -1,61 +1,47 @@
+import com.vanniktech.maven.publish.MavenPublishBaseExtension
+import com.vanniktech.maven.publish.SonatypeHost
+
 plugins {
-    `maven-publish`
-    signing
+    id("com.vanniktech.maven.publish")
 }
 
-configure<PublishingExtension> {
-    publications {
-        register<MavenPublication>("maven") {
-            from(components["java"])
+repositories {
+    gradlePluginPortal()
+    mavenCentral()
+}
 
-            pom {
-                name.set("Prelude API")
-                description.set("The Prelude API allows you to send messages to your users.")
-                url.set("https://docs.prelude.so")
+extra["signingInMemoryKey"] = System.getenv("GPG_SIGNING_KEY")
+extra["signingInMemoryKeyId"] = System.getenv("GPG_SIGNING_KEY_ID")
+extra["signingInMemoryKeyPassword"] = System.getenv("GPG_SIGNING_PASSWORD")
 
-                licenses {
-                    license {
-                        name.set("Apache-2.0")
-                    }
-                }
+configure<MavenPublishBaseExtension> {
+    signAllPublications()
+    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
 
-                developers {
-                    developer {
-                        name.set("Prelude")
-                        email.set("hello@prelude.so")
-                    }
-                }
+    coordinates(project.group.toString(), project.name, project.version.toString())
 
-                scm {
-                    connection.set("scm:git:git://github.com/prelude-so/java-sdk.git")
-                    developerConnection.set("scm:git:git://github.com/prelude-so/java-sdk.git")
-                    url.set("https://github.com/prelude-so/java-sdk")
-                }
+    pom {
+        name.set("Prelude API")
+        description.set("The Prelude API allows you to send messages to your users.")
+        url.set("https://docs.prelude.so")
 
-                versionMapping {
-                    allVariants {
-                        fromResolutionResult()
-                    }
-                }
+        licenses {
+            license {
+                name.set("Apache-2.0")
             }
         }
-    }
-}
 
-signing {
-    val signingKeyId = System.getenv("GPG_SIGNING_KEY_ID")?.ifBlank { null }
-    val signingKey = System.getenv("GPG_SIGNING_KEY")?.ifBlank { null }
-    val signingPassword = System.getenv("GPG_SIGNING_PASSWORD")?.ifBlank { null }
-    if (signingKey != null && signingPassword != null) {
-        useInMemoryPgpKeys(
-            signingKeyId,
-            signingKey,
-            signingPassword,
-        )
-        sign(publishing.publications["maven"])
-    }
-}
+        developers {
+            developer {
+                name.set("Prelude")
+                email.set("hello@prelude.so")
+            }
+        }
 
-tasks.named("publish") {
-    dependsOn(":closeAndReleaseSonatypeStagingRepository")
+        scm {
+            connection.set("scm:git:git://github.com/prelude-so/java-sdk.git")
+            developerConnection.set("scm:git:git://github.com/prelude-so/java-sdk.git")
+            url.set("https://github.com/prelude-so/java-sdk")
+        }
+    }
 }
