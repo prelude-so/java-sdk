@@ -36,6 +36,9 @@ constructor(
     /** The target. Currently this can only be an E.164 formatted phone number. */
     fun target(): Target = body.target()
 
+    /** The identifier of the dispatch that came from the front-end SDK. */
+    fun dispatchId(): Optional<String> = body.dispatchId()
+
     /**
      * The metadata for this verification. This object will be returned with every response or
      * webhook sent that refers to this verification.
@@ -50,6 +53,9 @@ constructor(
 
     /** The target. Currently this can only be an E.164 formatted phone number. */
     fun _target(): JsonField<Target> = body._target()
+
+    /** The identifier of the dispatch that came from the front-end SDK. */
+    fun _dispatchId(): JsonField<String> = body._dispatchId()
 
     /**
      * The metadata for this verification. This object will be returned with every response or
@@ -82,6 +88,9 @@ constructor(
         @JsonProperty("target")
         @ExcludeMissing
         private val target: JsonField<Target> = JsonMissing.of(),
+        @JsonProperty("dispatch_id")
+        @ExcludeMissing
+        private val dispatchId: JsonField<String> = JsonMissing.of(),
         @JsonProperty("metadata")
         @ExcludeMissing
         private val metadata: JsonField<Metadata> = JsonMissing.of(),
@@ -98,6 +107,10 @@ constructor(
         /** The target. Currently this can only be an E.164 formatted phone number. */
         fun target(): Target = target.getRequired("target")
 
+        /** The identifier of the dispatch that came from the front-end SDK. */
+        fun dispatchId(): Optional<String> =
+            Optional.ofNullable(dispatchId.getNullable("dispatch_id"))
+
         /**
          * The metadata for this verification. This object will be returned with every response or
          * webhook sent that refers to this verification.
@@ -112,6 +125,11 @@ constructor(
 
         /** The target. Currently this can only be an E.164 formatted phone number. */
         @JsonProperty("target") @ExcludeMissing fun _target(): JsonField<Target> = target
+
+        /** The identifier of the dispatch that came from the front-end SDK. */
+        @JsonProperty("dispatch_id")
+        @ExcludeMissing
+        fun _dispatchId(): JsonField<String> = dispatchId
 
         /**
          * The metadata for this verification. This object will be returned with every response or
@@ -137,6 +155,7 @@ constructor(
             }
 
             target().validate()
+            dispatchId()
             metadata().ifPresent { it.validate() }
             options().ifPresent { it.validate() }
             signals().ifPresent { it.validate() }
@@ -153,6 +172,7 @@ constructor(
         class Builder {
 
             private var target: JsonField<Target>? = null
+            private var dispatchId: JsonField<String> = JsonMissing.of()
             private var metadata: JsonField<Metadata> = JsonMissing.of()
             private var options: JsonField<Options> = JsonMissing.of()
             private var signals: JsonField<Signals> = JsonMissing.of()
@@ -161,6 +181,7 @@ constructor(
             @JvmSynthetic
             internal fun from(verificationCreateBody: VerificationCreateBody) = apply {
                 target = verificationCreateBody.target
+                dispatchId = verificationCreateBody.dispatchId
                 metadata = verificationCreateBody.metadata
                 options = verificationCreateBody.options
                 signals = verificationCreateBody.signals
@@ -172,6 +193,12 @@ constructor(
 
             /** The target. Currently this can only be an E.164 formatted phone number. */
             fun target(target: JsonField<Target>) = apply { this.target = target }
+
+            /** The identifier of the dispatch that came from the front-end SDK. */
+            fun dispatchId(dispatchId: String) = dispatchId(JsonField.of(dispatchId))
+
+            /** The identifier of the dispatch that came from the front-end SDK. */
+            fun dispatchId(dispatchId: JsonField<String>) = apply { this.dispatchId = dispatchId }
 
             /**
              * The metadata for this verification. This object will be returned with every response
@@ -219,6 +246,7 @@ constructor(
             fun build(): VerificationCreateBody =
                 VerificationCreateBody(
                     checkRequired("target", target),
+                    dispatchId,
                     metadata,
                     options,
                     signals,
@@ -231,17 +259,17 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is VerificationCreateBody && target == other.target && metadata == other.metadata && options == other.options && signals == other.signals && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is VerificationCreateBody && target == other.target && dispatchId == other.dispatchId && metadata == other.metadata && options == other.options && signals == other.signals && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(target, metadata, options, signals, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(target, dispatchId, metadata, options, signals, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "VerificationCreateBody{target=$target, metadata=$metadata, options=$options, signals=$signals, additionalProperties=$additionalProperties}"
+            "VerificationCreateBody{target=$target, dispatchId=$dispatchId, metadata=$metadata, options=$options, signals=$signals, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -270,6 +298,12 @@ constructor(
 
         /** The target. Currently this can only be an E.164 formatted phone number. */
         fun target(target: JsonField<Target>) = apply { body.target(target) }
+
+        /** The identifier of the dispatch that came from the front-end SDK. */
+        fun dispatchId(dispatchId: String) = apply { body.dispatchId(dispatchId) }
+
+        /** The identifier of the dispatch that came from the front-end SDK. */
+        fun dispatchId(dispatchId: JsonField<String>) = apply { body.dispatchId(dispatchId) }
 
         /**
          * The metadata for this verification. This object will be returned with every response or
