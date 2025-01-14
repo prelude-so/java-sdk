@@ -62,6 +62,7 @@ class ErrorHandlingTest {
                         .value("+30123456789")
                         .build()
                 )
+                .dispatchId("dispatch_id")
                 .metadata(
                     VerificationCreateParams.Metadata.builder()
                         .correlationId("correlation_id")
@@ -125,6 +126,7 @@ class ErrorHandlingTest {
                         .value("+30123456789")
                         .build()
                 )
+                .dispatchId("dispatch_id")
                 .metadata(
                     VerificationCreateParams.Metadata.builder()
                         .correlationId("correlation_id")
@@ -181,6 +183,7 @@ class ErrorHandlingTest {
                         .value("+30123456789")
                         .build()
                 )
+                .dispatchId("dispatch_id")
                 .metadata(
                     VerificationCreateParams.Metadata.builder()
                         .correlationId("correlation_id")
@@ -237,6 +240,7 @@ class ErrorHandlingTest {
                         .value("+30123456789")
                         .build()
                 )
+                .dispatchId("dispatch_id")
                 .metadata(
                     VerificationCreateParams.Metadata.builder()
                         .correlationId("correlation_id")
@@ -297,6 +301,7 @@ class ErrorHandlingTest {
                         .value("+30123456789")
                         .build()
                 )
+                .dispatchId("dispatch_id")
                 .metadata(
                     VerificationCreateParams.Metadata.builder()
                         .correlationId("correlation_id")
@@ -353,6 +358,7 @@ class ErrorHandlingTest {
                         .value("+30123456789")
                         .build()
                 )
+                .dispatchId("dispatch_id")
                 .metadata(
                     VerificationCreateParams.Metadata.builder()
                         .correlationId("correlation_id")
@@ -413,6 +419,7 @@ class ErrorHandlingTest {
                         .value("+30123456789")
                         .build()
                 )
+                .dispatchId("dispatch_id")
                 .metadata(
                     VerificationCreateParams.Metadata.builder()
                         .correlationId("correlation_id")
@@ -469,6 +476,7 @@ class ErrorHandlingTest {
                         .value("+30123456789")
                         .build()
                 )
+                .dispatchId("dispatch_id")
                 .metadata(
                     VerificationCreateParams.Metadata.builder()
                         .correlationId("correlation_id")
@@ -525,6 +533,7 @@ class ErrorHandlingTest {
                         .value("+30123456789")
                         .build()
                 )
+                .dispatchId("dispatch_id")
                 .metadata(
                     VerificationCreateParams.Metadata.builder()
                         .correlationId("correlation_id")
@@ -586,6 +595,7 @@ class ErrorHandlingTest {
                         .value("+30123456789")
                         .build()
                 )
+                .dispatchId("dispatch_id")
                 .metadata(
                     VerificationCreateParams.Metadata.builder()
                         .correlationId("correlation_id")
@@ -641,6 +651,7 @@ class ErrorHandlingTest {
                         .value("+30123456789")
                         .build()
                 )
+                .dispatchId("dispatch_id")
                 .metadata(
                     VerificationCreateParams.Metadata.builder()
                         .correlationId("correlation_id")
