@@ -16,6 +16,7 @@ class VerificationCreateParamsTest {
                     .value("+30123456789")
                     .build()
             )
+            .dispatchId("dispatch_id")
             .metadata(
                 VerificationCreateParams.Metadata.builder().correlationId("correlation_id").build()
             )
@@ -58,6 +59,7 @@ class VerificationCreateParamsTest {
                         .value("+30123456789")
                         .build()
                 )
+                .dispatchId("dispatch_id")
                 .metadata(
                     VerificationCreateParams.Metadata.builder()
                         .correlationId("correlation_id")
@@ -101,6 +103,7 @@ class VerificationCreateParamsTest {
                     .value("+30123456789")
                     .build()
             )
+        assertThat(body.dispatchId()).contains("dispatch_id")
         assertThat(body.metadata())
             .contains(
                 VerificationCreateParams.Metadata.builder().correlationId("correlation_id").build()
