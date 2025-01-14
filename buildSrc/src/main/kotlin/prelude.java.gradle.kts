@@ -10,6 +10,11 @@ repositories {
     mavenCentral()
 }
 
+configure<JavaPluginExtension> {
+    withJavadocJar()
+    withSourcesJar()
+}
+
 configure<SpotlessExtension> {
     java {
         importOrder()
@@ -28,6 +33,10 @@ java {
 tasks.withType<JavaCompile>().configureEach {
     options.compilerArgs.add("-Werror")
     options.release.set(8)
+}
+
+tasks.named<Jar>("javadocJar") {
+    setZip64(true)
 }
 
 tasks.named<Jar>("jar") {
