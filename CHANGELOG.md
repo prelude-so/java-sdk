@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.1.0-beta.2 (2025-01-14)
+
+Full Changelog: [v0.1.0-beta.1...v0.1.0-beta.2](https://github.com/prelude-so/java-sdk/compare/v0.1.0-beta.1...v0.1.0-beta.2)
+
+### Features
+
+* **api:** update via SDK Studio ([#35](https://github.com/prelude-so/java-sdk/issues/35)) ([39dec67](https://github.com/prelude-so/java-sdk/commit/39dec6749e388caf45ff11db92f873c38be1f155))
+
+
+### Chores
+
+* **internal:** version bump ([#37](https://github.com/prelude-so/java-sdk/issues/37)) ([aea3644](https://github.com/prelude-so/java-sdk/commit/aea3644e4d34ff0fc541fdafa1cc5150413210d0))
+
 ## 0.1.0-beta.1 (2025-01-14)
 
 Full Changelog: [v0.1.0-alpha.1...v0.1.0-beta.1](https://github.com/prelude-so/java-sdk/compare/v0.1.0-alpha.1...v0.1.0-beta.1)
