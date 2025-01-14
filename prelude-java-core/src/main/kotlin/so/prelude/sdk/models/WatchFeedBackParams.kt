@@ -13,6 +13,7 @@ import so.prelude.sdk.core.JsonField
 import so.prelude.sdk.core.JsonMissing
 import so.prelude.sdk.core.JsonValue
 import so.prelude.sdk.core.NoAutoDetect
+import so.prelude.sdk.core.checkRequired
 import so.prelude.sdk.core.http.Headers
 import so.prelude.sdk.core.http.QueryParams
 import so.prelude.sdk.core.immutableEmptyMap
@@ -167,8 +168,8 @@ constructor(
 
             fun build(): WatchFeedBackBody =
                 WatchFeedBackBody(
-                    checkNotNull(feedback) { "`feedback` is required but was not set" },
-                    checkNotNull(target) { "`target` is required but was not set" },
+                    checkRequired("feedback", feedback),
+                    checkRequired("target", target),
                     additionalProperties.toImmutable(),
                 )
         }
@@ -445,10 +446,7 @@ constructor(
             }
 
             fun build(): Feedback =
-                Feedback(
-                    checkNotNull(type) { "`type` is required but was not set" },
-                    additionalProperties.toImmutable()
-                )
+                Feedback(checkRequired("type", type), additionalProperties.toImmutable())
         }
 
         class Type
@@ -613,8 +611,8 @@ constructor(
 
             fun build(): Target =
                 Target(
-                    checkNotNull(type) { "`type` is required but was not set" },
-                    checkNotNull(value) { "`value` is required but was not set" },
+                    checkRequired("type", type),
+                    checkRequired("value", value),
                     additionalProperties.toImmutable(),
                 )
         }

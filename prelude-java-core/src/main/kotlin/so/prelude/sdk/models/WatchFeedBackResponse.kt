@@ -12,6 +12,7 @@ import so.prelude.sdk.core.JsonField
 import so.prelude.sdk.core.JsonMissing
 import so.prelude.sdk.core.JsonValue
 import so.prelude.sdk.core.NoAutoDetect
+import so.prelude.sdk.core.checkRequired
 import so.prelude.sdk.core.immutableEmptyMap
 import so.prelude.sdk.core.toImmutable
 
@@ -88,10 +89,7 @@ private constructor(
         }
 
         fun build(): WatchFeedBackResponse =
-            WatchFeedBackResponse(
-                checkNotNull(id) { "`id` is required but was not set" },
-                additionalProperties.toImmutable()
-            )
+            WatchFeedBackResponse(checkRequired("id", id), additionalProperties.toImmutable())
     }
 
     override fun equals(other: Any?): Boolean {
