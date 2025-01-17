@@ -134,6 +134,7 @@ private constructor(
             )
     }
 
+    /** A label indicating the trustworthiness of the phone number. */
     class Prediction
     @JsonCreator
     private constructor(
@@ -304,6 +305,7 @@ private constructor(
                 )
         }
 
+        /** A label explaining why the phone number was classified as not trustworthy */
         class Cause
         @JsonCreator
         private constructor(
