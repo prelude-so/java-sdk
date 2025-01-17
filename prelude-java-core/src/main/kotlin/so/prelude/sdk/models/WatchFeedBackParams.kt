@@ -449,6 +449,10 @@ constructor(
                 Feedback(checkRequired("type", type), additionalProperties.toImmutable())
         }
 
+        /**
+         * `CONFIRM_TARGET` should be sent when you are sure that the user with this target (e.g.
+         * phone number) is trustworthy.
+         */
         class Type
         @JsonCreator
         private constructor(
@@ -617,6 +621,7 @@ constructor(
                 )
         }
 
+        /** The type of the target. Currently this can only be "phone_number". */
         class Type
         @JsonCreator
         private constructor(

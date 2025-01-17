@@ -554,6 +554,7 @@ constructor(
                 )
         }
 
+        /** The type of the target. Currently this can only be "phone_number". */
         class Type
         @JsonCreator
         private constructor(
@@ -1098,6 +1099,7 @@ constructor(
                     )
             }
 
+            /** The platform the SMS will be sent to. We are currently only supporting "android". */
             class Platform
             @JsonCreator
             private constructor(
@@ -1423,6 +1425,7 @@ constructor(
                 )
         }
 
+        /** The type of the user's device. */
         class DevicePlatform
         @JsonCreator
         private constructor(
