@@ -170,6 +170,7 @@ private constructor(
             )
     }
 
+    /** The method used for verifying this phone number. */
     class Method
     @JsonCreator
     private constructor(
@@ -221,6 +222,7 @@ private constructor(
         override fun toString() = value.toString()
     }
 
+    /** The status of the verification. */
     class Status
     @JsonCreator
     private constructor(

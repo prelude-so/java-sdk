@@ -429,6 +429,7 @@ constructor(
                 )
         }
 
+        /** The type of the target. Currently this can only be "phone_number". */
         class Type
         @JsonCreator
         private constructor(

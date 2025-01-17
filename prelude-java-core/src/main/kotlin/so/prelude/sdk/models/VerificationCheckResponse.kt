@@ -151,6 +151,7 @@ private constructor(
             )
     }
 
+    /** The status of the check. */
     class Status
     @JsonCreator
     private constructor(
