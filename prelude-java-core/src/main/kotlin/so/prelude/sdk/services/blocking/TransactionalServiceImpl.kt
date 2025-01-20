@@ -16,7 +16,7 @@ import so.prelude.sdk.models.TransactionalSendParams
 import so.prelude.sdk.models.TransactionalSendResponse
 
 class TransactionalServiceImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : TransactionalService {
 
