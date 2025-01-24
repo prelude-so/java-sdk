@@ -17,6 +17,7 @@ import java.util.function.Function
 import kotlin.math.min
 import kotlin.math.pow
 import so.prelude.sdk.core.RequestOptions
+import so.prelude.sdk.core.checkRequired
 import so.prelude.sdk.errors.PreludeIoException
 
 class RetryingHttpClient
@@ -259,7 +260,7 @@ private constructor(
 
         fun build(): HttpClient =
             RetryingHttpClient(
-                checkNotNull(httpClient) { "`httpClient` is required but was not set" },
+                checkRequired("httpClient", httpClient),
                 clock,
                 maxRetries,
                 idempotencyHeader,
