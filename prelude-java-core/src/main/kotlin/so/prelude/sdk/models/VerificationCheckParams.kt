@@ -22,7 +22,7 @@ import so.prelude.sdk.errors.PreludeInvalidDataException
 
 /** Check the validity of a verification code. */
 class VerificationCheckParams
-constructor(
+private constructor(
     private val body: VerificationCheckBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
@@ -101,7 +101,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var code: JsonField<String>? = null
             private var target: JsonField<Target>? = null
@@ -179,7 +179,7 @@ constructor(
     }
 
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var body: VerificationCheckBody.Builder = VerificationCheckBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
@@ -377,7 +377,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var type: JsonField<Type>? = null
             private var value: JsonField<String>? = null

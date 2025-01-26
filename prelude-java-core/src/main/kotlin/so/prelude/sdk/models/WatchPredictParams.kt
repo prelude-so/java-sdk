@@ -27,7 +27,7 @@ import so.prelude.sdk.errors.PreludeInvalidDataException
  * conjunction with the `watch/feedback` endpoint.
  */
 class WatchPredictParams
-constructor(
+private constructor(
     private val body: WatchPredictBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
@@ -110,7 +110,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var target: JsonField<Target>? = null
             private var signals: JsonField<Signals> = JsonMissing.of()
@@ -194,7 +194,7 @@ constructor(
     }
 
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var body: WatchPredictBody.Builder = WatchPredictBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
@@ -396,7 +396,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var type: JsonField<Type>? = null
             private var value: JsonField<String>? = null
@@ -598,7 +598,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var deviceId: JsonField<String> = JsonMissing.of()
             private var deviceModel: JsonField<String> = JsonMissing.of()
