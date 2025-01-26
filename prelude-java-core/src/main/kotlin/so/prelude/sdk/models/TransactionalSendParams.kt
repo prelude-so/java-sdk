@@ -21,7 +21,7 @@ import so.prelude.sdk.core.toImmutable
 
 /** Send a transactional message to your user. */
 class TransactionalSendParams
-constructor(
+private constructor(
     private val body: TransactionalSendBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
@@ -189,7 +189,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var templateId: JsonField<String>? = null
             private var to: JsonField<String>? = null
@@ -316,7 +316,7 @@ constructor(
     }
 
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var body: TransactionalSendBody.Builder = TransactionalSendBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
@@ -528,7 +528,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 

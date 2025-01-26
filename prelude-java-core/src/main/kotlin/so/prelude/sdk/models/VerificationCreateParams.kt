@@ -27,7 +27,7 @@ import so.prelude.sdk.errors.PreludeInvalidDataException
  * instead.
  */
 class VerificationCreateParams
-constructor(
+private constructor(
     private val body: VerificationCreateBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
@@ -169,7 +169,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var target: JsonField<Target>? = null
             private var dispatchId: JsonField<String> = JsonMissing.of()
@@ -280,7 +280,7 @@ constructor(
     }
 
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var body: VerificationCreateBody.Builder = VerificationCreateBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
@@ -502,7 +502,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var type: JsonField<Type>? = null
             private var value: JsonField<String>? = null
@@ -670,7 +670,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var correlationId: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -859,7 +859,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var appRealm: JsonField<AppRealm> = JsonMissing.of()
             private var codeSize: JsonField<Long> = JsonMissing.of()
@@ -1040,7 +1040,7 @@ constructor(
                 @JvmStatic fun builder() = Builder()
             }
 
-            class Builder {
+            class Builder internal constructor() {
 
                 private var platform: JsonField<Platform>? = null
                 private var value: JsonField<String>? = null
@@ -1309,7 +1309,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var appVersion: JsonField<String> = JsonMissing.of()
             private var deviceId: JsonField<String> = JsonMissing.of()
