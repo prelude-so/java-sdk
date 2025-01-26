@@ -22,6 +22,12 @@ import so.prelude.sdk.services.async.WatchServiceAsync
  */
 interface PreludeClientAsync {
 
+    /**
+     * Returns a version of this client that uses synchronous execution.
+     *
+     * The returned client shares its resources, like its connection pool and thread pools, with
+     * this client.
+     */
     fun sync(): PreludeClient
 
     fun transactional(): TransactionalServiceAsync
