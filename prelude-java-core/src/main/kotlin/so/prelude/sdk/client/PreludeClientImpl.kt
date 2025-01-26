@@ -44,4 +44,6 @@ constructor(
     override fun verification(): VerificationService = verification
 
     override fun watch(): WatchService = watch
+
+    override fun close() = clientOptions.httpClient.close()
 }
