@@ -25,7 +25,7 @@ import so.prelude.sdk.errors.PreludeInvalidDataException
  * to report their authenticity to our systems.
  */
 class WatchFeedBackParams
-constructor(
+private constructor(
     private val body: WatchFeedBackBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
@@ -116,7 +116,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var feedback: JsonField<Feedback>? = null
             private var target: JsonField<Target>? = null
@@ -200,7 +200,7 @@ constructor(
     }
 
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var body: WatchFeedBackBody.Builder = WatchFeedBackBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
@@ -403,7 +403,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var type: JsonField<Type>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -569,7 +569,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var type: JsonField<Type>? = null
             private var value: JsonField<String>? = null
