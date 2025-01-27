@@ -140,6 +140,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [TransactionalSendResponse]. */
     class Builder internal constructor() {
 
         private var id: JsonField<String>? = null
@@ -287,6 +288,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
+        /** A builder for [Variables]. */
         class Builder internal constructor() {
 
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
