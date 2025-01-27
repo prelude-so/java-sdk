@@ -21,6 +21,7 @@ class PreludeOkHttpClientAsync private constructor() {
         @JvmStatic fun fromEnv(): PreludeClientAsync = builder().fromEnv().build()
     }
 
+    /** A builder for [PreludeOkHttpClientAsync]. */
     class Builder internal constructor() {
 
         private var clientOptions: ClientOptions.Builder = ClientOptions.builder()

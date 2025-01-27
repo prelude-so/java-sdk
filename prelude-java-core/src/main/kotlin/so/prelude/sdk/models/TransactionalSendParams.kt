@@ -189,6 +189,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
+        /** A builder for [TransactionalSendBody]. */
         class Builder internal constructor() {
 
             private var templateId: JsonField<String>? = null
@@ -315,6 +316,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [TransactionalSendParams]. */
     @NoAutoDetect
     class Builder internal constructor() {
 
@@ -528,6 +530,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
+        /** A builder for [Variables]. */
         class Builder internal constructor() {
 
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
