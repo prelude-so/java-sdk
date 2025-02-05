@@ -28,7 +28,7 @@ class WatchPredictParamsTest {
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             WatchPredictParams.builder()
                 .target(
@@ -46,7 +46,7 @@ class WatchPredictParamsTest {
                         .build()
                 )
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.target())
             .isEqualTo(
@@ -67,7 +67,7 @@ class WatchPredictParamsTest {
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params =
             WatchPredictParams.builder()
                 .target(
@@ -77,7 +77,7 @@ class WatchPredictParamsTest {
                         .build()
                 )
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.target())
             .isEqualTo(

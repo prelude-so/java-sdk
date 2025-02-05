@@ -25,7 +25,7 @@ class WatchFeedBackParamsTest {
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             WatchFeedBackParams.builder()
                 .feedback(
@@ -40,7 +40,7 @@ class WatchFeedBackParamsTest {
                         .build()
                 )
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.feedback())
             .isEqualTo(
@@ -58,7 +58,7 @@ class WatchFeedBackParamsTest {
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params =
             WatchFeedBackParams.builder()
                 .feedback(
@@ -73,7 +73,7 @@ class WatchFeedBackParamsTest {
                         .build()
                 )
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.feedback())
             .isEqualTo(

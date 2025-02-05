@@ -50,7 +50,7 @@ class VerificationCreateParamsTest {
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             VerificationCreateParams.builder()
                 .target(
@@ -94,7 +94,7 @@ class VerificationCreateParamsTest {
                         .build()
                 )
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.target())
             .isEqualTo(
@@ -139,7 +139,7 @@ class VerificationCreateParamsTest {
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params =
             VerificationCreateParams.builder()
                 .target(
@@ -149,7 +149,7 @@ class VerificationCreateParamsTest {
                         .build()
                 )
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.target())
             .isEqualTo(

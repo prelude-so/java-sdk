@@ -21,7 +21,7 @@ class VerificationCheckParamsTest {
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             VerificationCheckParams.builder()
                 .code("12345")
@@ -32,7 +32,7 @@ class VerificationCheckParamsTest {
                         .build()
                 )
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.code()).isEqualTo("12345")
         assertThat(body.target())
@@ -45,7 +45,7 @@ class VerificationCheckParamsTest {
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params =
             VerificationCheckParams.builder()
                 .code("12345")
@@ -56,7 +56,7 @@ class VerificationCheckParamsTest {
                         .build()
                 )
                 .build()
-        val body = params.getBody()
+        val body = params._body()
         assertThat(body).isNotNull
         assertThat(body.code()).isEqualTo("12345")
         assertThat(body.target())
