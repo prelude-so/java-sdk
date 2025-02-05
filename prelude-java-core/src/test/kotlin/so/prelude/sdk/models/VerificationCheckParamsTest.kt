@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 class VerificationCheckParamsTest {
 
     @Test
-    fun createVerificationCheckParams() {
+    fun create() {
         VerificationCheckParams.builder()
             .code("12345")
             .target(
