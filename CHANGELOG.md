@@ -1,5 +1,41 @@
 # Changelog
 
+## 0.1.0 (2025-02-05)
+
+Full Changelog: [v0.1.0-beta.3...v0.1.0](https://github.com/prelude-so/java-sdk/compare/v0.1.0-beta.3...v0.1.0)
+
+### Features
+
+* **api:** update via SDK Studio ([#59](https://github.com/prelude-so/java-sdk/issues/59)) ([fc804e7](https://github.com/prelude-so/java-sdk/commit/fc804e7de92e09f52ec65d62037d8d0563c096d7))
+* **client:** add `close` method ([#54](https://github.com/prelude-so/java-sdk/issues/54)) ([91ac2e0](https://github.com/prelude-so/java-sdk/commit/91ac2e04eba1d7683ec4e302602e6367c33fe3e3))
+
+
+### Bug Fixes
+
+* **client:** make service impl constructors internal ([#49](https://github.com/prelude-so/java-sdk/issues/49)) ([1ff9060](https://github.com/prelude-so/java-sdk/commit/1ff906090901691aa3ccdf3206b74c740a30a475))
+* **client:** make some classes and constructors non-public ([#57](https://github.com/prelude-so/java-sdk/issues/57)) ([2ebc3ce](https://github.com/prelude-so/java-sdk/commit/2ebc3ce52f68fb30c10a2a99d9276b9381852498))
+
+
+### Chores
+
+* add max retries to test ([#53](https://github.com/prelude-so/java-sdk/issues/53)) ([d75447a](https://github.com/prelude-so/java-sdk/commit/d75447ad34098bdc4696b46a6f16cdc43424f995))
+* **internal:** add and tweak check functions ([#44](https://github.com/prelude-so/java-sdk/issues/44)) ([8b8c645](https://github.com/prelude-so/java-sdk/commit/8b8c645ce1ba7e9184a40bf56fd3d29959d38194))
+* **internal:** codegen related update ([#46](https://github.com/prelude-so/java-sdk/issues/46)) ([62069a1](https://github.com/prelude-so/java-sdk/commit/62069a1fd1b797908a7b0a380633092780e2e6ea))
+* **internal:** remove some unnecessary `constructor` keywords ([2ebc3ce](https://github.com/prelude-so/java-sdk/commit/2ebc3ce52f68fb30c10a2a99d9276b9381852498))
+* **internal:** swap `checkNotNull` to `checkRequired` ([#52](https://github.com/prelude-so/java-sdk/issues/52)) ([42cb5fb](https://github.com/prelude-so/java-sdk/commit/42cb5fb553a97f3fabb51dacce32629ed1cbc7a5))
+* **internal:** tweak client options nullability handling ([8b8c645](https://github.com/prelude-so/java-sdk/commit/8b8c645ce1ba7e9184a40bf56fd3d29959d38194))
+* **internal:** upgrade kotlin compiler and gradle ([#47](https://github.com/prelude-so/java-sdk/issues/47)) ([9537420](https://github.com/prelude-so/java-sdk/commit/9537420b594007dacf13d3bcba31fa3cd3567ed1))
+
+
+### Documentation
+
+* `async` and `sync` method comments ([#56](https://github.com/prelude-so/java-sdk/issues/56)) ([7c195c7](https://github.com/prelude-so/java-sdk/commit/7c195c7f06342c3f159d40ba4be0e31e08970a85))
+* add client documentation ([#55](https://github.com/prelude-so/java-sdk/issues/55)) ([084e901](https://github.com/prelude-so/java-sdk/commit/084e901a083bb4023991cc40d1b39bcf4921499a))
+* add more documentation ([#48](https://github.com/prelude-so/java-sdk/issues/48)) ([5d4606c](https://github.com/prelude-so/java-sdk/commit/5d4606c7a180be5fb11d563d2ee69f4f3ff297ea))
+* builder, enum, and union comments ([#58](https://github.com/prelude-so/java-sdk/issues/58)) ([907f20f](https://github.com/prelude-so/java-sdk/commit/907f20fa13c68b0e44292e258f9c5efde7efd63a))
+* move up requirements section ([#51](https://github.com/prelude-so/java-sdk/issues/51)) ([4c3193d](https://github.com/prelude-so/java-sdk/commit/4c3193d709422f7baf8b39f281b4e36e5d1496f0))
+* update readme ([#50](https://github.com/prelude-so/java-sdk/issues/50)) ([17a2c9a](https://github.com/prelude-so/java-sdk/commit/17a2c9a7a8f7acd08e965ded0c3d0c56ba9f9964))
+
 ## 0.1.0-beta.3 (2025-01-14)
 
 Full Changelog: [v0.1.0-beta.2...v0.1.0-beta.3](https://github.com/prelude-so/java-sdk/compare/v0.1.0-beta.2...v0.1.0-beta.3)
