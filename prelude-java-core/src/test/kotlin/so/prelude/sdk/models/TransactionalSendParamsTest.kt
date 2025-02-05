@@ -17,6 +17,7 @@ class TransactionalSendParamsTest {
             .correlationId("correlation_id")
             .expiresAt("expires_at")
             .from("from")
+            .locale("el-GR")
             .variables(
                 TransactionalSendParams.Variables.builder()
                     .putAdditionalProperty("foo", JsonValue.from("bar"))
@@ -35,6 +36,7 @@ class TransactionalSendParamsTest {
                 .correlationId("correlation_id")
                 .expiresAt("expires_at")
                 .from("from")
+                .locale("el-GR")
                 .variables(
                     TransactionalSendParams.Variables.builder()
                         .putAdditionalProperty("foo", JsonValue.from("bar"))
@@ -49,6 +51,7 @@ class TransactionalSendParamsTest {
         assertThat(body.correlationId()).contains("correlation_id")
         assertThat(body.expiresAt()).contains("expires_at")
         assertThat(body.from()).contains("from")
+        assertThat(body.locale()).contains("el-GR")
         assertThat(body.variables())
             .contains(
                 TransactionalSendParams.Variables.builder()
