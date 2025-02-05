@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 class WatchPredictParamsTest {
 
     @Test
-    fun createWatchPredictParams() {
+    fun create() {
         WatchPredictParams.builder()
             .target(
                 WatchPredictParams.Target.builder()

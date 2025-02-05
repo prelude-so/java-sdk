@@ -9,7 +9,7 @@ import so.prelude.sdk.core.JsonValue
 class TransactionalSendParamsTest {
 
     @Test
-    fun createTransactionalSendParams() {
+    fun create() {
         TransactionalSendParams.builder()
             .templateId("template_01jd1xq0cffycayqtdkdbv4d61")
             .to("+30123456789")

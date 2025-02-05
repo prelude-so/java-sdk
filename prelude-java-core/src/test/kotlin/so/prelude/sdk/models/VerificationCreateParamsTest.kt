@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 class VerificationCreateParamsTest {
 
     @Test
-    fun createVerificationCreateParams() {
+    fun create() {
         VerificationCreateParams.builder()
             .target(
                 VerificationCreateParams.Target.builder()
