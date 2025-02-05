@@ -33,6 +33,7 @@ class TransactionalServiceTest {
                     .correlationId("correlation_id")
                     .expiresAt("expires_at")
                     .from("from")
+                    .locale("el-GR")
                     .variables(
                         TransactionalSendParams.Variables.builder()
                             .putAdditionalProperty("foo", JsonValue.from("bar"))

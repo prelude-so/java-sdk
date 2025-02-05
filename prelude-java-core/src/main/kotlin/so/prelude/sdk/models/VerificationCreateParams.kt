@@ -810,7 +810,7 @@ private constructor(
         /**
          * The custom code to use for OTP verification. This feature is only available for
          * compatibility purposes and subject to Prelude’s approval. Contact us to discuss your use
-         * case.
+         * case. For more details, refer to [Multi Routing](/concepts/multi-routing).
          */
         fun customCode(): Optional<String> =
             Optional.ofNullable(customCode.getNullable("custom_code"))
@@ -847,7 +847,7 @@ private constructor(
         /**
          * The custom code to use for OTP verification. This feature is only available for
          * compatibility purposes and subject to Prelude’s approval. Contact us to discuss your use
-         * case.
+         * case. For more details, refer to [Multi Routing](/concepts/multi-routing).
          */
         @JsonProperty("custom_code")
         @ExcludeMissing
@@ -947,14 +947,14 @@ private constructor(
             /**
              * The custom code to use for OTP verification. This feature is only available for
              * compatibility purposes and subject to Prelude’s approval. Contact us to discuss your
-             * use case.
+             * use case. For more details, refer to [Multi Routing](/concepts/multi-routing).
              */
             fun customCode(customCode: String) = customCode(JsonField.of(customCode))
 
             /**
              * The custom code to use for OTP verification. This feature is only available for
              * compatibility purposes and subject to Prelude’s approval. Contact us to discuss your
-             * use case.
+             * use case. For more details, refer to [Multi Routing](/concepts/multi-routing).
              */
             fun customCode(customCode: JsonField<String>) = apply { this.customCode = customCode }
 

@@ -45,6 +45,14 @@ private constructor(
     /** The Sender ID. */
     fun from(): Optional<String> = body.from()
 
+    /**
+     * A BCP-47 formatted locale string with the language the text message will be sent to. If
+     * there's no locale set, the language will be determined by the country code of the phone
+     * number. If the language specified doesn't exist, the default set on the template will be
+     * used.
+     */
+    fun locale(): Optional<String> = body.locale()
+
     /** The variables to be replaced in the template. */
     fun variables(): Optional<Variables> = body.variables()
 
@@ -65,6 +73,14 @@ private constructor(
 
     /** The Sender ID. */
     fun _from(): JsonField<String> = body._from()
+
+    /**
+     * A BCP-47 formatted locale string with the language the text message will be sent to. If
+     * there's no locale set, the language will be determined by the country code of the phone
+     * number. If the language specified doesn't exist, the default set on the template will be
+     * used.
+     */
+    fun _locale(): JsonField<String> = body._locale()
 
     /** The variables to be replaced in the template. */
     fun _variables(): JsonField<Variables> = body._variables()
@@ -101,6 +117,9 @@ private constructor(
         @JsonProperty("from")
         @ExcludeMissing
         private val from: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("locale")
+        @ExcludeMissing
+        private val locale: JsonField<String> = JsonMissing.of(),
         @JsonProperty("variables")
         @ExcludeMissing
         private val variables: JsonField<Variables> = JsonMissing.of(),
@@ -127,6 +146,14 @@ private constructor(
 
         /** The Sender ID. */
         fun from(): Optional<String> = Optional.ofNullable(from.getNullable("from"))
+
+        /**
+         * A BCP-47 formatted locale string with the language the text message will be sent to. If
+         * there's no locale set, the language will be determined by the country code of the phone
+         * number. If the language specified doesn't exist, the default set on the template will be
+         * used.
+         */
+        fun locale(): Optional<String> = Optional.ofNullable(locale.getNullable("locale"))
 
         /** The variables to be replaced in the template. */
         fun variables(): Optional<Variables> =
@@ -156,6 +183,14 @@ private constructor(
         /** The Sender ID. */
         @JsonProperty("from") @ExcludeMissing fun _from(): JsonField<String> = from
 
+        /**
+         * A BCP-47 formatted locale string with the language the text message will be sent to. If
+         * there's no locale set, the language will be determined by the country code of the phone
+         * number. If the language specified doesn't exist, the default set on the template will be
+         * used.
+         */
+        @JsonProperty("locale") @ExcludeMissing fun _locale(): JsonField<String> = locale
+
         /** The variables to be replaced in the template. */
         @JsonProperty("variables")
         @ExcludeMissing
@@ -178,6 +213,7 @@ private constructor(
             correlationId()
             expiresAt()
             from()
+            locale()
             variables().ifPresent { it.validate() }
             validated = true
         }
@@ -198,6 +234,7 @@ private constructor(
             private var correlationId: JsonField<String> = JsonMissing.of()
             private var expiresAt: JsonField<String> = JsonMissing.of()
             private var from: JsonField<String> = JsonMissing.of()
+            private var locale: JsonField<String> = JsonMissing.of()
             private var variables: JsonField<Variables> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -209,6 +246,7 @@ private constructor(
                 correlationId = transactionalSendBody.correlationId
                 expiresAt = transactionalSendBody.expiresAt
                 from = transactionalSendBody.from
+                locale = transactionalSendBody.locale
                 variables = transactionalSendBody.variables
                 additionalProperties = transactionalSendBody.additionalProperties.toMutableMap()
             }
@@ -253,6 +291,22 @@ private constructor(
             /** The Sender ID. */
             fun from(from: JsonField<String>) = apply { this.from = from }
 
+            /**
+             * A BCP-47 formatted locale string with the language the text message will be sent to.
+             * If there's no locale set, the language will be determined by the country code of the
+             * phone number. If the language specified doesn't exist, the default set on the
+             * template will be used.
+             */
+            fun locale(locale: String) = locale(JsonField.of(locale))
+
+            /**
+             * A BCP-47 formatted locale string with the language the text message will be sent to.
+             * If there's no locale set, the language will be determined by the country code of the
+             * phone number. If the language specified doesn't exist, the default set on the
+             * template will be used.
+             */
+            fun locale(locale: JsonField<String>) = apply { this.locale = locale }
+
             /** The variables to be replaced in the template. */
             fun variables(variables: Variables) = variables(JsonField.of(variables))
 
@@ -286,6 +340,7 @@ private constructor(
                     correlationId,
                     expiresAt,
                     from,
+                    locale,
                     variables,
                     additionalProperties.toImmutable(),
                 )
@@ -296,17 +351,17 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is TransactionalSendBody && templateId == other.templateId && to == other.to && callbackUrl == other.callbackUrl && correlationId == other.correlationId && expiresAt == other.expiresAt && from == other.from && variables == other.variables && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is TransactionalSendBody && templateId == other.templateId && to == other.to && callbackUrl == other.callbackUrl && correlationId == other.correlationId && expiresAt == other.expiresAt && from == other.from && locale == other.locale && variables == other.variables && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(templateId, to, callbackUrl, correlationId, expiresAt, from, variables, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(templateId, to, callbackUrl, correlationId, expiresAt, from, locale, variables, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "TransactionalSendBody{templateId=$templateId, to=$to, callbackUrl=$callbackUrl, correlationId=$correlationId, expiresAt=$expiresAt, from=$from, variables=$variables, additionalProperties=$additionalProperties}"
+            "TransactionalSendBody{templateId=$templateId, to=$to, callbackUrl=$callbackUrl, correlationId=$correlationId, expiresAt=$expiresAt, from=$from, locale=$locale, variables=$variables, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -368,6 +423,22 @@ private constructor(
 
         /** The Sender ID. */
         fun from(from: JsonField<String>) = apply { body.from(from) }
+
+        /**
+         * A BCP-47 formatted locale string with the language the text message will be sent to. If
+         * there's no locale set, the language will be determined by the country code of the phone
+         * number. If the language specified doesn't exist, the default set on the template will be
+         * used.
+         */
+        fun locale(locale: String) = apply { body.locale(locale) }
+
+        /**
+         * A BCP-47 formatted locale string with the language the text message will be sent to. If
+         * there's no locale set, the language will be determined by the country code of the phone
+         * number. If the language specified doesn't exist, the default set on the template will be
+         * used.
+         */
+        fun locale(locale: JsonField<String>) = apply { body.locale(locale) }
 
         /** The variables to be replaced in the template. */
         fun variables(variables: Variables) = apply { body.variables(variables) }
