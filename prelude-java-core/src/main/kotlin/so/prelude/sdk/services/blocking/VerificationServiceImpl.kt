@@ -18,7 +18,7 @@ import so.prelude.sdk.models.VerificationCreateParams
 import so.prelude.sdk.models.VerificationCreateResponse
 
 class VerificationServiceImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : VerificationService {
 

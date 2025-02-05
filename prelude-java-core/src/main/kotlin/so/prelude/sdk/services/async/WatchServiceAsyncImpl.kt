@@ -19,7 +19,7 @@ import so.prelude.sdk.models.WatchPredictParams
 import so.prelude.sdk.models.WatchPredictResponse
 
 class WatchServiceAsyncImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : WatchServiceAsync {
 

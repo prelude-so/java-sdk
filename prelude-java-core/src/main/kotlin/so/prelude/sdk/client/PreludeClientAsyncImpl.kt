@@ -11,8 +11,7 @@ import so.prelude.sdk.services.async.VerificationServiceAsyncImpl
 import so.prelude.sdk.services.async.WatchServiceAsync
 import so.prelude.sdk.services.async.WatchServiceAsyncImpl
 
-class PreludeClientAsyncImpl
-constructor(
+class PreludeClientAsyncImpl(
     private val clientOptions: ClientOptions,
 ) : PreludeClientAsync {
 
@@ -46,4 +45,6 @@ constructor(
     override fun verification(): VerificationServiceAsync = verification
 
     override fun watch(): WatchServiceAsync = watch
+
+    override fun close() = clientOptions.httpClient.close()
 }

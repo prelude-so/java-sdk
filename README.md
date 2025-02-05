@@ -2,45 +2,43 @@
 
 <!-- x-release-please-start-version -->
 
-[![Maven Central](https://img.shields.io/maven-central/v/so.prelude.sdk/prelude-java)](https://central.sonatype.com/artifact/so.prelude.sdk/prelude-java/0.1.0-beta.3)
+[![Maven Central](https://img.shields.io/maven-central/v/so.prelude.sdk/prelude-java)](https://central.sonatype.com/artifact/so.prelude.sdk/prelude-java/0.1.0)
 
 <!-- x-release-please-end -->
 
-The Prelude Java SDK provides convenient access to the Prelude REST API from applications written in Java. It includes helper classes with helpful types and documentation for every request and response property.
-
-The Prelude Java SDK is similar to the Prelude Kotlin SDK but with minor differences that make it more ergonomic for use in Java, such as `Optional` instead of nullable values, `Stream` instead of `Sequence`, and `CompletableFuture` instead of suspend functions.
+The Prelude Java SDK provides convenient access to the Prelude REST API from applications written in Java.
 
 It is generated with [Stainless](https://www.stainlessapi.com/).
 
-## Documentation
+The REST API documentation can be found on [docs.prelude.so](https://docs.prelude.so).
 
-The REST API documentation can be found on [docs.prelude.so](https://docs.prelude.so).
-
----
-
-## Getting started
-
-### Install dependencies
-
-#### Gradle
+## Installation
 
 <!-- x-release-please-start-version -->
 
+### Gradle
+
 ```kotlin
-implementation("so.prelude.sdk:prelude-java:0.1.0-beta.3")
+implementation("so.prelude.sdk:prelude-java:0.1.0")
 ```
 
-#### Maven
+### Maven
 
 ```xml
 <dependency>
     <groupId>so.prelude.sdk</groupId>
     <artifactId>prelude-java</artifactId>
-    <version>0.1.0-beta.3</version>
+    <version>0.1.0</version>
 </dependency>
 ```
 
 <!-- x-release-please-end -->
+
+## Requirements
+
+This library requires Java 8 or later.
+
+## Usage
 
 ### Configure the client
 
@@ -282,7 +280,3 @@ This package generally follows [SemVer](https://semver.org/spec/v2.0.0.html) con
 We take backwards-compatibility seriously and work hard to ensure you can rely on a smooth upgrade experience.
 
 We are keen for your feedback; please open an [issue](https://www.github.com/prelude-so/java-sdk/issues) with questions, bugs, or suggestions.
-
-## Requirements
-
-This library requires Java 8 or later.

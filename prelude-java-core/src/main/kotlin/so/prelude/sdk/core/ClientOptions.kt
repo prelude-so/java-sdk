@@ -35,7 +35,8 @@ private constructor(
         @JvmStatic fun fromEnv(): ClientOptions = builder().fromEnv().build()
     }
 
-    class Builder {
+    /** A builder for [ClientOptions]. */
+    class Builder internal constructor() {
 
         private var httpClient: HttpClient? = null
         private var jsonMapper: JsonMapper = jsonMapper()
@@ -159,8 +160,8 @@ private constructor(
         fun fromEnv() = apply { System.getenv("API_TOKEN")?.let { apiToken(it) } }
 
         fun build(): ClientOptions {
-            checkRequired("httpClient", httpClient)
-            checkRequired("apiToken", apiToken)
+            val httpClient = checkRequired("httpClient", httpClient)
+            val apiToken = checkRequired("apiToken", apiToken)
 
             val headers = Headers.builder()
             val queryParams = QueryParams.builder()
@@ -171,7 +172,7 @@ private constructor(
             headers.put("X-Stainless-Package-Version", getPackageVersion())
             headers.put("X-Stainless-Runtime", "JRE")
             headers.put("X-Stainless-Runtime-Version", getJavaVersion())
-            apiToken?.let {
+            apiToken.let {
                 if (!it.isEmpty()) {
                     headers.put("Authorization", "Bearer $it")
                 }
@@ -180,10 +181,10 @@ private constructor(
             queryParams.replaceAll(this.queryParams.build())
 
             return ClientOptions(
-                httpClient!!,
+                httpClient,
                 PhantomReachableClosingHttpClient(
                     RetryingHttpClient.builder()
-                        .httpClient(httpClient!!)
+                        .httpClient(httpClient)
                         .clock(clock)
                         .maxRetries(maxRetries)
                         .build()
@@ -195,7 +196,7 @@ private constructor(
                 queryParams.build(),
                 responseValidation,
                 maxRetries,
-                apiToken!!,
+                apiToken,
             )
         }
     }

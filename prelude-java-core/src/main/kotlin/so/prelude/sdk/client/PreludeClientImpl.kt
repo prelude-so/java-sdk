@@ -11,8 +11,7 @@ import so.prelude.sdk.services.blocking.VerificationServiceImpl
 import so.prelude.sdk.services.blocking.WatchService
 import so.prelude.sdk.services.blocking.WatchServiceImpl
 
-class PreludeClientImpl
-constructor(
+class PreludeClientImpl(
     private val clientOptions: ClientOptions,
 ) : PreludeClient {
 
@@ -44,4 +43,6 @@ constructor(
     override fun verification(): VerificationService = verification
 
     override fun watch(): WatchService = watch
+
+    override fun close() = clientOptions.httpClient.close()
 }
