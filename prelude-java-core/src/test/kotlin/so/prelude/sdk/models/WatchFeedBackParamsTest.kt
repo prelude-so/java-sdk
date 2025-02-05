@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 class WatchFeedBackParamsTest {
 
     @Test
-    fun createWatchFeedBackParams() {
+    fun create() {
         WatchFeedBackParams.builder()
             .feedback(
                 WatchFeedBackParams.Feedback.builder()
