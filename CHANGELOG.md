@@ -1,5 +1,35 @@
 # Changelog
 
+## 0.2.0 (2025-02-12)
+
+Full Changelog: [v0.1.0...v0.2.0](https://github.com/prelude-so/java-sdk/compare/v0.1.0...v0.2.0)
+
+### Features
+
+* **client:** send client-side timeout headers ([#64](https://github.com/prelude-so/java-sdk/issues/64)) ([0004d4b](https://github.com/prelude-so/java-sdk/commit/0004d4b736fcd0a9e5852064bb67de8bea7085d9))
+
+
+### Bug Fixes
+
+* **api:** add missing `@MustBeClosed` annotations ([#65](https://github.com/prelude-so/java-sdk/issues/65)) ([84f3ed5](https://github.com/prelude-so/java-sdk/commit/84f3ed53e37423b70ebbeeca553057dbe74a2d6c))
+* **api:** switch `CompletableFuture&lt;Void&gt;` to `CompletableFuture<Void?>` ([84f3ed5](https://github.com/prelude-so/java-sdk/commit/84f3ed53e37423b70ebbeeca553057dbe74a2d6c))
+* **client:** add missing validation calls on response ([84f3ed5](https://github.com/prelude-so/java-sdk/commit/84f3ed53e37423b70ebbeeca553057dbe74a2d6c))
+* **client:** always provide a body for `PATCH` methods ([84f3ed5](https://github.com/prelude-so/java-sdk/commit/84f3ed53e37423b70ebbeeca553057dbe74a2d6c))
+
+
+### Chores
+
+* **internal:** codegen related update ([#61](https://github.com/prelude-so/java-sdk/issues/61)) ([20ea6d4](https://github.com/prelude-so/java-sdk/commit/20ea6d4d3000c46b6508c9049227c3121a9e81d1))
+* **internal:** minor formatting/style changes ([84f3ed5](https://github.com/prelude-so/java-sdk/commit/84f3ed53e37423b70ebbeeca553057dbe74a2d6c))
+* **internal:** refactor `PhantomReachableClosingAsyncStreamResponse` impl ([#66](https://github.com/prelude-so/java-sdk/issues/66)) ([a9c5a51](https://github.com/prelude-so/java-sdk/commit/a9c5a519d6cb4d93f50b2a19b71609686a2b6b5d))
+* **internal:** rename some tests ([84f3ed5](https://github.com/prelude-so/java-sdk/commit/84f3ed53e37423b70ebbeeca553057dbe74a2d6c))
+
+
+### Documentation
+
+* add more phantom reachability docs ([a9c5a51](https://github.com/prelude-so/java-sdk/commit/a9c5a519d6cb4d93f50b2a19b71609686a2b6b5d))
+* fix incorrect additional properties info ([#63](https://github.com/prelude-so/java-sdk/issues/63)) ([51310ff](https://github.com/prelude-so/java-sdk/commit/51310ff3fb72ba4d132da89583a0649fde298b1d))
+
 ## 0.1.0 (2025-02-05)
 
 Full Changelog: [v0.1.0-beta.3...v0.1.0](https://github.com/prelude-so/java-sdk/compare/v0.1.0-beta.3...v0.1.0)
