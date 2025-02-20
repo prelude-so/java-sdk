@@ -27,7 +27,7 @@ import so.prelude.sdk.errors.PreludeInvalidDataException
  */
 class WatchFeedBackParams
 private constructor(
-    private val body: WatchFeedBackBody,
+    private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
@@ -56,16 +56,16 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun _body(): WatchFeedBackBody = body
+    @JvmSynthetic internal fun _body(): Body = body
 
     override fun _headers(): Headers = additionalHeaders
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     @NoAutoDetect
-    class WatchFeedBackBody
+    class Body
     @JsonCreator
-    internal constructor(
+    private constructor(
         @JsonProperty("feedback")
         @ExcludeMissing
         private val feedback: JsonField<Feedback> = JsonMissing.of(),
@@ -100,7 +100,7 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): WatchFeedBackBody = apply {
+        fun validate(): Body = apply {
             if (validated) {
                 return@apply
             }
@@ -117,7 +117,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        /** A builder for [WatchFeedBackBody]. */
+        /** A builder for [Body]. */
         class Builder internal constructor() {
 
             private var feedback: JsonField<Feedback>? = null
@@ -125,10 +125,10 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(watchFeedBackBody: WatchFeedBackBody) = apply {
-                feedback = watchFeedBackBody.feedback
-                target = watchFeedBackBody.target
-                additionalProperties = watchFeedBackBody.additionalProperties.toMutableMap()
+            internal fun from(body: Body) = apply {
+                feedback = body.feedback
+                target = body.target
+                additionalProperties = body.additionalProperties.toMutableMap()
             }
 
             /**
@@ -168,8 +168,8 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): WatchFeedBackBody =
-                WatchFeedBackBody(
+            fun build(): Body =
+                Body(
                     checkRequired("feedback", feedback),
                     checkRequired("target", target),
                     additionalProperties.toImmutable(),
@@ -181,7 +181,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is WatchFeedBackBody && feedback == other.feedback && target == other.target && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && feedback == other.feedback && target == other.target && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -191,7 +191,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "WatchFeedBackBody{feedback=$feedback, target=$target, additionalProperties=$additionalProperties}"
+            "Body{feedback=$feedback, target=$target, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -205,7 +205,7 @@ private constructor(
     @NoAutoDetect
     class Builder internal constructor() {
 
-        private var body: WatchFeedBackBody.Builder = WatchFeedBackBody.builder()
+        private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
