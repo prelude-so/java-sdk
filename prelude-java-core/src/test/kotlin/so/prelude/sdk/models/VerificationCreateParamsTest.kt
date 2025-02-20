@@ -2,6 +2,7 @@
 
 package so.prelude.sdk.models
 
+import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -97,7 +98,7 @@ class VerificationCreateParamsTest {
 
         val body = params._body()
 
-        assertThat(body).isNotNull
+        assertNotNull(body)
         assertThat(body.target())
             .isEqualTo(
                 VerificationCreateParams.Target.builder()
@@ -154,7 +155,7 @@ class VerificationCreateParamsTest {
 
         val body = params._body()
 
-        assertThat(body).isNotNull
+        assertNotNull(body)
         assertThat(body.target())
             .isEqualTo(
                 VerificationCreateParams.Target.builder()
