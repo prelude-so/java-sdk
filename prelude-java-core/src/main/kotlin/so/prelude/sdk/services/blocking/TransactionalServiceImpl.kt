@@ -16,10 +16,8 @@ import so.prelude.sdk.errors.PreludeError
 import so.prelude.sdk.models.TransactionalSendParams
 import so.prelude.sdk.models.TransactionalSendResponse
 
-class TransactionalServiceImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : TransactionalService {
+class TransactionalServiceImpl internal constructor(private val clientOptions: ClientOptions) :
+    TransactionalService {
 
     private val errorHandler: Handler<PreludeError> = errorHandler(clientOptions.jsonMapper)
 
@@ -30,7 +28,7 @@ internal constructor(
     /** Send a transactional message to your user. */
     override fun send(
         params: TransactionalSendParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): TransactionalSendResponse {
         val request =
             HttpRequest.builder()

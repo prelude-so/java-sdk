@@ -14,6 +14,6 @@ interface TransactionalService {
     @JvmOverloads
     fun send(
         params: TransactionalSendParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): TransactionalSendResponse
 }

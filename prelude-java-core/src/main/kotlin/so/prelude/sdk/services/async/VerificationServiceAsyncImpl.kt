@@ -19,10 +19,8 @@ import so.prelude.sdk.models.VerificationCheckResponse
 import so.prelude.sdk.models.VerificationCreateParams
 import so.prelude.sdk.models.VerificationCreateResponse
 
-class VerificationServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : VerificationServiceAsync {
+class VerificationServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    VerificationServiceAsync {
 
     private val errorHandler: Handler<PreludeError> = errorHandler(clientOptions.jsonMapper)
 
@@ -37,7 +35,7 @@ internal constructor(
      */
     override fun create(
         params: VerificationCreateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<VerificationCreateResponse> {
         val request =
             HttpRequest.builder()
@@ -66,7 +64,7 @@ internal constructor(
     /** Check the validity of a verification code. */
     override fun check(
         params: VerificationCheckParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<VerificationCheckResponse> {
         val request =
             HttpRequest.builder()

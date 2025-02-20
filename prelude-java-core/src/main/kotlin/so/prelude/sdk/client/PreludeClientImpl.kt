@@ -11,9 +11,7 @@ import so.prelude.sdk.services.blocking.VerificationServiceImpl
 import so.prelude.sdk.services.blocking.WatchService
 import so.prelude.sdk.services.blocking.WatchServiceImpl
 
-class PreludeClientImpl(
-    private val clientOptions: ClientOptions,
-) : PreludeClient {
+class PreludeClientImpl(private val clientOptions: ClientOptions) : PreludeClient {
 
     private val clientOptionsWithUserAgent =
         if (clientOptions.headers.names().contains("User-Agent")) clientOptions

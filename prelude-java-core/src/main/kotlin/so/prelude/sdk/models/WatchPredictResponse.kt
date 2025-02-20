@@ -136,11 +136,7 @@ private constructor(
     }
 
     /** A label indicating the trustworthiness of the phone number. */
-    class Prediction
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) : Enum {
+    class Prediction @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**
          * Returns this class instance's raw value.
@@ -336,20 +332,11 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): Reasoning =
-                Reasoning(
-                    cause,
-                    score,
-                    additionalProperties.toImmutable(),
-                )
+            fun build(): Reasoning = Reasoning(cause, score, additionalProperties.toImmutable())
         }
 
         /** A label explaining why the phone number was classified as not trustworthy */
-        class Cause
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        class Cause @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
             /**
              * Returns this class instance's raw value.

@@ -19,10 +19,8 @@ import so.prelude.sdk.models.WatchFeedBackResponse
 import so.prelude.sdk.models.WatchPredictParams
 import so.prelude.sdk.models.WatchPredictResponse
 
-class WatchServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : WatchServiceAsync {
+class WatchServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    WatchServiceAsync {
 
     private val errorHandler: Handler<PreludeError> = errorHandler(clientOptions.jsonMapper)
 
@@ -35,7 +33,7 @@ internal constructor(
      */
     override fun feedBack(
         params: WatchFeedBackParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<WatchFeedBackResponse> {
         val request =
             HttpRequest.builder()
@@ -67,7 +65,7 @@ internal constructor(
      */
     override fun predict(
         params: WatchPredictParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<WatchPredictResponse> {
         val request =
             HttpRequest.builder()
