@@ -29,7 +29,7 @@ import so.prelude.sdk.errors.PreludeInvalidDataException
  */
 class WatchPredictParams
 private constructor(
-    private val body: WatchPredictBody,
+    private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
@@ -52,16 +52,16 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun _body(): WatchPredictBody = body
+    @JvmSynthetic internal fun _body(): Body = body
 
     override fun _headers(): Headers = additionalHeaders
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     @NoAutoDetect
-    class WatchPredictBody
+    class Body
     @JsonCreator
-    internal constructor(
+    private constructor(
         @JsonProperty("target")
         @ExcludeMissing
         private val target: JsonField<Target> = JsonMissing.of(),
@@ -94,7 +94,7 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): WatchPredictBody = apply {
+        fun validate(): Body = apply {
             if (validated) {
                 return@apply
             }
@@ -111,7 +111,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        /** A builder for [WatchPredictBody]. */
+        /** A builder for [Body]. */
         class Builder internal constructor() {
 
             private var target: JsonField<Target>? = null
@@ -119,10 +119,10 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(watchPredictBody: WatchPredictBody) = apply {
-                target = watchPredictBody.target
-                signals = watchPredictBody.signals
-                additionalProperties = watchPredictBody.additionalProperties.toMutableMap()
+            internal fun from(body: Body) = apply {
+                target = body.target
+                signals = body.signals
+                additionalProperties = body.additionalProperties.toMutableMap()
             }
 
             /** The target. Currently this can only be an E.164 formatted phone number. */
@@ -162,12 +162,8 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): WatchPredictBody =
-                WatchPredictBody(
-                    checkRequired("target", target),
-                    signals,
-                    additionalProperties.toImmutable(),
-                )
+            fun build(): Body =
+                Body(checkRequired("target", target), signals, additionalProperties.toImmutable())
         }
 
         override fun equals(other: Any?): Boolean {
@@ -175,7 +171,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is WatchPredictBody && target == other.target && signals == other.signals && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && target == other.target && signals == other.signals && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -185,7 +181,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "WatchPredictBody{target=$target, signals=$signals, additionalProperties=$additionalProperties}"
+            "Body{target=$target, signals=$signals, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -199,7 +195,7 @@ private constructor(
     @NoAutoDetect
     class Builder internal constructor() {
 
-        private var body: WatchPredictBody.Builder = WatchPredictBody.builder()
+        private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 

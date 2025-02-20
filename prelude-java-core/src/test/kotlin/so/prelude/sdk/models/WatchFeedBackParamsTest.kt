@@ -40,7 +40,9 @@ class WatchFeedBackParamsTest {
                         .build()
                 )
                 .build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.feedback())
             .isEqualTo(
@@ -73,7 +75,9 @@ class WatchFeedBackParamsTest {
                         .build()
                 )
                 .build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.feedback())
             .isEqualTo(

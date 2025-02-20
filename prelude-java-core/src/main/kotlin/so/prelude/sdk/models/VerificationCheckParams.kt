@@ -24,7 +24,7 @@ import so.prelude.sdk.errors.PreludeInvalidDataException
 /** Check the validity of a verification code. */
 class VerificationCheckParams
 private constructor(
-    private val body: VerificationCheckBody,
+    private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
@@ -47,16 +47,16 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun _body(): VerificationCheckBody = body
+    @JvmSynthetic internal fun _body(): Body = body
 
     override fun _headers(): Headers = additionalHeaders
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     @NoAutoDetect
-    class VerificationCheckBody
+    class Body
     @JsonCreator
-    internal constructor(
+    private constructor(
         @JsonProperty("code")
         @ExcludeMissing
         private val code: JsonField<String> = JsonMissing.of(),
@@ -85,7 +85,7 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): VerificationCheckBody = apply {
+        fun validate(): Body = apply {
             if (validated) {
                 return@apply
             }
@@ -102,7 +102,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        /** A builder for [VerificationCheckBody]. */
+        /** A builder for [Body]. */
         class Builder internal constructor() {
 
             private var code: JsonField<String>? = null
@@ -110,10 +110,10 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(verificationCheckBody: VerificationCheckBody) = apply {
-                code = verificationCheckBody.code
-                target = verificationCheckBody.target
-                additionalProperties = verificationCheckBody.additionalProperties.toMutableMap()
+            internal fun from(body: Body) = apply {
+                code = body.code
+                target = body.target
+                additionalProperties = body.additionalProperties.toMutableMap()
             }
 
             /** The OTP code to validate. */
@@ -147,8 +147,8 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): VerificationCheckBody =
-                VerificationCheckBody(
+            fun build(): Body =
+                Body(
                     checkRequired("code", code),
                     checkRequired("target", target),
                     additionalProperties.toImmutable(),
@@ -160,7 +160,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is VerificationCheckBody && code == other.code && target == other.target && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && code == other.code && target == other.target && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -170,7 +170,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "VerificationCheckBody{code=$code, target=$target, additionalProperties=$additionalProperties}"
+            "Body{code=$code, target=$target, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -184,7 +184,7 @@ private constructor(
     @NoAutoDetect
     class Builder internal constructor() {
 
-        private var body: VerificationCheckBody.Builder = VerificationCheckBody.builder()
+        private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 

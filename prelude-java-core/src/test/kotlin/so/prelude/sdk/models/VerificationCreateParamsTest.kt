@@ -94,7 +94,9 @@ class VerificationCreateParamsTest {
                         .build()
                 )
                 .build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.target())
             .isEqualTo(
@@ -149,7 +151,9 @@ class VerificationCreateParamsTest {
                         .build()
                 )
                 .build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.target())
             .isEqualTo(

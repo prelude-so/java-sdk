@@ -46,7 +46,9 @@ class WatchPredictParamsTest {
                         .build()
                 )
                 .build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.target())
             .isEqualTo(
@@ -77,7 +79,9 @@ class WatchPredictParamsTest {
                         .build()
                 )
                 .build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.target())
             .isEqualTo(
