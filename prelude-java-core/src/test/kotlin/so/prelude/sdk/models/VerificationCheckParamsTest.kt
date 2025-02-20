@@ -2,6 +2,7 @@
 
 package so.prelude.sdk.models
 
+import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -35,7 +36,7 @@ class VerificationCheckParamsTest {
 
         val body = params._body()
 
-        assertThat(body).isNotNull
+        assertNotNull(body)
         assertThat(body.code()).isEqualTo("12345")
         assertThat(body.target())
             .isEqualTo(
@@ -61,7 +62,7 @@ class VerificationCheckParamsTest {
 
         val body = params._body()
 
-        assertThat(body).isNotNull
+        assertNotNull(body)
         assertThat(body.code()).isEqualTo("12345")
         assertThat(body.target())
             .isEqualTo(
