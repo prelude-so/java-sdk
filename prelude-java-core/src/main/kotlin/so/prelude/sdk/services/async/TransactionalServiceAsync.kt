@@ -15,6 +15,6 @@ interface TransactionalServiceAsync {
     @JvmOverloads
     fun send(
         params: TransactionalSendParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<TransactionalSendResponse>
 }

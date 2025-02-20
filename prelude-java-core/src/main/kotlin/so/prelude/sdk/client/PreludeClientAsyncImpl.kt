@@ -11,9 +11,7 @@ import so.prelude.sdk.services.async.VerificationServiceAsyncImpl
 import so.prelude.sdk.services.async.WatchServiceAsync
 import so.prelude.sdk.services.async.WatchServiceAsyncImpl
 
-class PreludeClientAsyncImpl(
-    private val clientOptions: ClientOptions,
-) : PreludeClientAsync {
+class PreludeClientAsyncImpl(private val clientOptions: ClientOptions) : PreludeClientAsync {
 
     private val clientOptionsWithUserAgent =
         if (clientOptions.headers.names().contains("User-Agent")) clientOptions

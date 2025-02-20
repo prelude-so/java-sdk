@@ -20,7 +20,7 @@ interface WatchServiceAsync {
     @JvmOverloads
     fun feedBack(
         params: WatchFeedBackParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<WatchFeedBackResponse>
 
     /**
@@ -31,6 +31,6 @@ interface WatchServiceAsync {
     @JvmOverloads
     fun predict(
         params: WatchPredictParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<WatchPredictResponse>
 }

@@ -20,13 +20,13 @@ interface VerificationService {
     @JvmOverloads
     fun create(
         params: VerificationCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): VerificationCreateResponse
 
     /** Check the validity of a verification code. */
     @JvmOverloads
     fun check(
         params: VerificationCheckParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): VerificationCheckResponse
 }

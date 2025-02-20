@@ -19,7 +19,7 @@ interface WatchService {
     @JvmOverloads
     fun feedBack(
         params: WatchFeedBackParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): WatchFeedBackResponse
 
     /**
@@ -30,6 +30,6 @@ interface WatchService {
     @JvmOverloads
     fun predict(
         params: WatchPredictParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): WatchPredictResponse
 }

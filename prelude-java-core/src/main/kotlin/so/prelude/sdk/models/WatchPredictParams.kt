@@ -453,11 +453,7 @@ private constructor(
         }
 
         /** The type of the target. Currently this can only be "phone_number". */
-        class Type
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
             /**
              * Returns this class instance's raw value.
@@ -478,7 +474,7 @@ private constructor(
 
             /** An enum containing [Type]'s known values. */
             enum class Known {
-                PHONE_NUMBER,
+                PHONE_NUMBER
             }
 
             /**
@@ -707,13 +703,7 @@ private constructor(
             }
 
             fun build(): Signals =
-                Signals(
-                    deviceId,
-                    deviceModel,
-                    deviceType,
-                    ip,
-                    additionalProperties.toImmutable(),
-                )
+                Signals(deviceId, deviceModel, deviceType, ip, additionalProperties.toImmutable())
         }
 
         override fun equals(other: Any?): Boolean {
