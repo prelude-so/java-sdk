@@ -32,7 +32,9 @@ class VerificationCheckParamsTest {
                         .build()
                 )
                 .build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.code()).isEqualTo("12345")
         assertThat(body.target())
@@ -56,7 +58,9 @@ class VerificationCheckParamsTest {
                         .build()
                 )
                 .build()
+
         val body = params._body()
+
         assertThat(body).isNotNull
         assertThat(body.code()).isEqualTo("12345")
         assertThat(body.target())

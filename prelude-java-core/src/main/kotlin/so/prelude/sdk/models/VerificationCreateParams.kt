@@ -29,7 +29,7 @@ import so.prelude.sdk.errors.PreludeInvalidDataException
  */
 class VerificationCreateParams
 private constructor(
-    private val body: VerificationCreateBody,
+    private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
@@ -76,16 +76,16 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun _body(): VerificationCreateBody = body
+    @JvmSynthetic internal fun _body(): Body = body
 
     override fun _headers(): Headers = additionalHeaders
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     @NoAutoDetect
-    class VerificationCreateBody
+    class Body
     @JsonCreator
-    internal constructor(
+    private constructor(
         @JsonProperty("target")
         @ExcludeMissing
         private val target: JsonField<Target> = JsonMissing.of(),
@@ -150,7 +150,7 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): VerificationCreateBody = apply {
+        fun validate(): Body = apply {
             if (validated) {
                 return@apply
             }
@@ -170,7 +170,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        /** A builder for [VerificationCreateBody]. */
+        /** A builder for [Body]. */
         class Builder internal constructor() {
 
             private var target: JsonField<Target>? = null
@@ -181,13 +181,13 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(verificationCreateBody: VerificationCreateBody) = apply {
-                target = verificationCreateBody.target
-                dispatchId = verificationCreateBody.dispatchId
-                metadata = verificationCreateBody.metadata
-                options = verificationCreateBody.options
-                signals = verificationCreateBody.signals
-                additionalProperties = verificationCreateBody.additionalProperties.toMutableMap()
+            internal fun from(body: Body) = apply {
+                target = body.target
+                dispatchId = body.dispatchId
+                metadata = body.metadata
+                options = body.options
+                signals = body.signals
+                additionalProperties = body.additionalProperties.toMutableMap()
             }
 
             /** The target. Currently this can only be an E.164 formatted phone number. */
@@ -245,8 +245,8 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): VerificationCreateBody =
-                VerificationCreateBody(
+            fun build(): Body =
+                Body(
                     checkRequired("target", target),
                     dispatchId,
                     metadata,
@@ -261,7 +261,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is VerificationCreateBody && target == other.target && dispatchId == other.dispatchId && metadata == other.metadata && options == other.options && signals == other.signals && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && target == other.target && dispatchId == other.dispatchId && metadata == other.metadata && options == other.options && signals == other.signals && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -271,7 +271,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "VerificationCreateBody{target=$target, dispatchId=$dispatchId, metadata=$metadata, options=$options, signals=$signals, additionalProperties=$additionalProperties}"
+            "Body{target=$target, dispatchId=$dispatchId, metadata=$metadata, options=$options, signals=$signals, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -285,7 +285,7 @@ private constructor(
     @NoAutoDetect
     class Builder internal constructor() {
 
-        private var body: VerificationCreateBody.Builder = VerificationCreateBody.builder()
+        private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
