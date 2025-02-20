@@ -457,11 +457,7 @@ private constructor(
          * `CONFIRM_TARGET` should be sent when you are sure that the user with this target (e.g.
          * phone number) is trustworthy.
          */
-        class Type
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
             /**
              * Returns this class instance's raw value.
@@ -482,7 +478,7 @@ private constructor(
 
             /** An enum containing [Type]'s known values. */
             enum class Known {
-                CONFIRM_TARGET,
+                CONFIRM_TARGET
             }
 
             /**
@@ -662,11 +658,7 @@ private constructor(
         }
 
         /** The type of the target. Currently this can only be "phone_number". */
-        class Type
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
             /**
              * Returns this class instance's raw value.
@@ -687,7 +679,7 @@ private constructor(
 
             /** An enum containing [Type]'s known values. */
             enum class Known {
-                PHONE_NUMBER,
+                PHONE_NUMBER
             }
 
             /**

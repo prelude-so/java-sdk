@@ -559,11 +559,7 @@ private constructor(
         }
 
         /** The type of the target. Currently this can only be "phone_number". */
-        class Type
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
             /**
              * Returns this class instance's raw value.
@@ -584,7 +580,7 @@ private constructor(
 
             /** An enum containing [Type]'s known values. */
             enum class Known {
-                PHONE_NUMBER,
+                PHONE_NUMBER
             }
 
             /**
@@ -1142,11 +1138,8 @@ private constructor(
             }
 
             /** The platform the SMS will be sent to. We are currently only supporting "android". */
-            class Platform
-            @JsonCreator
-            private constructor(
-                private val value: JsonField<String>,
-            ) : Enum {
+            class Platform @JsonCreator private constructor(private val value: JsonField<String>) :
+                Enum {
 
                 /**
                  * Returns this class instance's raw value.
@@ -1167,7 +1160,7 @@ private constructor(
 
                 /** An enum containing [Platform]'s known values. */
                 enum class Known {
-                    ANDROID,
+                    ANDROID
                 }
 
                 /**
@@ -1509,9 +1502,7 @@ private constructor(
         /** The type of the user's device. */
         class DevicePlatform
         @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        private constructor(private val value: JsonField<String>) : Enum {
 
             /**
              * Returns this class instance's raw value.
