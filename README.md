@@ -168,7 +168,7 @@ The asynchronous client supports the same options as the synchronous one, except
 
 The SDK throws custom unchecked exception types:
 
-- `PreludeServiceException`: Base class for HTTP errors. See this table for which exception subclass is thrown for each HTTP status code:
+- [`PreludeServiceException`](prelude-java-core/src/main/kotlin/so/prelude/sdk/errors/PreludeServiceException.kt): Base class for HTTP errors. See this table for which exception subclass is thrown for each HTTP status code:
 
   | Status | Exception                       |
   | ------ | ------------------------------- |
@@ -181,11 +181,11 @@ The SDK throws custom unchecked exception types:
   | 5xx    | `InternalServerException`       |
   | others | `UnexpectedStatusCodeException` |
 
-- `PreludeIoException`: I/O networking errors.
+- [`PreludeIoException`](prelude-java-core/src/main/kotlin/so/prelude/sdk/errors/PreludeIoException.kt): I/O networking errors.
 
-- `PreludeInvalidDataException`: Failure to interpret successfully parsed data. For example, when accessing a property that's supposed to be required, but the API unexpectedly omitted it from the response.
+- [`PreludeInvalidDataException`](prelude-java-core/src/main/kotlin/so/prelude/sdk/errors/PreludeInvalidDataException.kt): Failure to interpret successfully parsed data. For example, when accessing a property that's supposed to be required, but the API unexpectedly omitted it from the response.
 
-- `PreludeException`: Base class for all exceptions. Most errors will result in one of the previously mentioned ones, but completely generic errors may be thrown using the base class.
+- [`PreludeException`](prelude-java-core/src/main/kotlin/so/prelude/sdk/errors/PreludeException.kt): Base class for all exceptions. Most errors will result in one of the previously mentioned ones, but completely generic errors may be thrown using the base class.
 
 ## Logging
 
@@ -300,7 +300,7 @@ VerificationCreateParams params = VerificationCreateParams.builder()
 
 These can be accessed on the built object later using the `_additionalHeaders()`, `_additionalQueryParams()`, and `_additionalBodyProperties()` methods. You can also set undocumented parameters on nested headers, query params, or body classes using the `putAdditionalProperty` method. These properties can be accessed on the built object later using the `_additionalProperties()` method.
 
-To set a documented parameter or property to an undocumented or not yet supported _value_, pass a `JsonValue` object to its setter:
+To set a documented parameter or property to an undocumented or not yet supported _value_, pass a [`JsonValue`](prelude-java-core/src/main/kotlin/so/prelude/sdk/core/JsonValue.kt) object to its setter:
 
 ```java
 import so.prelude.sdk.core.JsonValue;
@@ -370,7 +370,7 @@ if (target.isMissing()) {
 
 In rare cases, the API may return a response that doesn't match the expected type. For example, the SDK may expect a property to contain a `String`, but the API could return something else.
 
-By default, the SDK will not throw an exception in this case. It will throw `PreludeInvalidDataException` only if you directly access the property.
+By default, the SDK will not throw an exception in this case. It will throw [`PreludeInvalidDataException`](prelude-java-core/src/main/kotlin/so/prelude/sdk/errors/PreludeInvalidDataException.kt) only if you directly access the property.
 
 If you would prefer to check that the response is completely well-typed upfront, then either call `validate()`:
 
