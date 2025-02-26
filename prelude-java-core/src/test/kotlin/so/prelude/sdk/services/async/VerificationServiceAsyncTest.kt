@@ -30,6 +30,7 @@ class VerificationServiceAsyncTest {
                             .value("+30123456789")
                             .build()
                     )
+                    .dispatchId("dispatch_id")
                     .metadata(
                         VerificationCreateParams.Metadata.builder()
                             .correlationId("correlation_id")
@@ -37,7 +38,16 @@ class VerificationServiceAsyncTest {
                     )
                     .options(
                         VerificationCreateParams.Options.builder()
-                            .appRealm("app_realm")
+                            .appRealm(
+                                VerificationCreateParams.Options.AppRealm.builder()
+                                    .platform(
+                                        VerificationCreateParams.Options.AppRealm.Platform.ANDROID
+                                    )
+                                    .value("value")
+                                    .build()
+                            )
+                            .codeSize(5L)
+                            .customCode("custom_code")
                             .locale("el-GR")
                             .senderId("sender_id")
                             .templateId("template_id")
@@ -45,13 +55,13 @@ class VerificationServiceAsyncTest {
                     )
                     .signals(
                         VerificationCreateParams.Signals.builder()
-                            .appVersion("app_version")
-                            .deviceId("device_id")
-                            .deviceModel("device_model")
+                            .appVersion("1.2.34")
+                            .deviceId("8F0B8FDD-C2CB-4387-B20A-56E9B2E5A0D2")
+                            .deviceModel("iPhone17,2")
                             .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.ANDROID)
-                            .ip("8.8.8.8")
-                            .isTrustedUser("is_trusted_user")
-                            .osVersion("os_version")
+                            .ip("192.0.2.1")
+                            .isTrustedUser(false)
+                            .osVersion("18.0.1")
                             .build()
                     )
                     .build()
