@@ -14,7 +14,6 @@ import so.prelude.sdk.core.JsonField
 import so.prelude.sdk.core.JsonMissing
 import so.prelude.sdk.core.JsonValue
 import so.prelude.sdk.core.NoAutoDetect
-import so.prelude.sdk.core.checkRequired
 import so.prelude.sdk.core.immutableEmptyMap
 import so.prelude.sdk.core.toImmutable
 import so.prelude.sdk.errors.PreludeInvalidDataException
@@ -23,9 +22,6 @@ import so.prelude.sdk.errors.PreludeInvalidDataException
 class VerificationCheckResponse
 @JsonCreator
 private constructor(
-    @JsonProperty("status")
-    @ExcludeMissing
-    private val status: JsonField<Status> = JsonMissing.of(),
     @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
     @JsonProperty("metadata")
     @ExcludeMissing
@@ -33,11 +29,11 @@ private constructor(
     @JsonProperty("request_id")
     @ExcludeMissing
     private val requestId: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("status")
+    @ExcludeMissing
+    private val status: JsonField<Status> = JsonMissing.of(),
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
-
-    /** The status of the check. */
-    fun status(): Status = status.getRequired("status")
 
     /** The verification identifier. */
     fun id(): Optional<String> = Optional.ofNullable(id.getNullable("id"))
@@ -48,7 +44,7 @@ private constructor(
     fun requestId(): Optional<String> = Optional.ofNullable(requestId.getNullable("request_id"))
 
     /** The status of the check. */
-    @JsonProperty("status") @ExcludeMissing fun _status(): JsonField<Status> = status
+    fun status(): Optional<Status> = Optional.ofNullable(status.getNullable("status"))
 
     /** The verification identifier. */
     @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
@@ -57,6 +53,9 @@ private constructor(
     @JsonProperty("metadata") @ExcludeMissing fun _metadata(): JsonField<Metadata> = metadata
 
     @JsonProperty("request_id") @ExcludeMissing fun _requestId(): JsonField<String> = requestId
+
+    /** The status of the check. */
+    @JsonProperty("status") @ExcludeMissing fun _status(): JsonField<Status> = status
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -69,10 +68,10 @@ private constructor(
             return@apply
         }
 
-        status()
         id()
         metadata().ifPresent { it.validate() }
         requestId()
+        status()
         validated = true
     }
 
@@ -86,26 +85,20 @@ private constructor(
     /** A builder for [VerificationCheckResponse]. */
     class Builder internal constructor() {
 
-        private var status: JsonField<Status>? = null
         private var id: JsonField<String> = JsonMissing.of()
         private var metadata: JsonField<Metadata> = JsonMissing.of()
         private var requestId: JsonField<String> = JsonMissing.of()
+        private var status: JsonField<Status> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(verificationCheckResponse: VerificationCheckResponse) = apply {
-            status = verificationCheckResponse.status
             id = verificationCheckResponse.id
             metadata = verificationCheckResponse.metadata
             requestId = verificationCheckResponse.requestId
+            status = verificationCheckResponse.status
             additionalProperties = verificationCheckResponse.additionalProperties.toMutableMap()
         }
-
-        /** The status of the check. */
-        fun status(status: Status) = status(JsonField.of(status))
-
-        /** The status of the check. */
-        fun status(status: JsonField<Status>) = apply { this.status = status }
 
         /** The verification identifier. */
         fun id(id: String) = id(JsonField.of(id))
@@ -122,6 +115,12 @@ private constructor(
         fun requestId(requestId: String) = requestId(JsonField.of(requestId))
 
         fun requestId(requestId: JsonField<String>) = apply { this.requestId = requestId }
+
+        /** The status of the check. */
+        fun status(status: Status) = status(JsonField.of(status))
+
+        /** The status of the check. */
+        fun status(status: JsonField<Status>) = apply { this.status = status }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -144,117 +143,12 @@ private constructor(
 
         fun build(): VerificationCheckResponse =
             VerificationCheckResponse(
-                checkRequired("status", status),
                 id,
                 metadata,
                 requestId,
+                status,
                 additionalProperties.toImmutable(),
             )
-    }
-
-    /** The status of the check. */
-    class Status @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
-
-        /**
-         * Returns this class instance's raw value.
-         *
-         * This is usually only useful if this instance was deserialized from data that doesn't
-         * match any known member, and you want to know that value. For example, if the SDK is on an
-         * older version than the API, then the API may respond with new members that the SDK is
-         * unaware of.
-         */
-        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-        companion object {
-
-            @JvmField val SUCCESS = of("success")
-
-            @JvmField val FAILURE = of("failure")
-
-            @JvmField val EXPIRED_OR_NOT_FOUND = of("expired_or_not_found")
-
-            @JvmStatic fun of(value: String) = Status(JsonField.of(value))
-        }
-
-        /** An enum containing [Status]'s known values. */
-        enum class Known {
-            SUCCESS,
-            FAILURE,
-            EXPIRED_OR_NOT_FOUND,
-        }
-
-        /**
-         * An enum containing [Status]'s known values, as well as an [_UNKNOWN] member.
-         *
-         * An instance of [Status] can contain an unknown value in a couple of cases:
-         * - It was deserialized from data that doesn't match any known member. For example, if the
-         *   SDK is on an older version than the API, then the API may respond with new members that
-         *   the SDK is unaware of.
-         * - It was constructed with an arbitrary value using the [of] method.
-         */
-        enum class Value {
-            SUCCESS,
-            FAILURE,
-            EXPIRED_OR_NOT_FOUND,
-            /** An enum member indicating that [Status] was instantiated with an unknown value. */
-            _UNKNOWN,
-        }
-
-        /**
-         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
-         * if the class was instantiated with an unknown value.
-         *
-         * Use the [known] method instead if you're certain the value is always known or if you want
-         * to throw for the unknown case.
-         */
-        fun value(): Value =
-            when (this) {
-                SUCCESS -> Value.SUCCESS
-                FAILURE -> Value.FAILURE
-                EXPIRED_OR_NOT_FOUND -> Value.EXPIRED_OR_NOT_FOUND
-                else -> Value._UNKNOWN
-            }
-
-        /**
-         * Returns an enum member corresponding to this class instance's value.
-         *
-         * Use the [value] method instead if you're uncertain the value is always known and don't
-         * want to throw for the unknown case.
-         *
-         * @throws PreludeInvalidDataException if this class instance's value is a not a known
-         *   member.
-         */
-        fun known(): Known =
-            when (this) {
-                SUCCESS -> Known.SUCCESS
-                FAILURE -> Known.FAILURE
-                EXPIRED_OR_NOT_FOUND -> Known.EXPIRED_OR_NOT_FOUND
-                else -> throw PreludeInvalidDataException("Unknown Status: $value")
-            }
-
-        /**
-         * Returns this class instance's primitive wire representation.
-         *
-         * This differs from the [toString] method because that method is primarily for debugging
-         * and generally doesn't throw.
-         *
-         * @throws PreludeInvalidDataException if this class instance's value does not have the
-         *   expected primitive type.
-         */
-        fun asString(): String =
-            _value().asString().orElseThrow { PreludeInvalidDataException("Value is not a String") }
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Status && value == other.value /* spotless:on */
-        }
-
-        override fun hashCode() = value.hashCode()
-
-        override fun toString() = value.toString()
     }
 
     /** The metadata for this verification. */
@@ -356,20 +250,125 @@ private constructor(
             "Metadata{correlationId=$correlationId, additionalProperties=$additionalProperties}"
     }
 
+    /** The status of the check. */
+    class Status @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
+
+        /**
+         * Returns this class instance's raw value.
+         *
+         * This is usually only useful if this instance was deserialized from data that doesn't
+         * match any known member, and you want to know that value. For example, if the SDK is on an
+         * older version than the API, then the API may respond with new members that the SDK is
+         * unaware of.
+         */
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+        companion object {
+
+            @JvmField val SUCCESS = of("success")
+
+            @JvmField val FAILURE = of("failure")
+
+            @JvmField val EXPIRED = of("expired")
+
+            @JvmStatic fun of(value: String) = Status(JsonField.of(value))
+        }
+
+        /** An enum containing [Status]'s known values. */
+        enum class Known {
+            SUCCESS,
+            FAILURE,
+            EXPIRED,
+        }
+
+        /**
+         * An enum containing [Status]'s known values, as well as an [_UNKNOWN] member.
+         *
+         * An instance of [Status] can contain an unknown value in a couple of cases:
+         * - It was deserialized from data that doesn't match any known member. For example, if the
+         *   SDK is on an older version than the API, then the API may respond with new members that
+         *   the SDK is unaware of.
+         * - It was constructed with an arbitrary value using the [of] method.
+         */
+        enum class Value {
+            SUCCESS,
+            FAILURE,
+            EXPIRED,
+            /** An enum member indicating that [Status] was instantiated with an unknown value. */
+            _UNKNOWN,
+        }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
+         * if the class was instantiated with an unknown value.
+         *
+         * Use the [known] method instead if you're certain the value is always known or if you want
+         * to throw for the unknown case.
+         */
+        fun value(): Value =
+            when (this) {
+                SUCCESS -> Value.SUCCESS
+                FAILURE -> Value.FAILURE
+                EXPIRED -> Value.EXPIRED
+                else -> Value._UNKNOWN
+            }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value.
+         *
+         * Use the [value] method instead if you're uncertain the value is always known and don't
+         * want to throw for the unknown case.
+         *
+         * @throws PreludeInvalidDataException if this class instance's value is a not a known
+         *   member.
+         */
+        fun known(): Known =
+            when (this) {
+                SUCCESS -> Known.SUCCESS
+                FAILURE -> Known.FAILURE
+                EXPIRED -> Known.EXPIRED
+                else -> throw PreludeInvalidDataException("Unknown Status: $value")
+            }
+
+        /**
+         * Returns this class instance's primitive wire representation.
+         *
+         * This differs from the [toString] method because that method is primarily for debugging
+         * and generally doesn't throw.
+         *
+         * @throws PreludeInvalidDataException if this class instance's value does not have the
+         *   expected primitive type.
+         */
+        fun asString(): String =
+            _value().asString().orElseThrow { PreludeInvalidDataException("Value is not a String") }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Status && value == other.value /* spotless:on */
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
+    }
+
     override fun equals(other: Any?): Boolean {
         if (this === other) {
             return true
         }
 
-        return /* spotless:off */ other is VerificationCheckResponse && status == other.status && id == other.id && metadata == other.metadata && requestId == other.requestId && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is VerificationCheckResponse && id == other.id && metadata == other.metadata && requestId == other.requestId && status == other.status && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(status, id, metadata, requestId, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(id, metadata, requestId, status, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "VerificationCheckResponse{status=$status, id=$id, metadata=$metadata, requestId=$requestId, additionalProperties=$additionalProperties}"
+        "VerificationCheckResponse{id=$id, metadata=$metadata, requestId=$requestId, status=$status, additionalProperties=$additionalProperties}"
 }

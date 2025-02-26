@@ -14,7 +14,6 @@ import so.prelude.sdk.core.JsonField
 import so.prelude.sdk.core.JsonMissing
 import so.prelude.sdk.core.JsonValue
 import so.prelude.sdk.core.NoAutoDetect
-import so.prelude.sdk.core.checkRequired
 import so.prelude.sdk.core.immutableEmptyMap
 import so.prelude.sdk.core.toImmutable
 import so.prelude.sdk.errors.PreludeInvalidDataException
@@ -34,12 +33,13 @@ private constructor(
 ) {
 
     /** A unique identifier for your prediction request. */
-    fun id(): String = id.getRequired("id")
+    fun id(): Optional<String> = Optional.ofNullable(id.getNullable("id"))
 
     /** A label indicating the trustworthiness of the phone number. */
-    fun prediction(): Prediction = prediction.getRequired("prediction")
+    fun prediction(): Optional<Prediction> =
+        Optional.ofNullable(prediction.getNullable("prediction"))
 
-    fun reasoning(): Reasoning = reasoning.getRequired("reasoning")
+    fun reasoning(): Optional<Reasoning> = Optional.ofNullable(reasoning.getNullable("reasoning"))
 
     /** A unique identifier for your prediction request. */
     @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
@@ -64,7 +64,7 @@ private constructor(
 
         id()
         prediction()
-        reasoning().validate()
+        reasoning().ifPresent { it.validate() }
         validated = true
     }
 
@@ -78,9 +78,9 @@ private constructor(
     /** A builder for [WatchPredictResponse]. */
     class Builder internal constructor() {
 
-        private var id: JsonField<String>? = null
-        private var prediction: JsonField<Prediction>? = null
-        private var reasoning: JsonField<Reasoning>? = null
+        private var id: JsonField<String> = JsonMissing.of()
+        private var prediction: JsonField<Prediction> = JsonMissing.of()
+        private var reasoning: JsonField<Reasoning> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
@@ -127,12 +127,7 @@ private constructor(
         }
 
         fun build(): WatchPredictResponse =
-            WatchPredictResponse(
-                checkRequired("id", id),
-                checkRequired("prediction", prediction),
-                checkRequired("reasoning", reasoning),
-                additionalProperties.toImmutable(),
-            )
+            WatchPredictResponse(id, prediction, reasoning, additionalProperties.toImmutable())
     }
 
     /** A label indicating the trustworthiness of the phone number. */
