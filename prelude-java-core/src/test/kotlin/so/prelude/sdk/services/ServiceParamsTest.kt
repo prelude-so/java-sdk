@@ -60,7 +60,6 @@ class ServiceParamsTest {
                         .value("+30123456789")
                         .build()
                 )
-                .dispatchId("dispatch_id")
                 .metadata(
                     VerificationCreateParams.Metadata.builder()
                         .correlationId("correlation_id")
@@ -68,16 +67,7 @@ class ServiceParamsTest {
                 )
                 .options(
                     VerificationCreateParams.Options.builder()
-                        .appRealm(
-                            VerificationCreateParams.Options.AppRealm.builder()
-                                .platform(
-                                    VerificationCreateParams.Options.AppRealm.Platform.ANDROID
-                                )
-                                .value("value")
-                                .build()
-                        )
-                        .codeSize(5L)
-                        .customCode("custom_code")
+                        .appRealm("app_realm")
                         .locale("el-GR")
                         .senderId("sender_id")
                         .templateId("template_id")
@@ -85,13 +75,13 @@ class ServiceParamsTest {
                 )
                 .signals(
                     VerificationCreateParams.Signals.builder()
-                        .appVersion("1.2.34")
-                        .deviceId("8F0B8FDD-C2CB-4387-B20A-56E9B2E5A0D2")
-                        .deviceModel("iPhone17,2")
+                        .appVersion("app_version")
+                        .deviceId("device_id")
+                        .deviceModel("device_model")
                         .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.ANDROID)
-                        .ip("192.0.2.1")
-                        .isTrustedUser(false)
-                        .osVersion("18.0.1")
+                        .ip("8.8.8.8")
+                        .isTrustedUser("is_trusted_user")
+                        .osVersion("os_version")
                         .build()
                 )
                 .additionalHeaders(additionalHeaders)
@@ -102,14 +92,14 @@ class ServiceParamsTest {
         val apiResponse =
             VerificationCreateResponse.builder()
                 .id("vrf_01jc0t6fwwfgfsq1md24mhyztj")
-                .method(VerificationCreateResponse.Method.MESSAGE)
-                .status(VerificationCreateResponse.Status.SUCCESS)
                 .metadata(
                     VerificationCreateResponse.Metadata.builder()
                         .correlationId("correlation_id")
                         .build()
                 )
+                .method(VerificationCreateResponse.Method.MESSAGE)
                 .requestId("request_id")
+                .status(VerificationCreateResponse.Status.SUCCESS)
                 .build()
 
         stubFor(

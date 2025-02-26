@@ -37,9 +37,6 @@ private constructor(
     /** The target. Currently this can only be an E.164 formatted phone number. */
     fun target(): Target = body.target()
 
-    /** The identifier of the dispatch that came from the front-end SDK. */
-    fun dispatchId(): Optional<String> = body.dispatchId()
-
     /**
      * The metadata for this verification. This object will be returned with every response or
      * webhook sent that refers to this verification.
@@ -54,9 +51,6 @@ private constructor(
 
     /** The target. Currently this can only be an E.164 formatted phone number. */
     fun _target(): JsonField<Target> = body._target()
-
-    /** The identifier of the dispatch that came from the front-end SDK. */
-    fun _dispatchId(): JsonField<String> = body._dispatchId()
 
     /**
      * The metadata for this verification. This object will be returned with every response or
@@ -89,9 +83,6 @@ private constructor(
         @JsonProperty("target")
         @ExcludeMissing
         private val target: JsonField<Target> = JsonMissing.of(),
-        @JsonProperty("dispatch_id")
-        @ExcludeMissing
-        private val dispatchId: JsonField<String> = JsonMissing.of(),
         @JsonProperty("metadata")
         @ExcludeMissing
         private val metadata: JsonField<Metadata> = JsonMissing.of(),
@@ -108,10 +99,6 @@ private constructor(
         /** The target. Currently this can only be an E.164 formatted phone number. */
         fun target(): Target = target.getRequired("target")
 
-        /** The identifier of the dispatch that came from the front-end SDK. */
-        fun dispatchId(): Optional<String> =
-            Optional.ofNullable(dispatchId.getNullable("dispatch_id"))
-
         /**
          * The metadata for this verification. This object will be returned with every response or
          * webhook sent that refers to this verification.
@@ -126,11 +113,6 @@ private constructor(
 
         /** The target. Currently this can only be an E.164 formatted phone number. */
         @JsonProperty("target") @ExcludeMissing fun _target(): JsonField<Target> = target
-
-        /** The identifier of the dispatch that came from the front-end SDK. */
-        @JsonProperty("dispatch_id")
-        @ExcludeMissing
-        fun _dispatchId(): JsonField<String> = dispatchId
 
         /**
          * The metadata for this verification. This object will be returned with every response or
@@ -156,7 +138,6 @@ private constructor(
             }
 
             target().validate()
-            dispatchId()
             metadata().ifPresent { it.validate() }
             options().ifPresent { it.validate() }
             signals().ifPresent { it.validate() }
@@ -174,7 +155,6 @@ private constructor(
         class Builder internal constructor() {
 
             private var target: JsonField<Target>? = null
-            private var dispatchId: JsonField<String> = JsonMissing.of()
             private var metadata: JsonField<Metadata> = JsonMissing.of()
             private var options: JsonField<Options> = JsonMissing.of()
             private var signals: JsonField<Signals> = JsonMissing.of()
@@ -183,7 +163,6 @@ private constructor(
             @JvmSynthetic
             internal fun from(body: Body) = apply {
                 target = body.target
-                dispatchId = body.dispatchId
                 metadata = body.metadata
                 options = body.options
                 signals = body.signals
@@ -195,12 +174,6 @@ private constructor(
 
             /** The target. Currently this can only be an E.164 formatted phone number. */
             fun target(target: JsonField<Target>) = apply { this.target = target }
-
-            /** The identifier of the dispatch that came from the front-end SDK. */
-            fun dispatchId(dispatchId: String) = dispatchId(JsonField.of(dispatchId))
-
-            /** The identifier of the dispatch that came from the front-end SDK. */
-            fun dispatchId(dispatchId: JsonField<String>) = apply { this.dispatchId = dispatchId }
 
             /**
              * The metadata for this verification. This object will be returned with every response
@@ -248,7 +221,6 @@ private constructor(
             fun build(): Body =
                 Body(
                     checkRequired("target", target),
-                    dispatchId,
                     metadata,
                     options,
                     signals,
@@ -261,17 +233,17 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && target == other.target && dispatchId == other.dispatchId && metadata == other.metadata && options == other.options && signals == other.signals && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && target == other.target && metadata == other.metadata && options == other.options && signals == other.signals && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(target, dispatchId, metadata, options, signals, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(target, metadata, options, signals, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{target=$target, dispatchId=$dispatchId, metadata=$metadata, options=$options, signals=$signals, additionalProperties=$additionalProperties}"
+            "Body{target=$target, metadata=$metadata, options=$options, signals=$signals, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -301,12 +273,6 @@ private constructor(
 
         /** The target. Currently this can only be an E.164 formatted phone number. */
         fun target(target: JsonField<Target>) = apply { body.target(target) }
-
-        /** The identifier of the dispatch that came from the front-end SDK. */
-        fun dispatchId(dispatchId: String) = apply { body.dispatchId(dispatchId) }
-
-        /** The identifier of the dispatch that came from the front-end SDK. */
-        fun dispatchId(dispatchId: JsonField<String>) = apply { body.dispatchId(dispatchId) }
 
         /**
          * The metadata for this verification. This object will be returned with every response or
@@ -784,13 +750,7 @@ private constructor(
     private constructor(
         @JsonProperty("app_realm")
         @ExcludeMissing
-        private val appRealm: JsonField<AppRealm> = JsonMissing.of(),
-        @JsonProperty("code_size")
-        @ExcludeMissing
-        private val codeSize: JsonField<Long> = JsonMissing.of(),
-        @JsonProperty("custom_code")
-        @ExcludeMissing
-        private val customCode: JsonField<String> = JsonMissing.of(),
+        private val appRealm: JsonField<String> = JsonMissing.of(),
         @JsonProperty("locale")
         @ExcludeMissing
         private val locale: JsonField<String> = JsonMissing.of(),
@@ -805,24 +765,10 @@ private constructor(
     ) {
 
         /**
-         * This allows you to automatically retrieve and fill the OTP code on mobile apps. Currently
-         * only Android devices are supported.
+         * The Android SMS Retriever API hash code that identifies your app. This allows you to
+         * automatically retrieve and fill the OTP code on Android devices.
          */
-        fun appRealm(): Optional<AppRealm> = Optional.ofNullable(appRealm.getNullable("app_realm"))
-
-        /**
-         * The size of the code generated. It should be between 4 and 8. Defaults to the code size
-         * specified from the Dashboard.
-         */
-        fun codeSize(): Optional<Long> = Optional.ofNullable(codeSize.getNullable("code_size"))
-
-        /**
-         * The custom code to use for OTP verification. This feature is only available for
-         * compatibility purposes and subject to Prelude’s approval. Contact us to discuss your use
-         * case. For more details, refer to [Multi Routing](/concepts/multi-routing).
-         */
-        fun customCode(): Optional<String> =
-            Optional.ofNullable(customCode.getNullable("custom_code"))
+        fun appRealm(): Optional<String> = Optional.ofNullable(appRealm.getNullable("app_realm"))
 
         /**
          * A BCP-47 formatted locale string with the language the text message will be sent to. If
@@ -842,25 +788,10 @@ private constructor(
             Optional.ofNullable(templateId.getNullable("template_id"))
 
         /**
-         * This allows you to automatically retrieve and fill the OTP code on mobile apps. Currently
-         * only Android devices are supported.
+         * The Android SMS Retriever API hash code that identifies your app. This allows you to
+         * automatically retrieve and fill the OTP code on Android devices.
          */
-        @JsonProperty("app_realm") @ExcludeMissing fun _appRealm(): JsonField<AppRealm> = appRealm
-
-        /**
-         * The size of the code generated. It should be between 4 and 8. Defaults to the code size
-         * specified from the Dashboard.
-         */
-        @JsonProperty("code_size") @ExcludeMissing fun _codeSize(): JsonField<Long> = codeSize
-
-        /**
-         * The custom code to use for OTP verification. This feature is only available for
-         * compatibility purposes and subject to Prelude’s approval. Contact us to discuss your use
-         * case. For more details, refer to [Multi Routing](/concepts/multi-routing).
-         */
-        @JsonProperty("custom_code")
-        @ExcludeMissing
-        fun _customCode(): JsonField<String> = customCode
+        @JsonProperty("app_realm") @ExcludeMissing fun _appRealm(): JsonField<String> = appRealm
 
         /**
          * A BCP-47 formatted locale string with the language the text message will be sent to. If
@@ -891,9 +822,7 @@ private constructor(
                 return@apply
             }
 
-            appRealm().ifPresent { it.validate() }
-            codeSize()
-            customCode()
+            appRealm()
             locale()
             senderId()
             templateId()
@@ -910,9 +839,7 @@ private constructor(
         /** A builder for [Options]. */
         class Builder internal constructor() {
 
-            private var appRealm: JsonField<AppRealm> = JsonMissing.of()
-            private var codeSize: JsonField<Long> = JsonMissing.of()
-            private var customCode: JsonField<String> = JsonMissing.of()
+            private var appRealm: JsonField<String> = JsonMissing.of()
             private var locale: JsonField<String> = JsonMissing.of()
             private var senderId: JsonField<String> = JsonMissing.of()
             private var templateId: JsonField<String> = JsonMissing.of()
@@ -921,8 +848,6 @@ private constructor(
             @JvmSynthetic
             internal fun from(options: Options) = apply {
                 appRealm = options.appRealm
-                codeSize = options.codeSize
-                customCode = options.customCode
                 locale = options.locale
                 senderId = options.senderId
                 templateId = options.templateId
@@ -930,42 +855,16 @@ private constructor(
             }
 
             /**
-             * This allows you to automatically retrieve and fill the OTP code on mobile apps.
-             * Currently only Android devices are supported.
+             * The Android SMS Retriever API hash code that identifies your app. This allows you to
+             * automatically retrieve and fill the OTP code on Android devices.
              */
-            fun appRealm(appRealm: AppRealm) = appRealm(JsonField.of(appRealm))
+            fun appRealm(appRealm: String) = appRealm(JsonField.of(appRealm))
 
             /**
-             * This allows you to automatically retrieve and fill the OTP code on mobile apps.
-             * Currently only Android devices are supported.
+             * The Android SMS Retriever API hash code that identifies your app. This allows you to
+             * automatically retrieve and fill the OTP code on Android devices.
              */
-            fun appRealm(appRealm: JsonField<AppRealm>) = apply { this.appRealm = appRealm }
-
-            /**
-             * The size of the code generated. It should be between 4 and 8. Defaults to the code
-             * size specified from the Dashboard.
-             */
-            fun codeSize(codeSize: Long) = codeSize(JsonField.of(codeSize))
-
-            /**
-             * The size of the code generated. It should be between 4 and 8. Defaults to the code
-             * size specified from the Dashboard.
-             */
-            fun codeSize(codeSize: JsonField<Long>) = apply { this.codeSize = codeSize }
-
-            /**
-             * The custom code to use for OTP verification. This feature is only available for
-             * compatibility purposes and subject to Prelude’s approval. Contact us to discuss your
-             * use case. For more details, refer to [Multi Routing](/concepts/multi-routing).
-             */
-            fun customCode(customCode: String) = customCode(JsonField.of(customCode))
-
-            /**
-             * The custom code to use for OTP verification. This feature is only available for
-             * compatibility purposes and subject to Prelude’s approval. Contact us to discuss your
-             * use case. For more details, refer to [Multi Routing](/concepts/multi-routing).
-             */
-            fun customCode(customCode: JsonField<String>) = apply { this.customCode = customCode }
+            fun appRealm(appRealm: JsonField<String>) = apply { this.appRealm = appRealm }
 
             /**
              * A BCP-47 formatted locale string with the language the text message will be sent to.
@@ -1023,247 +922,7 @@ private constructor(
             }
 
             fun build(): Options =
-                Options(
-                    appRealm,
-                    codeSize,
-                    customCode,
-                    locale,
-                    senderId,
-                    templateId,
-                    additionalProperties.toImmutable(),
-                )
-        }
-
-        /**
-         * This allows you to automatically retrieve and fill the OTP code on mobile apps. Currently
-         * only Android devices are supported.
-         */
-        @NoAutoDetect
-        class AppRealm
-        @JsonCreator
-        private constructor(
-            @JsonProperty("platform")
-            @ExcludeMissing
-            private val platform: JsonField<Platform> = JsonMissing.of(),
-            @JsonProperty("value")
-            @ExcludeMissing
-            private val value: JsonField<String> = JsonMissing.of(),
-            @JsonAnySetter
-            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-        ) {
-
-            /** The platform the SMS will be sent to. We are currently only supporting "android". */
-            fun platform(): Platform = platform.getRequired("platform")
-
-            /** The Android SMS Retriever API hash code that identifies your app. */
-            fun value(): String = value.getRequired("value")
-
-            /** The platform the SMS will be sent to. We are currently only supporting "android". */
-            @JsonProperty("platform")
-            @ExcludeMissing
-            fun _platform(): JsonField<Platform> = platform
-
-            /** The Android SMS Retriever API hash code that identifies your app. */
-            @JsonProperty("value") @ExcludeMissing fun _value(): JsonField<String> = value
-
-            @JsonAnyGetter
-            @ExcludeMissing
-            fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-            private var validated: Boolean = false
-
-            fun validate(): AppRealm = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                platform()
-                value()
-                validated = true
-            }
-
-            fun toBuilder() = Builder().from(this)
-
-            companion object {
-
-                @JvmStatic fun builder() = Builder()
-            }
-
-            /** A builder for [AppRealm]. */
-            class Builder internal constructor() {
-
-                private var platform: JsonField<Platform>? = null
-                private var value: JsonField<String>? = null
-                private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-                @JvmSynthetic
-                internal fun from(appRealm: AppRealm) = apply {
-                    platform = appRealm.platform
-                    value = appRealm.value
-                    additionalProperties = appRealm.additionalProperties.toMutableMap()
-                }
-
-                /**
-                 * The platform the SMS will be sent to. We are currently only supporting "android".
-                 */
-                fun platform(platform: Platform) = platform(JsonField.of(platform))
-
-                /**
-                 * The platform the SMS will be sent to. We are currently only supporting "android".
-                 */
-                fun platform(platform: JsonField<Platform>) = apply { this.platform = platform }
-
-                /** The Android SMS Retriever API hash code that identifies your app. */
-                fun value(value: String) = value(JsonField.of(value))
-
-                /** The Android SMS Retriever API hash code that identifies your app. */
-                fun value(value: JsonField<String>) = apply { this.value = value }
-
-                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                    this.additionalProperties.clear()
-                    putAllAdditionalProperties(additionalProperties)
-                }
-
-                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                    additionalProperties.put(key, value)
-                }
-
-                fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
-                    apply {
-                        this.additionalProperties.putAll(additionalProperties)
-                    }
-
-                fun removeAdditionalProperty(key: String) = apply {
-                    additionalProperties.remove(key)
-                }
-
-                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                    keys.forEach(::removeAdditionalProperty)
-                }
-
-                fun build(): AppRealm =
-                    AppRealm(
-                        checkRequired("platform", platform),
-                        checkRequired("value", value),
-                        additionalProperties.toImmutable(),
-                    )
-            }
-
-            /** The platform the SMS will be sent to. We are currently only supporting "android". */
-            class Platform @JsonCreator private constructor(private val value: JsonField<String>) :
-                Enum {
-
-                /**
-                 * Returns this class instance's raw value.
-                 *
-                 * This is usually only useful if this instance was deserialized from data that
-                 * doesn't match any known member, and you want to know that value. For example, if
-                 * the SDK is on an older version than the API, then the API may respond with new
-                 * members that the SDK is unaware of.
-                 */
-                @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-                companion object {
-
-                    @JvmField val ANDROID = of("android")
-
-                    @JvmStatic fun of(value: String) = Platform(JsonField.of(value))
-                }
-
-                /** An enum containing [Platform]'s known values. */
-                enum class Known {
-                    ANDROID
-                }
-
-                /**
-                 * An enum containing [Platform]'s known values, as well as an [_UNKNOWN] member.
-                 *
-                 * An instance of [Platform] can contain an unknown value in a couple of cases:
-                 * - It was deserialized from data that doesn't match any known member. For example,
-                 *   if the SDK is on an older version than the API, then the API may respond with
-                 *   new members that the SDK is unaware of.
-                 * - It was constructed with an arbitrary value using the [of] method.
-                 */
-                enum class Value {
-                    ANDROID,
-                    /**
-                     * An enum member indicating that [Platform] was instantiated with an unknown
-                     * value.
-                     */
-                    _UNKNOWN,
-                }
-
-                /**
-                 * Returns an enum member corresponding to this class instance's value, or
-                 * [Value._UNKNOWN] if the class was instantiated with an unknown value.
-                 *
-                 * Use the [known] method instead if you're certain the value is always known or if
-                 * you want to throw for the unknown case.
-                 */
-                fun value(): Value =
-                    when (this) {
-                        ANDROID -> Value.ANDROID
-                        else -> Value._UNKNOWN
-                    }
-
-                /**
-                 * Returns an enum member corresponding to this class instance's value.
-                 *
-                 * Use the [value] method instead if you're uncertain the value is always known and
-                 * don't want to throw for the unknown case.
-                 *
-                 * @throws PreludeInvalidDataException if this class instance's value is a not a
-                 *   known member.
-                 */
-                fun known(): Known =
-                    when (this) {
-                        ANDROID -> Known.ANDROID
-                        else -> throw PreludeInvalidDataException("Unknown Platform: $value")
-                    }
-
-                /**
-                 * Returns this class instance's primitive wire representation.
-                 *
-                 * This differs from the [toString] method because that method is primarily for
-                 * debugging and generally doesn't throw.
-                 *
-                 * @throws PreludeInvalidDataException if this class instance's value does not have
-                 *   the expected primitive type.
-                 */
-                fun asString(): String =
-                    _value().asString().orElseThrow {
-                        PreludeInvalidDataException("Value is not a String")
-                    }
-
-                override fun equals(other: Any?): Boolean {
-                    if (this === other) {
-                        return true
-                    }
-
-                    return /* spotless:off */ other is Platform && value == other.value /* spotless:on */
-                }
-
-                override fun hashCode() = value.hashCode()
-
-                override fun toString() = value.toString()
-            }
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return /* spotless:off */ other is AppRealm && platform == other.platform && value == other.value && additionalProperties == other.additionalProperties /* spotless:on */
-            }
-
-            /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(platform, value, additionalProperties) }
-            /* spotless:on */
-
-            override fun hashCode(): Int = hashCode
-
-            override fun toString() =
-                "AppRealm{platform=$platform, value=$value, additionalProperties=$additionalProperties}"
+                Options(appRealm, locale, senderId, templateId, additionalProperties.toImmutable())
         }
 
         override fun equals(other: Any?): Boolean {
@@ -1271,17 +930,17 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Options && appRealm == other.appRealm && codeSize == other.codeSize && customCode == other.customCode && locale == other.locale && senderId == other.senderId && templateId == other.templateId && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Options && appRealm == other.appRealm && locale == other.locale && senderId == other.senderId && templateId == other.templateId && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(appRealm, codeSize, customCode, locale, senderId, templateId, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(appRealm, locale, senderId, templateId, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Options{appRealm=$appRealm, codeSize=$codeSize, customCode=$customCode, locale=$locale, senderId=$senderId, templateId=$templateId, additionalProperties=$additionalProperties}"
+            "Options{appRealm=$appRealm, locale=$locale, senderId=$senderId, templateId=$templateId, additionalProperties=$additionalProperties}"
     }
 
     /** The signals used for anti-fraud. */
@@ -1304,7 +963,7 @@ private constructor(
         @JsonProperty("ip") @ExcludeMissing private val ip: JsonField<String> = JsonMissing.of(),
         @JsonProperty("is_trusted_user")
         @ExcludeMissing
-        private val isTrustedUser: JsonField<Boolean> = JsonMissing.of(),
+        private val isTrustedUser: JsonField<String> = JsonMissing.of(),
         @JsonProperty("os_version")
         @ExcludeMissing
         private val osVersion: JsonField<String> = JsonMissing.of(),
@@ -1337,7 +996,7 @@ private constructor(
          * This signal should provide a higher level of trust, indicating that the user is genuine.
          * For more details, refer to [Signals](/guides/prevent-fraud#signals).
          */
-        fun isTrustedUser(): Optional<Boolean> =
+        fun isTrustedUser(): Optional<String> =
             Optional.ofNullable(isTrustedUser.getNullable("is_trusted_user"))
 
         /** The version of the user's device operating system. */
@@ -1373,7 +1032,7 @@ private constructor(
          */
         @JsonProperty("is_trusted_user")
         @ExcludeMissing
-        fun _isTrustedUser(): JsonField<Boolean> = isTrustedUser
+        fun _isTrustedUser(): JsonField<String> = isTrustedUser
 
         /** The version of the user's device operating system. */
         @JsonProperty("os_version") @ExcludeMissing fun _osVersion(): JsonField<String> = osVersion
@@ -1414,7 +1073,7 @@ private constructor(
             private var deviceModel: JsonField<String> = JsonMissing.of()
             private var devicePlatform: JsonField<DevicePlatform> = JsonMissing.of()
             private var ip: JsonField<String> = JsonMissing.of()
-            private var isTrustedUser: JsonField<Boolean> = JsonMissing.of()
+            private var isTrustedUser: JsonField<String> = JsonMissing.of()
             private var osVersion: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -1475,13 +1134,13 @@ private constructor(
              * This signal should provide a higher level of trust, indicating that the user is
              * genuine. For more details, refer to [Signals](/guides/prevent-fraud#signals).
              */
-            fun isTrustedUser(isTrustedUser: Boolean) = isTrustedUser(JsonField.of(isTrustedUser))
+            fun isTrustedUser(isTrustedUser: String) = isTrustedUser(JsonField.of(isTrustedUser))
 
             /**
              * This signal should provide a higher level of trust, indicating that the user is
              * genuine. For more details, refer to [Signals](/guides/prevent-fraud#signals).
              */
-            fun isTrustedUser(isTrustedUser: JsonField<Boolean>) = apply {
+            fun isTrustedUser(isTrustedUser: JsonField<String>) = apply {
                 this.isTrustedUser = isTrustedUser
             }
 
@@ -1544,10 +1203,6 @@ private constructor(
 
                 @JvmField val IOS = of("ios")
 
-                @JvmField val IPADOS = of("ipados")
-
-                @JvmField val TVOS = of("tvos")
-
                 @JvmField val WEB = of("web")
 
                 @JvmStatic fun of(value: String) = DevicePlatform(JsonField.of(value))
@@ -1557,8 +1212,6 @@ private constructor(
             enum class Known {
                 ANDROID,
                 IOS,
-                IPADOS,
-                TVOS,
                 WEB,
             }
 
@@ -1574,8 +1227,6 @@ private constructor(
             enum class Value {
                 ANDROID,
                 IOS,
-                IPADOS,
-                TVOS,
                 WEB,
                 /**
                  * An enum member indicating that [DevicePlatform] was instantiated with an unknown
@@ -1595,8 +1246,6 @@ private constructor(
                 when (this) {
                     ANDROID -> Value.ANDROID
                     IOS -> Value.IOS
-                    IPADOS -> Value.IPADOS
-                    TVOS -> Value.TVOS
                     WEB -> Value.WEB
                     else -> Value._UNKNOWN
                 }
@@ -1614,8 +1263,6 @@ private constructor(
                 when (this) {
                     ANDROID -> Known.ANDROID
                     IOS -> Known.IOS
-                    IPADOS -> Known.IPADOS
-                    TVOS -> Known.TVOS
                     WEB -> Known.WEB
                     else -> throw PreludeInvalidDataException("Unknown DevicePlatform: $value")
                 }
