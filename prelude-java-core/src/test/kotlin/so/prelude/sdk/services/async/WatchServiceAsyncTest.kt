@@ -1,28 +1,28 @@
 // File generated from our OpenAPI spec by Stainless.
 
-package so.prelude.sdk.services.blocking
+package so.prelude.sdk.services.async
 
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import so.prelude.sdk.TestServerExtension
-import so.prelude.sdk.client.okhttp.PreludeOkHttpClient
+import so.prelude.sdk.client.okhttp.PreludeOkHttpClientAsync
 import so.prelude.sdk.models.WatchFeedBackParams
 import so.prelude.sdk.models.WatchPredictParams
 
 @ExtendWith(TestServerExtension::class)
-class WatchServiceTest {
+class WatchServiceAsyncTest {
 
     @Test
     fun feedBack() {
         val client =
-            PreludeOkHttpClient.builder()
+            PreludeOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiToken("My API Token")
                 .build()
-        val watchService = client.watch()
+        val watchServiceAsync = client.watch()
 
-        val response =
-            watchService.feedBack(
+        val responseFuture =
+            watchServiceAsync.feedBack(
                 WatchFeedBackParams.builder()
                     .feedback(
                         WatchFeedBackParams.Feedback.builder()
@@ -38,20 +38,21 @@ class WatchServiceTest {
                     .build()
             )
 
+        val response = responseFuture.get()
         response.validate()
     }
 
     @Test
     fun predict() {
         val client =
-            PreludeOkHttpClient.builder()
+            PreludeOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiToken("My API Token")
                 .build()
-        val watchService = client.watch()
+        val watchServiceAsync = client.watch()
 
-        val response =
-            watchService.predict(
+        val responseFuture =
+            watchServiceAsync.predict(
                 WatchPredictParams.builder()
                     .target(
                         WatchPredictParams.Target.builder()
@@ -70,6 +71,7 @@ class WatchServiceTest {
                     .build()
             )
 
+        val response = responseFuture.get()
         response.validate()
     }
 }
