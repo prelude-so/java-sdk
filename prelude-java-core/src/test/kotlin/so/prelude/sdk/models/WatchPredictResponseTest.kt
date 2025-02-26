@@ -21,11 +21,11 @@ class WatchPredictResponseTest {
                 )
                 .build()
         assertThat(watchPredictResponse).isNotNull
-        assertThat(watchPredictResponse.id()).isEqualTo("id")
+        assertThat(watchPredictResponse.id()).contains("id")
         assertThat(watchPredictResponse.prediction())
-            .isEqualTo(WatchPredictResponse.Prediction.ALLOW)
+            .contains(WatchPredictResponse.Prediction.ALLOW)
         assertThat(watchPredictResponse.reasoning())
-            .isEqualTo(
+            .contains(
                 WatchPredictResponse.Reasoning.builder()
                     .cause(WatchPredictResponse.Reasoning.Cause.NONE)
                     .score(0.0)
