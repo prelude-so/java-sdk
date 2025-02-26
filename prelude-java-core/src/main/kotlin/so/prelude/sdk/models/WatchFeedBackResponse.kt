@@ -7,12 +7,12 @@ import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Objects
-import java.util.Optional
 import so.prelude.sdk.core.ExcludeMissing
 import so.prelude.sdk.core.JsonField
 import so.prelude.sdk.core.JsonMissing
 import so.prelude.sdk.core.JsonValue
 import so.prelude.sdk.core.NoAutoDetect
+import so.prelude.sdk.core.checkRequired
 import so.prelude.sdk.core.immutableEmptyMap
 import so.prelude.sdk.core.toImmutable
 
@@ -25,7 +25,7 @@ private constructor(
 ) {
 
     /** A unique identifier for your feedback request. */
-    fun id(): Optional<String> = Optional.ofNullable(id.getNullable("id"))
+    fun id(): String = id.getRequired("id")
 
     /** A unique identifier for your feedback request. */
     @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
@@ -55,7 +55,7 @@ private constructor(
     /** A builder for [WatchFeedBackResponse]. */
     class Builder internal constructor() {
 
-        private var id: JsonField<String> = JsonMissing.of()
+        private var id: JsonField<String>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
@@ -90,7 +90,7 @@ private constructor(
         }
 
         fun build(): WatchFeedBackResponse =
-            WatchFeedBackResponse(id, additionalProperties.toImmutable())
+            WatchFeedBackResponse(checkRequired("id", id), additionalProperties.toImmutable())
     }
 
     override fun equals(other: Any?): Boolean {

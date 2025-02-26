@@ -28,15 +28,16 @@ class TransactionalServiceTest {
         val response =
             transactionalService.send(
                 TransactionalSendParams.builder()
-                    .templateId("template_id")
-                    .to("to")
+                    .templateId("template_01jd1xq0cffycayqtdkdbv4d61")
+                    .to("+30123456789")
                     .callbackUrl("callback_url")
                     .correlationId("correlation_id")
                     .expiresAt("expires_at")
                     .from("from")
+                    .locale("el-GR")
                     .variables(
                         TransactionalSendParams.Variables.builder()
-                            .putAdditionalProperty("foo", JsonValue.from("string"))
+                            .putAdditionalProperty("foo", JsonValue.from("bar"))
                             .build()
                     )
                     .build()
