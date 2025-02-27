@@ -8,7 +8,7 @@
 
 The Prelude Java SDK provides convenient access to the Prelude REST API from applications written in Java.
 
-It is generated with [Stainless](https://www.stainlessapi.com/).
+It is generated with [Stainless](https://www.stainless.com/).
 
 The REST API documentation can be found on [docs.prelude.so](https://docs.prelude.so).
 
