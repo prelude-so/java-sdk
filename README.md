@@ -164,6 +164,38 @@ CompletableFuture<VerificationCreateResponse> verification = client.verification
 
 The asynchronous client supports the same options as the synchronous one, except most methods return `CompletableFuture`s.
 
+## Raw responses
+
+The SDK defines methods that deserialize responses into instances of Java classes. However, these methods don't provide access to the response headers, status code, or the raw response body.
+
+To access this data, prefix any HTTP method call on a client or service with `withRawResponse()`:
+
+```java
+import so.prelude.sdk.core.http.Headers;
+import so.prelude.sdk.core.http.HttpResponseFor;
+import so.prelude.sdk.models.VerificationCreateParams;
+import so.prelude.sdk.models.VerificationCreateResponse;
+
+VerificationCreateParams params = VerificationCreateParams.builder()
+    .target(VerificationCreateParams.Target.builder()
+        .type(VerificationCreateParams.Target.Type.PHONE_NUMBER)
+        .value("+30123456789")
+        .build())
+    .build();
+HttpResponseFor<VerificationCreateResponse> verification = client.verification().withRawResponse().create(params);
+
+int statusCode = verification.statusCode();
+Headers headers = verification.headers();
+```
+
+You can still deserialize the response into an instance of a Java class if needed:
+
+```java
+import so.prelude.sdk.models.VerificationCreateResponse;
+
+VerificationCreateResponse parsedVerification = verification.parse();
+```
+
 ## Error handling
 
 The SDK throws custom unchecked exception types:
