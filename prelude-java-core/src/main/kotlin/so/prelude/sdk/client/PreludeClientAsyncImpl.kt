@@ -24,6 +24,10 @@ class PreludeClientAsyncImpl(private val clientOptions: ClientOptions) : Prelude
     // Pass the original clientOptions so that this client sets its own User-Agent.
     private val sync: PreludeClient by lazy { PreludeClientImpl(clientOptions) }
 
+    private val withRawResponse: PreludeClientAsync.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
+
     private val transactional: TransactionalServiceAsync by lazy {
         TransactionalServiceAsyncImpl(clientOptionsWithUserAgent)
     }
@@ -38,6 +42,8 @@ class PreludeClientAsyncImpl(private val clientOptions: ClientOptions) : Prelude
 
     override fun sync(): PreludeClient = sync
 
+    override fun withRawResponse(): PreludeClientAsync.WithRawResponse = withRawResponse
+
     override fun transactional(): TransactionalServiceAsync = transactional
 
     override fun verification(): VerificationServiceAsync = verification
@@ -45,4 +51,26 @@ class PreludeClientAsyncImpl(private val clientOptions: ClientOptions) : Prelude
     override fun watch(): WatchServiceAsync = watch
 
     override fun close() = clientOptions.httpClient.close()
+
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        PreludeClientAsync.WithRawResponse {
+
+        private val transactional: TransactionalServiceAsync.WithRawResponse by lazy {
+            TransactionalServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val verification: VerificationServiceAsync.WithRawResponse by lazy {
+            VerificationServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val watch: WatchServiceAsync.WithRawResponse by lazy {
+            WatchServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        override fun transactional(): TransactionalServiceAsync.WithRawResponse = transactional
+
+        override fun verification(): VerificationServiceAsync.WithRawResponse = verification
+
+        override fun watch(): WatchServiceAsync.WithRawResponse = watch
+    }
 }

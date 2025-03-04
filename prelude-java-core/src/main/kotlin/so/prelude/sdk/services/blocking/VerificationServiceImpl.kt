@@ -10,6 +10,8 @@ import so.prelude.sdk.core.handlers.withErrorHandler
 import so.prelude.sdk.core.http.HttpMethod
 import so.prelude.sdk.core.http.HttpRequest
 import so.prelude.sdk.core.http.HttpResponse.Handler
+import so.prelude.sdk.core.http.HttpResponseFor
+import so.prelude.sdk.core.http.parseable
 import so.prelude.sdk.core.json
 import so.prelude.sdk.core.prepare
 import so.prelude.sdk.errors.PreludeError
@@ -21,63 +23,85 @@ import so.prelude.sdk.models.VerificationCreateResponse
 class VerificationServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     VerificationService {
 
-    private val errorHandler: Handler<PreludeError> = errorHandler(clientOptions.jsonMapper)
+    private val withRawResponse: VerificationService.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
 
-    private val createHandler: Handler<VerificationCreateResponse> =
-        jsonHandler<VerificationCreateResponse>(clientOptions.jsonMapper)
-            .withErrorHandler(errorHandler)
+    override fun withRawResponse(): VerificationService.WithRawResponse = withRawResponse
 
-    /**
-     * Create a new verification for a specific phone number. If another non-expired verification
-     * exists (the request is performed within the verification window), this endpoint will perform
-     * a retry instead.
-     */
     override fun create(
         params: VerificationCreateParams,
         requestOptions: RequestOptions,
-    ): VerificationCreateResponse {
-        val request =
-            HttpRequest.builder()
-                .method(HttpMethod.POST)
-                .addPathSegments("v2", "verification")
-                .body(json(clientOptions.jsonMapper, params._body()))
-                .build()
-                .prepare(clientOptions, params)
-        val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-        val response = clientOptions.httpClient.execute(request, requestOptions)
-        return response
-            .use { createHandler.handle(it) }
-            .also {
-                if (requestOptions.responseValidation!!) {
-                    it.validate()
-                }
-            }
-    }
+    ): VerificationCreateResponse =
+        // post /v2/verification
+        withRawResponse().create(params, requestOptions).parse()
 
-    private val checkHandler: Handler<VerificationCheckResponse> =
-        jsonHandler<VerificationCheckResponse>(clientOptions.jsonMapper)
-            .withErrorHandler(errorHandler)
-
-    /** Check the validity of a verification code. */
     override fun check(
         params: VerificationCheckParams,
         requestOptions: RequestOptions,
-    ): VerificationCheckResponse {
-        val request =
-            HttpRequest.builder()
-                .method(HttpMethod.POST)
-                .addPathSegments("v2", "verification", "check")
-                .body(json(clientOptions.jsonMapper, params._body()))
-                .build()
-                .prepare(clientOptions, params)
-        val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-        val response = clientOptions.httpClient.execute(request, requestOptions)
-        return response
-            .use { checkHandler.handle(it) }
-            .also {
-                if (requestOptions.responseValidation!!) {
-                    it.validate()
-                }
+    ): VerificationCheckResponse =
+        // post /v2/verification/check
+        withRawResponse().check(params, requestOptions).parse()
+
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        VerificationService.WithRawResponse {
+
+        private val errorHandler: Handler<PreludeError> = errorHandler(clientOptions.jsonMapper)
+
+        private val createHandler: Handler<VerificationCreateResponse> =
+            jsonHandler<VerificationCreateResponse>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
+
+        override fun create(
+            params: VerificationCreateParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<VerificationCreateResponse> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.POST)
+                    .addPathSegments("v2", "verification")
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepare(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.execute(request, requestOptions)
+            return response.parseable {
+                response
+                    .use { createHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
             }
+        }
+
+        private val checkHandler: Handler<VerificationCheckResponse> =
+            jsonHandler<VerificationCheckResponse>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
+
+        override fun check(
+            params: VerificationCheckParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<VerificationCheckResponse> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.POST)
+                    .addPathSegments("v2", "verification", "check")
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepare(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.execute(request, requestOptions)
+            return response.parseable {
+                response
+                    .use { checkHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
+            }
+        }
     }
 }
