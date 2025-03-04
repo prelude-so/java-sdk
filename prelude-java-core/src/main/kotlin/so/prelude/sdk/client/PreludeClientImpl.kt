@@ -24,6 +24,10 @@ class PreludeClientImpl(private val clientOptions: ClientOptions) : PreludeClien
     // Pass the original clientOptions so that this client sets its own User-Agent.
     private val async: PreludeClientAsync by lazy { PreludeClientAsyncImpl(clientOptions) }
 
+    private val withRawResponse: PreludeClient.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
+
     private val transactional: TransactionalService by lazy {
         TransactionalServiceImpl(clientOptionsWithUserAgent)
     }
@@ -36,6 +40,8 @@ class PreludeClientImpl(private val clientOptions: ClientOptions) : PreludeClien
 
     override fun async(): PreludeClientAsync = async
 
+    override fun withRawResponse(): PreludeClient.WithRawResponse = withRawResponse
+
     override fun transactional(): TransactionalService = transactional
 
     override fun verification(): VerificationService = verification
@@ -43,4 +49,26 @@ class PreludeClientImpl(private val clientOptions: ClientOptions) : PreludeClien
     override fun watch(): WatchService = watch
 
     override fun close() = clientOptions.httpClient.close()
+
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        PreludeClient.WithRawResponse {
+
+        private val transactional: TransactionalService.WithRawResponse by lazy {
+            TransactionalServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val verification: VerificationService.WithRawResponse by lazy {
+            VerificationServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val watch: WatchService.WithRawResponse by lazy {
+            WatchServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        override fun transactional(): TransactionalService.WithRawResponse = transactional
+
+        override fun verification(): VerificationService.WithRawResponse = verification
+
+        override fun watch(): WatchService.WithRawResponse = watch
+    }
 }
