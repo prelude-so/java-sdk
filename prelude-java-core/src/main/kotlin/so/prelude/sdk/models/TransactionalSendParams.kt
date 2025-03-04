@@ -223,6 +223,15 @@ private constructor(
 
         companion object {
 
+            /**
+             * Returns a mutable builder for constructing an instance of [Body].
+             *
+             * The following fields are required:
+             * ```java
+             * .templateId()
+             * .to()
+             * ```
+             */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -369,6 +378,15 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [TransactionalSendParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .templateId()
+         * .to()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -599,6 +617,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Variables]. */
             @JvmStatic fun builder() = Builder()
         }
 

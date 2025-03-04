@@ -167,6 +167,14 @@ private constructor(
 
         companion object {
 
+            /**
+             * Returns a mutable builder for constructing an instance of [Body].
+             *
+             * The following fields are required:
+             * ```java
+             * .target()
+             * ```
+             */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -278,6 +286,14 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [VerificationCreateParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .target()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -502,6 +518,15 @@ private constructor(
 
         companion object {
 
+            /**
+             * Returns a mutable builder for constructing an instance of [Target].
+             *
+             * The following fields are required:
+             * ```java
+             * .type()
+             * .value()
+             * ```
+             */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -714,6 +739,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Metadata]. */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -904,6 +930,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Options]. */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -1086,6 +1113,15 @@ private constructor(
 
             companion object {
 
+                /**
+                 * Returns a mutable builder for constructing an instance of [AppRealm].
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .platform()
+                 * .value()
+                 * ```
+                 */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -1403,6 +1439,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Signals]. */
             @JvmStatic fun builder() = Builder()
         }
 

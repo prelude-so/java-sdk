@@ -137,6 +137,19 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [TransactionalSendResponse].
+         *
+         * The following fields are required:
+         * ```java
+         * .id()
+         * .createdAt()
+         * .expiresAt()
+         * .templateId()
+         * .to()
+         * .variables()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -285,6 +298,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Variables]. */
             @JvmStatic fun builder() = Builder()
         }
 
