@@ -17,6 +17,7 @@ class PreludeOkHttpClient private constructor() {
 
     companion object {
 
+        /** Returns a mutable builder for constructing an instance of [PreludeOkHttpClient]. */
         @JvmStatic fun builder() = Builder()
 
         @JvmStatic fun fromEnv(): PreludeClient = builder().fromEnv().build()
