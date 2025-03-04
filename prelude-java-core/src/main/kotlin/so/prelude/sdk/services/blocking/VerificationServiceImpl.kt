@@ -11,8 +11,8 @@ import so.prelude.sdk.core.http.HttpMethod
 import so.prelude.sdk.core.http.HttpRequest
 import so.prelude.sdk.core.http.HttpResponse.Handler
 import so.prelude.sdk.core.http.HttpResponseFor
+import so.prelude.sdk.core.http.json
 import so.prelude.sdk.core.http.parseable
-import so.prelude.sdk.core.json
 import so.prelude.sdk.core.prepare
 import so.prelude.sdk.errors.PreludeError
 import so.prelude.sdk.models.VerificationCheckParams
