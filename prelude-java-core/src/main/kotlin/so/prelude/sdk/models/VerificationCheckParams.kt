@@ -99,6 +99,15 @@ private constructor(
 
         companion object {
 
+            /**
+             * Returns a mutable builder for constructing an instance of [Body].
+             *
+             * The following fields are required:
+             * ```java
+             * .code()
+             * .target()
+             * ```
+             */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -177,6 +186,15 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [VerificationCheckParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .code()
+         * .target()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -377,6 +395,15 @@ private constructor(
 
         companion object {
 
+            /**
+             * Returns a mutable builder for constructing an instance of [Target].
+             *
+             * The following fields are required:
+             * ```java
+             * .type()
+             * .value()
+             * ```
+             */
             @JvmStatic fun builder() = Builder()
         }
 

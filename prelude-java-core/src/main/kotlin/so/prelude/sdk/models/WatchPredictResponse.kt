@@ -72,6 +72,16 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [WatchPredictResponse].
+         *
+         * The following fields are required:
+         * ```java
+         * .id()
+         * .prediction()
+         * .reasoning()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -288,6 +298,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Reasoning]. */
             @JvmStatic fun builder() = Builder()
         }
 
