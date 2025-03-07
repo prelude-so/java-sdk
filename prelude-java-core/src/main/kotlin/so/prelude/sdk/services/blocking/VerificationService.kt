@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package so.prelude.sdk.services.blocking
 
 import com.google.errorprone.annotations.MustBeClosed
@@ -24,14 +22,20 @@ interface VerificationService {
      * exists (the request is performed within the verification window), this endpoint will perform
      * a retry instead.
      */
-    @JvmOverloads
+    fun create(params: VerificationCreateParams): VerificationCreateResponse =
+        create(params, RequestOptions.none())
+
+    /** @see [create] */
     fun create(
         params: VerificationCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): VerificationCreateResponse
 
     /** Check the validity of a verification code. */
-    @JvmOverloads
+    fun check(params: VerificationCheckParams): VerificationCheckResponse =
+        check(params, RequestOptions.none())
+
+    /** @see [check] */
     fun check(
         params: VerificationCheckParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -46,7 +50,11 @@ interface VerificationService {
          * Returns a raw HTTP response for `post /v2/verification`, but is otherwise the same as
          * [VerificationService.create].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun create(params: VerificationCreateParams): HttpResponseFor<VerificationCreateResponse> =
+            create(params, RequestOptions.none())
+
+        /** @see [create] */
         @MustBeClosed
         fun create(
             params: VerificationCreateParams,
@@ -57,7 +65,11 @@ interface VerificationService {
          * Returns a raw HTTP response for `post /v2/verification/check`, but is otherwise the same
          * as [VerificationService.check].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun check(params: VerificationCheckParams): HttpResponseFor<VerificationCheckResponse> =
+            check(params, RequestOptions.none())
+
+        /** @see [check] */
         @MustBeClosed
         fun check(
             params: VerificationCheckParams,
