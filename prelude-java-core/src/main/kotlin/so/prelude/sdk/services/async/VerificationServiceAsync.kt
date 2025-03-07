@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package so.prelude.sdk.services.async
 
 import com.google.errorprone.annotations.MustBeClosed
@@ -25,14 +23,20 @@ interface VerificationServiceAsync {
      * exists (the request is performed within the verification window), this endpoint will perform
      * a retry instead.
      */
-    @JvmOverloads
+    fun create(params: VerificationCreateParams): CompletableFuture<VerificationCreateResponse> =
+        create(params, RequestOptions.none())
+
+    /** @see [create] */
     fun create(
         params: VerificationCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<VerificationCreateResponse>
 
     /** Check the validity of a verification code. */
-    @JvmOverloads
+    fun check(params: VerificationCheckParams): CompletableFuture<VerificationCheckResponse> =
+        check(params, RequestOptions.none())
+
+    /** @see [check] */
     fun check(
         params: VerificationCheckParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -48,7 +52,13 @@ interface VerificationServiceAsync {
          * Returns a raw HTTP response for `post /v2/verification`, but is otherwise the same as
          * [VerificationServiceAsync.create].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun create(
+            params: VerificationCreateParams
+        ): CompletableFuture<HttpResponseFor<VerificationCreateResponse>> =
+            create(params, RequestOptions.none())
+
+        /** @see [create] */
         @MustBeClosed
         fun create(
             params: VerificationCreateParams,
@@ -59,7 +69,13 @@ interface VerificationServiceAsync {
          * Returns a raw HTTP response for `post /v2/verification/check`, but is otherwise the same
          * as [VerificationServiceAsync.check].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun check(
+            params: VerificationCheckParams
+        ): CompletableFuture<HttpResponseFor<VerificationCheckResponse>> =
+            check(params, RequestOptions.none())
+
+        /** @see [check] */
         @MustBeClosed
         fun check(
             params: VerificationCheckParams,
