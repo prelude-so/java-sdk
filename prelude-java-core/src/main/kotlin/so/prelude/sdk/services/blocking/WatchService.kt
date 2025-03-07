@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package so.prelude.sdk.services.blocking
 
 import com.google.errorprone.annotations.MustBeClosed
@@ -23,7 +21,10 @@ interface WatchService {
      * Once the user with a trustworthy phone number demonstrates authentic behavior, call this
      * endpoint to report their authenticity to our systems.
      */
-    @JvmOverloads
+    fun feedBack(params: WatchFeedBackParams): WatchFeedBackResponse =
+        feedBack(params, RequestOptions.none())
+
+    /** @see [feedBack] */
     fun feedBack(
         params: WatchFeedBackParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -34,7 +35,10 @@ interface WatchService {
      * international revenue share fraud (IRSF) patterns. This endpoint must be implemented in
      * conjunction with the `watch/feedback` endpoint.
      */
-    @JvmOverloads
+    fun predict(params: WatchPredictParams): WatchPredictResponse =
+        predict(params, RequestOptions.none())
+
+    /** @see [predict] */
     fun predict(
         params: WatchPredictParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -47,7 +51,11 @@ interface WatchService {
          * Returns a raw HTTP response for `post /v2/watch/feedback`, but is otherwise the same as
          * [WatchService.feedBack].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun feedBack(params: WatchFeedBackParams): HttpResponseFor<WatchFeedBackResponse> =
+            feedBack(params, RequestOptions.none())
+
+        /** @see [feedBack] */
         @MustBeClosed
         fun feedBack(
             params: WatchFeedBackParams,
@@ -58,7 +66,11 @@ interface WatchService {
          * Returns a raw HTTP response for `post /v2/watch/predict`, but is otherwise the same as
          * [WatchService.predict].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun predict(params: WatchPredictParams): HttpResponseFor<WatchPredictResponse> =
+            predict(params, RequestOptions.none())
+
+        /** @see [predict] */
         @MustBeClosed
         fun predict(
             params: WatchPredictParams,

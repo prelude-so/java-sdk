@@ -1,7 +1,5 @@
 // File generated from our OpenAPI spec by Stainless.
 
-@file:Suppress("OVERLOADS_INTERFACE") // See https://youtrack.jetbrains.com/issue/KT-36102
-
 package so.prelude.sdk.services.async
 
 import com.google.errorprone.annotations.MustBeClosed
@@ -19,7 +17,10 @@ interface TransactionalServiceAsync {
     fun withRawResponse(): WithRawResponse
 
     /** Send a transactional message to your user. */
-    @JvmOverloads
+    fun send(params: TransactionalSendParams): CompletableFuture<TransactionalSendResponse> =
+        send(params, RequestOptions.none())
+
+    /** @see [send] */
     fun send(
         params: TransactionalSendParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -35,7 +36,13 @@ interface TransactionalServiceAsync {
          * Returns a raw HTTP response for `post /v2/transactional`, but is otherwise the same as
          * [TransactionalServiceAsync.send].
          */
-        @JvmOverloads
+        @MustBeClosed
+        fun send(
+            params: TransactionalSendParams
+        ): CompletableFuture<HttpResponseFor<TransactionalSendResponse>> =
+            send(params, RequestOptions.none())
+
+        /** @see [send] */
         @MustBeClosed
         fun send(
             params: TransactionalSendParams,
