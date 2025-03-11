@@ -14,72 +14,65 @@ import so.prelude.sdk.models.VerificationCreateResponse
 interface VerificationServiceAsync {
 
     /**
-     * Returns a view of this service that provides access to raw HTTP responses for each method.
+     * Returns a view of this service that provides access to raw HTTP responses for
+     * each method.
      */
     fun withRawResponse(): WithRawResponse
 
     /**
-     * Create a new verification for a specific phone number. If another non-expired verification
-     * exists (the request is performed within the verification window), this endpoint will perform
-     * a retry instead.
+     * Create a new verification for a specific phone number. If another non-expired
+     * verification exists (the request is performed within the verification window),
+     * this endpoint will perform a retry instead.
      */
     fun create(params: VerificationCreateParams): CompletableFuture<VerificationCreateResponse> =
-        create(params, RequestOptions.none())
+        create(
+          params, RequestOptions.none()
+        )
 
     /** @see [create] */
-    fun create(
-        params: VerificationCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<VerificationCreateResponse>
+    fun create(params: VerificationCreateParams, requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<VerificationCreateResponse>
 
     /** Check the validity of a verification code. */
     fun check(params: VerificationCheckParams): CompletableFuture<VerificationCheckResponse> =
-        check(params, RequestOptions.none())
+        check(
+          params, RequestOptions.none()
+        )
 
     /** @see [check] */
-    fun check(
-        params: VerificationCheckParams,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<VerificationCheckResponse>
+    fun check(params: VerificationCheckParams, requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<VerificationCheckResponse>
 
     /**
-     * A view of [VerificationServiceAsync] that provides access to raw HTTP responses for each
-     * method.
+     * A view of [VerificationServiceAsync] that provides access to raw HTTP responses
+     * for each method.
      */
     interface WithRawResponse {
 
         /**
-         * Returns a raw HTTP response for `post /v2/verification`, but is otherwise the same as
-         * [VerificationServiceAsync.create].
+         * Returns a raw HTTP response for `post /v2/verification`, but is otherwise the
+         * same as [VerificationServiceAsync.create].
          */
         @MustBeClosed
-        fun create(
-            params: VerificationCreateParams
-        ): CompletableFuture<HttpResponseFor<VerificationCreateResponse>> =
-            create(params, RequestOptions.none())
+        fun create(params: VerificationCreateParams): CompletableFuture<HttpResponseFor<VerificationCreateResponse>> =
+            create(
+              params, RequestOptions.none()
+            )
 
         /** @see [create] */
         @MustBeClosed
-        fun create(
-            params: VerificationCreateParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<VerificationCreateResponse>>
+        fun create(params: VerificationCreateParams, requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<HttpResponseFor<VerificationCreateResponse>>
 
         /**
-         * Returns a raw HTTP response for `post /v2/verification/check`, but is otherwise the same
-         * as [VerificationServiceAsync.check].
+         * Returns a raw HTTP response for `post /v2/verification/check`, but is otherwise
+         * the same as [VerificationServiceAsync.check].
          */
         @MustBeClosed
-        fun check(
-            params: VerificationCheckParams
-        ): CompletableFuture<HttpResponseFor<VerificationCheckResponse>> =
-            check(params, RequestOptions.none())
+        fun check(params: VerificationCheckParams): CompletableFuture<HttpResponseFor<VerificationCheckResponse>> =
+            check(
+              params, RequestOptions.none()
+            )
 
         /** @see [check] */
         @MustBeClosed
-        fun check(
-            params: VerificationCheckParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<VerificationCheckResponse>>
+        fun check(params: VerificationCheckParams, requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<HttpResponseFor<VerificationCheckResponse>>
     }
 }

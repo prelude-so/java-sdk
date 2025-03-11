@@ -10,86 +10,65 @@ class WatchPredictParamsTest {
 
     @Test
     fun create() {
-        WatchPredictParams.builder()
-            .target(
-                WatchPredictParams.Target.builder()
-                    .type(WatchPredictParams.Target.Type.PHONE_NUMBER)
-                    .value("+30123456789")
-                    .build()
-            )
-            .signals(
-                WatchPredictParams.Signals.builder()
-                    .deviceId("device_id")
-                    .deviceModel("device_model")
-                    .deviceType("device_type")
-                    .ip("ip")
-                    .build()
-            )
-            .build()
+      WatchPredictParams.builder()
+          .target(WatchPredictParams.Target.builder()
+              .type(WatchPredictParams.Target.Type.PHONE_NUMBER)
+              .value("+30123456789")
+              .build())
+          .signals(WatchPredictParams.Signals.builder()
+              .deviceId("device_id")
+              .deviceModel("device_model")
+              .deviceType("device_type")
+              .ip("ip")
+              .build())
+          .build()
     }
 
     @Test
     fun body() {
-        val params =
-            WatchPredictParams.builder()
-                .target(
-                    WatchPredictParams.Target.builder()
-                        .type(WatchPredictParams.Target.Type.PHONE_NUMBER)
-                        .value("+30123456789")
-                        .build()
-                )
-                .signals(
-                    WatchPredictParams.Signals.builder()
-                        .deviceId("device_id")
-                        .deviceModel("device_model")
-                        .deviceType("device_type")
-                        .ip("ip")
-                        .build()
-                )
-                .build()
+      val params = WatchPredictParams.builder()
+          .target(WatchPredictParams.Target.builder()
+              .type(WatchPredictParams.Target.Type.PHONE_NUMBER)
+              .value("+30123456789")
+              .build())
+          .signals(WatchPredictParams.Signals.builder()
+              .deviceId("device_id")
+              .deviceModel("device_model")
+              .deviceType("device_type")
+              .ip("ip")
+              .build())
+          .build()
 
-        val body = params._body()
+      val body = params._body()
 
-        assertNotNull(body)
-        assertThat(body.target())
-            .isEqualTo(
-                WatchPredictParams.Target.builder()
-                    .type(WatchPredictParams.Target.Type.PHONE_NUMBER)
-                    .value("+30123456789")
-                    .build()
-            )
-        assertThat(body.signals())
-            .contains(
-                WatchPredictParams.Signals.builder()
-                    .deviceId("device_id")
-                    .deviceModel("device_model")
-                    .deviceType("device_type")
-                    .ip("ip")
-                    .build()
-            )
+      assertNotNull(body)
+      assertThat(body.target()).isEqualTo(WatchPredictParams.Target.builder()
+          .type(WatchPredictParams.Target.Type.PHONE_NUMBER)
+          .value("+30123456789")
+          .build())
+      assertThat(body.signals()).contains(WatchPredictParams.Signals.builder()
+          .deviceId("device_id")
+          .deviceModel("device_model")
+          .deviceType("device_type")
+          .ip("ip")
+          .build())
     }
 
     @Test
     fun bodyWithoutOptionalFields() {
-        val params =
-            WatchPredictParams.builder()
-                .target(
-                    WatchPredictParams.Target.builder()
-                        .type(WatchPredictParams.Target.Type.PHONE_NUMBER)
-                        .value("+30123456789")
-                        .build()
-                )
-                .build()
+      val params = WatchPredictParams.builder()
+          .target(WatchPredictParams.Target.builder()
+              .type(WatchPredictParams.Target.Type.PHONE_NUMBER)
+              .value("+30123456789")
+              .build())
+          .build()
 
-        val body = params._body()
+      val body = params._body()
 
-        assertNotNull(body)
-        assertThat(body.target())
-            .isEqualTo(
-                WatchPredictParams.Target.builder()
-                    .type(WatchPredictParams.Target.Type.PHONE_NUMBER)
-                    .value("+30123456789")
-                    .build()
-            )
+      assertNotNull(body)
+      assertThat(body.target()).isEqualTo(WatchPredictParams.Target.builder()
+          .type(WatchPredictParams.Target.Type.PHONE_NUMBER)
+          .value("+30123456789")
+          .build())
     }
 }

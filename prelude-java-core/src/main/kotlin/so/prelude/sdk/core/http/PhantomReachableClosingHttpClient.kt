@@ -1,8 +1,8 @@
 package so.prelude.sdk.core.http
 
-import java.util.concurrent.CompletableFuture
 import so.prelude.sdk.core.RequestOptions
 import so.prelude.sdk.core.closeWhenPhantomReachable
+import java.util.concurrent.CompletableFuture
 
 /**
  * A delegating wrapper around an `HttpClient` that closes it once it's only phantom reachable.
@@ -19,7 +19,7 @@ internal class PhantomReachableClosingHttpClient(private val httpClient: HttpCli
 
     override fun executeAsync(
         request: HttpRequest,
-        requestOptions: RequestOptions,
+        requestOptions: RequestOptions
     ): CompletableFuture<HttpResponse> = httpClient.executeAsync(request, requestOptions)
 
     override fun close() = httpClient.close()

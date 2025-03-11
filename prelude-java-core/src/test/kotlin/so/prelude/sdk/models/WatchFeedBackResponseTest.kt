@@ -9,8 +9,10 @@ class WatchFeedBackResponseTest {
 
     @Test
     fun createWatchFeedBackResponse() {
-        val watchFeedBackResponse = WatchFeedBackResponse.builder().id("id").build()
-        assertThat(watchFeedBackResponse).isNotNull
-        assertThat(watchFeedBackResponse.id()).isEqualTo("id")
+      val watchFeedBackResponse = WatchFeedBackResponse.builder()
+          .id("id")
+          .build()
+      assertThat(watchFeedBackResponse).isNotNull
+      assertThat(watchFeedBackResponse.id()).isEqualTo("id")
     }
 }
