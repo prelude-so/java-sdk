@@ -7,7 +7,6 @@ import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import so.prelude.sdk.core.enhanceJacksonException
 import so.prelude.sdk.core.http.HttpResponse
 import so.prelude.sdk.core.http.HttpResponse.Handler
-import so.prelude.sdk.errors.PreludeException
 
 @JvmSynthetic
 internal inline fun <reified T> jsonHandler(jsonMapper: JsonMapper): Handler<T> =
