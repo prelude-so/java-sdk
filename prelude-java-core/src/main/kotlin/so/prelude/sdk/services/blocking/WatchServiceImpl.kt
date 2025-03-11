@@ -20,88 +20,80 @@ import so.prelude.sdk.models.WatchFeedBackResponse
 import so.prelude.sdk.models.WatchPredictParams
 import so.prelude.sdk.models.WatchPredictResponse
 
-class WatchServiceImpl internal constructor(private val clientOptions: ClientOptions) :
-    WatchService {
+class WatchServiceImpl internal constructor(
+    private val clientOptions: ClientOptions,
 
-    private val withRawResponse: WatchService.WithRawResponse by lazy {
-        WithRawResponseImpl(clientOptions)
-    }
+) : WatchService {
+
+    private val withRawResponse: WatchService.WithRawResponse by lazy { WithRawResponseImpl(clientOptions) }
 
     override fun withRawResponse(): WatchService.WithRawResponse = withRawResponse
 
-    override fun feedBack(
-        params: WatchFeedBackParams,
-        requestOptions: RequestOptions,
-    ): WatchFeedBackResponse =
+    override fun feedBack(params: WatchFeedBackParams, requestOptions: RequestOptions): WatchFeedBackResponse =
         // post /v2/watch/feedback
         withRawResponse().feedBack(params, requestOptions).parse()
 
-    override fun predict(
-        params: WatchPredictParams,
-        requestOptions: RequestOptions,
-    ): WatchPredictResponse =
+    override fun predict(params: WatchPredictParams, requestOptions: RequestOptions): WatchPredictResponse =
         // post /v2/watch/predict
         withRawResponse().predict(params, requestOptions).parse()
 
-    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
-        WatchService.WithRawResponse {
+    class WithRawResponseImpl internal constructor(
+        private val clientOptions: ClientOptions,
+
+    ) : WatchService.WithRawResponse {
 
         private val errorHandler: Handler<PreludeError> = errorHandler(clientOptions.jsonMapper)
 
-        private val feedBackHandler: Handler<WatchFeedBackResponse> =
-            jsonHandler<WatchFeedBackResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
+        private val feedBackHandler: Handler<WatchFeedBackResponse> = jsonHandler<WatchFeedBackResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-        override fun feedBack(
-            params: WatchFeedBackParams,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<WatchFeedBackResponse> {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.POST)
-                    .addPathSegments("v2", "watch", "feedback")
-                    .body(json(clientOptions.jsonMapper, params._body()))
-                    .build()
-                    .prepare(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
-                response
-                    .use { feedBackHandler.handle(it) }
-                    .also {
-                        if (requestOptions.responseValidation!!) {
-                            it.validate()
-                        }
-                    }
-            }
+        override fun feedBack(params: WatchFeedBackParams, requestOptions: RequestOptions): HttpResponseFor<WatchFeedBackResponse> {
+          val request = HttpRequest.builder()
+            .method(HttpMethod.POST)
+            .addPathSegments("v2", "watch", "feedback")
+            .body(json(clientOptions.jsonMapper, params._body()))
+            .build()
+            .prepare(clientOptions, params)
+          val requestOptions = requestOptions
+              .applyDefaults(RequestOptions.from(clientOptions))
+          val response = clientOptions.httpClient.execute(
+            request, requestOptions
+          )
+          return response.parseable {
+              response.use {
+                  feedBackHandler.handle(it)
+              }
+              .also {
+                  if (requestOptions.responseValidation!!) {
+                    it.validate()
+                  }
+              }
+          }
         }
 
-        private val predictHandler: Handler<WatchPredictResponse> =
-            jsonHandler<WatchPredictResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
+        private val predictHandler: Handler<WatchPredictResponse> = jsonHandler<WatchPredictResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-        override fun predict(
-            params: WatchPredictParams,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<WatchPredictResponse> {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.POST)
-                    .addPathSegments("v2", "watch", "predict")
-                    .body(json(clientOptions.jsonMapper, params._body()))
-                    .build()
-                    .prepare(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
-                response
-                    .use { predictHandler.handle(it) }
-                    .also {
-                        if (requestOptions.responseValidation!!) {
-                            it.validate()
-                        }
-                    }
-            }
+        override fun predict(params: WatchPredictParams, requestOptions: RequestOptions): HttpResponseFor<WatchPredictResponse> {
+          val request = HttpRequest.builder()
+            .method(HttpMethod.POST)
+            .addPathSegments("v2", "watch", "predict")
+            .body(json(clientOptions.jsonMapper, params._body()))
+            .build()
+            .prepare(clientOptions, params)
+          val requestOptions = requestOptions
+              .applyDefaults(RequestOptions.from(clientOptions))
+          val response = clientOptions.httpClient.execute(
+            request, requestOptions
+          )
+          return response.parseable {
+              response.use {
+                  predictHandler.handle(it)
+              }
+              .also {
+                  if (requestOptions.responseValidation!!) {
+                    it.validate()
+                  }
+              }
+          }
         }
     }
 }

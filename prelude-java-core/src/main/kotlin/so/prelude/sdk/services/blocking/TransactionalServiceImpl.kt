@@ -18,53 +18,50 @@ import so.prelude.sdk.errors.PreludeError
 import so.prelude.sdk.models.TransactionalSendParams
 import so.prelude.sdk.models.TransactionalSendResponse
 
-class TransactionalServiceImpl internal constructor(private val clientOptions: ClientOptions) :
-    TransactionalService {
+class TransactionalServiceImpl internal constructor(
+    private val clientOptions: ClientOptions,
 
-    private val withRawResponse: TransactionalService.WithRawResponse by lazy {
-        WithRawResponseImpl(clientOptions)
-    }
+) : TransactionalService {
+
+    private val withRawResponse: TransactionalService.WithRawResponse by lazy { WithRawResponseImpl(clientOptions) }
 
     override fun withRawResponse(): TransactionalService.WithRawResponse = withRawResponse
 
-    override fun send(
-        params: TransactionalSendParams,
-        requestOptions: RequestOptions,
-    ): TransactionalSendResponse =
+    override fun send(params: TransactionalSendParams, requestOptions: RequestOptions): TransactionalSendResponse =
         // post /v2/transactional
         withRawResponse().send(params, requestOptions).parse()
 
-    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
-        TransactionalService.WithRawResponse {
+    class WithRawResponseImpl internal constructor(
+        private val clientOptions: ClientOptions,
+
+    ) : TransactionalService.WithRawResponse {
 
         private val errorHandler: Handler<PreludeError> = errorHandler(clientOptions.jsonMapper)
 
-        private val sendHandler: Handler<TransactionalSendResponse> =
-            jsonHandler<TransactionalSendResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
+        private val sendHandler: Handler<TransactionalSendResponse> = jsonHandler<TransactionalSendResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-        override fun send(
-            params: TransactionalSendParams,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<TransactionalSendResponse> {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.POST)
-                    .addPathSegments("v2", "transactional")
-                    .body(json(clientOptions.jsonMapper, params._body()))
-                    .build()
-                    .prepare(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
-                response
-                    .use { sendHandler.handle(it) }
-                    .also {
-                        if (requestOptions.responseValidation!!) {
-                            it.validate()
-                        }
-                    }
-            }
+        override fun send(params: TransactionalSendParams, requestOptions: RequestOptions): HttpResponseFor<TransactionalSendResponse> {
+          val request = HttpRequest.builder()
+            .method(HttpMethod.POST)
+            .addPathSegments("v2", "transactional")
+            .body(json(clientOptions.jsonMapper, params._body()))
+            .build()
+            .prepare(clientOptions, params)
+          val requestOptions = requestOptions
+              .applyDefaults(RequestOptions.from(clientOptions))
+          val response = clientOptions.httpClient.execute(
+            request, requestOptions
+          )
+          return response.parseable {
+              response.use {
+                  sendHandler.handle(it)
+              }
+              .also {
+                  if (requestOptions.responseValidation!!) {
+                    it.validate()
+                  }
+              }
+          }
         }
     }
 }

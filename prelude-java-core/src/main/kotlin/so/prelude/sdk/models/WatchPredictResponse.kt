@@ -20,17 +20,12 @@ import so.prelude.sdk.core.toImmutable
 import so.prelude.sdk.errors.PreludeInvalidDataException
 
 @NoAutoDetect
-class WatchPredictResponse
-@JsonCreator
-private constructor(
+class WatchPredictResponse @JsonCreator private constructor(
     @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("prediction")
-    @ExcludeMissing
-    private val prediction: JsonField<Prediction> = JsonMissing.of(),
-    @JsonProperty("reasoning")
-    @ExcludeMissing
-    private val reasoning: JsonField<Reasoning> = JsonMissing.of(),
+    @JsonProperty("prediction") @ExcludeMissing private val prediction: JsonField<Prediction> = JsonMissing.of(),
+    @JsonProperty("reasoning") @ExcludeMissing private val reasoning: JsonField<Reasoning> = JsonMissing.of(),
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+
 ) {
 
     /** A unique identifier for your prediction request. */
@@ -42,14 +37,18 @@ private constructor(
     fun reasoning(): Reasoning = reasoning.getRequired("reasoning")
 
     /** A unique identifier for your prediction request. */
-    @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
+    @JsonProperty("id")
+    @ExcludeMissing
+    fun _id(): JsonField<String> = id
 
     /** A label indicating the trustworthiness of the phone number. */
     @JsonProperty("prediction")
     @ExcludeMissing
     fun _prediction(): JsonField<Prediction> = prediction
 
-    @JsonProperty("reasoning") @ExcludeMissing fun _reasoning(): JsonField<Reasoning> = reasoning
+    @JsonProperty("reasoning")
+    @ExcludeMissing
+    fun _reasoning(): JsonField<Reasoning> = reasoning
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -57,32 +56,36 @@ private constructor(
 
     private var validated: Boolean = false
 
-    fun validate(): WatchPredictResponse = apply {
-        if (validated) {
-            return@apply
-        }
+    fun validate(): WatchPredictResponse =
+        apply {
+            if (validated) {
+              return@apply
+            }
 
-        id()
-        prediction()
-        reasoning().validate()
-        validated = true
-    }
+            id()
+            prediction()
+            reasoning().validate()
+            validated = true
+        }
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
         /**
-         * Returns a mutable builder for constructing an instance of [WatchPredictResponse].
+         * Returns a mutable builder for constructing an instance of
+         * [WatchPredictResponse].
          *
          * The following fields are required:
+         *
          * ```java
          * .id()
          * .prediction()
          * .reasoning()
          * ```
          */
-        @JvmStatic fun builder() = Builder()
+        @JvmStatic
+        fun builder() = Builder()
     }
 
     /** A builder for [WatchPredictResponse]. */
@@ -94,69 +97,96 @@ private constructor(
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(watchPredictResponse: WatchPredictResponse) = apply {
-            id = watchPredictResponse.id
-            prediction = watchPredictResponse.prediction
-            reasoning = watchPredictResponse.reasoning
-            additionalProperties = watchPredictResponse.additionalProperties.toMutableMap()
-        }
+        internal fun from(watchPredictResponse: WatchPredictResponse) =
+            apply {
+                id = watchPredictResponse.id
+                prediction = watchPredictResponse.prediction
+                reasoning = watchPredictResponse.reasoning
+                additionalProperties = watchPredictResponse.additionalProperties.toMutableMap()
+            }
 
         /** A unique identifier for your prediction request. */
         fun id(id: String) = id(JsonField.of(id))
 
         /** A unique identifier for your prediction request. */
-        fun id(id: JsonField<String>) = apply { this.id = id }
+        fun id(id: JsonField<String>) =
+            apply {
+                this.id = id
+            }
 
         /** A label indicating the trustworthiness of the phone number. */
         fun prediction(prediction: Prediction) = prediction(JsonField.of(prediction))
 
         /** A label indicating the trustworthiness of the phone number. */
-        fun prediction(prediction: JsonField<Prediction>) = apply { this.prediction = prediction }
+        fun prediction(prediction: JsonField<Prediction>) =
+            apply {
+                this.prediction = prediction
+            }
 
         fun reasoning(reasoning: Reasoning) = reasoning(JsonField.of(reasoning))
 
-        fun reasoning(reasoning: JsonField<Reasoning>) = apply { this.reasoning = reasoning }
+        fun reasoning(reasoning: JsonField<Reasoning>) =
+            apply {
+                this.reasoning = reasoning
+            }
 
-        fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-            this.additionalProperties.clear()
-            putAllAdditionalProperties(additionalProperties)
-        }
+        fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
+            apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
 
-        fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            additionalProperties.put(key, value)
-        }
+        fun putAdditionalProperty(key: String, value: JsonValue) =
+            apply {
+                additionalProperties.put(key, value)
+            }
 
-        fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-            this.additionalProperties.putAll(additionalProperties)
-        }
+        fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+            apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
 
-        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+        fun removeAdditionalProperty(key: String) =
+            apply {
+                additionalProperties.remove(key)
+            }
 
-        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalProperty)
-        }
+        fun removeAllAdditionalProperties(keys: Set<String>) =
+            apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
 
         fun build(): WatchPredictResponse =
             WatchPredictResponse(
-                checkRequired("id", id),
-                checkRequired("prediction", prediction),
-                checkRequired("reasoning", reasoning),
-                additionalProperties.toImmutable(),
+              checkRequired(
+                "id", id
+              ),
+              checkRequired(
+                "prediction", prediction
+              ),
+              checkRequired(
+                "reasoning", reasoning
+              ),
+              additionalProperties.toImmutable(),
             )
     }
 
     /** A label indicating the trustworthiness of the phone number. */
-    class Prediction @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
+    class Prediction @JsonCreator private constructor(
+        private val value: JsonField<String>,
+
+    ) : Enum {
 
         /**
          * Returns this class instance's raw value.
          *
-         * This is usually only useful if this instance was deserialized from data that doesn't
-         * match any known member, and you want to know that value. For example, if the SDK is on an
-         * older version than the API, then the API may respond with new members that the SDK is
-         * unaware of.
+         * This is usually only useful if this instance was deserialized from data that
+         * doesn't match any known member, and you want to know that value. For example, if
+         * the SDK is on an older version than the API, then the API may respond with new
+         * members that the SDK is unaware of.
          */
-        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+        @com.fasterxml.jackson.annotation.JsonValue
+        fun _value(): JsonField<String> = value
 
         companion object {
 
@@ -177,26 +207,29 @@ private constructor(
          * An enum containing [Prediction]'s known values, as well as an [_UNKNOWN] member.
          *
          * An instance of [Prediction] can contain an unknown value in a couple of cases:
-         * - It was deserialized from data that doesn't match any known member. For example, if the
-         *   SDK is on an older version than the API, then the API may respond with new members that
-         *   the SDK is unaware of.
+         *
+         * - It was deserialized from data that doesn't match any known member. For
+         *   example, if the SDK is on an older version than the API, then the API may
+         *   respond with new members that the SDK is unaware of.
+         *
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {
             ALLOW,
             BLOCK,
             /**
-             * An enum member indicating that [Prediction] was instantiated with an unknown value.
+             * An enum member indicating that [Prediction] was instantiated with an unknown
+             * value.
              */
             _UNKNOWN,
         }
 
         /**
-         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
-         * if the class was instantiated with an unknown value.
+         * Returns an enum member corresponding to this class instance's value, or
+         * [Value._UNKNOWN] if the class was instantiated with an unknown value.
          *
-         * Use the [known] method instead if you're certain the value is always known or if you want
-         * to throw for the unknown case.
+         * Use the [known] method instead if you're certain the value is always known or if
+         * you want to throw for the unknown case.
          */
         fun value(): Value =
             when (this) {
@@ -208,11 +241,11 @@ private constructor(
         /**
          * Returns an enum member corresponding to this class instance's value.
          *
-         * Use the [value] method instead if you're uncertain the value is always known and don't
-         * want to throw for the unknown case.
+         * Use the [value] method instead if you're uncertain the value is always known and
+         * don't want to throw for the unknown case.
          *
-         * @throws PreludeInvalidDataException if this class instance's value is a not a known
-         *   member.
+         * @throws PreludeInvalidDataException if this class instance's value is a not a
+         * known member.
          */
         fun known(): Known =
             when (this) {
@@ -224,21 +257,20 @@ private constructor(
         /**
          * Returns this class instance's primitive wire representation.
          *
-         * This differs from the [toString] method because that method is primarily for debugging
-         * and generally doesn't throw.
+         * This differs from the [toString] method because that method is primarily for
+         * debugging and generally doesn't throw.
          *
-         * @throws PreludeInvalidDataException if this class instance's value does not have the
-         *   expected primitive type.
+         * @throws PreludeInvalidDataException if this class instance's value does not have
+         * the expected primitive type.
          */
-        fun asString(): String =
-            _value().asString().orElseThrow { PreludeInvalidDataException("Value is not a String") }
+        fun asString(): String = _value().asString().orElseThrow { PreludeInvalidDataException("Value is not a String") }
 
         override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
+          if (this === other) {
+              return true
+          }
 
-            return /* spotless:off */ other is Prediction && value == other.value /* spotless:on */
+          return /* spotless:off */ other is Prediction && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -247,36 +279,34 @@ private constructor(
     }
 
     @NoAutoDetect
-    class Reasoning
-    @JsonCreator
-    private constructor(
-        @JsonProperty("cause")
-        @ExcludeMissing
-        private val cause: JsonField<Cause> = JsonMissing.of(),
-        @JsonProperty("score")
-        @ExcludeMissing
-        private val score: JsonField<Double> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    class Reasoning @JsonCreator private constructor(
+        @JsonProperty("cause") @ExcludeMissing private val cause: JsonField<Cause> = JsonMissing.of(),
+        @JsonProperty("score") @ExcludeMissing private val score: JsonField<Double> = JsonMissing.of(),
+        @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+
     ) {
 
         /** A label explaining why the phone number was classified as not trustworthy */
         fun cause(): Optional<Cause> = Optional.ofNullable(cause.getNullable("cause"))
 
         /**
-         * Indicates the risk of the phone number being genuine or involved in fraudulent patterns.
-         * The higher the riskier.
+         * Indicates the risk of the phone number being genuine or involved in fraudulent
+         * patterns. The higher the riskier.
          */
         fun score(): Optional<Double> = Optional.ofNullable(score.getNullable("score"))
 
         /** A label explaining why the phone number was classified as not trustworthy */
-        @JsonProperty("cause") @ExcludeMissing fun _cause(): JsonField<Cause> = cause
+        @JsonProperty("cause")
+        @ExcludeMissing
+        fun _cause(): JsonField<Cause> = cause
 
         /**
-         * Indicates the risk of the phone number being genuine or involved in fraudulent patterns.
-         * The higher the riskier.
+         * Indicates the risk of the phone number being genuine or involved in fraudulent
+         * patterns. The higher the riskier.
          */
-        @JsonProperty("score") @ExcludeMissing fun _score(): JsonField<Double> = score
+        @JsonProperty("score")
+        @ExcludeMissing
+        fun _score(): JsonField<Double> = score
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -284,22 +314,24 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): Reasoning = apply {
-            if (validated) {
-                return@apply
-            }
+        fun validate(): Reasoning =
+            apply {
+                if (validated) {
+                  return@apply
+                }
 
-            cause()
-            score()
-            validated = true
-        }
+                cause()
+                score()
+                validated = true
+            }
 
         fun toBuilder() = Builder().from(this)
 
         companion object {
 
             /** Returns a mutable builder for constructing an instance of [Reasoning]. */
-            @JvmStatic fun builder() = Builder()
+            @JvmStatic
+            fun builder() = Builder()
         }
 
         /** A builder for [Reasoning]. */
@@ -310,17 +342,21 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(reasoning: Reasoning) = apply {
-                cause = reasoning.cause
-                score = reasoning.score
-                additionalProperties = reasoning.additionalProperties.toMutableMap()
-            }
+            internal fun from(reasoning: Reasoning) =
+                apply {
+                    cause = reasoning.cause
+                    score = reasoning.score
+                    additionalProperties = reasoning.additionalProperties.toMutableMap()
+                }
 
             /** A label explaining why the phone number was classified as not trustworthy */
             fun cause(cause: Cause) = cause(JsonField.of(cause))
 
             /** A label explaining why the phone number was classified as not trustworthy */
-            fun cause(cause: JsonField<Cause>) = apply { this.cause = cause }
+            fun cause(cause: JsonField<Cause>) =
+                apply {
+                    this.cause = cause
+                }
 
             /**
              * Indicates the risk of the phone number being genuine or involved in fraudulent
@@ -332,42 +368,61 @@ private constructor(
              * Indicates the risk of the phone number being genuine or involved in fraudulent
              * patterns. The higher the riskier.
              */
-            fun score(score: JsonField<Double>) = apply { this.score = score }
+            fun score(score: JsonField<Double>) =
+                apply {
+                    this.score = score
+                }
 
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
+                apply {
+                    this.additionalProperties.clear()
+                    putAllAdditionalProperties(additionalProperties)
+                }
 
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                additionalProperties.put(key, value)
-            }
+            fun putAdditionalProperty(key: String, value: JsonValue) =
+                apply {
+                    additionalProperties.put(key, value)
+                }
 
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                apply {
+                    this.additionalProperties.putAll(additionalProperties)
+                }
 
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+            fun removeAdditionalProperty(key: String) =
+                apply {
+                    additionalProperties.remove(key)
+                }
 
-            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
+            fun removeAllAdditionalProperties(keys: Set<String>) =
+                apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
 
-            fun build(): Reasoning = Reasoning(cause, score, additionalProperties.toImmutable())
+            fun build(): Reasoning =
+                Reasoning(
+                  cause,
+                  score,
+                  additionalProperties.toImmutable(),
+                )
         }
 
         /** A label explaining why the phone number was classified as not trustworthy */
-        class Cause @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
+        class Cause @JsonCreator private constructor(
+            private val value: JsonField<String>,
+
+        ) : Enum {
 
             /**
              * Returns this class instance's raw value.
              *
-             * This is usually only useful if this instance was deserialized from data that doesn't
-             * match any known member, and you want to know that value. For example, if the SDK is
-             * on an older version than the API, then the API may respond with new members that the
-             * SDK is unaware of.
+             * This is usually only useful if this instance was deserialized from data that
+             * doesn't match any known member, and you want to know that value. For example, if
+             * the SDK is on an older version than the API, then the API may respond with new
+             * members that the SDK is unaware of.
              */
-            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+            @com.fasterxml.jackson.annotation.JsonValue
+            fun _value(): JsonField<String> = value
 
             companion object {
 
@@ -394,9 +449,11 @@ private constructor(
              * An enum containing [Cause]'s known values, as well as an [_UNKNOWN] member.
              *
              * An instance of [Cause] can contain an unknown value in a couple of cases:
-             * - It was deserialized from data that doesn't match any known member. For example, if
-             *   the SDK is on an older version than the API, then the API may respond with new
-             *   members that the SDK is unaware of.
+             *
+             * - It was deserialized from data that doesn't match any known member. For
+             *   example, if the SDK is on an older version than the API, then the API may
+             *   respond with new members that the SDK is unaware of.
+             *
              * - It was constructed with an arbitrary value using the [of] method.
              */
             enum class Value {
@@ -404,9 +461,7 @@ private constructor(
                 SMART_ANTIFRAUD,
                 REPEAT_NUMBER,
                 INVALID_LINE,
-                /**
-                 * An enum member indicating that [Cause] was instantiated with an unknown value.
-                 */
+                /** An enum member indicating that [Cause] was instantiated with an unknown value. */
                 _UNKNOWN,
             }
 
@@ -414,8 +469,8 @@ private constructor(
              * Returns an enum member corresponding to this class instance's value, or
              * [Value._UNKNOWN] if the class was instantiated with an unknown value.
              *
-             * Use the [known] method instead if you're certain the value is always known or if you
-             * want to throw for the unknown case.
+             * Use the [known] method instead if you're certain the value is always known or if
+             * you want to throw for the unknown case.
              */
             fun value(): Value =
                 when (this) {
@@ -432,8 +487,8 @@ private constructor(
              * Use the [value] method instead if you're uncertain the value is always known and
              * don't want to throw for the unknown case.
              *
-             * @throws PreludeInvalidDataException if this class instance's value is a not a known
-             *   member.
+             * @throws PreludeInvalidDataException if this class instance's value is a not a
+             * known member.
              */
             fun known(): Known =
                 when (this) {
@@ -450,20 +505,17 @@ private constructor(
              * This differs from the [toString] method because that method is primarily for
              * debugging and generally doesn't throw.
              *
-             * @throws PreludeInvalidDataException if this class instance's value does not have the
-             *   expected primitive type.
+             * @throws PreludeInvalidDataException if this class instance's value does not have
+             * the expected primitive type.
              */
-            fun asString(): String =
-                _value().asString().orElseThrow {
-                    PreludeInvalidDataException("Value is not a String")
-                }
+            fun asString(): String = _value().asString().orElseThrow { PreludeInvalidDataException("Value is not a String") }
 
             override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
+              if (this === other) {
+                  return true
+              }
 
-                return /* spotless:off */ other is Cause && value == other.value /* spotless:on */
+              return /* spotless:off */ other is Cause && value == other.value /* spotless:on */
             }
 
             override fun hashCode() = value.hashCode()
@@ -472,11 +524,11 @@ private constructor(
         }
 
         override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
+          if (this === other) {
+              return true
+          }
 
-            return /* spotless:off */ other is Reasoning && cause == other.cause && score == other.score && additionalProperties == other.additionalProperties /* spotless:on */
+          return /* spotless:off */ other is Reasoning && cause == other.cause && score == other.score && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -485,16 +537,15 @@ private constructor(
 
         override fun hashCode(): Int = hashCode
 
-        override fun toString() =
-            "Reasoning{cause=$cause, score=$score, additionalProperties=$additionalProperties}"
+        override fun toString() = "Reasoning{cause=$cause, score=$score, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
+      if (this === other) {
+          return true
+      }
 
-        return /* spotless:off */ other is WatchPredictResponse && id == other.id && prediction == other.prediction && reasoning == other.reasoning && additionalProperties == other.additionalProperties /* spotless:on */
+      return /* spotless:off */ other is WatchPredictResponse && id == other.id && prediction == other.prediction && reasoning == other.reasoning && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
@@ -503,6 +554,5 @@ private constructor(
 
     override fun hashCode(): Int = hashCode
 
-    override fun toString() =
-        "WatchPredictResponse{id=$id, prediction=$prediction, reasoning=$reasoning, additionalProperties=$additionalProperties}"
+    override fun toString() = "WatchPredictResponse{id=$id, prediction=$prediction, reasoning=$reasoning, additionalProperties=$additionalProperties}"
 }

@@ -23,15 +23,15 @@ import so.prelude.sdk.core.toImmutable
 import so.prelude.sdk.errors.PreludeInvalidDataException
 
 /**
- * Create a new verification for a specific phone number. If another non-expired verification exists
- * (the request is performed within the verification window), this endpoint will perform a retry
- * instead.
+ * Create a new verification for a specific phone number. If another non-expired
+ * verification exists (the request is performed within the verification window),
+ * this endpoint will perform a retry instead.
  */
-class VerificationCreateParams
-private constructor(
+class VerificationCreateParams private constructor(
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
+
 ) : Params {
 
     /** The target. Currently this can only be an E.164 formatted phone number. */
@@ -41,8 +41,8 @@ private constructor(
     fun dispatchId(): Optional<String> = body.dispatchId()
 
     /**
-     * The metadata for this verification. This object will be returned with every response or
-     * webhook sent that refers to this verification.
+     * The metadata for this verification. This object will be returned with every
+     * response or webhook sent that refers to this verification.
      */
     fun metadata(): Optional<Metadata> = body.metadata()
 
@@ -59,8 +59,8 @@ private constructor(
     fun _dispatchId(): JsonField<String> = body._dispatchId()
 
     /**
-     * The metadata for this verification. This object will be returned with every response or
-     * webhook sent that refers to this verification.
+     * The metadata for this verification. This object will be returned with every
+     * response or webhook sent that refers to this verification.
      */
     fun _metadata(): JsonField<Metadata> = body._metadata()
 
@@ -76,45 +76,33 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun _body(): Body = body
+    @JvmSynthetic
+    internal fun _body(): Body = body
 
     override fun _headers(): Headers = additionalHeaders
 
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     @NoAutoDetect
-    class Body
-    @JsonCreator
-    private constructor(
-        @JsonProperty("target")
-        @ExcludeMissing
-        private val target: JsonField<Target> = JsonMissing.of(),
-        @JsonProperty("dispatch_id")
-        @ExcludeMissing
-        private val dispatchId: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("metadata")
-        @ExcludeMissing
-        private val metadata: JsonField<Metadata> = JsonMissing.of(),
-        @JsonProperty("options")
-        @ExcludeMissing
-        private val options: JsonField<Options> = JsonMissing.of(),
-        @JsonProperty("signals")
-        @ExcludeMissing
-        private val signals: JsonField<Signals> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    class Body @JsonCreator private constructor(
+        @JsonProperty("target") @ExcludeMissing private val target: JsonField<Target> = JsonMissing.of(),
+        @JsonProperty("dispatch_id") @ExcludeMissing private val dispatchId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("metadata") @ExcludeMissing private val metadata: JsonField<Metadata> = JsonMissing.of(),
+        @JsonProperty("options") @ExcludeMissing private val options: JsonField<Options> = JsonMissing.of(),
+        @JsonProperty("signals") @ExcludeMissing private val signals: JsonField<Signals> = JsonMissing.of(),
+        @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+
     ) {
 
         /** The target. Currently this can only be an E.164 formatted phone number. */
         fun target(): Target = target.getRequired("target")
 
         /** The identifier of the dispatch that came from the front-end SDK. */
-        fun dispatchId(): Optional<String> =
-            Optional.ofNullable(dispatchId.getNullable("dispatch_id"))
+        fun dispatchId(): Optional<String> = Optional.ofNullable(dispatchId.getNullable("dispatch_id"))
 
         /**
-         * The metadata for this verification. This object will be returned with every response or
-         * webhook sent that refers to this verification.
+         * The metadata for this verification. This object will be returned with every
+         * response or webhook sent that refers to this verification.
          */
         fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata.getNullable("metadata"))
 
@@ -125,7 +113,9 @@ private constructor(
         fun signals(): Optional<Signals> = Optional.ofNullable(signals.getNullable("signals"))
 
         /** The target. Currently this can only be an E.164 formatted phone number. */
-        @JsonProperty("target") @ExcludeMissing fun _target(): JsonField<Target> = target
+        @JsonProperty("target")
+        @ExcludeMissing
+        fun _target(): JsonField<Target> = target
 
         /** The identifier of the dispatch that came from the front-end SDK. */
         @JsonProperty("dispatch_id")
@@ -133,16 +123,22 @@ private constructor(
         fun _dispatchId(): JsonField<String> = dispatchId
 
         /**
-         * The metadata for this verification. This object will be returned with every response or
-         * webhook sent that refers to this verification.
+         * The metadata for this verification. This object will be returned with every
+         * response or webhook sent that refers to this verification.
          */
-        @JsonProperty("metadata") @ExcludeMissing fun _metadata(): JsonField<Metadata> = metadata
+        @JsonProperty("metadata")
+        @ExcludeMissing
+        fun _metadata(): JsonField<Metadata> = metadata
 
         /** Verification options */
-        @JsonProperty("options") @ExcludeMissing fun _options(): JsonField<Options> = options
+        @JsonProperty("options")
+        @ExcludeMissing
+        fun _options(): JsonField<Options> = options
 
         /** The signals used for anti-fraud. */
-        @JsonProperty("signals") @ExcludeMissing fun _signals(): JsonField<Signals> = signals
+        @JsonProperty("signals")
+        @ExcludeMissing
+        fun _signals(): JsonField<Signals> = signals
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -150,18 +146,19 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): Body = apply {
-            if (validated) {
-                return@apply
-            }
+        fun validate(): Body =
+            apply {
+                if (validated) {
+                  return@apply
+                }
 
-            target().validate()
-            dispatchId()
-            metadata().ifPresent { it.validate() }
-            options().ifPresent { it.validate() }
-            signals().ifPresent { it.validate() }
-            validated = true
-        }
+                target().validate()
+                dispatchId()
+                metadata().ifPresent { it.validate() }
+                options().ifPresent { it.validate() }
+                signals().ifPresent { it.validate() }
+                validated = true
+            }
 
         fun toBuilder() = Builder().from(this)
 
@@ -171,11 +168,13 @@ private constructor(
              * Returns a mutable builder for constructing an instance of [Body].
              *
              * The following fields are required:
+             *
              * ```java
              * .target()
              * ```
              */
-            @JvmStatic fun builder() = Builder()
+            @JvmStatic
+            fun builder() = Builder()
         }
 
         /** A builder for [Body]. */
@@ -189,87 +188,112 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(body: Body) = apply {
-                target = body.target
-                dispatchId = body.dispatchId
-                metadata = body.metadata
-                options = body.options
-                signals = body.signals
-                additionalProperties = body.additionalProperties.toMutableMap()
-            }
+            internal fun from(body: Body) =
+                apply {
+                    target = body.target
+                    dispatchId = body.dispatchId
+                    metadata = body.metadata
+                    options = body.options
+                    signals = body.signals
+                    additionalProperties = body.additionalProperties.toMutableMap()
+                }
 
             /** The target. Currently this can only be an E.164 formatted phone number. */
             fun target(target: Target) = target(JsonField.of(target))
 
             /** The target. Currently this can only be an E.164 formatted phone number. */
-            fun target(target: JsonField<Target>) = apply { this.target = target }
+            fun target(target: JsonField<Target>) =
+                apply {
+                    this.target = target
+                }
 
             /** The identifier of the dispatch that came from the front-end SDK. */
             fun dispatchId(dispatchId: String) = dispatchId(JsonField.of(dispatchId))
 
             /** The identifier of the dispatch that came from the front-end SDK. */
-            fun dispatchId(dispatchId: JsonField<String>) = apply { this.dispatchId = dispatchId }
+            fun dispatchId(dispatchId: JsonField<String>) =
+                apply {
+                    this.dispatchId = dispatchId
+                }
 
             /**
-             * The metadata for this verification. This object will be returned with every response
-             * or webhook sent that refers to this verification.
+             * The metadata for this verification. This object will be returned with every
+             * response or webhook sent that refers to this verification.
              */
             fun metadata(metadata: Metadata) = metadata(JsonField.of(metadata))
 
             /**
-             * The metadata for this verification. This object will be returned with every response
-             * or webhook sent that refers to this verification.
+             * The metadata for this verification. This object will be returned with every
+             * response or webhook sent that refers to this verification.
              */
-            fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
+            fun metadata(metadata: JsonField<Metadata>) =
+                apply {
+                    this.metadata = metadata
+                }
 
             /** Verification options */
             fun options(options: Options) = options(JsonField.of(options))
 
             /** Verification options */
-            fun options(options: JsonField<Options>) = apply { this.options = options }
+            fun options(options: JsonField<Options>) =
+                apply {
+                    this.options = options
+                }
 
             /** The signals used for anti-fraud. */
             fun signals(signals: Signals) = signals(JsonField.of(signals))
 
             /** The signals used for anti-fraud. */
-            fun signals(signals: JsonField<Signals>) = apply { this.signals = signals }
+            fun signals(signals: JsonField<Signals>) =
+                apply {
+                    this.signals = signals
+                }
 
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
+                apply {
+                    this.additionalProperties.clear()
+                    putAllAdditionalProperties(additionalProperties)
+                }
 
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                additionalProperties.put(key, value)
-            }
+            fun putAdditionalProperty(key: String, value: JsonValue) =
+                apply {
+                    additionalProperties.put(key, value)
+                }
 
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                apply {
+                    this.additionalProperties.putAll(additionalProperties)
+                }
 
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+            fun removeAdditionalProperty(key: String) =
+                apply {
+                    additionalProperties.remove(key)
+                }
 
-            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
+            fun removeAllAdditionalProperties(keys: Set<String>) =
+                apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
 
             fun build(): Body =
                 Body(
-                    checkRequired("target", target),
-                    dispatchId,
-                    metadata,
-                    options,
-                    signals,
-                    additionalProperties.toImmutable(),
+                  checkRequired(
+                    "target", target
+                  ),
+                  dispatchId,
+                  metadata,
+                  options,
+                  signals,
+                  additionalProperties.toImmutable(),
                 )
         }
 
         override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
+          if (this === other) {
+              return true
+          }
 
-            return /* spotless:off */ other is Body && target == other.target && dispatchId == other.dispatchId && metadata == other.metadata && options == other.options && signals == other.signals && additionalProperties == other.additionalProperties /* spotless:on */
+          return /* spotless:off */ other is Body && target == other.target && dispatchId == other.dispatchId && metadata == other.metadata && options == other.options && signals == other.signals && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -278,8 +302,7 @@ private constructor(
 
         override fun hashCode(): Int = hashCode
 
-        override fun toString() =
-            "Body{target=$target, dispatchId=$dispatchId, metadata=$metadata, options=$options, signals=$signals, additionalProperties=$additionalProperties}"
+        override fun toString() = "Body{target=$target, dispatchId=$dispatchId, metadata=$metadata, options=$options, signals=$signals, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -287,14 +310,17 @@ private constructor(
     companion object {
 
         /**
-         * Returns a mutable builder for constructing an instance of [VerificationCreateParams].
+         * Returns a mutable builder for constructing an instance of
+         * [VerificationCreateParams].
          *
          * The following fields are required:
+         *
          * ```java
          * .target()
          * ```
          */
-        @JvmStatic fun builder() = Builder()
+        @JvmStatic
+        fun builder() = Builder()
     }
 
     /** A builder for [VerificationCreateParams]. */
@@ -306,184 +332,245 @@ private constructor(
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         @JvmSynthetic
-        internal fun from(verificationCreateParams: VerificationCreateParams) = apply {
-            body = verificationCreateParams.body.toBuilder()
-            additionalHeaders = verificationCreateParams.additionalHeaders.toBuilder()
-            additionalQueryParams = verificationCreateParams.additionalQueryParams.toBuilder()
-        }
+        internal fun from(verificationCreateParams: VerificationCreateParams) =
+            apply {
+                body = verificationCreateParams.body.toBuilder()
+                additionalHeaders = verificationCreateParams.additionalHeaders.toBuilder()
+                additionalQueryParams = verificationCreateParams.additionalQueryParams.toBuilder()
+            }
 
         /** The target. Currently this can only be an E.164 formatted phone number. */
-        fun target(target: Target) = apply { body.target(target) }
+        fun target(target: Target) =
+            apply {
+                body.target(target)
+            }
 
         /** The target. Currently this can only be an E.164 formatted phone number. */
-        fun target(target: JsonField<Target>) = apply { body.target(target) }
+        fun target(target: JsonField<Target>) =
+            apply {
+                body.target(target)
+            }
 
         /** The identifier of the dispatch that came from the front-end SDK. */
-        fun dispatchId(dispatchId: String) = apply { body.dispatchId(dispatchId) }
+        fun dispatchId(dispatchId: String) =
+            apply {
+                body.dispatchId(dispatchId)
+            }
 
         /** The identifier of the dispatch that came from the front-end SDK. */
-        fun dispatchId(dispatchId: JsonField<String>) = apply { body.dispatchId(dispatchId) }
+        fun dispatchId(dispatchId: JsonField<String>) =
+            apply {
+                body.dispatchId(dispatchId)
+            }
 
         /**
-         * The metadata for this verification. This object will be returned with every response or
-         * webhook sent that refers to this verification.
+         * The metadata for this verification. This object will be returned with every
+         * response or webhook sent that refers to this verification.
          */
-        fun metadata(metadata: Metadata) = apply { body.metadata(metadata) }
+        fun metadata(metadata: Metadata) =
+            apply {
+                body.metadata(metadata)
+            }
 
         /**
-         * The metadata for this verification. This object will be returned with every response or
-         * webhook sent that refers to this verification.
+         * The metadata for this verification. This object will be returned with every
+         * response or webhook sent that refers to this verification.
          */
-        fun metadata(metadata: JsonField<Metadata>) = apply { body.metadata(metadata) }
+        fun metadata(metadata: JsonField<Metadata>) =
+            apply {
+                body.metadata(metadata)
+            }
 
         /** Verification options */
-        fun options(options: Options) = apply { body.options(options) }
+        fun options(options: Options) =
+            apply {
+                body.options(options)
+            }
 
         /** Verification options */
-        fun options(options: JsonField<Options>) = apply { body.options(options) }
+        fun options(options: JsonField<Options>) =
+            apply {
+                body.options(options)
+            }
 
         /** The signals used for anti-fraud. */
-        fun signals(signals: Signals) = apply { body.signals(signals) }
+        fun signals(signals: Signals) =
+            apply {
+                body.signals(signals)
+            }
 
         /** The signals used for anti-fraud. */
-        fun signals(signals: JsonField<Signals>) = apply { body.signals(signals) }
+        fun signals(signals: JsonField<Signals>) =
+            apply {
+                body.signals(signals)
+            }
 
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            body.additionalProperties(additionalBodyProperties)
-        }
+        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
+            apply {
+                body.additionalProperties(additionalBodyProperties)
+            }
 
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            body.putAdditionalProperty(key, value)
-        }
+        fun putAdditionalBodyProperty(key: String, value: JsonValue) =
+            apply {
+                body.putAdditionalProperty(
+                  key, value
+                )
+            }
 
         fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
             apply {
                 body.putAllAdditionalProperties(additionalBodyProperties)
             }
 
-        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
+        fun removeAdditionalBodyProperty(key: String) =
+            apply {
+                body.removeAdditionalProperty(key)
+            }
 
-        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            body.removeAllAdditionalProperties(keys)
-        }
+        fun removeAllAdditionalBodyProperties(keys: Set<String>) =
+            apply {
+                body.removeAllAdditionalProperties(keys)
+            }
 
-        fun additionalHeaders(additionalHeaders: Headers) = apply {
-            this.additionalHeaders.clear()
-            putAllAdditionalHeaders(additionalHeaders)
-        }
+        fun additionalHeaders(additionalHeaders: Headers) =
+            apply {
+                this.additionalHeaders.clear()
+                putAllAdditionalHeaders(additionalHeaders)
+            }
 
-        fun additionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
-            this.additionalHeaders.clear()
-            putAllAdditionalHeaders(additionalHeaders)
-        }
+        fun additionalHeaders(additionalHeaders: Map<String, Iterable<String>>) =
+            apply {
+                this.additionalHeaders.clear()
+                putAllAdditionalHeaders(additionalHeaders)
+            }
 
-        fun putAdditionalHeader(name: String, value: String) = apply {
-            additionalHeaders.put(name, value)
-        }
+        fun putAdditionalHeader(name: String, value: String) =
+            apply {
+                additionalHeaders.put(name, value)
+            }
 
-        fun putAdditionalHeaders(name: String, values: Iterable<String>) = apply {
-            additionalHeaders.put(name, values)
-        }
+        fun putAdditionalHeaders(name: String, values: Iterable<String>) =
+            apply {
+                additionalHeaders.put(name, values)
+            }
 
-        fun putAllAdditionalHeaders(additionalHeaders: Headers) = apply {
-            this.additionalHeaders.putAll(additionalHeaders)
-        }
+        fun putAllAdditionalHeaders(additionalHeaders: Headers) =
+            apply {
+                this.additionalHeaders.putAll(additionalHeaders)
+            }
 
-        fun putAllAdditionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
-            this.additionalHeaders.putAll(additionalHeaders)
-        }
+        fun putAllAdditionalHeaders(additionalHeaders: Map<String, Iterable<String>>) =
+            apply {
+                this.additionalHeaders.putAll(additionalHeaders)
+            }
 
-        fun replaceAdditionalHeaders(name: String, value: String) = apply {
-            additionalHeaders.replace(name, value)
-        }
+        fun replaceAdditionalHeaders(name: String, value: String) =
+            apply {
+                additionalHeaders.replace(name, value)
+            }
 
-        fun replaceAdditionalHeaders(name: String, values: Iterable<String>) = apply {
-            additionalHeaders.replace(name, values)
-        }
+        fun replaceAdditionalHeaders(name: String, values: Iterable<String>) =
+            apply {
+                additionalHeaders.replace(name, values)
+            }
 
-        fun replaceAllAdditionalHeaders(additionalHeaders: Headers) = apply {
-            this.additionalHeaders.replaceAll(additionalHeaders)
-        }
+        fun replaceAllAdditionalHeaders(additionalHeaders: Headers) =
+            apply {
+                this.additionalHeaders.replaceAll(additionalHeaders)
+            }
 
-        fun replaceAllAdditionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
-            this.additionalHeaders.replaceAll(additionalHeaders)
-        }
+        fun replaceAllAdditionalHeaders(additionalHeaders: Map<String, Iterable<String>>) =
+            apply {
+                this.additionalHeaders.replaceAll(additionalHeaders)
+            }
 
-        fun removeAdditionalHeaders(name: String) = apply { additionalHeaders.remove(name) }
+        fun removeAdditionalHeaders(name: String) =
+            apply {
+                additionalHeaders.remove(name)
+            }
 
-        fun removeAllAdditionalHeaders(names: Set<String>) = apply {
-            additionalHeaders.removeAll(names)
-        }
+        fun removeAllAdditionalHeaders(names: Set<String>) =
+            apply {
+                additionalHeaders.removeAll(names)
+            }
 
-        fun additionalQueryParams(additionalQueryParams: QueryParams) = apply {
-            this.additionalQueryParams.clear()
-            putAllAdditionalQueryParams(additionalQueryParams)
-        }
+        fun additionalQueryParams(additionalQueryParams: QueryParams) =
+            apply {
+                this.additionalQueryParams.clear()
+                putAllAdditionalQueryParams(additionalQueryParams)
+            }
 
-        fun additionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) = apply {
-            this.additionalQueryParams.clear()
-            putAllAdditionalQueryParams(additionalQueryParams)
-        }
+        fun additionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) =
+            apply {
+                this.additionalQueryParams.clear()
+                putAllAdditionalQueryParams(additionalQueryParams)
+            }
 
-        fun putAdditionalQueryParam(key: String, value: String) = apply {
-            additionalQueryParams.put(key, value)
-        }
+        fun putAdditionalQueryParam(key: String, value: String) =
+            apply {
+                additionalQueryParams.put(key, value)
+            }
 
-        fun putAdditionalQueryParams(key: String, values: Iterable<String>) = apply {
-            additionalQueryParams.put(key, values)
-        }
+        fun putAdditionalQueryParams(key: String, values: Iterable<String>) =
+            apply {
+                additionalQueryParams.put(key, values)
+            }
 
-        fun putAllAdditionalQueryParams(additionalQueryParams: QueryParams) = apply {
-            this.additionalQueryParams.putAll(additionalQueryParams)
-        }
+        fun putAllAdditionalQueryParams(additionalQueryParams: QueryParams) =
+            apply {
+                this.additionalQueryParams.putAll(additionalQueryParams)
+            }
 
         fun putAllAdditionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) =
             apply {
                 this.additionalQueryParams.putAll(additionalQueryParams)
             }
 
-        fun replaceAdditionalQueryParams(key: String, value: String) = apply {
-            additionalQueryParams.replace(key, value)
-        }
+        fun replaceAdditionalQueryParams(key: String, value: String) =
+            apply {
+                additionalQueryParams.replace(key, value)
+            }
 
-        fun replaceAdditionalQueryParams(key: String, values: Iterable<String>) = apply {
-            additionalQueryParams.replace(key, values)
-        }
+        fun replaceAdditionalQueryParams(key: String, values: Iterable<String>) =
+            apply {
+                additionalQueryParams.replace(key, values)
+            }
 
-        fun replaceAllAdditionalQueryParams(additionalQueryParams: QueryParams) = apply {
-            this.additionalQueryParams.replaceAll(additionalQueryParams)
-        }
+        fun replaceAllAdditionalQueryParams(additionalQueryParams: QueryParams) =
+            apply {
+                this.additionalQueryParams.replaceAll(additionalQueryParams)
+            }
 
         fun replaceAllAdditionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) =
             apply {
                 this.additionalQueryParams.replaceAll(additionalQueryParams)
             }
 
-        fun removeAdditionalQueryParams(key: String) = apply { additionalQueryParams.remove(key) }
+        fun removeAdditionalQueryParams(key: String) =
+            apply {
+                additionalQueryParams.remove(key)
+            }
 
-        fun removeAllAdditionalQueryParams(keys: Set<String>) = apply {
-            additionalQueryParams.removeAll(keys)
-        }
+        fun removeAllAdditionalQueryParams(keys: Set<String>) =
+            apply {
+                additionalQueryParams.removeAll(keys)
+            }
 
         fun build(): VerificationCreateParams =
             VerificationCreateParams(
-                body.build(),
-                additionalHeaders.build(),
-                additionalQueryParams.build(),
+              body.build(),
+              additionalHeaders.build(),
+              additionalQueryParams.build(),
             )
     }
 
     /** The target. Currently this can only be an E.164 formatted phone number. */
     @NoAutoDetect
-    class Target
-    @JsonCreator
-    private constructor(
+    class Target @JsonCreator private constructor(
         @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
-        @JsonProperty("value")
-        @ExcludeMissing
-        private val value: JsonField<String> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        @JsonProperty("value") @ExcludeMissing private val value: JsonField<String> = JsonMissing.of(),
+        @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+
     ) {
 
         /** The type of the target. Currently this can only be "phone_number". */
@@ -493,10 +580,14 @@ private constructor(
         fun value(): String = value.getRequired("value")
 
         /** The type of the target. Currently this can only be "phone_number". */
-        @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
+        @JsonProperty("type")
+        @ExcludeMissing
+        fun _type(): JsonField<Type> = type
 
         /** An E.164 formatted phone number to verify. */
-        @JsonProperty("value") @ExcludeMissing fun _value(): JsonField<String> = value
+        @JsonProperty("value")
+        @ExcludeMissing
+        fun _value(): JsonField<String> = value
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -504,15 +595,16 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): Target = apply {
-            if (validated) {
-                return@apply
-            }
+        fun validate(): Target =
+            apply {
+                if (validated) {
+                  return@apply
+                }
 
-            type()
-            value()
-            validated = true
-        }
+                type()
+                value()
+                validated = true
+            }
 
         fun toBuilder() = Builder().from(this)
 
@@ -522,12 +614,14 @@ private constructor(
              * Returns a mutable builder for constructing an instance of [Target].
              *
              * The following fields are required:
+             *
              * ```java
              * .type()
              * .value()
              * ```
              */
-            @JvmStatic fun builder() = Builder()
+            @JvmStatic
+            fun builder() = Builder()
         }
 
         /** A builder for [Target]. */
@@ -538,63 +632,85 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(target: Target) = apply {
-                type = target.type
-                value = target.value
-                additionalProperties = target.additionalProperties.toMutableMap()
-            }
+            internal fun from(target: Target) =
+                apply {
+                    type = target.type
+                    value = target.value
+                    additionalProperties = target.additionalProperties.toMutableMap()
+                }
 
             /** The type of the target. Currently this can only be "phone_number". */
             fun type(type: Type) = type(JsonField.of(type))
 
             /** The type of the target. Currently this can only be "phone_number". */
-            fun type(type: JsonField<Type>) = apply { this.type = type }
+            fun type(type: JsonField<Type>) =
+                apply {
+                    this.type = type
+                }
 
             /** An E.164 formatted phone number to verify. */
             fun value(value: String) = value(JsonField.of(value))
 
             /** An E.164 formatted phone number to verify. */
-            fun value(value: JsonField<String>) = apply { this.value = value }
+            fun value(value: JsonField<String>) =
+                apply {
+                    this.value = value
+                }
 
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
+                apply {
+                    this.additionalProperties.clear()
+                    putAllAdditionalProperties(additionalProperties)
+                }
 
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                additionalProperties.put(key, value)
-            }
+            fun putAdditionalProperty(key: String, value: JsonValue) =
+                apply {
+                    additionalProperties.put(key, value)
+                }
 
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                apply {
+                    this.additionalProperties.putAll(additionalProperties)
+                }
 
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+            fun removeAdditionalProperty(key: String) =
+                apply {
+                    additionalProperties.remove(key)
+                }
 
-            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
+            fun removeAllAdditionalProperties(keys: Set<String>) =
+                apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
 
             fun build(): Target =
                 Target(
-                    checkRequired("type", type),
-                    checkRequired("value", value),
-                    additionalProperties.toImmutable(),
+                  checkRequired(
+                    "type", type
+                  ),
+                  checkRequired(
+                    "value", value
+                  ),
+                  additionalProperties.toImmutable(),
                 )
         }
 
         /** The type of the target. Currently this can only be "phone_number". */
-        class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
+        class Type @JsonCreator private constructor(
+            private val value: JsonField<String>,
+
+        ) : Enum {
 
             /**
              * Returns this class instance's raw value.
              *
-             * This is usually only useful if this instance was deserialized from data that doesn't
-             * match any known member, and you want to know that value. For example, if the SDK is
-             * on an older version than the API, then the API may respond with new members that the
-             * SDK is unaware of.
+             * This is usually only useful if this instance was deserialized from data that
+             * doesn't match any known member, and you want to know that value. For example, if
+             * the SDK is on an older version than the API, then the API may respond with new
+             * members that the SDK is unaware of.
              */
-            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+            @com.fasterxml.jackson.annotation.JsonValue
+            fun _value(): JsonField<String> = value
 
             companion object {
 
@@ -605,16 +721,18 @@ private constructor(
 
             /** An enum containing [Type]'s known values. */
             enum class Known {
-                PHONE_NUMBER
+                PHONE_NUMBER,
             }
 
             /**
              * An enum containing [Type]'s known values, as well as an [_UNKNOWN] member.
              *
              * An instance of [Type] can contain an unknown value in a couple of cases:
-             * - It was deserialized from data that doesn't match any known member. For example, if
-             *   the SDK is on an older version than the API, then the API may respond with new
-             *   members that the SDK is unaware of.
+             *
+             * - It was deserialized from data that doesn't match any known member. For
+             *   example, if the SDK is on an older version than the API, then the API may
+             *   respond with new members that the SDK is unaware of.
+             *
              * - It was constructed with an arbitrary value using the [of] method.
              */
             enum class Value {
@@ -627,8 +745,8 @@ private constructor(
              * Returns an enum member corresponding to this class instance's value, or
              * [Value._UNKNOWN] if the class was instantiated with an unknown value.
              *
-             * Use the [known] method instead if you're certain the value is always known or if you
-             * want to throw for the unknown case.
+             * Use the [known] method instead if you're certain the value is always known or if
+             * you want to throw for the unknown case.
              */
             fun value(): Value =
                 when (this) {
@@ -642,8 +760,8 @@ private constructor(
              * Use the [value] method instead if you're uncertain the value is always known and
              * don't want to throw for the unknown case.
              *
-             * @throws PreludeInvalidDataException if this class instance's value is a not a known
-             *   member.
+             * @throws PreludeInvalidDataException if this class instance's value is a not a
+             * known member.
              */
             fun known(): Known =
                 when (this) {
@@ -657,20 +775,17 @@ private constructor(
              * This differs from the [toString] method because that method is primarily for
              * debugging and generally doesn't throw.
              *
-             * @throws PreludeInvalidDataException if this class instance's value does not have the
-             *   expected primitive type.
+             * @throws PreludeInvalidDataException if this class instance's value does not have
+             * the expected primitive type.
              */
-            fun asString(): String =
-                _value().asString().orElseThrow {
-                    PreludeInvalidDataException("Value is not a String")
-                }
+            fun asString(): String = _value().asString().orElseThrow { PreludeInvalidDataException("Value is not a String") }
 
             override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
+              if (this === other) {
+                  return true
+              }
 
-                return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+              return /* spotless:off */ other is Type && value == other.value /* spotless:on */
             }
 
             override fun hashCode() = value.hashCode()
@@ -679,11 +794,11 @@ private constructor(
         }
 
         override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
+          if (this === other) {
+              return true
+          }
 
-            return /* spotless:off */ other is Target && type == other.type && value == other.value && additionalProperties == other.additionalProperties /* spotless:on */
+          return /* spotless:off */ other is Target && type == other.type && value == other.value && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -692,28 +807,22 @@ private constructor(
 
         override fun hashCode(): Int = hashCode
 
-        override fun toString() =
-            "Target{type=$type, value=$value, additionalProperties=$additionalProperties}"
+        override fun toString() = "Target{type=$type, value=$value, additionalProperties=$additionalProperties}"
     }
 
     /**
-     * The metadata for this verification. This object will be returned with every response or
-     * webhook sent that refers to this verification.
+     * The metadata for this verification. This object will be returned with every
+     * response or webhook sent that refers to this verification.
      */
     @NoAutoDetect
-    class Metadata
-    @JsonCreator
-    private constructor(
-        @JsonProperty("correlation_id")
-        @ExcludeMissing
-        private val correlationId: JsonField<String> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    class Metadata @JsonCreator private constructor(
+        @JsonProperty("correlation_id") @ExcludeMissing private val correlationId: JsonField<String> = JsonMissing.of(),
+        @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+
     ) {
 
         /** A user-defined identifier to correlate this verification with. */
-        fun correlationId(): Optional<String> =
-            Optional.ofNullable(correlationId.getNullable("correlation_id"))
+        fun correlationId(): Optional<String> = Optional.ofNullable(correlationId.getNullable("correlation_id"))
 
         /** A user-defined identifier to correlate this verification with. */
         @JsonProperty("correlation_id")
@@ -726,21 +835,23 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): Metadata = apply {
-            if (validated) {
-                return@apply
-            }
+        fun validate(): Metadata =
+            apply {
+                if (validated) {
+                  return@apply
+                }
 
-            correlationId()
-            validated = true
-        }
+                correlationId()
+                validated = true
+            }
 
         fun toBuilder() = Builder().from(this)
 
         companion object {
 
             /** Returns a mutable builder for constructing an instance of [Metadata]. */
-            @JvmStatic fun builder() = Builder()
+            @JvmStatic
+            fun builder() = Builder()
         }
 
         /** A builder for [Metadata]. */
@@ -750,47 +861,59 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(metadata: Metadata) = apply {
-                correlationId = metadata.correlationId
-                additionalProperties = metadata.additionalProperties.toMutableMap()
-            }
+            internal fun from(metadata: Metadata) =
+                apply {
+                    correlationId = metadata.correlationId
+                    additionalProperties = metadata.additionalProperties.toMutableMap()
+                }
 
             /** A user-defined identifier to correlate this verification with. */
             fun correlationId(correlationId: String) = correlationId(JsonField.of(correlationId))
 
             /** A user-defined identifier to correlate this verification with. */
-            fun correlationId(correlationId: JsonField<String>) = apply {
-                this.correlationId = correlationId
-            }
+            fun correlationId(correlationId: JsonField<String>) =
+                apply {
+                    this.correlationId = correlationId
+                }
 
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
+                apply {
+                    this.additionalProperties.clear()
+                    putAllAdditionalProperties(additionalProperties)
+                }
 
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                additionalProperties.put(key, value)
-            }
+            fun putAdditionalProperty(key: String, value: JsonValue) =
+                apply {
+                    additionalProperties.put(key, value)
+                }
 
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                apply {
+                    this.additionalProperties.putAll(additionalProperties)
+                }
 
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+            fun removeAdditionalProperty(key: String) =
+                apply {
+                    additionalProperties.remove(key)
+                }
 
-            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
+            fun removeAllAdditionalProperties(keys: Set<String>) =
+                apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
 
-            fun build(): Metadata = Metadata(correlationId, additionalProperties.toImmutable())
+            fun build(): Metadata =
+                Metadata(
+                  correlationId, additionalProperties.toImmutable()
+                )
         }
 
         override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
+          if (this === other) {
+              return true
+          }
 
-            return /* spotless:off */ other is Metadata && correlationId == other.correlationId && additionalProperties == other.additionalProperties /* spotless:on */
+          return /* spotless:off */ other is Metadata && correlationId == other.correlationId && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -799,108 +922,111 @@ private constructor(
 
         override fun hashCode(): Int = hashCode
 
-        override fun toString() =
-            "Metadata{correlationId=$correlationId, additionalProperties=$additionalProperties}"
+        override fun toString() = "Metadata{correlationId=$correlationId, additionalProperties=$additionalProperties}"
     }
 
     /** Verification options */
     @NoAutoDetect
-    class Options
-    @JsonCreator
-    private constructor(
-        @JsonProperty("app_realm")
-        @ExcludeMissing
-        private val appRealm: JsonField<AppRealm> = JsonMissing.of(),
-        @JsonProperty("code_size")
-        @ExcludeMissing
-        private val codeSize: JsonField<Long> = JsonMissing.of(),
-        @JsonProperty("custom_code")
-        @ExcludeMissing
-        private val customCode: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("locale")
-        @ExcludeMissing
-        private val locale: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("sender_id")
-        @ExcludeMissing
-        private val senderId: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("template_id")
-        @ExcludeMissing
-        private val templateId: JsonField<String> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    class Options @JsonCreator private constructor(
+        @JsonProperty("app_realm") @ExcludeMissing private val appRealm: JsonField<AppRealm> = JsonMissing.of(),
+        @JsonProperty("code_size") @ExcludeMissing private val codeSize: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("custom_code") @ExcludeMissing private val customCode: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("locale") @ExcludeMissing private val locale: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("sender_id") @ExcludeMissing private val senderId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("template_id") @ExcludeMissing private val templateId: JsonField<String> = JsonMissing.of(),
+        @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+
     ) {
 
         /**
-         * This allows you to automatically retrieve and fill the OTP code on mobile apps. Currently
-         * only Android devices are supported.
+         * This allows you to automatically retrieve and fill the OTP code on mobile apps.
+         * Currently only Android devices are supported.
          */
         fun appRealm(): Optional<AppRealm> = Optional.ofNullable(appRealm.getNullable("app_realm"))
 
         /**
-         * The size of the code generated. It should be between 4 and 8. Defaults to the code size
-         * specified from the Dashboard.
+         * The size of the code generated. It should be between 4 and 8. Defaults to the
+         * code size specified from the Dashboard.
          */
         fun codeSize(): Optional<Long> = Optional.ofNullable(codeSize.getNullable("code_size"))
 
         /**
          * The custom code to use for OTP verification. This feature is only available for
-         * compatibility purposes and subject to Prelude’s approval. Contact us to discuss your use
-         * case. For more details, refer to [Multi Routing](/concepts/multi-routing).
+         * compatibility purposes and subject to Prelude’s approval. Contact us to discuss
+         * your use case. For more details, refer to
+         * [Multi Routing](/concepts/multi-routing).
          */
-        fun customCode(): Optional<String> =
-            Optional.ofNullable(customCode.getNullable("custom_code"))
+        fun customCode(): Optional<String> = Optional.ofNullable(customCode.getNullable("custom_code"))
 
         /**
-         * A BCP-47 formatted locale string with the language the text message will be sent to. If
-         * there's no locale set, the language will be determined by the country code of the phone
-         * number. If the language specified doesn't exist, it defaults to US English.
+         * A BCP-47 formatted locale string with the language the text message will be sent
+         * to. If there's no locale set, the language will be determined by the country
+         * code of the phone number. If the language specified doesn't exist, it defaults
+         * to US English.
          */
         fun locale(): Optional<String> = Optional.ofNullable(locale.getNullable("locale"))
 
-        /** The Sender ID to use for this message. The Sender ID needs to be enabled by Prelude. */
+        /**
+         * The Sender ID to use for this message. The Sender ID needs to be enabled by
+         * Prelude.
+         */
         fun senderId(): Optional<String> = Optional.ofNullable(senderId.getNullable("sender_id"))
 
         /**
-         * The identifier of a verification settings template. It is used to be able to switch
-         * behavior for specific use cases. Contact us if you need to use this functionality.
+         * The identifier of a verification settings template. It is used to be able to
+         * switch behavior for specific use cases. Contact us if you need to use this
+         * functionality.
          */
-        fun templateId(): Optional<String> =
-            Optional.ofNullable(templateId.getNullable("template_id"))
+        fun templateId(): Optional<String> = Optional.ofNullable(templateId.getNullable("template_id"))
 
         /**
-         * This allows you to automatically retrieve and fill the OTP code on mobile apps. Currently
-         * only Android devices are supported.
+         * This allows you to automatically retrieve and fill the OTP code on mobile apps.
+         * Currently only Android devices are supported.
          */
-        @JsonProperty("app_realm") @ExcludeMissing fun _appRealm(): JsonField<AppRealm> = appRealm
+        @JsonProperty("app_realm")
+        @ExcludeMissing
+        fun _appRealm(): JsonField<AppRealm> = appRealm
 
         /**
-         * The size of the code generated. It should be between 4 and 8. Defaults to the code size
-         * specified from the Dashboard.
+         * The size of the code generated. It should be between 4 and 8. Defaults to the
+         * code size specified from the Dashboard.
          */
-        @JsonProperty("code_size") @ExcludeMissing fun _codeSize(): JsonField<Long> = codeSize
+        @JsonProperty("code_size")
+        @ExcludeMissing
+        fun _codeSize(): JsonField<Long> = codeSize
 
         /**
          * The custom code to use for OTP verification. This feature is only available for
-         * compatibility purposes and subject to Prelude’s approval. Contact us to discuss your use
-         * case. For more details, refer to [Multi Routing](/concepts/multi-routing).
+         * compatibility purposes and subject to Prelude’s approval. Contact us to discuss
+         * your use case. For more details, refer to
+         * [Multi Routing](/concepts/multi-routing).
          */
         @JsonProperty("custom_code")
         @ExcludeMissing
         fun _customCode(): JsonField<String> = customCode
 
         /**
-         * A BCP-47 formatted locale string with the language the text message will be sent to. If
-         * there's no locale set, the language will be determined by the country code of the phone
-         * number. If the language specified doesn't exist, it defaults to US English.
+         * A BCP-47 formatted locale string with the language the text message will be sent
+         * to. If there's no locale set, the language will be determined by the country
+         * code of the phone number. If the language specified doesn't exist, it defaults
+         * to US English.
          */
-        @JsonProperty("locale") @ExcludeMissing fun _locale(): JsonField<String> = locale
-
-        /** The Sender ID to use for this message. The Sender ID needs to be enabled by Prelude. */
-        @JsonProperty("sender_id") @ExcludeMissing fun _senderId(): JsonField<String> = senderId
+        @JsonProperty("locale")
+        @ExcludeMissing
+        fun _locale(): JsonField<String> = locale
 
         /**
-         * The identifier of a verification settings template. It is used to be able to switch
-         * behavior for specific use cases. Contact us if you need to use this functionality.
+         * The Sender ID to use for this message. The Sender ID needs to be enabled by
+         * Prelude.
+         */
+        @JsonProperty("sender_id")
+        @ExcludeMissing
+        fun _senderId(): JsonField<String> = senderId
+
+        /**
+         * The identifier of a verification settings template. It is used to be able to
+         * switch behavior for specific use cases. Contact us if you need to use this
+         * functionality.
          */
         @JsonProperty("template_id")
         @ExcludeMissing
@@ -912,26 +1038,28 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): Options = apply {
-            if (validated) {
-                return@apply
-            }
+        fun validate(): Options =
+            apply {
+                if (validated) {
+                  return@apply
+                }
 
-            appRealm().ifPresent { it.validate() }
-            codeSize()
-            customCode()
-            locale()
-            senderId()
-            templateId()
-            validated = true
-        }
+                appRealm().ifPresent { it.validate() }
+                codeSize()
+                customCode()
+                locale()
+                senderId()
+                templateId()
+                validated = true
+            }
 
         fun toBuilder() = Builder().from(this)
 
         companion object {
 
             /** Returns a mutable builder for constructing an instance of [Options]. */
-            @JvmStatic fun builder() = Builder()
+            @JvmStatic
+            fun builder() = Builder()
         }
 
         /** A builder for [Options]. */
@@ -946,15 +1074,16 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(options: Options) = apply {
-                appRealm = options.appRealm
-                codeSize = options.codeSize
-                customCode = options.customCode
-                locale = options.locale
-                senderId = options.senderId
-                templateId = options.templateId
-                additionalProperties = options.additionalProperties.toMutableMap()
-            }
+            internal fun from(options: Options) =
+                apply {
+                    appRealm = options.appRealm
+                    codeSize = options.codeSize
+                    customCode = options.customCode
+                    locale = options.locale
+                    senderId = options.senderId
+                    templateId = options.templateId
+                    additionalProperties = options.additionalProperties.toMutableMap()
+                }
 
             /**
              * This allows you to automatically retrieve and fill the OTP code on mobile apps.
@@ -966,132 +1095,167 @@ private constructor(
              * This allows you to automatically retrieve and fill the OTP code on mobile apps.
              * Currently only Android devices are supported.
              */
-            fun appRealm(appRealm: JsonField<AppRealm>) = apply { this.appRealm = appRealm }
+            fun appRealm(appRealm: JsonField<AppRealm>) =
+                apply {
+                    this.appRealm = appRealm
+                }
 
             /**
-             * The size of the code generated. It should be between 4 and 8. Defaults to the code
-             * size specified from the Dashboard.
+             * The size of the code generated. It should be between 4 and 8. Defaults to the
+             * code size specified from the Dashboard.
              */
             fun codeSize(codeSize: Long) = codeSize(JsonField.of(codeSize))
 
             /**
-             * The size of the code generated. It should be between 4 and 8. Defaults to the code
-             * size specified from the Dashboard.
+             * The size of the code generated. It should be between 4 and 8. Defaults to the
+             * code size specified from the Dashboard.
              */
-            fun codeSize(codeSize: JsonField<Long>) = apply { this.codeSize = codeSize }
+            fun codeSize(codeSize: JsonField<Long>) =
+                apply {
+                    this.codeSize = codeSize
+                }
 
             /**
              * The custom code to use for OTP verification. This feature is only available for
-             * compatibility purposes and subject to Prelude’s approval. Contact us to discuss your
-             * use case. For more details, refer to [Multi Routing](/concepts/multi-routing).
+             * compatibility purposes and subject to Prelude’s approval. Contact us to discuss
+             * your use case. For more details, refer to
+             * [Multi Routing](/concepts/multi-routing).
              */
             fun customCode(customCode: String) = customCode(JsonField.of(customCode))
 
             /**
              * The custom code to use for OTP verification. This feature is only available for
-             * compatibility purposes and subject to Prelude’s approval. Contact us to discuss your
-             * use case. For more details, refer to [Multi Routing](/concepts/multi-routing).
+             * compatibility purposes and subject to Prelude’s approval. Contact us to discuss
+             * your use case. For more details, refer to
+             * [Multi Routing](/concepts/multi-routing).
              */
-            fun customCode(customCode: JsonField<String>) = apply { this.customCode = customCode }
+            fun customCode(customCode: JsonField<String>) =
+                apply {
+                    this.customCode = customCode
+                }
 
             /**
-             * A BCP-47 formatted locale string with the language the text message will be sent to.
-             * If there's no locale set, the language will be determined by the country code of the
-             * phone number. If the language specified doesn't exist, it defaults to US English.
+             * A BCP-47 formatted locale string with the language the text message will be sent
+             * to. If there's no locale set, the language will be determined by the country
+             * code of the phone number. If the language specified doesn't exist, it defaults
+             * to US English.
              */
             fun locale(locale: String) = locale(JsonField.of(locale))
 
             /**
-             * A BCP-47 formatted locale string with the language the text message will be sent to.
-             * If there's no locale set, the language will be determined by the country code of the
-             * phone number. If the language specified doesn't exist, it defaults to US English.
+             * A BCP-47 formatted locale string with the language the text message will be sent
+             * to. If there's no locale set, the language will be determined by the country
+             * code of the phone number. If the language specified doesn't exist, it defaults
+             * to US English.
              */
-            fun locale(locale: JsonField<String>) = apply { this.locale = locale }
+            fun locale(locale: JsonField<String>) =
+                apply {
+                    this.locale = locale
+                }
 
             /**
-             * The Sender ID to use for this message. The Sender ID needs to be enabled by Prelude.
+             * The Sender ID to use for this message. The Sender ID needs to be enabled by
+             * Prelude.
              */
             fun senderId(senderId: String) = senderId(JsonField.of(senderId))
 
             /**
-             * The Sender ID to use for this message. The Sender ID needs to be enabled by Prelude.
+             * The Sender ID to use for this message. The Sender ID needs to be enabled by
+             * Prelude.
              */
-            fun senderId(senderId: JsonField<String>) = apply { this.senderId = senderId }
+            fun senderId(senderId: JsonField<String>) =
+                apply {
+                    this.senderId = senderId
+                }
 
             /**
-             * The identifier of a verification settings template. It is used to be able to switch
-             * behavior for specific use cases. Contact us if you need to use this functionality.
+             * The identifier of a verification settings template. It is used to be able to
+             * switch behavior for specific use cases. Contact us if you need to use this
+             * functionality.
              */
             fun templateId(templateId: String) = templateId(JsonField.of(templateId))
 
             /**
-             * The identifier of a verification settings template. It is used to be able to switch
-             * behavior for specific use cases. Contact us if you need to use this functionality.
+             * The identifier of a verification settings template. It is used to be able to
+             * switch behavior for specific use cases. Contact us if you need to use this
+             * functionality.
              */
-            fun templateId(templateId: JsonField<String>) = apply { this.templateId = templateId }
+            fun templateId(templateId: JsonField<String>) =
+                apply {
+                    this.templateId = templateId
+                }
 
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
+                apply {
+                    this.additionalProperties.clear()
+                    putAllAdditionalProperties(additionalProperties)
+                }
 
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                additionalProperties.put(key, value)
-            }
+            fun putAdditionalProperty(key: String, value: JsonValue) =
+                apply {
+                    additionalProperties.put(key, value)
+                }
 
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                apply {
+                    this.additionalProperties.putAll(additionalProperties)
+                }
 
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+            fun removeAdditionalProperty(key: String) =
+                apply {
+                    additionalProperties.remove(key)
+                }
 
-            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
+            fun removeAllAdditionalProperties(keys: Set<String>) =
+                apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
 
             fun build(): Options =
                 Options(
-                    appRealm,
-                    codeSize,
-                    customCode,
-                    locale,
-                    senderId,
-                    templateId,
-                    additionalProperties.toImmutable(),
+                  appRealm,
+                  codeSize,
+                  customCode,
+                  locale,
+                  senderId,
+                  templateId,
+                  additionalProperties.toImmutable(),
                 )
         }
 
         /**
-         * This allows you to automatically retrieve and fill the OTP code on mobile apps. Currently
-         * only Android devices are supported.
+         * This allows you to automatically retrieve and fill the OTP code on mobile apps.
+         * Currently only Android devices are supported.
          */
         @NoAutoDetect
-        class AppRealm
-        @JsonCreator
-        private constructor(
-            @JsonProperty("platform")
-            @ExcludeMissing
-            private val platform: JsonField<Platform> = JsonMissing.of(),
-            @JsonProperty("value")
-            @ExcludeMissing
-            private val value: JsonField<String> = JsonMissing.of(),
-            @JsonAnySetter
-            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        class AppRealm @JsonCreator private constructor(
+            @JsonProperty("platform") @ExcludeMissing private val platform: JsonField<Platform> = JsonMissing.of(),
+            @JsonProperty("value") @ExcludeMissing private val value: JsonField<String> = JsonMissing.of(),
+            @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+
         ) {
 
-            /** The platform the SMS will be sent to. We are currently only supporting "android". */
+            /**
+             * The platform the SMS will be sent to. We are currently only supporting
+             * "android".
+             */
             fun platform(): Platform = platform.getRequired("platform")
 
             /** The Android SMS Retriever API hash code that identifies your app. */
             fun value(): String = value.getRequired("value")
 
-            /** The platform the SMS will be sent to. We are currently only supporting "android". */
+            /**
+             * The platform the SMS will be sent to. We are currently only supporting
+             * "android".
+             */
             @JsonProperty("platform")
             @ExcludeMissing
             fun _platform(): JsonField<Platform> = platform
 
             /** The Android SMS Retriever API hash code that identifies your app. */
-            @JsonProperty("value") @ExcludeMissing fun _value(): JsonField<String> = value
+            @JsonProperty("value")
+            @ExcludeMissing
+            fun _value(): JsonField<String> = value
 
             @JsonAnyGetter
             @ExcludeMissing
@@ -1099,15 +1263,16 @@ private constructor(
 
             private var validated: Boolean = false
 
-            fun validate(): AppRealm = apply {
-                if (validated) {
-                    return@apply
-                }
+            fun validate(): AppRealm =
+                apply {
+                    if (validated) {
+                      return@apply
+                    }
 
-                platform()
-                value()
-                validated = true
-            }
+                    platform()
+                    value()
+                    validated = true
+                }
 
             fun toBuilder() = Builder().from(this)
 
@@ -1117,12 +1282,14 @@ private constructor(
                  * Returns a mutable builder for constructing an instance of [AppRealm].
                  *
                  * The following fields are required:
+                 *
                  * ```java
                  * .platform()
                  * .value()
                  * ```
                  */
-                @JvmStatic fun builder() = Builder()
+                @JvmStatic
+                fun builder() = Builder()
             }
 
             /** A builder for [AppRealm]. */
@@ -1133,61 +1300,83 @@ private constructor(
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
-                internal fun from(appRealm: AppRealm) = apply {
-                    platform = appRealm.platform
-                    value = appRealm.value
-                    additionalProperties = appRealm.additionalProperties.toMutableMap()
-                }
+                internal fun from(appRealm: AppRealm) =
+                    apply {
+                        platform = appRealm.platform
+                        value = appRealm.value
+                        additionalProperties = appRealm.additionalProperties.toMutableMap()
+                    }
 
                 /**
-                 * The platform the SMS will be sent to. We are currently only supporting "android".
+                 * The platform the SMS will be sent to. We are currently only supporting
+                 * "android".
                  */
                 fun platform(platform: Platform) = platform(JsonField.of(platform))
 
                 /**
-                 * The platform the SMS will be sent to. We are currently only supporting "android".
+                 * The platform the SMS will be sent to. We are currently only supporting
+                 * "android".
                  */
-                fun platform(platform: JsonField<Platform>) = apply { this.platform = platform }
+                fun platform(platform: JsonField<Platform>) =
+                    apply {
+                        this.platform = platform
+                    }
 
                 /** The Android SMS Retriever API hash code that identifies your app. */
                 fun value(value: String) = value(JsonField.of(value))
 
                 /** The Android SMS Retriever API hash code that identifies your app. */
-                fun value(value: JsonField<String>) = apply { this.value = value }
+                fun value(value: JsonField<String>) =
+                    apply {
+                        this.value = value
+                    }
 
-                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                    this.additionalProperties.clear()
-                    putAllAdditionalProperties(additionalProperties)
-                }
+                fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
+                    apply {
+                        this.additionalProperties.clear()
+                        putAllAdditionalProperties(additionalProperties)
+                    }
 
-                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                    additionalProperties.put(key, value)
-                }
+                fun putAdditionalProperty(key: String, value: JsonValue) =
+                    apply {
+                        additionalProperties.put(key, value)
+                    }
 
                 fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
                     apply {
                         this.additionalProperties.putAll(additionalProperties)
                     }
 
-                fun removeAdditionalProperty(key: String) = apply {
-                    additionalProperties.remove(key)
-                }
+                fun removeAdditionalProperty(key: String) =
+                    apply {
+                        additionalProperties.remove(key)
+                    }
 
-                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                    keys.forEach(::removeAdditionalProperty)
-                }
+                fun removeAllAdditionalProperties(keys: Set<String>) =
+                    apply {
+                        keys.forEach(::removeAdditionalProperty)
+                    }
 
                 fun build(): AppRealm =
                     AppRealm(
-                        checkRequired("platform", platform),
-                        checkRequired("value", value),
-                        additionalProperties.toImmutable(),
+                      checkRequired(
+                        "platform", platform
+                      ),
+                      checkRequired(
+                        "value", value
+                      ),
+                      additionalProperties.toImmutable(),
                     )
             }
 
-            /** The platform the SMS will be sent to. We are currently only supporting "android". */
-            class Platform @JsonCreator private constructor(private val value: JsonField<String>) :
-                Enum {
+            /**
+             * The platform the SMS will be sent to. We are currently only supporting
+             * "android".
+             */
+            class Platform @JsonCreator private constructor(
+                private val value: JsonField<String>,
+
+            ) : Enum {
 
                 /**
                  * Returns this class instance's raw value.
@@ -1197,7 +1386,8 @@ private constructor(
                  * the SDK is on an older version than the API, then the API may respond with new
                  * members that the SDK is unaware of.
                  */
-                @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+                @com.fasterxml.jackson.annotation.JsonValue
+                fun _value(): JsonField<String> = value
 
                 companion object {
 
@@ -1208,16 +1398,18 @@ private constructor(
 
                 /** An enum containing [Platform]'s known values. */
                 enum class Known {
-                    ANDROID
+                    ANDROID,
                 }
 
                 /**
                  * An enum containing [Platform]'s known values, as well as an [_UNKNOWN] member.
                  *
                  * An instance of [Platform] can contain an unknown value in a couple of cases:
-                 * - It was deserialized from data that doesn't match any known member. For example,
-                 *   if the SDK is on an older version than the API, then the API may respond with
-                 *   new members that the SDK is unaware of.
+                 *
+                 * - It was deserialized from data that doesn't match any known member. For
+                 *   example, if the SDK is on an older version than the API, then the API may
+                 *   respond with new members that the SDK is unaware of.
+                 *
                  * - It was constructed with an arbitrary value using the [of] method.
                  */
                 enum class Value {
@@ -1249,7 +1441,7 @@ private constructor(
                  * don't want to throw for the unknown case.
                  *
                  * @throws PreludeInvalidDataException if this class instance's value is a not a
-                 *   known member.
+                 * known member.
                  */
                 fun known(): Known =
                     when (this) {
@@ -1264,19 +1456,16 @@ private constructor(
                  * debugging and generally doesn't throw.
                  *
                  * @throws PreludeInvalidDataException if this class instance's value does not have
-                 *   the expected primitive type.
+                 * the expected primitive type.
                  */
-                fun asString(): String =
-                    _value().asString().orElseThrow {
-                        PreludeInvalidDataException("Value is not a String")
-                    }
+                fun asString(): String = _value().asString().orElseThrow { PreludeInvalidDataException("Value is not a String") }
 
                 override fun equals(other: Any?): Boolean {
-                    if (this === other) {
-                        return true
-                    }
+                  if (this === other) {
+                      return true
+                  }
 
-                    return /* spotless:off */ other is Platform && value == other.value /* spotless:on */
+                  return /* spotless:off */ other is Platform && value == other.value /* spotless:on */
                 }
 
                 override fun hashCode() = value.hashCode()
@@ -1285,11 +1474,11 @@ private constructor(
             }
 
             override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
+              if (this === other) {
+                  return true
+              }
 
-                return /* spotless:off */ other is AppRealm && platform == other.platform && value == other.value && additionalProperties == other.additionalProperties /* spotless:on */
+              return /* spotless:off */ other is AppRealm && platform == other.platform && value == other.value && additionalProperties == other.additionalProperties /* spotless:on */
             }
 
             /* spotless:off */
@@ -1298,16 +1487,15 @@ private constructor(
 
             override fun hashCode(): Int = hashCode
 
-            override fun toString() =
-                "AppRealm{platform=$platform, value=$value, additionalProperties=$additionalProperties}"
+            override fun toString() = "AppRealm{platform=$platform, value=$value, additionalProperties=$additionalProperties}"
         }
 
         override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
+          if (this === other) {
+              return true
+          }
 
-            return /* spotless:off */ other is Options && appRealm == other.appRealm && codeSize == other.codeSize && customCode == other.customCode && locale == other.locale && senderId == other.senderId && templateId == other.templateId && additionalProperties == other.additionalProperties /* spotless:on */
+          return /* spotless:off */ other is Options && appRealm == other.appRealm && codeSize == other.codeSize && customCode == other.customCode && locale == other.locale && senderId == other.senderId && templateId == other.templateId && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -1316,65 +1504,46 @@ private constructor(
 
         override fun hashCode(): Int = hashCode
 
-        override fun toString() =
-            "Options{appRealm=$appRealm, codeSize=$codeSize, customCode=$customCode, locale=$locale, senderId=$senderId, templateId=$templateId, additionalProperties=$additionalProperties}"
+        override fun toString() = "Options{appRealm=$appRealm, codeSize=$codeSize, customCode=$customCode, locale=$locale, senderId=$senderId, templateId=$templateId, additionalProperties=$additionalProperties}"
     }
 
     /** The signals used for anti-fraud. */
     @NoAutoDetect
-    class Signals
-    @JsonCreator
-    private constructor(
-        @JsonProperty("app_version")
-        @ExcludeMissing
-        private val appVersion: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("device_id")
-        @ExcludeMissing
-        private val deviceId: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("device_model")
-        @ExcludeMissing
-        private val deviceModel: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("device_platform")
-        @ExcludeMissing
-        private val devicePlatform: JsonField<DevicePlatform> = JsonMissing.of(),
+    class Signals @JsonCreator private constructor(
+        @JsonProperty("app_version") @ExcludeMissing private val appVersion: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("device_id") @ExcludeMissing private val deviceId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("device_model") @ExcludeMissing private val deviceModel: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("device_platform") @ExcludeMissing private val devicePlatform: JsonField<DevicePlatform> = JsonMissing.of(),
         @JsonProperty("ip") @ExcludeMissing private val ip: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("is_trusted_user")
-        @ExcludeMissing
-        private val isTrustedUser: JsonField<Boolean> = JsonMissing.of(),
-        @JsonProperty("os_version")
-        @ExcludeMissing
-        private val osVersion: JsonField<String> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        @JsonProperty("is_trusted_user") @ExcludeMissing private val isTrustedUser: JsonField<Boolean> = JsonMissing.of(),
+        @JsonProperty("os_version") @ExcludeMissing private val osVersion: JsonField<String> = JsonMissing.of(),
+        @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+
     ) {
 
         /** The version of your application. */
-        fun appVersion(): Optional<String> =
-            Optional.ofNullable(appVersion.getNullable("app_version"))
+        fun appVersion(): Optional<String> = Optional.ofNullable(appVersion.getNullable("app_version"))
 
         /**
-         * The unique identifier for the user's device. For Android, this corresponds to the
-         * `ANDROID_ID` and for iOS, this corresponds to the `identifierForVendor`.
+         * The unique identifier for the user's device. For Android, this corresponds to
+         * the `ANDROID_ID` and for iOS, this corresponds to the `identifierForVendor`.
          */
         fun deviceId(): Optional<String> = Optional.ofNullable(deviceId.getNullable("device_id"))
 
         /** The model of the user's device. */
-        fun deviceModel(): Optional<String> =
-            Optional.ofNullable(deviceModel.getNullable("device_model"))
+        fun deviceModel(): Optional<String> = Optional.ofNullable(deviceModel.getNullable("device_model"))
 
         /** The type of the user's device. */
-        fun devicePlatform(): Optional<DevicePlatform> =
-            Optional.ofNullable(devicePlatform.getNullable("device_platform"))
+        fun devicePlatform(): Optional<DevicePlatform> = Optional.ofNullable(devicePlatform.getNullable("device_platform"))
 
         /** The IP address of the user's device. */
         fun ip(): Optional<String> = Optional.ofNullable(ip.getNullable("ip"))
 
         /**
-         * This signal should provide a higher level of trust, indicating that the user is genuine.
-         * For more details, refer to [Signals](/guides/prevent-fraud#signals).
+         * This signal should provide a higher level of trust, indicating that the user is
+         * genuine. For more details, refer to [Signals](/guides/prevent-fraud#signals).
          */
-        fun isTrustedUser(): Optional<Boolean> =
-            Optional.ofNullable(isTrustedUser.getNullable("is_trusted_user"))
+        fun isTrustedUser(): Optional<Boolean> = Optional.ofNullable(isTrustedUser.getNullable("is_trusted_user"))
 
         /** The version of the user's device operating system. */
         fun osVersion(): Optional<String> = Optional.ofNullable(osVersion.getNullable("os_version"))
@@ -1385,10 +1554,12 @@ private constructor(
         fun _appVersion(): JsonField<String> = appVersion
 
         /**
-         * The unique identifier for the user's device. For Android, this corresponds to the
-         * `ANDROID_ID` and for iOS, this corresponds to the `identifierForVendor`.
+         * The unique identifier for the user's device. For Android, this corresponds to
+         * the `ANDROID_ID` and for iOS, this corresponds to the `identifierForVendor`.
          */
-        @JsonProperty("device_id") @ExcludeMissing fun _deviceId(): JsonField<String> = deviceId
+        @JsonProperty("device_id")
+        @ExcludeMissing
+        fun _deviceId(): JsonField<String> = deviceId
 
         /** The model of the user's device. */
         @JsonProperty("device_model")
@@ -1401,18 +1572,22 @@ private constructor(
         fun _devicePlatform(): JsonField<DevicePlatform> = devicePlatform
 
         /** The IP address of the user's device. */
-        @JsonProperty("ip") @ExcludeMissing fun _ip(): JsonField<String> = ip
+        @JsonProperty("ip")
+        @ExcludeMissing
+        fun _ip(): JsonField<String> = ip
 
         /**
-         * This signal should provide a higher level of trust, indicating that the user is genuine.
-         * For more details, refer to [Signals](/guides/prevent-fraud#signals).
+         * This signal should provide a higher level of trust, indicating that the user is
+         * genuine. For more details, refer to [Signals](/guides/prevent-fraud#signals).
          */
         @JsonProperty("is_trusted_user")
         @ExcludeMissing
         fun _isTrustedUser(): JsonField<Boolean> = isTrustedUser
 
         /** The version of the user's device operating system. */
-        @JsonProperty("os_version") @ExcludeMissing fun _osVersion(): JsonField<String> = osVersion
+        @JsonProperty("os_version")
+        @ExcludeMissing
+        fun _osVersion(): JsonField<String> = osVersion
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -1420,27 +1595,29 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): Signals = apply {
-            if (validated) {
-                return@apply
-            }
+        fun validate(): Signals =
+            apply {
+                if (validated) {
+                  return@apply
+                }
 
-            appVersion()
-            deviceId()
-            deviceModel()
-            devicePlatform()
-            ip()
-            isTrustedUser()
-            osVersion()
-            validated = true
-        }
+                appVersion()
+                deviceId()
+                deviceModel()
+                devicePlatform()
+                ip()
+                isTrustedUser()
+                osVersion()
+                validated = true
+            }
 
         fun toBuilder() = Builder().from(this)
 
         companion object {
 
             /** Returns a mutable builder for constructing an instance of [Signals]. */
-            @JvmStatic fun builder() = Builder()
+            @JvmStatic
+            fun builder() = Builder()
         }
 
         /** A builder for [Signals]. */
@@ -1456,57 +1633,68 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(signals: Signals) = apply {
-                appVersion = signals.appVersion
-                deviceId = signals.deviceId
-                deviceModel = signals.deviceModel
-                devicePlatform = signals.devicePlatform
-                ip = signals.ip
-                isTrustedUser = signals.isTrustedUser
-                osVersion = signals.osVersion
-                additionalProperties = signals.additionalProperties.toMutableMap()
-            }
+            internal fun from(signals: Signals) =
+                apply {
+                    appVersion = signals.appVersion
+                    deviceId = signals.deviceId
+                    deviceModel = signals.deviceModel
+                    devicePlatform = signals.devicePlatform
+                    ip = signals.ip
+                    isTrustedUser = signals.isTrustedUser
+                    osVersion = signals.osVersion
+                    additionalProperties = signals.additionalProperties.toMutableMap()
+                }
 
             /** The version of your application. */
             fun appVersion(appVersion: String) = appVersion(JsonField.of(appVersion))
 
             /** The version of your application. */
-            fun appVersion(appVersion: JsonField<String>) = apply { this.appVersion = appVersion }
+            fun appVersion(appVersion: JsonField<String>) =
+                apply {
+                    this.appVersion = appVersion
+                }
 
             /**
-             * The unique identifier for the user's device. For Android, this corresponds to the
-             * `ANDROID_ID` and for iOS, this corresponds to the `identifierForVendor`.
+             * The unique identifier for the user's device. For Android, this corresponds to
+             * the `ANDROID_ID` and for iOS, this corresponds to the `identifierForVendor`.
              */
             fun deviceId(deviceId: String) = deviceId(JsonField.of(deviceId))
 
             /**
-             * The unique identifier for the user's device. For Android, this corresponds to the
-             * `ANDROID_ID` and for iOS, this corresponds to the `identifierForVendor`.
+             * The unique identifier for the user's device. For Android, this corresponds to
+             * the `ANDROID_ID` and for iOS, this corresponds to the `identifierForVendor`.
              */
-            fun deviceId(deviceId: JsonField<String>) = apply { this.deviceId = deviceId }
+            fun deviceId(deviceId: JsonField<String>) =
+                apply {
+                    this.deviceId = deviceId
+                }
 
             /** The model of the user's device. */
             fun deviceModel(deviceModel: String) = deviceModel(JsonField.of(deviceModel))
 
             /** The model of the user's device. */
-            fun deviceModel(deviceModel: JsonField<String>) = apply {
-                this.deviceModel = deviceModel
-            }
+            fun deviceModel(deviceModel: JsonField<String>) =
+                apply {
+                    this.deviceModel = deviceModel
+                }
 
             /** The type of the user's device. */
-            fun devicePlatform(devicePlatform: DevicePlatform) =
-                devicePlatform(JsonField.of(devicePlatform))
+            fun devicePlatform(devicePlatform: DevicePlatform) = devicePlatform(JsonField.of(devicePlatform))
 
             /** The type of the user's device. */
-            fun devicePlatform(devicePlatform: JsonField<DevicePlatform>) = apply {
-                this.devicePlatform = devicePlatform
-            }
+            fun devicePlatform(devicePlatform: JsonField<DevicePlatform>) =
+                apply {
+                    this.devicePlatform = devicePlatform
+                }
 
             /** The IP address of the user's device. */
             fun ip(ip: String) = ip(JsonField.of(ip))
 
             /** The IP address of the user's device. */
-            fun ip(ip: JsonField<String>) = apply { this.ip = ip }
+            fun ip(ip: JsonField<String>) =
+                apply {
+                    this.ip = ip
+                }
 
             /**
              * This signal should provide a higher level of trust, indicating that the user is
@@ -1518,62 +1706,75 @@ private constructor(
              * This signal should provide a higher level of trust, indicating that the user is
              * genuine. For more details, refer to [Signals](/guides/prevent-fraud#signals).
              */
-            fun isTrustedUser(isTrustedUser: JsonField<Boolean>) = apply {
-                this.isTrustedUser = isTrustedUser
-            }
+            fun isTrustedUser(isTrustedUser: JsonField<Boolean>) =
+                apply {
+                    this.isTrustedUser = isTrustedUser
+                }
 
             /** The version of the user's device operating system. */
             fun osVersion(osVersion: String) = osVersion(JsonField.of(osVersion))
 
             /** The version of the user's device operating system. */
-            fun osVersion(osVersion: JsonField<String>) = apply { this.osVersion = osVersion }
+            fun osVersion(osVersion: JsonField<String>) =
+                apply {
+                    this.osVersion = osVersion
+                }
 
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
+                apply {
+                    this.additionalProperties.clear()
+                    putAllAdditionalProperties(additionalProperties)
+                }
 
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                additionalProperties.put(key, value)
-            }
+            fun putAdditionalProperty(key: String, value: JsonValue) =
+                apply {
+                    additionalProperties.put(key, value)
+                }
 
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                apply {
+                    this.additionalProperties.putAll(additionalProperties)
+                }
 
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+            fun removeAdditionalProperty(key: String) =
+                apply {
+                    additionalProperties.remove(key)
+                }
 
-            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
+            fun removeAllAdditionalProperties(keys: Set<String>) =
+                apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
 
             fun build(): Signals =
                 Signals(
-                    appVersion,
-                    deviceId,
-                    deviceModel,
-                    devicePlatform,
-                    ip,
-                    isTrustedUser,
-                    osVersion,
-                    additionalProperties.toImmutable(),
+                  appVersion,
+                  deviceId,
+                  deviceModel,
+                  devicePlatform,
+                  ip,
+                  isTrustedUser,
+                  osVersion,
+                  additionalProperties.toImmutable(),
                 )
         }
 
         /** The type of the user's device. */
-        class DevicePlatform
-        @JsonCreator
-        private constructor(private val value: JsonField<String>) : Enum {
+        class DevicePlatform @JsonCreator private constructor(
+            private val value: JsonField<String>,
+
+        ) : Enum {
 
             /**
              * Returns this class instance's raw value.
              *
-             * This is usually only useful if this instance was deserialized from data that doesn't
-             * match any known member, and you want to know that value. For example, if the SDK is
-             * on an older version than the API, then the API may respond with new members that the
-             * SDK is unaware of.
+             * This is usually only useful if this instance was deserialized from data that
+             * doesn't match any known member, and you want to know that value. For example, if
+             * the SDK is on an older version than the API, then the API may respond with new
+             * members that the SDK is unaware of.
              */
-            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+            @com.fasterxml.jackson.annotation.JsonValue
+            fun _value(): JsonField<String> = value
 
             companion object {
 
@@ -1600,12 +1801,16 @@ private constructor(
             }
 
             /**
-             * An enum containing [DevicePlatform]'s known values, as well as an [_UNKNOWN] member.
+             * An enum containing [DevicePlatform]'s known values, as well as an [_UNKNOWN]
+             * member.
              *
-             * An instance of [DevicePlatform] can contain an unknown value in a couple of cases:
-             * - It was deserialized from data that doesn't match any known member. For example, if
-             *   the SDK is on an older version than the API, then the API may respond with new
-             *   members that the SDK is unaware of.
+             * An instance of [DevicePlatform] can contain an unknown value in a couple of
+             * cases:
+             *
+             * - It was deserialized from data that doesn't match any known member. For
+             *   example, if the SDK is on an older version than the API, then the API may
+             *   respond with new members that the SDK is unaware of.
+             *
              * - It was constructed with an arbitrary value using the [of] method.
              */
             enum class Value {
@@ -1625,8 +1830,8 @@ private constructor(
              * Returns an enum member corresponding to this class instance's value, or
              * [Value._UNKNOWN] if the class was instantiated with an unknown value.
              *
-             * Use the [known] method instead if you're certain the value is always known or if you
-             * want to throw for the unknown case.
+             * Use the [known] method instead if you're certain the value is always known or if
+             * you want to throw for the unknown case.
              */
             fun value(): Value =
                 when (this) {
@@ -1644,8 +1849,8 @@ private constructor(
              * Use the [value] method instead if you're uncertain the value is always known and
              * don't want to throw for the unknown case.
              *
-             * @throws PreludeInvalidDataException if this class instance's value is a not a known
-             *   member.
+             * @throws PreludeInvalidDataException if this class instance's value is a not a
+             * known member.
              */
             fun known(): Known =
                 when (this) {
@@ -1663,20 +1868,17 @@ private constructor(
              * This differs from the [toString] method because that method is primarily for
              * debugging and generally doesn't throw.
              *
-             * @throws PreludeInvalidDataException if this class instance's value does not have the
-             *   expected primitive type.
+             * @throws PreludeInvalidDataException if this class instance's value does not have
+             * the expected primitive type.
              */
-            fun asString(): String =
-                _value().asString().orElseThrow {
-                    PreludeInvalidDataException("Value is not a String")
-                }
+            fun asString(): String = _value().asString().orElseThrow { PreludeInvalidDataException("Value is not a String") }
 
             override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
+              if (this === other) {
+                  return true
+              }
 
-                return /* spotless:off */ other is DevicePlatform && value == other.value /* spotless:on */
+              return /* spotless:off */ other is DevicePlatform && value == other.value /* spotless:on */
             }
 
             override fun hashCode() = value.hashCode()
@@ -1685,11 +1887,11 @@ private constructor(
         }
 
         override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
+          if (this === other) {
+              return true
+          }
 
-            return /* spotless:off */ other is Signals && appVersion == other.appVersion && deviceId == other.deviceId && deviceModel == other.deviceModel && devicePlatform == other.devicePlatform && ip == other.ip && isTrustedUser == other.isTrustedUser && osVersion == other.osVersion && additionalProperties == other.additionalProperties /* spotless:on */
+          return /* spotless:off */ other is Signals && appVersion == other.appVersion && deviceId == other.deviceId && deviceModel == other.deviceModel && devicePlatform == other.devicePlatform && ip == other.ip && isTrustedUser == other.isTrustedUser && osVersion == other.osVersion && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -1698,20 +1900,18 @@ private constructor(
 
         override fun hashCode(): Int = hashCode
 
-        override fun toString() =
-            "Signals{appVersion=$appVersion, deviceId=$deviceId, deviceModel=$deviceModel, devicePlatform=$devicePlatform, ip=$ip, isTrustedUser=$isTrustedUser, osVersion=$osVersion, additionalProperties=$additionalProperties}"
+        override fun toString() = "Signals{appVersion=$appVersion, deviceId=$deviceId, deviceModel=$deviceModel, devicePlatform=$devicePlatform, ip=$ip, isTrustedUser=$isTrustedUser, osVersion=$osVersion, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
+      if (this === other) {
+          return true
+      }
 
-        return /* spotless:off */ other is VerificationCreateParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+      return /* spotless:off */ other is VerificationCreateParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
     override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
-    override fun toString() =
-        "VerificationCreateParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+    override fun toString() = "VerificationCreateParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }
