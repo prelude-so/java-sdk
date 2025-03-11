@@ -30,6 +30,11 @@ interface PreludeClient {
      */
     fun async(): PreludeClientAsync
 
+    /**
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
+     */
+    fun withRawResponse(): WithRawResponse
+
     fun transactional(): TransactionalService
 
     fun verification(): VerificationService
@@ -48,4 +53,14 @@ interface PreludeClient {
      * method.
      */
     fun close()
+
+    /** A view of [PreludeClient] that provides access to raw HTTP responses for each method. */
+    interface WithRawResponse {
+
+        fun transactional(): TransactionalService.WithRawResponse
+
+        fun verification(): VerificationService.WithRawResponse
+
+        fun watch(): WatchService.WithRawResponse
+    }
 }

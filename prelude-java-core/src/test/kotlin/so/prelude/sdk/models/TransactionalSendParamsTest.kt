@@ -2,6 +2,7 @@
 
 package so.prelude.sdk.models
 
+import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import so.prelude.sdk.core.JsonValue
@@ -9,7 +10,7 @@ import so.prelude.sdk.core.JsonValue
 class TransactionalSendParamsTest {
 
     @Test
-    fun createTransactionalSendParams() {
+    fun create() {
         TransactionalSendParams.builder()
             .templateId("template_01jd1xq0cffycayqtdkdbv4d61")
             .to("+30123456789")
@@ -27,7 +28,7 @@ class TransactionalSendParamsTest {
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             TransactionalSendParams.builder()
                 .templateId("template_01jd1xq0cffycayqtdkdbv4d61")
@@ -43,8 +44,10 @@ class TransactionalSendParamsTest {
                         .build()
                 )
                 .build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
+
+        val body = params._body()
+
+        assertNotNull(body)
         assertThat(body.templateId()).isEqualTo("template_01jd1xq0cffycayqtdkdbv4d61")
         assertThat(body.to()).isEqualTo("+30123456789")
         assertThat(body.callbackUrl()).contains("callback_url")
@@ -61,14 +64,16 @@ class TransactionalSendParamsTest {
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params =
             TransactionalSendParams.builder()
                 .templateId("template_01jd1xq0cffycayqtdkdbv4d61")
                 .to("+30123456789")
                 .build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
+
+        val body = params._body()
+
+        assertNotNull(body)
         assertThat(body.templateId()).isEqualTo("template_01jd1xq0cffycayqtdkdbv4d61")
         assertThat(body.to()).isEqualTo("+30123456789")
     }

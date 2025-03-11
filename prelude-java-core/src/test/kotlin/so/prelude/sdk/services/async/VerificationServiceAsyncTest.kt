@@ -1,29 +1,29 @@
 // File generated from our OpenAPI spec by Stainless.
 
-package so.prelude.sdk.services.blocking
+package so.prelude.sdk.services.async
 
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import so.prelude.sdk.TestServerExtension
-import so.prelude.sdk.client.okhttp.PreludeOkHttpClient
+import so.prelude.sdk.client.okhttp.PreludeOkHttpClientAsync
 import so.prelude.sdk.core.JsonValue
 import so.prelude.sdk.models.VerificationCheckParams
 import so.prelude.sdk.models.VerificationCreateParams
 
 @ExtendWith(TestServerExtension::class)
-class VerificationServiceTest {
+class VerificationServiceAsyncTest {
 
     @Test
     fun create() {
         val client =
-            PreludeOkHttpClient.builder()
+            PreludeOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiToken("My API Token")
                 .build()
-        val verificationService = client.verification()
+        val verificationServiceAsync = client.verification()
 
-        val verification =
-            verificationService.create(
+        val verificationFuture =
+            verificationServiceAsync.create(
                 VerificationCreateParams.builder()
                     .target(
                         VerificationCreateParams.Target.builder()
@@ -77,20 +77,21 @@ class VerificationServiceTest {
                     .build()
             )
 
+        val verification = verificationFuture.get()
         verification.validate()
     }
 
     @Test
     fun check() {
         val client =
-            PreludeOkHttpClient.builder()
+            PreludeOkHttpClientAsync.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiToken("My API Token")
                 .build()
-        val verificationService = client.verification()
+        val verificationServiceAsync = client.verification()
 
-        val response =
-            verificationService.check(
+        val responseFuture =
+            verificationServiceAsync.check(
                 VerificationCheckParams.builder()
                     .code("12345")
                     .target(
@@ -102,6 +103,7 @@ class VerificationServiceTest {
                     .build()
             )
 
+        val response = responseFuture.get()
         response.validate()
     }
 }

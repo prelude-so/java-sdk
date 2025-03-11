@@ -13,6 +13,7 @@ import so.prelude.sdk.core.JsonField
 import so.prelude.sdk.core.JsonMissing
 import so.prelude.sdk.core.JsonValue
 import so.prelude.sdk.core.NoAutoDetect
+import so.prelude.sdk.core.Params
 import so.prelude.sdk.core.checkRequired
 import so.prelude.sdk.core.http.Headers
 import so.prelude.sdk.core.http.QueryParams
@@ -26,10 +27,10 @@ import so.prelude.sdk.errors.PreludeInvalidDataException
  */
 class WatchFeedBackParams
 private constructor(
-    private val body: WatchFeedBackBody,
+    private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
 
     /**
      * You should send a feedback event back to Watch API when your user demonstrates authentic
@@ -37,7 +38,10 @@ private constructor(
      */
     fun feedback(): Feedback = body.feedback()
 
-    /** The target. Currently this can only be an E.164 formatted phone number. */
+    /**
+     * The verification target. Either a phone number or an email address. To use the email
+     * verification feature contact us to discuss your use case.
+     */
     fun target(): Target = body.target()
 
     /**
@@ -46,7 +50,10 @@ private constructor(
      */
     fun _feedback(): JsonField<Feedback> = body._feedback()
 
-    /** The target. Currently this can only be an E.164 formatted phone number. */
+    /**
+     * The verification target. Either a phone number or an email address. To use the email
+     * verification feature contact us to discuss your use case.
+     */
     fun _target(): JsonField<Target> = body._target()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
@@ -55,16 +62,16 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun getBody(): WatchFeedBackBody = body
+    @JvmSynthetic internal fun _body(): Body = body
 
-    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
+    override fun _headers(): Headers = additionalHeaders
 
-    @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
+    override fun _queryParams(): QueryParams = additionalQueryParams
 
     @NoAutoDetect
-    class WatchFeedBackBody
+    class Body
     @JsonCreator
-    internal constructor(
+    private constructor(
         @JsonProperty("feedback")
         @ExcludeMissing
         private val feedback: JsonField<Feedback> = JsonMissing.of(),
@@ -81,7 +88,10 @@ private constructor(
          */
         fun feedback(): Feedback = feedback.getRequired("feedback")
 
-        /** The target. Currently this can only be an E.164 formatted phone number. */
+        /**
+         * The verification target. Either a phone number or an email address. To use the email
+         * verification feature contact us to discuss your use case.
+         */
         fun target(): Target = target.getRequired("target")
 
         /**
@@ -90,7 +100,10 @@ private constructor(
          */
         @JsonProperty("feedback") @ExcludeMissing fun _feedback(): JsonField<Feedback> = feedback
 
-        /** The target. Currently this can only be an E.164 formatted phone number. */
+        /**
+         * The verification target. Either a phone number or an email address. To use the email
+         * verification feature contact us to discuss your use case.
+         */
         @JsonProperty("target") @ExcludeMissing fun _target(): JsonField<Target> = target
 
         @JsonAnyGetter
@@ -99,7 +112,7 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): WatchFeedBackBody = apply {
+        fun validate(): Body = apply {
             if (validated) {
                 return@apply
             }
@@ -113,10 +126,19 @@ private constructor(
 
         companion object {
 
+            /**
+             * Returns a mutable builder for constructing an instance of [Body].
+             *
+             * The following fields are required:
+             * ```java
+             * .feedback()
+             * .target()
+             * ```
+             */
             @JvmStatic fun builder() = Builder()
         }
 
-        /** A builder for [WatchFeedBackBody]. */
+        /** A builder for [Body]. */
         class Builder internal constructor() {
 
             private var feedback: JsonField<Feedback>? = null
@@ -124,10 +146,10 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(watchFeedBackBody: WatchFeedBackBody) = apply {
-                feedback = watchFeedBackBody.feedback
-                target = watchFeedBackBody.target
-                additionalProperties = watchFeedBackBody.additionalProperties.toMutableMap()
+            internal fun from(body: Body) = apply {
+                feedback = body.feedback
+                target = body.target
+                additionalProperties = body.additionalProperties.toMutableMap()
             }
 
             /**
@@ -142,10 +164,16 @@ private constructor(
              */
             fun feedback(feedback: JsonField<Feedback>) = apply { this.feedback = feedback }
 
-            /** The target. Currently this can only be an E.164 formatted phone number. */
+            /**
+             * The verification target. Either a phone number or an email address. To use the email
+             * verification feature contact us to discuss your use case.
+             */
             fun target(target: Target) = target(JsonField.of(target))
 
-            /** The target. Currently this can only be an E.164 formatted phone number. */
+            /**
+             * The verification target. Either a phone number or an email address. To use the email
+             * verification feature contact us to discuss your use case.
+             */
             fun target(target: JsonField<Target>) = apply { this.target = target }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -167,8 +195,8 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): WatchFeedBackBody =
-                WatchFeedBackBody(
+            fun build(): Body =
+                Body(
                     checkRequired("feedback", feedback),
                     checkRequired("target", target),
                     additionalProperties.toImmutable(),
@@ -180,7 +208,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is WatchFeedBackBody && feedback == other.feedback && target == other.target && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && feedback == other.feedback && target == other.target && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -190,13 +218,22 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "WatchFeedBackBody{feedback=$feedback, target=$target, additionalProperties=$additionalProperties}"
+            "Body{feedback=$feedback, target=$target, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [WatchFeedBackParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .feedback()
+         * .target()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -204,7 +241,7 @@ private constructor(
     @NoAutoDetect
     class Builder internal constructor() {
 
-        private var body: WatchFeedBackBody.Builder = WatchFeedBackBody.builder()
+        private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
@@ -227,10 +264,16 @@ private constructor(
          */
         fun feedback(feedback: JsonField<Feedback>) = apply { body.feedback(feedback) }
 
-        /** The target. Currently this can only be an E.164 formatted phone number. */
+        /**
+         * The verification target. Either a phone number or an email address. To use the email
+         * verification feature contact us to discuss your use case.
+         */
         fun target(target: Target) = apply { body.target(target) }
 
-        /** The target. Currently this can only be an E.164 formatted phone number. */
+        /**
+         * The verification target. Either a phone number or an email address. To use the email
+         * verification feature contact us to discuss your use case.
+         */
         fun target(target: JsonField<Target>) = apply { body.target(target) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
@@ -402,6 +445,14 @@ private constructor(
 
         companion object {
 
+            /**
+             * Returns a mutable builder for constructing an instance of [Feedback].
+             *
+             * The following fields are required:
+             * ```java
+             * .type()
+             * ```
+             */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -456,11 +507,7 @@ private constructor(
          * `CONFIRM_TARGET` should be sent when you are sure that the user with this target (e.g.
          * phone number) is trustworthy.
          */
-        class Type
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
             /**
              * Returns this class instance's raw value.
@@ -481,7 +528,7 @@ private constructor(
 
             /** An enum containing [Type]'s known values. */
             enum class Known {
-                CONFIRM_TARGET,
+                CONFIRM_TARGET
             }
 
             /**
@@ -527,7 +574,19 @@ private constructor(
                     else -> throw PreludeInvalidDataException("Unknown Type: $value")
                 }
 
-            fun asString(): String = _value().asStringOrThrow()
+            /**
+             * Returns this class instance's primitive wire representation.
+             *
+             * This differs from the [toString] method because that method is primarily for
+             * debugging and generally doesn't throw.
+             *
+             * @throws PreludeInvalidDataException if this class instance's value does not have the
+             *   expected primitive type.
+             */
+            fun asString(): String =
+                _value().asString().orElseThrow {
+                    PreludeInvalidDataException("Value is not a String")
+                }
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
@@ -559,7 +618,10 @@ private constructor(
         override fun toString() = "Feedback{type=$type, additionalProperties=$additionalProperties}"
     }
 
-    /** The target. Currently this can only be an E.164 formatted phone number. */
+    /**
+     * The verification target. Either a phone number or an email address. To use the email
+     * verification feature contact us to discuss your use case.
+     */
     @NoAutoDetect
     class Target
     @JsonCreator
@@ -572,16 +634,16 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** The type of the target. Currently this can only be "phone_number". */
+        /** The type of the target. Either "phone_number" or "email_address". */
         fun type(): Type = type.getRequired("type")
 
-        /** An E.164 formatted phone number to verify. */
+        /** An E.164 formatted phone number or an email address. */
         fun value(): String = value.getRequired("value")
 
-        /** The type of the target. Currently this can only be "phone_number". */
+        /** The type of the target. Either "phone_number" or "email_address". */
         @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
-        /** An E.164 formatted phone number to verify. */
+        /** An E.164 formatted phone number or an email address. */
         @JsonProperty("value") @ExcludeMissing fun _value(): JsonField<String> = value
 
         @JsonAnyGetter
@@ -604,6 +666,15 @@ private constructor(
 
         companion object {
 
+            /**
+             * Returns a mutable builder for constructing an instance of [Target].
+             *
+             * The following fields are required:
+             * ```java
+             * .type()
+             * .value()
+             * ```
+             */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -621,16 +692,16 @@ private constructor(
                 additionalProperties = target.additionalProperties.toMutableMap()
             }
 
-            /** The type of the target. Currently this can only be "phone_number". */
+            /** The type of the target. Either "phone_number" or "email_address". */
             fun type(type: Type) = type(JsonField.of(type))
 
-            /** The type of the target. Currently this can only be "phone_number". */
+            /** The type of the target. Either "phone_number" or "email_address". */
             fun type(type: JsonField<Type>) = apply { this.type = type }
 
-            /** An E.164 formatted phone number to verify. */
+            /** An E.164 formatted phone number or an email address. */
             fun value(value: String) = value(JsonField.of(value))
 
-            /** An E.164 formatted phone number to verify. */
+            /** An E.164 formatted phone number or an email address. */
             fun value(value: JsonField<String>) = apply { this.value = value }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -660,12 +731,8 @@ private constructor(
                 )
         }
 
-        /** The type of the target. Currently this can only be "phone_number". */
-        class Type
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        /** The type of the target. Either "phone_number" or "email_address". */
+        class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
             /**
              * Returns this class instance's raw value.
@@ -681,12 +748,15 @@ private constructor(
 
                 @JvmField val PHONE_NUMBER = of("phone_number")
 
+                @JvmField val EMAIL_ADDRESS = of("email_address")
+
                 @JvmStatic fun of(value: String) = Type(JsonField.of(value))
             }
 
             /** An enum containing [Type]'s known values. */
             enum class Known {
                 PHONE_NUMBER,
+                EMAIL_ADDRESS,
             }
 
             /**
@@ -700,6 +770,7 @@ private constructor(
              */
             enum class Value {
                 PHONE_NUMBER,
+                EMAIL_ADDRESS,
                 /** An enum member indicating that [Type] was instantiated with an unknown value. */
                 _UNKNOWN,
             }
@@ -714,6 +785,7 @@ private constructor(
             fun value(): Value =
                 when (this) {
                     PHONE_NUMBER -> Value.PHONE_NUMBER
+                    EMAIL_ADDRESS -> Value.EMAIL_ADDRESS
                     else -> Value._UNKNOWN
                 }
 
@@ -729,10 +801,23 @@ private constructor(
             fun known(): Known =
                 when (this) {
                     PHONE_NUMBER -> Known.PHONE_NUMBER
+                    EMAIL_ADDRESS -> Known.EMAIL_ADDRESS
                     else -> throw PreludeInvalidDataException("Unknown Type: $value")
                 }
 
-            fun asString(): String = _value().asStringOrThrow()
+            /**
+             * Returns this class instance's primitive wire representation.
+             *
+             * This differs from the [toString] method because that method is primarily for
+             * debugging and generally doesn't throw.
+             *
+             * @throws PreludeInvalidDataException if this class instance's value does not have the
+             *   expected primitive type.
+             */
+            fun asString(): String =
+                _value().asString().orElseThrow {
+                    PreludeInvalidDataException("Value is not a String")
+                }
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {

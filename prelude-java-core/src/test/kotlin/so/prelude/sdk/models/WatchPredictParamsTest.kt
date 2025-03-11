@@ -2,13 +2,14 @@
 
 package so.prelude.sdk.models
 
+import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class WatchPredictParamsTest {
 
     @Test
-    fun createWatchPredictParams() {
+    fun create() {
         WatchPredictParams.builder()
             .target(
                 WatchPredictParams.Target.builder()
@@ -28,7 +29,7 @@ class WatchPredictParamsTest {
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             WatchPredictParams.builder()
                 .target(
@@ -46,8 +47,10 @@ class WatchPredictParamsTest {
                         .build()
                 )
                 .build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
+
+        val body = params._body()
+
+        assertNotNull(body)
         assertThat(body.target())
             .isEqualTo(
                 WatchPredictParams.Target.builder()
@@ -67,7 +70,7 @@ class WatchPredictParamsTest {
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params =
             WatchPredictParams.builder()
                 .target(
@@ -77,8 +80,10 @@ class WatchPredictParamsTest {
                         .build()
                 )
                 .build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
+
+        val body = params._body()
+
+        assertNotNull(body)
         assertThat(body.target())
             .isEqualTo(
                 WatchPredictParams.Target.builder()

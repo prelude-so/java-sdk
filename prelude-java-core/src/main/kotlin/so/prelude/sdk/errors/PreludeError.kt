@@ -20,13 +20,14 @@ private constructor(
     @ExcludeMissing
     @JsonAnySetter
     @get:JvmName("additionalProperties")
-    val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    val additionalProperties: Map<String, JsonValue> = immutableEmptyMap()
 ) {
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
+        /** Returns a mutable builder for constructing an instance of [PreludeError]. */
         @JvmStatic fun builder() = Builder()
     }
 

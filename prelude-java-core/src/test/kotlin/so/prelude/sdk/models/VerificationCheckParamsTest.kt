@@ -2,13 +2,14 @@
 
 package so.prelude.sdk.models
 
+import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class VerificationCheckParamsTest {
 
     @Test
-    fun createVerificationCheckParams() {
+    fun create() {
         VerificationCheckParams.builder()
             .code("12345")
             .target(
@@ -21,7 +22,7 @@ class VerificationCheckParamsTest {
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             VerificationCheckParams.builder()
                 .code("12345")
@@ -32,8 +33,10 @@ class VerificationCheckParamsTest {
                         .build()
                 )
                 .build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
+
+        val body = params._body()
+
+        assertNotNull(body)
         assertThat(body.code()).isEqualTo("12345")
         assertThat(body.target())
             .isEqualTo(
@@ -45,7 +48,7 @@ class VerificationCheckParamsTest {
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params =
             VerificationCheckParams.builder()
                 .code("12345")
@@ -56,8 +59,10 @@ class VerificationCheckParamsTest {
                         .build()
                 )
                 .build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
+
+        val body = params._body()
+
+        assertNotNull(body)
         assertThat(body.code()).isEqualTo("12345")
         assertThat(body.target())
             .isEqualTo(

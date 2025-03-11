@@ -72,6 +72,16 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [WatchPredictResponse].
+         *
+         * The following fields are required:
+         * ```java
+         * .id()
+         * .prediction()
+         * .reasoning()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -136,11 +146,7 @@ private constructor(
     }
 
     /** A label indicating the trustworthiness of the phone number. */
-    class Prediction
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) : Enum {
+    class Prediction @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**
          * Returns this class instance's raw value.
@@ -215,7 +221,17 @@ private constructor(
                 else -> throw PreludeInvalidDataException("Unknown Prediction: $value")
             }
 
-        fun asString(): String = _value().asStringOrThrow()
+        /**
+         * Returns this class instance's primitive wire representation.
+         *
+         * This differs from the [toString] method because that method is primarily for debugging
+         * and generally doesn't throw.
+         *
+         * @throws PreludeInvalidDataException if this class instance's value does not have the
+         *   expected primitive type.
+         */
+        fun asString(): String =
+            _value().asString().orElseThrow { PreludeInvalidDataException("Value is not a String") }
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -282,6 +298,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Reasoning]. */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -336,20 +353,11 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): Reasoning =
-                Reasoning(
-                    cause,
-                    score,
-                    additionalProperties.toImmutable(),
-                )
+            fun build(): Reasoning = Reasoning(cause, score, additionalProperties.toImmutable())
         }
 
         /** A label explaining why the phone number was classified as not trustworthy */
-        class Cause
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        class Cause @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
             /**
              * Returns this class instance's raw value.
@@ -436,7 +444,19 @@ private constructor(
                     else -> throw PreludeInvalidDataException("Unknown Cause: $value")
                 }
 
-            fun asString(): String = _value().asStringOrThrow()
+            /**
+             * Returns this class instance's primitive wire representation.
+             *
+             * This differs from the [toString] method because that method is primarily for
+             * debugging and generally doesn't throw.
+             *
+             * @throws PreludeInvalidDataException if this class instance's value does not have the
+             *   expected primitive type.
+             */
+            fun asString(): String =
+                _value().asString().orElseThrow {
+                    PreludeInvalidDataException("Value is not a String")
+                }
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {

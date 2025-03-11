@@ -2,13 +2,14 @@
 
 package so.prelude.sdk.models
 
+import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class WatchFeedBackParamsTest {
 
     @Test
-    fun createWatchFeedBackParams() {
+    fun create() {
         WatchFeedBackParams.builder()
             .feedback(
                 WatchFeedBackParams.Feedback.builder()
@@ -25,7 +26,7 @@ class WatchFeedBackParamsTest {
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             WatchFeedBackParams.builder()
                 .feedback(
@@ -40,8 +41,10 @@ class WatchFeedBackParamsTest {
                         .build()
                 )
                 .build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
+
+        val body = params._body()
+
+        assertNotNull(body)
         assertThat(body.feedback())
             .isEqualTo(
                 WatchFeedBackParams.Feedback.builder()
@@ -58,7 +61,7 @@ class WatchFeedBackParamsTest {
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params =
             WatchFeedBackParams.builder()
                 .feedback(
@@ -73,8 +76,10 @@ class WatchFeedBackParamsTest {
                         .build()
                 )
                 .build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
+
+        val body = params._body()
+
+        assertNotNull(body)
         assertThat(body.feedback())
             .isEqualTo(
                 WatchFeedBackParams.Feedback.builder()

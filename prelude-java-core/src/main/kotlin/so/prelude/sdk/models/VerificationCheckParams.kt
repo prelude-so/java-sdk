@@ -13,6 +13,7 @@ import so.prelude.sdk.core.JsonField
 import so.prelude.sdk.core.JsonMissing
 import so.prelude.sdk.core.JsonValue
 import so.prelude.sdk.core.NoAutoDetect
+import so.prelude.sdk.core.Params
 import so.prelude.sdk.core.checkRequired
 import so.prelude.sdk.core.http.Headers
 import so.prelude.sdk.core.http.QueryParams
@@ -23,21 +24,27 @@ import so.prelude.sdk.errors.PreludeInvalidDataException
 /** Check the validity of a verification code. */
 class VerificationCheckParams
 private constructor(
-    private val body: VerificationCheckBody,
+    private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
 
     /** The OTP code to validate. */
     fun code(): String = body.code()
 
-    /** The target. Currently this can only be an E.164 formatted phone number. */
+    /**
+     * The verification target. Either a phone number or an email address. To use the email
+     * verification feature contact us to discuss your use case.
+     */
     fun target(): Target = body.target()
 
     /** The OTP code to validate. */
     fun _code(): JsonField<String> = body._code()
 
-    /** The target. Currently this can only be an E.164 formatted phone number. */
+    /**
+     * The verification target. Either a phone number or an email address. To use the email
+     * verification feature contact us to discuss your use case.
+     */
     fun _target(): JsonField<Target> = body._target()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
@@ -46,16 +53,16 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun getBody(): VerificationCheckBody = body
+    @JvmSynthetic internal fun _body(): Body = body
 
-    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
+    override fun _headers(): Headers = additionalHeaders
 
-    @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
+    override fun _queryParams(): QueryParams = additionalQueryParams
 
     @NoAutoDetect
-    class VerificationCheckBody
+    class Body
     @JsonCreator
-    internal constructor(
+    private constructor(
         @JsonProperty("code")
         @ExcludeMissing
         private val code: JsonField<String> = JsonMissing.of(),
@@ -69,13 +76,19 @@ private constructor(
         /** The OTP code to validate. */
         fun code(): String = code.getRequired("code")
 
-        /** The target. Currently this can only be an E.164 formatted phone number. */
+        /**
+         * The verification target. Either a phone number or an email address. To use the email
+         * verification feature contact us to discuss your use case.
+         */
         fun target(): Target = target.getRequired("target")
 
         /** The OTP code to validate. */
         @JsonProperty("code") @ExcludeMissing fun _code(): JsonField<String> = code
 
-        /** The target. Currently this can only be an E.164 formatted phone number. */
+        /**
+         * The verification target. Either a phone number or an email address. To use the email
+         * verification feature contact us to discuss your use case.
+         */
         @JsonProperty("target") @ExcludeMissing fun _target(): JsonField<Target> = target
 
         @JsonAnyGetter
@@ -84,7 +97,7 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): VerificationCheckBody = apply {
+        fun validate(): Body = apply {
             if (validated) {
                 return@apply
             }
@@ -98,10 +111,19 @@ private constructor(
 
         companion object {
 
+            /**
+             * Returns a mutable builder for constructing an instance of [Body].
+             *
+             * The following fields are required:
+             * ```java
+             * .code()
+             * .target()
+             * ```
+             */
             @JvmStatic fun builder() = Builder()
         }
 
-        /** A builder for [VerificationCheckBody]. */
+        /** A builder for [Body]. */
         class Builder internal constructor() {
 
             private var code: JsonField<String>? = null
@@ -109,10 +131,10 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(verificationCheckBody: VerificationCheckBody) = apply {
-                code = verificationCheckBody.code
-                target = verificationCheckBody.target
-                additionalProperties = verificationCheckBody.additionalProperties.toMutableMap()
+            internal fun from(body: Body) = apply {
+                code = body.code
+                target = body.target
+                additionalProperties = body.additionalProperties.toMutableMap()
             }
 
             /** The OTP code to validate. */
@@ -121,10 +143,16 @@ private constructor(
             /** The OTP code to validate. */
             fun code(code: JsonField<String>) = apply { this.code = code }
 
-            /** The target. Currently this can only be an E.164 formatted phone number. */
+            /**
+             * The verification target. Either a phone number or an email address. To use the email
+             * verification feature contact us to discuss your use case.
+             */
             fun target(target: Target) = target(JsonField.of(target))
 
-            /** The target. Currently this can only be an E.164 formatted phone number. */
+            /**
+             * The verification target. Either a phone number or an email address. To use the email
+             * verification feature contact us to discuss your use case.
+             */
             fun target(target: JsonField<Target>) = apply { this.target = target }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -146,8 +174,8 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): VerificationCheckBody =
-                VerificationCheckBody(
+            fun build(): Body =
+                Body(
                     checkRequired("code", code),
                     checkRequired("target", target),
                     additionalProperties.toImmutable(),
@@ -159,7 +187,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is VerificationCheckBody && code == other.code && target == other.target && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && code == other.code && target == other.target && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -169,13 +197,22 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "VerificationCheckBody{code=$code, target=$target, additionalProperties=$additionalProperties}"
+            "Body{code=$code, target=$target, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [VerificationCheckParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .code()
+         * .target()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -183,7 +220,7 @@ private constructor(
     @NoAutoDetect
     class Builder internal constructor() {
 
-        private var body: VerificationCheckBody.Builder = VerificationCheckBody.builder()
+        private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
@@ -200,10 +237,16 @@ private constructor(
         /** The OTP code to validate. */
         fun code(code: JsonField<String>) = apply { body.code(code) }
 
-        /** The target. Currently this can only be an E.164 formatted phone number. */
+        /**
+         * The verification target. Either a phone number or an email address. To use the email
+         * verification feature contact us to discuss your use case.
+         */
         fun target(target: Target) = apply { body.target(target) }
 
-        /** The target. Currently this can only be an E.164 formatted phone number. */
+        /**
+         * The verification target. Either a phone number or an email address. To use the email
+         * verification feature contact us to discuss your use case.
+         */
         fun target(target: JsonField<Target>) = apply { body.target(target) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
@@ -331,7 +374,10 @@ private constructor(
             )
     }
 
-    /** The target. Currently this can only be an E.164 formatted phone number. */
+    /**
+     * The verification target. Either a phone number or an email address. To use the email
+     * verification feature contact us to discuss your use case.
+     */
     @NoAutoDetect
     class Target
     @JsonCreator
@@ -344,16 +390,16 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** The type of the target. Currently this can only be "phone_number". */
+        /** The type of the target. Either "phone_number" or "email_address". */
         fun type(): Type = type.getRequired("type")
 
-        /** An E.164 formatted phone number to verify. */
+        /** An E.164 formatted phone number or an email address. */
         fun value(): String = value.getRequired("value")
 
-        /** The type of the target. Currently this can only be "phone_number". */
+        /** The type of the target. Either "phone_number" or "email_address". */
         @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
-        /** An E.164 formatted phone number to verify. */
+        /** An E.164 formatted phone number or an email address. */
         @JsonProperty("value") @ExcludeMissing fun _value(): JsonField<String> = value
 
         @JsonAnyGetter
@@ -376,6 +422,15 @@ private constructor(
 
         companion object {
 
+            /**
+             * Returns a mutable builder for constructing an instance of [Target].
+             *
+             * The following fields are required:
+             * ```java
+             * .type()
+             * .value()
+             * ```
+             */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -393,16 +448,16 @@ private constructor(
                 additionalProperties = target.additionalProperties.toMutableMap()
             }
 
-            /** The type of the target. Currently this can only be "phone_number". */
+            /** The type of the target. Either "phone_number" or "email_address". */
             fun type(type: Type) = type(JsonField.of(type))
 
-            /** The type of the target. Currently this can only be "phone_number". */
+            /** The type of the target. Either "phone_number" or "email_address". */
             fun type(type: JsonField<Type>) = apply { this.type = type }
 
-            /** An E.164 formatted phone number to verify. */
+            /** An E.164 formatted phone number or an email address. */
             fun value(value: String) = value(JsonField.of(value))
 
-            /** An E.164 formatted phone number to verify. */
+            /** An E.164 formatted phone number or an email address. */
             fun value(value: JsonField<String>) = apply { this.value = value }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -432,12 +487,8 @@ private constructor(
                 )
         }
 
-        /** The type of the target. Currently this can only be "phone_number". */
-        class Type
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        /** The type of the target. Either "phone_number" or "email_address". */
+        class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
             /**
              * Returns this class instance's raw value.
@@ -453,12 +504,15 @@ private constructor(
 
                 @JvmField val PHONE_NUMBER = of("phone_number")
 
+                @JvmField val EMAIL_ADDRESS = of("email_address")
+
                 @JvmStatic fun of(value: String) = Type(JsonField.of(value))
             }
 
             /** An enum containing [Type]'s known values. */
             enum class Known {
                 PHONE_NUMBER,
+                EMAIL_ADDRESS,
             }
 
             /**
@@ -472,6 +526,7 @@ private constructor(
              */
             enum class Value {
                 PHONE_NUMBER,
+                EMAIL_ADDRESS,
                 /** An enum member indicating that [Type] was instantiated with an unknown value. */
                 _UNKNOWN,
             }
@@ -486,6 +541,7 @@ private constructor(
             fun value(): Value =
                 when (this) {
                     PHONE_NUMBER -> Value.PHONE_NUMBER
+                    EMAIL_ADDRESS -> Value.EMAIL_ADDRESS
                     else -> Value._UNKNOWN
                 }
 
@@ -501,10 +557,23 @@ private constructor(
             fun known(): Known =
                 when (this) {
                     PHONE_NUMBER -> Known.PHONE_NUMBER
+                    EMAIL_ADDRESS -> Known.EMAIL_ADDRESS
                     else -> throw PreludeInvalidDataException("Unknown Type: $value")
                 }
 
-            fun asString(): String = _value().asStringOrThrow()
+            /**
+             * Returns this class instance's primitive wire representation.
+             *
+             * This differs from the [toString] method because that method is primarily for
+             * debugging and generally doesn't throw.
+             *
+             * @throws PreludeInvalidDataException if this class instance's value does not have the
+             *   expected primitive type.
+             */
+            fun asString(): String =
+                _value().asString().orElseThrow {
+                    PreludeInvalidDataException("Value is not a String")
+                }
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {

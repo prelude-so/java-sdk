@@ -13,6 +13,7 @@ import so.prelude.sdk.core.JsonField
 import so.prelude.sdk.core.JsonMissing
 import so.prelude.sdk.core.JsonValue
 import so.prelude.sdk.core.NoAutoDetect
+import so.prelude.sdk.core.Params
 import so.prelude.sdk.core.checkRequired
 import so.prelude.sdk.core.http.Headers
 import so.prelude.sdk.core.http.QueryParams
@@ -22,10 +23,10 @@ import so.prelude.sdk.core.toImmutable
 /** Send a transactional message to your user. */
 class TransactionalSendParams
 private constructor(
-    private val body: TransactionalSendBody,
+    private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
 
     /** The template identifier. */
     fun templateId(): String = body.templateId()
@@ -91,16 +92,16 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun getBody(): TransactionalSendBody = body
+    @JvmSynthetic internal fun _body(): Body = body
 
-    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
+    override fun _headers(): Headers = additionalHeaders
 
-    @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
+    override fun _queryParams(): QueryParams = additionalQueryParams
 
     @NoAutoDetect
-    class TransactionalSendBody
+    class Body
     @JsonCreator
-    internal constructor(
+    private constructor(
         @JsonProperty("template_id")
         @ExcludeMissing
         private val templateId: JsonField<String> = JsonMissing.of(),
@@ -202,7 +203,7 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): TransactionalSendBody = apply {
+        fun validate(): Body = apply {
             if (validated) {
                 return@apply
             }
@@ -222,10 +223,19 @@ private constructor(
 
         companion object {
 
+            /**
+             * Returns a mutable builder for constructing an instance of [Body].
+             *
+             * The following fields are required:
+             * ```java
+             * .templateId()
+             * .to()
+             * ```
+             */
             @JvmStatic fun builder() = Builder()
         }
 
-        /** A builder for [TransactionalSendBody]. */
+        /** A builder for [Body]. */
         class Builder internal constructor() {
 
             private var templateId: JsonField<String>? = null
@@ -239,16 +249,16 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(transactionalSendBody: TransactionalSendBody) = apply {
-                templateId = transactionalSendBody.templateId
-                to = transactionalSendBody.to
-                callbackUrl = transactionalSendBody.callbackUrl
-                correlationId = transactionalSendBody.correlationId
-                expiresAt = transactionalSendBody.expiresAt
-                from = transactionalSendBody.from
-                locale = transactionalSendBody.locale
-                variables = transactionalSendBody.variables
-                additionalProperties = transactionalSendBody.additionalProperties.toMutableMap()
+            internal fun from(body: Body) = apply {
+                templateId = body.templateId
+                to = body.to
+                callbackUrl = body.callbackUrl
+                correlationId = body.correlationId
+                expiresAt = body.expiresAt
+                from = body.from
+                locale = body.locale
+                variables = body.variables
+                additionalProperties = body.additionalProperties.toMutableMap()
             }
 
             /** The template identifier. */
@@ -332,8 +342,8 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): TransactionalSendBody =
-                TransactionalSendBody(
+            fun build(): Body =
+                Body(
                     checkRequired("templateId", templateId),
                     checkRequired("to", to),
                     callbackUrl,
@@ -351,7 +361,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is TransactionalSendBody && templateId == other.templateId && to == other.to && callbackUrl == other.callbackUrl && correlationId == other.correlationId && expiresAt == other.expiresAt && from == other.from && locale == other.locale && variables == other.variables && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && templateId == other.templateId && to == other.to && callbackUrl == other.callbackUrl && correlationId == other.correlationId && expiresAt == other.expiresAt && from == other.from && locale == other.locale && variables == other.variables && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -361,13 +371,22 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "TransactionalSendBody{templateId=$templateId, to=$to, callbackUrl=$callbackUrl, correlationId=$correlationId, expiresAt=$expiresAt, from=$from, locale=$locale, variables=$variables, additionalProperties=$additionalProperties}"
+            "Body{templateId=$templateId, to=$to, callbackUrl=$callbackUrl, correlationId=$correlationId, expiresAt=$expiresAt, from=$from, locale=$locale, variables=$variables, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [TransactionalSendParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .templateId()
+         * .to()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -375,7 +394,7 @@ private constructor(
     @NoAutoDetect
     class Builder internal constructor() {
 
-        private var body: TransactionalSendBody.Builder = TransactionalSendBody.builder()
+        private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
@@ -577,7 +596,7 @@ private constructor(
     @JsonCreator
     private constructor(
         @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap()
     ) {
 
         @JsonAnyGetter
@@ -598,6 +617,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Variables]. */
             @JvmStatic fun builder() = Builder()
         }
 

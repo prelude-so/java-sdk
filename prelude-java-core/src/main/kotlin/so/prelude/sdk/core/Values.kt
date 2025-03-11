@@ -26,10 +26,9 @@ import com.fasterxml.jackson.databind.node.JsonNodeType.OBJECT
 import com.fasterxml.jackson.databind.node.JsonNodeType.POJO
 import com.fasterxml.jackson.databind.node.JsonNodeType.STRING
 import com.fasterxml.jackson.databind.ser.std.NullSerializer
-import java.nio.charset.Charset
+import java.io.InputStream
 import java.util.Objects
 import java.util.Optional
-import org.apache.hc.core5.http.ContentType
 import so.prelude.sdk.errors.PreludeInvalidDataException
 
 @JsonDeserialize(using = JsonField.Deserializer::class)
@@ -59,36 +58,69 @@ sealed class JsonField<out T : Any> {
     fun asBoolean(): Optional<Boolean> =
         when (this) {
             is JsonBoolean -> Optional.of(value)
+            is KnownValue -> Optional.ofNullable(value as? Boolean)
             else -> Optional.empty()
         }
 
     fun asNumber(): Optional<Number> =
         when (this) {
             is JsonNumber -> Optional.of(value)
+            is KnownValue -> Optional.ofNullable(value as? Number)
             else -> Optional.empty()
         }
 
     fun asString(): Optional<String> =
         when (this) {
             is JsonString -> Optional.of(value)
+            is KnownValue -> Optional.ofNullable(value as? String)
             else -> Optional.empty()
         }
 
     fun asStringOrThrow(): String =
-        when (this) {
-            is JsonString -> value
-            else -> throw PreludeInvalidDataException("Value is not a string")
-        }
+        asString().orElseThrow { PreludeInvalidDataException("Value is not a string") }
 
     fun asArray(): Optional<List<JsonValue>> =
         when (this) {
             is JsonArray -> Optional.of(values)
+            is KnownValue ->
+                Optional.ofNullable(
+                    (value as? List<*>)?.map {
+                        try {
+                            JsonValue.from(it)
+                        } catch (e: IllegalArgumentException) {
+                            // The known value is a list, but not all values are convertible to
+                            // `JsonValue`.
+                            return Optional.empty()
+                        }
+                    }
+                )
             else -> Optional.empty()
         }
 
     fun asObject(): Optional<Map<String, JsonValue>> =
         when (this) {
             is JsonObject -> Optional.of(values)
+            is KnownValue ->
+                Optional.ofNullable(
+                    (value as? Map<*, *>)
+                        ?.map { (key, value) ->
+                            if (key !is String) {
+                                return Optional.empty()
+                            }
+
+                            val jsonValue =
+                                try {
+                                    JsonValue.from(value)
+                                } catch (e: IllegalArgumentException) {
+                                    // The known value is a map, but not all items are convertible
+                                    // to `JsonValue`.
+                                    return Optional.empty()
+                                }
+
+                            key to jsonValue
+                        }
+                        ?.toMap()
+                )
             else -> Optional.empty()
         }
 
@@ -96,9 +128,9 @@ sealed class JsonField<out T : Any> {
     internal fun getRequired(name: String): T =
         when (this) {
             is KnownValue -> value
-            is JsonMissing -> throw PreludeInvalidDataException("'${name}' is not set")
-            is JsonNull -> throw PreludeInvalidDataException("'${name}' is null")
-            else -> throw PreludeInvalidDataException("'${name}' is invalid, received ${this}")
+            is JsonMissing -> throw PreludeInvalidDataException("`$name` is not set")
+            is JsonNull -> throw PreludeInvalidDataException("`$name` is null")
+            else -> throw PreludeInvalidDataException("`$name` is invalid, received $this")
         }
 
     @JvmSynthetic
@@ -107,7 +139,7 @@ sealed class JsonField<out T : Any> {
             is KnownValue -> value
             is JsonMissing -> null
             is JsonNull -> null
-            else -> throw PreludeInvalidDataException("'${name}' is invalid, received ${this}")
+            else -> throw PreludeInvalidDataException("`$name` is invalid, received $this")
         }
 
     @JvmSynthetic
@@ -140,8 +172,11 @@ sealed class JsonField<out T : Any> {
             }
     }
 
-    // This class is a Jackson filter that can be used to exclude missing properties from objects
-    // This filter should not be used directly and should instead use the @ExcludeMissing annotation
+    /**
+     * This class is a Jackson filter that can be used to exclude missing properties from objects.
+     * This filter should not be used directly and should instead use the @ExcludeMissing
+     * annotation.
+     */
     class IsMissing {
         override fun equals(other: Any?): Boolean = other is JsonMissing
 
@@ -154,18 +189,13 @@ sealed class JsonField<out T : Any> {
         override fun createContextual(
             context: DeserializationContext,
             property: BeanProperty?,
-        ): JsonDeserializer<JsonField<*>> {
-            return Deserializer(context.contextualType?.containedType(0))
-        }
+        ): JsonDeserializer<JsonField<*>> = Deserializer(context.contextualType?.containedType(0))
 
-        override fun ObjectCodec.deserialize(node: JsonNode): JsonField<*> {
-            return type?.let { tryDeserialize<Any>(node, type) }?.let { of(it) }
+        override fun ObjectCodec.deserialize(node: JsonNode): JsonField<*> =
+            type?.let { tryDeserialize<Any>(node, type) }?.let { of(it) }
                 ?: JsonValue.fromJsonNode(node)
-        }
 
-        override fun getNullValue(context: DeserializationContext): JsonField<*> {
-            return JsonNull.of()
-        }
+        override fun getNullValue(context: DeserializationContext): JsonField<*> = JsonNull.of()
     }
 }
 
@@ -240,13 +270,9 @@ sealed class JsonValue : JsonField<Nothing>() {
     }
 
     class Deserializer : BaseDeserializer<JsonValue>(JsonValue::class) {
-        override fun ObjectCodec.deserialize(node: JsonNode): JsonValue {
-            return fromJsonNode(node)
-        }
+        override fun ObjectCodec.deserialize(node: JsonNode): JsonValue = fromJsonNode(node)
 
-        override fun getNullValue(context: DeserializationContext?): JsonValue {
-            return JsonNull.of()
-        }
+        override fun getNullValue(context: DeserializationContext?): JsonValue = JsonNull.of()
     }
 }
 
@@ -260,12 +286,12 @@ private constructor(
             return true
         }
 
-        return other is KnownValue<*> && value == other.value
+        return other is KnownValue<*> && value contentEquals other.value
     }
 
-    override fun hashCode() = value.hashCode()
+    override fun hashCode() = contentHash(value)
 
-    override fun toString() = value.toString()
+    override fun toString() = value.contentToString()
 
     companion object {
         @JsonCreator @JvmStatic fun <T : Any> of(value: T) = KnownValue(value)
@@ -287,7 +313,7 @@ class JsonMissing : JsonValue() {
         override fun serialize(
             value: JsonMissing,
             generator: JsonGenerator,
-            provider: SerializerProvider
+            provider: SerializerProvider,
         ) {
             throw RuntimeException("JsonMissing cannot be serialized")
         }
@@ -422,10 +448,7 @@ private constructor(
 }
 
 @JacksonAnnotationsInside
-@JsonInclude(
-    JsonInclude.Include.CUSTOM,
-    valueFilter = JsonField.IsMissing::class,
-)
+@JsonInclude(JsonInclude.Include.CUSTOM, valueFilter = JsonField.IsMissing::class)
 annotation class ExcludeMissing
 
 @JacksonAnnotationsInside
@@ -434,105 +457,84 @@ annotation class ExcludeMissing
     isGetterVisibility = Visibility.NONE,
     setterVisibility = Visibility.NONE,
     creatorVisibility = Visibility.NONE,
-    fieldVisibility = Visibility.NONE
+    fieldVisibility = Visibility.NONE,
 )
 annotation class NoAutoDetect
 
-class MultipartFormValue<T>
-internal constructor(
-    val name: String,
-    val value: T,
-    val contentType: ContentType,
-    val filename: String? = null
+class MultipartField<T : Any>
+private constructor(
+    @get:JvmName("value") val value: JsonField<T>,
+    @get:JvmName("contentType") val contentType: String,
+    private val filename: String?,
 ) {
 
-    private var hashCode: Int = 0
+    companion object {
 
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode =
-                Objects.hash(
-                    name,
-                    contentType,
-                    filename,
-                    when (value) {
-                        is ByteArray -> value.contentHashCode()
-                        is String -> value
-                        is Boolean -> value
-                        is Long -> value
-                        is Double -> value
-                        else -> value?.hashCode()
-                    }
-                )
-        }
-        return hashCode
+        @JvmStatic fun <T : Any> of(value: T?) = builder<T>().value(value).build()
+
+        @JvmStatic fun <T : Any> of(value: JsonField<T>) = builder<T>().value(value).build()
+
+        @JvmStatic fun <T : Any> builder() = Builder<T>()
     }
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other == null || this.javaClass != other.javaClass) return false
+    fun filename(): Optional<String> = Optional.ofNullable(filename)
 
-        other as MultipartFormValue<*>
+    @JvmSynthetic
+    internal fun <R : Any> map(transform: (T) -> R): MultipartField<R> =
+        MultipartField.builder<R>()
+            .value(value.map(transform))
+            .contentType(contentType)
+            .filename(filename)
+            .build()
 
-        if (name != other.name || contentType != other.contentType || filename != other.filename)
-            return false
+    /** A builder for [MultipartField]. */
+    class Builder<T : Any> internal constructor() {
 
-        return when {
-            value is ByteArray && other.value is ByteArray -> value contentEquals other.value
-            else -> value?.equals(other.value) ?: (other.value == null)
+        private var value: JsonField<T>? = null
+        private var contentType: String? = null
+        private var filename: String? = null
+
+        fun value(value: JsonField<T>) = apply { this.value = value }
+
+        fun value(value: T?) = value(JsonField.ofNullable(value))
+
+        fun contentType(contentType: String) = apply { this.contentType = contentType }
+
+        fun filename(filename: String?) = apply { this.filename = filename }
+
+        fun filename(filename: Optional<String>) = filename(filename.orElse(null))
+
+        fun build(): MultipartField<T> {
+            val value = checkRequired("value", value)
+            return MultipartField(
+                value,
+                contentType
+                    ?: if (
+                        value is KnownValue &&
+                            (value.value is InputStream || value.value is ByteArray)
+                    )
+                        "application/octet-stream"
+                    else "text/plain; charset=utf-8",
+                filename,
+            )
         }
+    }
+
+    private val hashCode: Int by lazy { contentHash(value, contentType, filename) }
+
+    override fun hashCode(): Int = hashCode
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return other is MultipartField<*> &&
+            value == other.value &&
+            contentType == other.contentType &&
+            filename == other.filename
     }
 
     override fun toString(): String =
-        "MultipartFormValue{name=$name, contentType=$contentType, filename=$filename, value=${valueToString()}}"
-
-    private fun valueToString(): String =
-        when (value) {
-            is ByteArray -> "ByteArray of size ${value.size}"
-            else -> value.toString()
-        }
-
-    companion object {
-        internal fun fromString(
-            name: String,
-            value: String,
-            contentType: ContentType
-        ): MultipartFormValue<String> = MultipartFormValue(name, value, contentType)
-
-        internal fun fromBoolean(
-            name: String,
-            value: Boolean,
-            contentType: ContentType,
-        ): MultipartFormValue<Boolean> = MultipartFormValue(name, value, contentType)
-
-        internal fun fromLong(
-            name: String,
-            value: Long,
-            contentType: ContentType,
-        ): MultipartFormValue<Long> = MultipartFormValue(name, value, contentType)
-
-        internal fun fromDouble(
-            name: String,
-            value: Double,
-            contentType: ContentType,
-        ): MultipartFormValue<Double> = MultipartFormValue(name, value, contentType)
-
-        internal fun <T : Enum> fromEnum(
-            name: String,
-            value: T,
-            contentType: ContentType
-        ): MultipartFormValue<T> = MultipartFormValue(name, value, contentType)
-
-        internal fun fromByteArray(
-            name: String,
-            value: ByteArray,
-            contentType: ContentType,
-            filename: String? = null
-        ): MultipartFormValue<ByteArray> = MultipartFormValue(name, value, contentType, filename)
-    }
-}
-
-internal object ContentTypes {
-    val DefaultText = ContentType.create(ContentType.TEXT_PLAIN.mimeType, Charset.forName("UTF-8"))
-    val DefaultBinary = ContentType.DEFAULT_BINARY
+        "MultipartField{value=$value, contentType=$contentType, filename=$filename}"
 }

@@ -2,13 +2,15 @@
 
 package so.prelude.sdk.models
 
+import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import so.prelude.sdk.core.JsonValue
 
 class VerificationCreateParamsTest {
 
     @Test
-    fun createVerificationCreateParams() {
+    fun create() {
         VerificationCreateParams.builder()
             .target(
                 VerificationCreateParams.Target.builder()
@@ -28,11 +30,17 @@ class VerificationCreateParamsTest {
                             .value("value")
                             .build()
                     )
+                    .callbackUrl("callback_url")
                     .codeSize(5L)
                     .customCode("custom_code")
                     .locale("el-GR")
                     .senderId("sender_id")
-                    .templateId("template_id")
+                    .templateId("prelude:psd2")
+                    .variables(
+                        VerificationCreateParams.Options.Variables.builder()
+                            .putAdditionalProperty("foo", JsonValue.from("bar"))
+                            .build()
+                    )
                     .build()
             )
             .signals(
@@ -44,13 +52,16 @@ class VerificationCreateParamsTest {
                     .ip("192.0.2.1")
                     .isTrustedUser(false)
                     .osVersion("18.0.1")
+                    .userAgent(
+                        "Mozilla/5.0 (iPhone; CPU iPhone OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1"
+                    )
                     .build()
             )
             .build()
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             VerificationCreateParams.builder()
                 .target(
@@ -75,11 +86,17 @@ class VerificationCreateParamsTest {
                                 .value("value")
                                 .build()
                         )
+                        .callbackUrl("callback_url")
                         .codeSize(5L)
                         .customCode("custom_code")
                         .locale("el-GR")
                         .senderId("sender_id")
-                        .templateId("template_id")
+                        .templateId("prelude:psd2")
+                        .variables(
+                            VerificationCreateParams.Options.Variables.builder()
+                                .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                .build()
+                        )
                         .build()
                 )
                 .signals(
@@ -91,11 +108,16 @@ class VerificationCreateParamsTest {
                         .ip("192.0.2.1")
                         .isTrustedUser(false)
                         .osVersion("18.0.1")
+                        .userAgent(
+                            "Mozilla/5.0 (iPhone; CPU iPhone OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1"
+                        )
                         .build()
                 )
                 .build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
+
+        val body = params._body()
+
+        assertNotNull(body)
         assertThat(body.target())
             .isEqualTo(
                 VerificationCreateParams.Target.builder()
@@ -117,11 +139,17 @@ class VerificationCreateParamsTest {
                             .value("value")
                             .build()
                     )
+                    .callbackUrl("callback_url")
                     .codeSize(5L)
                     .customCode("custom_code")
                     .locale("el-GR")
                     .senderId("sender_id")
-                    .templateId("template_id")
+                    .templateId("prelude:psd2")
+                    .variables(
+                        VerificationCreateParams.Options.Variables.builder()
+                            .putAdditionalProperty("foo", JsonValue.from("bar"))
+                            .build()
+                    )
                     .build()
             )
         assertThat(body.signals())
@@ -134,12 +162,15 @@ class VerificationCreateParamsTest {
                     .ip("192.0.2.1")
                     .isTrustedUser(false)
                     .osVersion("18.0.1")
+                    .userAgent(
+                        "Mozilla/5.0 (iPhone; CPU iPhone OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1"
+                    )
                     .build()
             )
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params =
             VerificationCreateParams.builder()
                 .target(
@@ -149,8 +180,10 @@ class VerificationCreateParamsTest {
                         .build()
                 )
                 .build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
+
+        val body = params._body()
+
+        assertNotNull(body)
         assertThat(body.target())
             .isEqualTo(
                 VerificationCreateParams.Target.builder()
