@@ -2,8 +2,8 @@
 
 <!-- x-release-please-start-version -->
 
-[![Maven Central](https://img.shields.io/maven-central/v/so.prelude.sdk/prelude-java)](https://central.sonatype.com/artifact/so.prelude.sdk/prelude-java/0.1.0)
-[![javadoc](https://javadoc.io/badge2/so.prelude.sdk/prelude-java/0.1.0/javadoc.svg)](https://javadoc.io/doc/so.prelude.sdk/prelude-java/0.1.0)
+[![Maven Central](https://img.shields.io/maven-central/v/so.prelude.sdk/prelude-java)](https://central.sonatype.com/artifact/so.prelude.sdk/prelude-java/0.2.0)
+[![javadoc](https://javadoc.io/badge2/so.prelude.sdk/prelude-java/0.2.0/javadoc.svg)](https://javadoc.io/doc/so.prelude.sdk/prelude-java/0.2.0)
 
 <!-- x-release-please-end -->
 
@@ -11,7 +11,7 @@ The Prelude Java SDK provides convenient access to the Prelude REST API from app
 
 It is generated with [Stainless](https://www.stainless.com/).
 
-The REST API documentation can be found on [docs.prelude.so](https://docs.prelude.so). Javadocs are also available on [javadoc.io](https://javadoc.io/doc/so.prelude.sdk/prelude-java/0.1.0).
+The REST API documentation can be found on [docs.prelude.so](https://docs.prelude.so). Javadocs are also available on [javadoc.io](https://javadoc.io/doc/so.prelude.sdk/prelude-java/0.2.0).
 
 ## Installation
 
@@ -20,7 +20,7 @@ The REST API documentation can be found on [docs.prelude.so](https://docs.prelud
 ### Gradle
 
 ```kotlin
-implementation("so.prelude.sdk:prelude-java:0.1.0")
+implementation("so.prelude.sdk:prelude-java:0.2.0")
 ```
 
 ### Maven
@@ -29,7 +29,7 @@ implementation("so.prelude.sdk:prelude-java:0.1.0")
 <dependency>
     <groupId>so.prelude.sdk</groupId>
     <artifactId>prelude-java</artifactId>
-    <version>0.1.0</version>
+    <version>0.2.0</version>
 </dependency>
 ```
 
