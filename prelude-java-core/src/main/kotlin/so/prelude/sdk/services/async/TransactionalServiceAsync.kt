@@ -12,38 +12,41 @@ import so.prelude.sdk.models.TransactionalSendResponse
 interface TransactionalServiceAsync {
 
     /**
-     * Returns a view of this service that provides access to raw HTTP responses for
-     * each method.
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
 
     /** Send a transactional message to your user. */
     fun send(params: TransactionalSendParams): CompletableFuture<TransactionalSendResponse> =
-        send(
-          params, RequestOptions.none()
-        )
+        send(params, RequestOptions.none())
 
     /** @see [send] */
-    fun send(params: TransactionalSendParams, requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<TransactionalSendResponse>
+    fun send(
+        params: TransactionalSendParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<TransactionalSendResponse>
 
     /**
-     * A view of [TransactionalServiceAsync] that provides access to raw HTTP responses
-     * for each method.
+     * A view of [TransactionalServiceAsync] that provides access to raw HTTP responses for each
+     * method.
      */
     interface WithRawResponse {
 
         /**
-         * Returns a raw HTTP response for `post /v2/transactional`, but is otherwise the
-         * same as [TransactionalServiceAsync.send].
+         * Returns a raw HTTP response for `post /v2/transactional`, but is otherwise the same as
+         * [TransactionalServiceAsync.send].
          */
         @MustBeClosed
-        fun send(params: TransactionalSendParams): CompletableFuture<HttpResponseFor<TransactionalSendResponse>> =
-            send(
-              params, RequestOptions.none()
-            )
+        fun send(
+            params: TransactionalSendParams
+        ): CompletableFuture<HttpResponseFor<TransactionalSendResponse>> =
+            send(params, RequestOptions.none())
 
         /** @see [send] */
         @MustBeClosed
-        fun send(params: TransactionalSendParams, requestOptions: RequestOptions = RequestOptions.none()): CompletableFuture<HttpResponseFor<TransactionalSendResponse>>
+        fun send(
+            params: TransactionalSendParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<TransactionalSendResponse>>
     }
 }

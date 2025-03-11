@@ -3,6 +3,8 @@
 package so.prelude.sdk.core.handlers
 
 import com.fasterxml.jackson.databind.json.JsonMapper
+import java.io.ByteArrayInputStream
+import java.io.InputStream
 import so.prelude.sdk.core.http.Headers
 import so.prelude.sdk.core.http.HttpResponse
 import so.prelude.sdk.core.http.HttpResponse.Handler
@@ -10,14 +12,11 @@ import so.prelude.sdk.errors.BadRequestException
 import so.prelude.sdk.errors.InternalServerException
 import so.prelude.sdk.errors.NotFoundException
 import so.prelude.sdk.errors.PermissionDeniedException
-import so.prelude.sdk.errors.RateLimitException
 import so.prelude.sdk.errors.PreludeError
-import so.prelude.sdk.errors.PreludeException
+import so.prelude.sdk.errors.RateLimitException
 import so.prelude.sdk.errors.UnauthorizedException
 import so.prelude.sdk.errors.UnexpectedStatusCodeException
 import so.prelude.sdk.errors.UnprocessableEntityException
-import java.io.ByteArrayInputStream
-import java.io.InputStream
 
 @JvmSynthetic
 internal fun errorHandler(jsonMapper: JsonMapper): Handler<PreludeError> {

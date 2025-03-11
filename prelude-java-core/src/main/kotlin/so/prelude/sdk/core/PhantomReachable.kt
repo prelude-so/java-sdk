@@ -2,8 +2,8 @@
 
 package so.prelude.sdk.core
 
-import so.prelude.sdk.errors.PreludeException
 import java.lang.reflect.InvocationTargetException
+import so.prelude.sdk.errors.PreludeException
 
 /**
  * Closes [closeable] when [observed] becomes only phantom reachable.
