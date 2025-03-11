@@ -38,7 +38,10 @@ private constructor(
      */
     fun feedback(): Feedback = body.feedback()
 
-    /** The target. Currently this can only be an E.164 formatted phone number. */
+    /**
+     * The verification target. Either a phone number or an email address. To use the email
+     * verification feature contact us to discuss your use case.
+     */
     fun target(): Target = body.target()
 
     /**
@@ -47,7 +50,10 @@ private constructor(
      */
     fun _feedback(): JsonField<Feedback> = body._feedback()
 
-    /** The target. Currently this can only be an E.164 formatted phone number. */
+    /**
+     * The verification target. Either a phone number or an email address. To use the email
+     * verification feature contact us to discuss your use case.
+     */
     fun _target(): JsonField<Target> = body._target()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
@@ -82,7 +88,10 @@ private constructor(
          */
         fun feedback(): Feedback = feedback.getRequired("feedback")
 
-        /** The target. Currently this can only be an E.164 formatted phone number. */
+        /**
+         * The verification target. Either a phone number or an email address. To use the email
+         * verification feature contact us to discuss your use case.
+         */
         fun target(): Target = target.getRequired("target")
 
         /**
@@ -91,7 +100,10 @@ private constructor(
          */
         @JsonProperty("feedback") @ExcludeMissing fun _feedback(): JsonField<Feedback> = feedback
 
-        /** The target. Currently this can only be an E.164 formatted phone number. */
+        /**
+         * The verification target. Either a phone number or an email address. To use the email
+         * verification feature contact us to discuss your use case.
+         */
         @JsonProperty("target") @ExcludeMissing fun _target(): JsonField<Target> = target
 
         @JsonAnyGetter
@@ -152,10 +164,16 @@ private constructor(
              */
             fun feedback(feedback: JsonField<Feedback>) = apply { this.feedback = feedback }
 
-            /** The target. Currently this can only be an E.164 formatted phone number. */
+            /**
+             * The verification target. Either a phone number or an email address. To use the email
+             * verification feature contact us to discuss your use case.
+             */
             fun target(target: Target) = target(JsonField.of(target))
 
-            /** The target. Currently this can only be an E.164 formatted phone number. */
+            /**
+             * The verification target. Either a phone number or an email address. To use the email
+             * verification feature contact us to discuss your use case.
+             */
             fun target(target: JsonField<Target>) = apply { this.target = target }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -246,10 +264,16 @@ private constructor(
          */
         fun feedback(feedback: JsonField<Feedback>) = apply { body.feedback(feedback) }
 
-        /** The target. Currently this can only be an E.164 formatted phone number. */
+        /**
+         * The verification target. Either a phone number or an email address. To use the email
+         * verification feature contact us to discuss your use case.
+         */
         fun target(target: Target) = apply { body.target(target) }
 
-        /** The target. Currently this can only be an E.164 formatted phone number. */
+        /**
+         * The verification target. Either a phone number or an email address. To use the email
+         * verification feature contact us to discuss your use case.
+         */
         fun target(target: JsonField<Target>) = apply { body.target(target) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
@@ -594,7 +618,10 @@ private constructor(
         override fun toString() = "Feedback{type=$type, additionalProperties=$additionalProperties}"
     }
 
-    /** The target. Currently this can only be an E.164 formatted phone number. */
+    /**
+     * The verification target. Either a phone number or an email address. To use the email
+     * verification feature contact us to discuss your use case.
+     */
     @NoAutoDetect
     class Target
     @JsonCreator
@@ -607,16 +634,16 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** The type of the target. Currently this can only be "phone_number". */
+        /** The type of the target. Either "phone_number" or "email_address". */
         fun type(): Type = type.getRequired("type")
 
-        /** An E.164 formatted phone number to verify. */
+        /** An E.164 formatted phone number or an email address. */
         fun value(): String = value.getRequired("value")
 
-        /** The type of the target. Currently this can only be "phone_number". */
+        /** The type of the target. Either "phone_number" or "email_address". */
         @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
-        /** An E.164 formatted phone number to verify. */
+        /** An E.164 formatted phone number or an email address. */
         @JsonProperty("value") @ExcludeMissing fun _value(): JsonField<String> = value
 
         @JsonAnyGetter
@@ -665,16 +692,16 @@ private constructor(
                 additionalProperties = target.additionalProperties.toMutableMap()
             }
 
-            /** The type of the target. Currently this can only be "phone_number". */
+            /** The type of the target. Either "phone_number" or "email_address". */
             fun type(type: Type) = type(JsonField.of(type))
 
-            /** The type of the target. Currently this can only be "phone_number". */
+            /** The type of the target. Either "phone_number" or "email_address". */
             fun type(type: JsonField<Type>) = apply { this.type = type }
 
-            /** An E.164 formatted phone number to verify. */
+            /** An E.164 formatted phone number or an email address. */
             fun value(value: String) = value(JsonField.of(value))
 
-            /** An E.164 formatted phone number to verify. */
+            /** An E.164 formatted phone number or an email address. */
             fun value(value: JsonField<String>) = apply { this.value = value }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -704,7 +731,7 @@ private constructor(
                 )
         }
 
-        /** The type of the target. Currently this can only be "phone_number". */
+        /** The type of the target. Either "phone_number" or "email_address". */
         class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
             /**
@@ -721,12 +748,15 @@ private constructor(
 
                 @JvmField val PHONE_NUMBER = of("phone_number")
 
+                @JvmField val EMAIL_ADDRESS = of("email_address")
+
                 @JvmStatic fun of(value: String) = Type(JsonField.of(value))
             }
 
             /** An enum containing [Type]'s known values. */
             enum class Known {
-                PHONE_NUMBER
+                PHONE_NUMBER,
+                EMAIL_ADDRESS,
             }
 
             /**
@@ -740,6 +770,7 @@ private constructor(
              */
             enum class Value {
                 PHONE_NUMBER,
+                EMAIL_ADDRESS,
                 /** An enum member indicating that [Type] was instantiated with an unknown value. */
                 _UNKNOWN,
             }
@@ -754,6 +785,7 @@ private constructor(
             fun value(): Value =
                 when (this) {
                     PHONE_NUMBER -> Value.PHONE_NUMBER
+                    EMAIL_ADDRESS -> Value.EMAIL_ADDRESS
                     else -> Value._UNKNOWN
                 }
 
@@ -769,6 +801,7 @@ private constructor(
             fun known(): Known =
                 when (this) {
                     PHONE_NUMBER -> Known.PHONE_NUMBER
+                    EMAIL_ADDRESS -> Known.EMAIL_ADDRESS
                     else -> throw PreludeInvalidDataException("Unknown Type: $value")
                 }
 
