@@ -11,38 +11,38 @@ import so.prelude.sdk.models.TransactionalSendResponse
 interface TransactionalService {
 
     /**
-     * Returns a view of this service that provides access to raw HTTP responses for
-     * each method.
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
 
     /** Send a transactional message to your user. */
     fun send(params: TransactionalSendParams): TransactionalSendResponse =
-        send(
-          params, RequestOptions.none()
-        )
+        send(params, RequestOptions.none())
 
     /** @see [send] */
-    fun send(params: TransactionalSendParams, requestOptions: RequestOptions = RequestOptions.none()): TransactionalSendResponse
+    fun send(
+        params: TransactionalSendParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): TransactionalSendResponse
 
     /**
-     * A view of [TransactionalService] that provides access to raw HTTP responses for
-     * each method.
+     * A view of [TransactionalService] that provides access to raw HTTP responses for each method.
      */
     interface WithRawResponse {
 
         /**
-         * Returns a raw HTTP response for `post /v2/transactional`, but is otherwise the
-         * same as [TransactionalService.send].
+         * Returns a raw HTTP response for `post /v2/transactional`, but is otherwise the same as
+         * [TransactionalService.send].
          */
         @MustBeClosed
         fun send(params: TransactionalSendParams): HttpResponseFor<TransactionalSendResponse> =
-            send(
-              params, RequestOptions.none()
-            )
+            send(params, RequestOptions.none())
 
         /** @see [send] */
         @MustBeClosed
-        fun send(params: TransactionalSendParams, requestOptions: RequestOptions = RequestOptions.none()): HttpResponseFor<TransactionalSendResponse>
+        fun send(
+            params: TransactionalSendParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<TransactionalSendResponse>
     }
 }

@@ -21,78 +21,94 @@ import so.prelude.sdk.models.VerificationCheckResponse
 import so.prelude.sdk.models.VerificationCreateParams
 import so.prelude.sdk.models.VerificationCreateResponse
 
-class VerificationServiceAsyncImpl internal constructor(
-    private val clientOptions: ClientOptions,
+class VerificationServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    VerificationServiceAsync {
 
-) : VerificationServiceAsync {
-
-    private val withRawResponse: VerificationServiceAsync.WithRawResponse by lazy { WithRawResponseImpl(clientOptions) }
+    private val withRawResponse: VerificationServiceAsync.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
 
     override fun withRawResponse(): VerificationServiceAsync.WithRawResponse = withRawResponse
 
-    override fun create(params: VerificationCreateParams, requestOptions: RequestOptions): CompletableFuture<VerificationCreateResponse> =
+    override fun create(
+        params: VerificationCreateParams,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<VerificationCreateResponse> =
         // post /v2/verification
         withRawResponse().create(params, requestOptions).thenApply { it.parse() }
 
-    override fun check(params: VerificationCheckParams, requestOptions: RequestOptions): CompletableFuture<VerificationCheckResponse> =
+    override fun check(
+        params: VerificationCheckParams,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<VerificationCheckResponse> =
         // post /v2/verification/check
         withRawResponse().check(params, requestOptions).thenApply { it.parse() }
 
-    class WithRawResponseImpl internal constructor(
-        private val clientOptions: ClientOptions,
-
-    ) : VerificationServiceAsync.WithRawResponse {
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        VerificationServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<PreludeError> = errorHandler(clientOptions.jsonMapper)
 
-        private val createHandler: Handler<VerificationCreateResponse> = jsonHandler<VerificationCreateResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val createHandler: Handler<VerificationCreateResponse> =
+            jsonHandler<VerificationCreateResponse>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
 
-        override fun create(params: VerificationCreateParams, requestOptions: RequestOptions): CompletableFuture<HttpResponseFor<VerificationCreateResponse>> {
-          val request = HttpRequest.builder()
-            .method(HttpMethod.POST)
-            .addPathSegments("v2", "verification")
-            .body(json(clientOptions.jsonMapper, params._body()))
-            .build()
-            .prepareAsync(clientOptions, params)
-          val requestOptions = requestOptions
-              .applyDefaults(RequestOptions.from(clientOptions))
-          return request.thenComposeAsync { clientOptions.httpClient.executeAsync(
-            it, requestOptions
-          ) }.thenApply { response -> response.parseable {
-              response.use {
-                  createHandler.handle(it)
-              }
-              .also {
-                  if (requestOptions.responseValidation!!) {
-                    it.validate()
-                  }
-              }
-          } }
+        override fun create(
+            params: VerificationCreateParams,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<VerificationCreateResponse>> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.POST)
+                    .addPathSegments("v2", "verification")
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            return request
+                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+                .thenApply { response ->
+                    response.parseable {
+                        response
+                            .use { createHandler.handle(it) }
+                            .also {
+                                if (requestOptions.responseValidation!!) {
+                                    it.validate()
+                                }
+                            }
+                    }
+                }
         }
 
-        private val checkHandler: Handler<VerificationCheckResponse> = jsonHandler<VerificationCheckResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+        private val checkHandler: Handler<VerificationCheckResponse> =
+            jsonHandler<VerificationCheckResponse>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
 
-        override fun check(params: VerificationCheckParams, requestOptions: RequestOptions): CompletableFuture<HttpResponseFor<VerificationCheckResponse>> {
-          val request = HttpRequest.builder()
-            .method(HttpMethod.POST)
-            .addPathSegments("v2", "verification", "check")
-            .body(json(clientOptions.jsonMapper, params._body()))
-            .build()
-            .prepareAsync(clientOptions, params)
-          val requestOptions = requestOptions
-              .applyDefaults(RequestOptions.from(clientOptions))
-          return request.thenComposeAsync { clientOptions.httpClient.executeAsync(
-            it, requestOptions
-          ) }.thenApply { response -> response.parseable {
-              response.use {
-                  checkHandler.handle(it)
-              }
-              .also {
-                  if (requestOptions.responseValidation!!) {
-                    it.validate()
-                  }
-              }
-          } }
+        override fun check(
+            params: VerificationCheckParams,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<VerificationCheckResponse>> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.POST)
+                    .addPathSegments("v2", "verification", "check")
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            return request
+                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+                .thenApply { response ->
+                    response.parseable {
+                        response
+                            .use { checkHandler.handle(it) }
+                            .also {
+                                if (requestOptions.responseValidation!!) {
+                                    it.validate()
+                                }
+                            }
+                    }
+                }
         }
     }
 }

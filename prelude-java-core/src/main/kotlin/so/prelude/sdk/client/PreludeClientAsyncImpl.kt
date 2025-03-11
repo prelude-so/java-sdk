@@ -11,27 +11,34 @@ import so.prelude.sdk.services.async.VerificationServiceAsyncImpl
 import so.prelude.sdk.services.async.WatchServiceAsync
 import so.prelude.sdk.services.async.WatchServiceAsyncImpl
 
-class PreludeClientAsyncImpl(
-    private val clientOptions: ClientOptions,
-
-) : PreludeClientAsync {
+class PreludeClientAsyncImpl(private val clientOptions: ClientOptions) : PreludeClientAsync {
 
     private val clientOptionsWithUserAgent =
-
-      if (clientOptions.headers.names().contains("User-Agent")) clientOptions
-
-      else clientOptions.toBuilder().putHeader("User-Agent", "${javaClass.simpleName}/Java ${getPackageVersion()}").build()
+        if (clientOptions.headers.names().contains("User-Agent")) clientOptions
+        else
+            clientOptions
+                .toBuilder()
+                .putHeader("User-Agent", "${javaClass.simpleName}/Java ${getPackageVersion()}")
+                .build()
 
     // Pass the original clientOptions so that this client sets its own User-Agent.
     private val sync: PreludeClient by lazy { PreludeClientImpl(clientOptions) }
 
-    private val withRawResponse: PreludeClientAsync.WithRawResponse by lazy { WithRawResponseImpl(clientOptions) }
+    private val withRawResponse: PreludeClientAsync.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
 
-    private val transactional: TransactionalServiceAsync by lazy { TransactionalServiceAsyncImpl(clientOptionsWithUserAgent) }
+    private val transactional: TransactionalServiceAsync by lazy {
+        TransactionalServiceAsyncImpl(clientOptionsWithUserAgent)
+    }
 
-    private val verification: VerificationServiceAsync by lazy { VerificationServiceAsyncImpl(clientOptionsWithUserAgent) }
+    private val verification: VerificationServiceAsync by lazy {
+        VerificationServiceAsyncImpl(clientOptionsWithUserAgent)
+    }
 
-    private val watch: WatchServiceAsync by lazy { WatchServiceAsyncImpl(clientOptionsWithUserAgent) }
+    private val watch: WatchServiceAsync by lazy {
+        WatchServiceAsyncImpl(clientOptionsWithUserAgent)
+    }
 
     override fun sync(): PreludeClient = sync
 
@@ -45,16 +52,20 @@ class PreludeClientAsyncImpl(
 
     override fun close() = clientOptions.httpClient.close()
 
-    class WithRawResponseImpl internal constructor(
-        private val clientOptions: ClientOptions,
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        PreludeClientAsync.WithRawResponse {
 
-    ) : PreludeClientAsync.WithRawResponse {
+        private val transactional: TransactionalServiceAsync.WithRawResponse by lazy {
+            TransactionalServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
 
-        private val transactional: TransactionalServiceAsync.WithRawResponse by lazy { TransactionalServiceAsyncImpl.WithRawResponseImpl(clientOptions) }
+        private val verification: VerificationServiceAsync.WithRawResponse by lazy {
+            VerificationServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
 
-        private val verification: VerificationServiceAsync.WithRawResponse by lazy { VerificationServiceAsyncImpl.WithRawResponseImpl(clientOptions) }
-
-        private val watch: WatchServiceAsync.WithRawResponse by lazy { WatchServiceAsyncImpl.WithRawResponseImpl(clientOptions) }
+        private val watch: WatchServiceAsync.WithRawResponse by lazy {
+            WatchServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
 
         override fun transactional(): TransactionalServiceAsync.WithRawResponse = transactional
 

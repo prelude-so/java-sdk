@@ -9,20 +9,27 @@ class WatchPredictResponseTest {
 
     @Test
     fun createWatchPredictResponse() {
-      val watchPredictResponse = WatchPredictResponse.builder()
-          .id("id")
-          .prediction(WatchPredictResponse.Prediction.ALLOW)
-          .reasoning(WatchPredictResponse.Reasoning.builder()
-              .cause(WatchPredictResponse.Reasoning.Cause.NONE)
-              .score(0.0)
-              .build())
-          .build()
-      assertThat(watchPredictResponse).isNotNull
-      assertThat(watchPredictResponse.id()).isEqualTo("id")
-      assertThat(watchPredictResponse.prediction()).isEqualTo(WatchPredictResponse.Prediction.ALLOW)
-      assertThat(watchPredictResponse.reasoning()).isEqualTo(WatchPredictResponse.Reasoning.builder()
-          .cause(WatchPredictResponse.Reasoning.Cause.NONE)
-          .score(0.0)
-          .build())
+        val watchPredictResponse =
+            WatchPredictResponse.builder()
+                .id("id")
+                .prediction(WatchPredictResponse.Prediction.ALLOW)
+                .reasoning(
+                    WatchPredictResponse.Reasoning.builder()
+                        .cause(WatchPredictResponse.Reasoning.Cause.NONE)
+                        .score(0.0)
+                        .build()
+                )
+                .build()
+        assertThat(watchPredictResponse).isNotNull
+        assertThat(watchPredictResponse.id()).isEqualTo("id")
+        assertThat(watchPredictResponse.prediction())
+            .isEqualTo(WatchPredictResponse.Prediction.ALLOW)
+        assertThat(watchPredictResponse.reasoning())
+            .isEqualTo(
+                WatchPredictResponse.Reasoning.builder()
+                    .cause(WatchPredictResponse.Reasoning.Cause.NONE)
+                    .score(0.0)
+                    .build()
+            )
     }
 }
