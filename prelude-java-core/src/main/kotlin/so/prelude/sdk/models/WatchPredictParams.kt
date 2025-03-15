@@ -37,19 +37,32 @@ private constructor(
     /**
      * The verification target. Either a phone number or an email address. To use the email
      * verification feature contact us to discuss your use case.
+     *
+     * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
     fun target(): Target = body.target()
 
-    /** It is highly recommended that you provide the signals to increase prediction performance. */
+    /**
+     * It is highly recommended that you provide the signals to increase prediction performance.
+     *
+     * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun signals(): Optional<Signals> = body.signals()
 
     /**
-     * The verification target. Either a phone number or an email address. To use the email
-     * verification feature contact us to discuss your use case.
+     * Returns the raw JSON value of [target].
+     *
+     * Unlike [target], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _target(): JsonField<Target> = body._target()
 
-    /** It is highly recommended that you provide the signals to increase prediction performance. */
+    /**
+     * Returns the raw JSON value of [signals].
+     *
+     * Unlike [signals], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _signals(): JsonField<Signals> = body._signals()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
@@ -81,22 +94,31 @@ private constructor(
         /**
          * The verification target. Either a phone number or an email address. To use the email
          * verification feature contact us to discuss your use case.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
         fun target(): Target = target.getRequired("target")
 
         /**
          * It is highly recommended that you provide the signals to increase prediction performance.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
          */
         fun signals(): Optional<Signals> = Optional.ofNullable(signals.getNullable("signals"))
 
         /**
-         * The verification target. Either a phone number or an email address. To use the email
-         * verification feature contact us to discuss your use case.
+         * Returns the raw JSON value of [target].
+         *
+         * Unlike [target], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("target") @ExcludeMissing fun _target(): JsonField<Target> = target
 
         /**
-         * It is highly recommended that you provide the signals to increase prediction performance.
+         * Returns the raw JSON value of [signals].
+         *
+         * Unlike [signals], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("signals") @ExcludeMissing fun _signals(): JsonField<Signals> = signals
 
@@ -152,8 +174,11 @@ private constructor(
             fun target(target: Target) = target(JsonField.of(target))
 
             /**
-             * The verification target. Either a phone number or an email address. To use the email
-             * verification feature contact us to discuss your use case.
+             * Sets [Builder.target] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.target] with a well-typed [Target] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
             fun target(target: JsonField<Target>) = apply { this.target = target }
 
@@ -164,8 +189,11 @@ private constructor(
             fun signals(signals: Signals) = signals(JsonField.of(signals))
 
             /**
-             * It is highly recommended that you provide the signals to increase prediction
-             * performance.
+             * Sets [Builder.signals] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.signals] with a well-typed [Signals] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
             fun signals(signals: JsonField<Signals>) = apply { this.signals = signals }
 
@@ -247,8 +275,10 @@ private constructor(
         fun target(target: Target) = apply { body.target(target) }
 
         /**
-         * The verification target. Either a phone number or an email address. To use the email
-         * verification feature contact us to discuss your use case.
+         * Sets [Builder.target] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.target] with a well-typed [Target] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun target(target: JsonField<Target>) = apply { body.target(target) }
 
@@ -258,7 +288,10 @@ private constructor(
         fun signals(signals: Signals) = apply { body.signals(signals) }
 
         /**
-         * It is highly recommended that you provide the signals to increase prediction performance.
+         * Sets [Builder.signals] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.signals] with a well-typed [Signals] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun signals(signals: JsonField<Signals>) = apply { body.signals(signals) }
 
@@ -403,16 +436,34 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** The type of the target. Either "phone_number" or "email_address". */
+        /**
+         * The type of the target. Either "phone_number" or "email_address".
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun type(): Type = type.getRequired("type")
 
-        /** An E.164 formatted phone number or an email address. */
+        /**
+         * An E.164 formatted phone number or an email address.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun value(): String = value.getRequired("value")
 
-        /** The type of the target. Either "phone_number" or "email_address". */
+        /**
+         * Returns the raw JSON value of [type].
+         *
+         * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
-        /** An E.164 formatted phone number or an email address. */
+        /**
+         * Returns the raw JSON value of [value].
+         *
+         * Unlike [value], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("value") @ExcludeMissing fun _value(): JsonField<String> = value
 
         @JsonAnyGetter
@@ -464,13 +515,25 @@ private constructor(
             /** The type of the target. Either "phone_number" or "email_address". */
             fun type(type: Type) = type(JsonField.of(type))
 
-            /** The type of the target. Either "phone_number" or "email_address". */
+            /**
+             * Sets [Builder.type] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.type] with a well-typed [Type] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun type(type: JsonField<Type>) = apply { this.type = type }
 
             /** An E.164 formatted phone number or an email address. */
             fun value(value: String) = value(JsonField.of(value))
 
-            /** An E.164 formatted phone number or an email address. */
+            /**
+             * Sets [Builder.value] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.value] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun value(value: JsonField<String>) = apply { this.value = value }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -641,37 +704,68 @@ private constructor(
         /**
          * The unique identifier for the user's device. For Android, this corresponds to the
          * `ANDROID_ID` and for iOS, this corresponds to the `identifierForVendor`.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
          */
         fun deviceId(): Optional<String> = Optional.ofNullable(deviceId.getNullable("device_id"))
 
-        /** The model of the user's device. */
+        /**
+         * The model of the user's device.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun deviceModel(): Optional<String> =
             Optional.ofNullable(deviceModel.getNullable("device_model"))
 
-        /** The type of the user's device. */
+        /**
+         * The type of the user's device.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun deviceType(): Optional<String> =
             Optional.ofNullable(deviceType.getNullable("device_type"))
 
-        /** The IPv4 address of the user's device */
+        /**
+         * The IPv4 address of the user's device
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun ip(): Optional<String> = Optional.ofNullable(ip.getNullable("ip"))
 
         /**
-         * The unique identifier for the user's device. For Android, this corresponds to the
-         * `ANDROID_ID` and for iOS, this corresponds to the `identifierForVendor`.
+         * Returns the raw JSON value of [deviceId].
+         *
+         * Unlike [deviceId], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("device_id") @ExcludeMissing fun _deviceId(): JsonField<String> = deviceId
 
-        /** The model of the user's device. */
+        /**
+         * Returns the raw JSON value of [deviceModel].
+         *
+         * Unlike [deviceModel], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("device_model")
         @ExcludeMissing
         fun _deviceModel(): JsonField<String> = deviceModel
 
-        /** The type of the user's device. */
+        /**
+         * Returns the raw JSON value of [deviceType].
+         *
+         * Unlike [deviceType], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("device_type")
         @ExcludeMissing
         fun _deviceType(): JsonField<String> = deviceType
 
-        /** The IPv4 address of the user's device */
+        /**
+         * Returns the raw JSON value of [ip].
+         *
+         * Unlike [ip], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("ip") @ExcludeMissing fun _ip(): JsonField<String> = ip
 
         @JsonAnyGetter
@@ -725,15 +819,24 @@ private constructor(
             fun deviceId(deviceId: String) = deviceId(JsonField.of(deviceId))
 
             /**
-             * The unique identifier for the user's device. For Android, this corresponds to the
-             * `ANDROID_ID` and for iOS, this corresponds to the `identifierForVendor`.
+             * Sets [Builder.deviceId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.deviceId] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
             fun deviceId(deviceId: JsonField<String>) = apply { this.deviceId = deviceId }
 
             /** The model of the user's device. */
             fun deviceModel(deviceModel: String) = deviceModel(JsonField.of(deviceModel))
 
-            /** The model of the user's device. */
+            /**
+             * Sets [Builder.deviceModel] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.deviceModel] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun deviceModel(deviceModel: JsonField<String>) = apply {
                 this.deviceModel = deviceModel
             }
@@ -741,13 +844,25 @@ private constructor(
             /** The type of the user's device. */
             fun deviceType(deviceType: String) = deviceType(JsonField.of(deviceType))
 
-            /** The type of the user's device. */
+            /**
+             * Sets [Builder.deviceType] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.deviceType] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun deviceType(deviceType: JsonField<String>) = apply { this.deviceType = deviceType }
 
             /** The IPv4 address of the user's device */
             fun ip(ip: String) = ip(JsonField.of(ip))
 
-            /** The IPv4 address of the user's device */
+            /**
+             * Sets [Builder.ip] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.ip] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun ip(ip: JsonField<String>) = apply { this.ip = ip }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
