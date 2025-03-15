@@ -19,6 +19,7 @@ import so.prelude.sdk.core.http.Headers
 import so.prelude.sdk.core.http.QueryParams
 import so.prelude.sdk.core.immutableEmptyMap
 import so.prelude.sdk.core.toImmutable
+import so.prelude.sdk.errors.PreludeInvalidDataException
 
 /** Send a transactional message to your user. */
 class TransactionalSendParams
@@ -28,22 +29,52 @@ private constructor(
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    /** The template identifier. */
+    /**
+     * The template identifier.
+     *
+     * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun templateId(): String = body.templateId()
 
-    /** The recipient's phone number. */
+    /**
+     * The recipient's phone number.
+     *
+     * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun to(): String = body.to()
 
-    /** The callback URL. */
+    /**
+     * The callback URL.
+     *
+     * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun callbackUrl(): Optional<String> = body.callbackUrl()
 
-    /** A unique, user-defined identifier that will be included in webhook events. */
+    /**
+     * A unique, user-defined identifier that will be included in webhook events.
+     *
+     * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun correlationId(): Optional<String> = body.correlationId()
 
-    /** The message expiration date. */
+    /**
+     * The message expiration date.
+     *
+     * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun expiresAt(): Optional<String> = body.expiresAt()
 
-    /** The Sender ID. */
+    /**
+     * The Sender ID.
+     *
+     * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun from(): Optional<String> = body.from()
 
     /**
@@ -51,39 +82,74 @@ private constructor(
      * there's no locale set, the language will be determined by the country code of the phone
      * number. If the language specified doesn't exist, the default set on the template will be
      * used.
+     *
+     * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
     fun locale(): Optional<String> = body.locale()
 
-    /** The variables to be replaced in the template. */
+    /**
+     * The variables to be replaced in the template.
+     *
+     * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun variables(): Optional<Variables> = body.variables()
 
-    /** The template identifier. */
+    /**
+     * Returns the raw JSON value of [templateId].
+     *
+     * Unlike [templateId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _templateId(): JsonField<String> = body._templateId()
 
-    /** The recipient's phone number. */
+    /**
+     * Returns the raw JSON value of [to].
+     *
+     * Unlike [to], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _to(): JsonField<String> = body._to()
 
-    /** The callback URL. */
+    /**
+     * Returns the raw JSON value of [callbackUrl].
+     *
+     * Unlike [callbackUrl], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _callbackUrl(): JsonField<String> = body._callbackUrl()
 
-    /** A unique, user-defined identifier that will be included in webhook events. */
+    /**
+     * Returns the raw JSON value of [correlationId].
+     *
+     * Unlike [correlationId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _correlationId(): JsonField<String> = body._correlationId()
 
-    /** The message expiration date. */
+    /**
+     * Returns the raw JSON value of [expiresAt].
+     *
+     * Unlike [expiresAt], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _expiresAt(): JsonField<String> = body._expiresAt()
 
-    /** The Sender ID. */
+    /**
+     * Returns the raw JSON value of [from].
+     *
+     * Unlike [from], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _from(): JsonField<String> = body._from()
 
     /**
-     * A BCP-47 formatted locale string with the language the text message will be sent to. If
-     * there's no locale set, the language will be determined by the country code of the phone
-     * number. If the language specified doesn't exist, the default set on the template will be
-     * used.
+     * Returns the raw JSON value of [locale].
+     *
+     * Unlike [locale], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _locale(): JsonField<String> = body._locale()
 
-    /** The variables to be replaced in the template. */
+    /**
+     * Returns the raw JSON value of [variables].
+     *
+     * Unlike [variables], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _variables(): JsonField<Variables> = body._variables()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
@@ -128,24 +194,54 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** The template identifier. */
+        /**
+         * The template identifier.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun templateId(): String = templateId.getRequired("template_id")
 
-        /** The recipient's phone number. */
+        /**
+         * The recipient's phone number.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun to(): String = to.getRequired("to")
 
-        /** The callback URL. */
+        /**
+         * The callback URL.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun callbackUrl(): Optional<String> =
             Optional.ofNullable(callbackUrl.getNullable("callback_url"))
 
-        /** A unique, user-defined identifier that will be included in webhook events. */
+        /**
+         * A unique, user-defined identifier that will be included in webhook events.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun correlationId(): Optional<String> =
             Optional.ofNullable(correlationId.getNullable("correlation_id"))
 
-        /** The message expiration date. */
+        /**
+         * The message expiration date.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun expiresAt(): Optional<String> = Optional.ofNullable(expiresAt.getNullable("expires_at"))
 
-        /** The Sender ID. */
+        /**
+         * The Sender ID.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun from(): Optional<String> = Optional.ofNullable(from.getNullable("from"))
 
         /**
@@ -153,46 +249,82 @@ private constructor(
          * there's no locale set, the language will be determined by the country code of the phone
          * number. If the language specified doesn't exist, the default set on the template will be
          * used.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
          */
         fun locale(): Optional<String> = Optional.ofNullable(locale.getNullable("locale"))
 
-        /** The variables to be replaced in the template. */
+        /**
+         * The variables to be replaced in the template.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun variables(): Optional<Variables> =
             Optional.ofNullable(variables.getNullable("variables"))
 
-        /** The template identifier. */
+        /**
+         * Returns the raw JSON value of [templateId].
+         *
+         * Unlike [templateId], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("template_id")
         @ExcludeMissing
         fun _templateId(): JsonField<String> = templateId
 
-        /** The recipient's phone number. */
+        /**
+         * Returns the raw JSON value of [to].
+         *
+         * Unlike [to], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("to") @ExcludeMissing fun _to(): JsonField<String> = to
 
-        /** The callback URL. */
+        /**
+         * Returns the raw JSON value of [callbackUrl].
+         *
+         * Unlike [callbackUrl], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("callback_url")
         @ExcludeMissing
         fun _callbackUrl(): JsonField<String> = callbackUrl
 
-        /** A unique, user-defined identifier that will be included in webhook events. */
+        /**
+         * Returns the raw JSON value of [correlationId].
+         *
+         * Unlike [correlationId], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
         @JsonProperty("correlation_id")
         @ExcludeMissing
         fun _correlationId(): JsonField<String> = correlationId
 
-        /** The message expiration date. */
+        /**
+         * Returns the raw JSON value of [expiresAt].
+         *
+         * Unlike [expiresAt], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("expires_at") @ExcludeMissing fun _expiresAt(): JsonField<String> = expiresAt
 
-        /** The Sender ID. */
+        /**
+         * Returns the raw JSON value of [from].
+         *
+         * Unlike [from], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("from") @ExcludeMissing fun _from(): JsonField<String> = from
 
         /**
-         * A BCP-47 formatted locale string with the language the text message will be sent to. If
-         * there's no locale set, the language will be determined by the country code of the phone
-         * number. If the language specified doesn't exist, the default set on the template will be
-         * used.
+         * Returns the raw JSON value of [locale].
+         *
+         * Unlike [locale], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("locale") @ExcludeMissing fun _locale(): JsonField<String> = locale
 
-        /** The variables to be replaced in the template. */
+        /**
+         * Returns the raw JSON value of [variables].
+         *
+         * Unlike [variables], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("variables")
         @ExcludeMissing
         fun _variables(): JsonField<Variables> = variables
@@ -264,19 +396,37 @@ private constructor(
             /** The template identifier. */
             fun templateId(templateId: String) = templateId(JsonField.of(templateId))
 
-            /** The template identifier. */
+            /**
+             * Sets [Builder.templateId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.templateId] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun templateId(templateId: JsonField<String>) = apply { this.templateId = templateId }
 
             /** The recipient's phone number. */
             fun to(to: String) = to(JsonField.of(to))
 
-            /** The recipient's phone number. */
+            /**
+             * Sets [Builder.to] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.to] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun to(to: JsonField<String>) = apply { this.to = to }
 
             /** The callback URL. */
             fun callbackUrl(callbackUrl: String) = callbackUrl(JsonField.of(callbackUrl))
 
-            /** The callback URL. */
+            /**
+             * Sets [Builder.callbackUrl] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.callbackUrl] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun callbackUrl(callbackUrl: JsonField<String>) = apply {
                 this.callbackUrl = callbackUrl
             }
@@ -284,7 +434,13 @@ private constructor(
             /** A unique, user-defined identifier that will be included in webhook events. */
             fun correlationId(correlationId: String) = correlationId(JsonField.of(correlationId))
 
-            /** A unique, user-defined identifier that will be included in webhook events. */
+            /**
+             * Sets [Builder.correlationId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.correlationId] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun correlationId(correlationId: JsonField<String>) = apply {
                 this.correlationId = correlationId
             }
@@ -292,13 +448,25 @@ private constructor(
             /** The message expiration date. */
             fun expiresAt(expiresAt: String) = expiresAt(JsonField.of(expiresAt))
 
-            /** The message expiration date. */
+            /**
+             * Sets [Builder.expiresAt] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.expiresAt] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun expiresAt(expiresAt: JsonField<String>) = apply { this.expiresAt = expiresAt }
 
             /** The Sender ID. */
             fun from(from: String) = from(JsonField.of(from))
 
-            /** The Sender ID. */
+            /**
+             * Sets [Builder.from] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.from] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun from(from: JsonField<String>) = apply { this.from = from }
 
             /**
@@ -310,17 +478,24 @@ private constructor(
             fun locale(locale: String) = locale(JsonField.of(locale))
 
             /**
-             * A BCP-47 formatted locale string with the language the text message will be sent to.
-             * If there's no locale set, the language will be determined by the country code of the
-             * phone number. If the language specified doesn't exist, the default set on the
-             * template will be used.
+             * Sets [Builder.locale] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.locale] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
             fun locale(locale: JsonField<String>) = apply { this.locale = locale }
 
             /** The variables to be replaced in the template. */
             fun variables(variables: Variables) = variables(JsonField.of(variables))
 
-            /** The variables to be replaced in the template. */
+            /**
+             * Sets [Builder.variables] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.variables] with a well-typed [Variables] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun variables(variables: JsonField<Variables>) = apply { this.variables = variables }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -408,25 +583,48 @@ private constructor(
         /** The template identifier. */
         fun templateId(templateId: String) = apply { body.templateId(templateId) }
 
-        /** The template identifier. */
+        /**
+         * Sets [Builder.templateId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.templateId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun templateId(templateId: JsonField<String>) = apply { body.templateId(templateId) }
 
         /** The recipient's phone number. */
         fun to(to: String) = apply { body.to(to) }
 
-        /** The recipient's phone number. */
+        /**
+         * Sets [Builder.to] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.to] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun to(to: JsonField<String>) = apply { body.to(to) }
 
         /** The callback URL. */
         fun callbackUrl(callbackUrl: String) = apply { body.callbackUrl(callbackUrl) }
 
-        /** The callback URL. */
+        /**
+         * Sets [Builder.callbackUrl] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.callbackUrl] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun callbackUrl(callbackUrl: JsonField<String>) = apply { body.callbackUrl(callbackUrl) }
 
         /** A unique, user-defined identifier that will be included in webhook events. */
         fun correlationId(correlationId: String) = apply { body.correlationId(correlationId) }
 
-        /** A unique, user-defined identifier that will be included in webhook events. */
+        /**
+         * Sets [Builder.correlationId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.correlationId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun correlationId(correlationId: JsonField<String>) = apply {
             body.correlationId(correlationId)
         }
@@ -434,13 +632,24 @@ private constructor(
         /** The message expiration date. */
         fun expiresAt(expiresAt: String) = apply { body.expiresAt(expiresAt) }
 
-        /** The message expiration date. */
+        /**
+         * Sets [Builder.expiresAt] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.expiresAt] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun expiresAt(expiresAt: JsonField<String>) = apply { body.expiresAt(expiresAt) }
 
         /** The Sender ID. */
         fun from(from: String) = apply { body.from(from) }
 
-        /** The Sender ID. */
+        /**
+         * Sets [Builder.from] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.from] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun from(from: JsonField<String>) = apply { body.from(from) }
 
         /**
@@ -452,17 +661,23 @@ private constructor(
         fun locale(locale: String) = apply { body.locale(locale) }
 
         /**
-         * A BCP-47 formatted locale string with the language the text message will be sent to. If
-         * there's no locale set, the language will be determined by the country code of the phone
-         * number. If the language specified doesn't exist, the default set on the template will be
-         * used.
+         * Sets [Builder.locale] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.locale] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun locale(locale: JsonField<String>) = apply { body.locale(locale) }
 
         /** The variables to be replaced in the template. */
         fun variables(variables: Variables) = apply { body.variables(variables) }
 
-        /** The variables to be replaced in the template. */
+        /**
+         * Sets [Builder.variables] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.variables] with a well-typed [Variables] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun variables(variables: JsonField<Variables>) = apply { body.variables(variables) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
