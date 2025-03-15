@@ -37,48 +37,78 @@ private constructor(
     /**
      * The verification target. Either a phone number or an email address. To use the email
      * verification feature contact us to discuss your use case.
+     *
+     * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
     fun target(): Target = body.target()
 
-    /** The identifier of the dispatch that came from the front-end SDK. */
+    /**
+     * The identifier of the dispatch that came from the front-end SDK.
+     *
+     * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun dispatchId(): Optional<String> = body.dispatchId()
 
     /**
      * The metadata for this verification. This object will be returned with every response or
      * webhook sent that refers to this verification.
+     *
+     * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
     fun metadata(): Optional<Metadata> = body.metadata()
 
-    /** Verification options */
+    /**
+     * Verification options
+     *
+     * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun options(): Optional<Options> = body.options()
 
     /**
      * The signals used for anti-fraud. For more details, refer to
      * [Signals](/guides/prevent-fraud#signals).
+     *
+     * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
     fun signals(): Optional<Signals> = body.signals()
 
     /**
-     * The verification target. Either a phone number or an email address. To use the email
-     * verification feature contact us to discuss your use case.
+     * Returns the raw JSON value of [target].
+     *
+     * Unlike [target], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _target(): JsonField<Target> = body._target()
 
-    /** The identifier of the dispatch that came from the front-end SDK. */
+    /**
+     * Returns the raw JSON value of [dispatchId].
+     *
+     * Unlike [dispatchId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _dispatchId(): JsonField<String> = body._dispatchId()
 
     /**
-     * The metadata for this verification. This object will be returned with every response or
-     * webhook sent that refers to this verification.
+     * Returns the raw JSON value of [metadata].
+     *
+     * Unlike [metadata], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _metadata(): JsonField<Metadata> = body._metadata()
 
-    /** Verification options */
+    /**
+     * Returns the raw JSON value of [options].
+     *
+     * Unlike [options], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _options(): JsonField<Options> = body._options()
 
     /**
-     * The signals used for anti-fraud. For more details, refer to
-     * [Signals](/guides/prevent-fraud#signals).
+     * Returns the raw JSON value of [signals].
+     *
+     * Unlike [signals], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _signals(): JsonField<Signals> = body._signals()
 
@@ -120,51 +150,81 @@ private constructor(
         /**
          * The verification target. Either a phone number or an email address. To use the email
          * verification feature contact us to discuss your use case.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
         fun target(): Target = target.getRequired("target")
 
-        /** The identifier of the dispatch that came from the front-end SDK. */
+        /**
+         * The identifier of the dispatch that came from the front-end SDK.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun dispatchId(): Optional<String> =
             Optional.ofNullable(dispatchId.getNullable("dispatch_id"))
 
         /**
          * The metadata for this verification. This object will be returned with every response or
          * webhook sent that refers to this verification.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
          */
         fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata.getNullable("metadata"))
 
-        /** Verification options */
+        /**
+         * Verification options
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun options(): Optional<Options> = Optional.ofNullable(options.getNullable("options"))
 
         /**
          * The signals used for anti-fraud. For more details, refer to
          * [Signals](/guides/prevent-fraud#signals).
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
          */
         fun signals(): Optional<Signals> = Optional.ofNullable(signals.getNullable("signals"))
 
         /**
-         * The verification target. Either a phone number or an email address. To use the email
-         * verification feature contact us to discuss your use case.
+         * Returns the raw JSON value of [target].
+         *
+         * Unlike [target], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("target") @ExcludeMissing fun _target(): JsonField<Target> = target
 
-        /** The identifier of the dispatch that came from the front-end SDK. */
+        /**
+         * Returns the raw JSON value of [dispatchId].
+         *
+         * Unlike [dispatchId], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("dispatch_id")
         @ExcludeMissing
         fun _dispatchId(): JsonField<String> = dispatchId
 
         /**
-         * The metadata for this verification. This object will be returned with every response or
-         * webhook sent that refers to this verification.
+         * Returns the raw JSON value of [metadata].
+         *
+         * Unlike [metadata], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("metadata") @ExcludeMissing fun _metadata(): JsonField<Metadata> = metadata
 
-        /** Verification options */
+        /**
+         * Returns the raw JSON value of [options].
+         *
+         * Unlike [options], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("options") @ExcludeMissing fun _options(): JsonField<Options> = options
 
         /**
-         * The signals used for anti-fraud. For more details, refer to
-         * [Signals](/guides/prevent-fraud#signals).
+         * Returns the raw JSON value of [signals].
+         *
+         * Unlike [signals], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("signals") @ExcludeMissing fun _signals(): JsonField<Signals> = signals
 
@@ -229,15 +289,24 @@ private constructor(
             fun target(target: Target) = target(JsonField.of(target))
 
             /**
-             * The verification target. Either a phone number or an email address. To use the email
-             * verification feature contact us to discuss your use case.
+             * Sets [Builder.target] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.target] with a well-typed [Target] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
             fun target(target: JsonField<Target>) = apply { this.target = target }
 
             /** The identifier of the dispatch that came from the front-end SDK. */
             fun dispatchId(dispatchId: String) = dispatchId(JsonField.of(dispatchId))
 
-            /** The identifier of the dispatch that came from the front-end SDK. */
+            /**
+             * Sets [Builder.dispatchId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.dispatchId] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun dispatchId(dispatchId: JsonField<String>) = apply { this.dispatchId = dispatchId }
 
             /**
@@ -247,15 +316,24 @@ private constructor(
             fun metadata(metadata: Metadata) = metadata(JsonField.of(metadata))
 
             /**
-             * The metadata for this verification. This object will be returned with every response
-             * or webhook sent that refers to this verification.
+             * Sets [Builder.metadata] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.metadata] with a well-typed [Metadata] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
             fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
 
             /** Verification options */
             fun options(options: Options) = options(JsonField.of(options))
 
-            /** Verification options */
+            /**
+             * Sets [Builder.options] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.options] with a well-typed [Options] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun options(options: JsonField<Options>) = apply { this.options = options }
 
             /**
@@ -265,8 +343,11 @@ private constructor(
             fun signals(signals: Signals) = signals(JsonField.of(signals))
 
             /**
-             * The signals used for anti-fraud. For more details, refer to
-             * [Signals](/guides/prevent-fraud#signals).
+             * Sets [Builder.signals] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.signals] with a well-typed [Signals] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
             fun signals(signals: JsonField<Signals>) = apply { this.signals = signals }
 
@@ -355,15 +436,23 @@ private constructor(
         fun target(target: Target) = apply { body.target(target) }
 
         /**
-         * The verification target. Either a phone number or an email address. To use the email
-         * verification feature contact us to discuss your use case.
+         * Sets [Builder.target] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.target] with a well-typed [Target] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun target(target: JsonField<Target>) = apply { body.target(target) }
 
         /** The identifier of the dispatch that came from the front-end SDK. */
         fun dispatchId(dispatchId: String) = apply { body.dispatchId(dispatchId) }
 
-        /** The identifier of the dispatch that came from the front-end SDK. */
+        /**
+         * Sets [Builder.dispatchId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.dispatchId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun dispatchId(dispatchId: JsonField<String>) = apply { body.dispatchId(dispatchId) }
 
         /**
@@ -373,15 +462,23 @@ private constructor(
         fun metadata(metadata: Metadata) = apply { body.metadata(metadata) }
 
         /**
-         * The metadata for this verification. This object will be returned with every response or
-         * webhook sent that refers to this verification.
+         * Sets [Builder.metadata] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.metadata] with a well-typed [Metadata] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
          */
         fun metadata(metadata: JsonField<Metadata>) = apply { body.metadata(metadata) }
 
         /** Verification options */
         fun options(options: Options) = apply { body.options(options) }
 
-        /** Verification options */
+        /**
+         * Sets [Builder.options] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.options] with a well-typed [Options] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun options(options: JsonField<Options>) = apply { body.options(options) }
 
         /**
@@ -391,8 +488,10 @@ private constructor(
         fun signals(signals: Signals) = apply { body.signals(signals) }
 
         /**
-         * The signals used for anti-fraud. For more details, refer to
-         * [Signals](/guides/prevent-fraud#signals).
+         * Sets [Builder.signals] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.signals] with a well-typed [Signals] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun signals(signals: JsonField<Signals>) = apply { body.signals(signals) }
 
@@ -537,16 +636,34 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** The type of the target. Either "phone_number" or "email_address". */
+        /**
+         * The type of the target. Either "phone_number" or "email_address".
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun type(): Type = type.getRequired("type")
 
-        /** An E.164 formatted phone number or an email address. */
+        /**
+         * An E.164 formatted phone number or an email address.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun value(): String = value.getRequired("value")
 
-        /** The type of the target. Either "phone_number" or "email_address". */
+        /**
+         * Returns the raw JSON value of [type].
+         *
+         * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
-        /** An E.164 formatted phone number or an email address. */
+        /**
+         * Returns the raw JSON value of [value].
+         *
+         * Unlike [value], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("value") @ExcludeMissing fun _value(): JsonField<String> = value
 
         @JsonAnyGetter
@@ -598,13 +715,25 @@ private constructor(
             /** The type of the target. Either "phone_number" or "email_address". */
             fun type(type: Type) = type(JsonField.of(type))
 
-            /** The type of the target. Either "phone_number" or "email_address". */
+            /**
+             * Sets [Builder.type] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.type] with a well-typed [Type] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun type(type: JsonField<Type>) = apply { this.type = type }
 
             /** An E.164 formatted phone number or an email address. */
             fun value(value: String) = value(JsonField.of(value))
 
-            /** An E.164 formatted phone number or an email address. */
+            /**
+             * Sets [Builder.value] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.value] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun value(value: JsonField<String>) = apply { this.value = value }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -768,11 +897,21 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** A user-defined identifier to correlate this verification with. */
+        /**
+         * A user-defined identifier to correlate this verification with.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun correlationId(): Optional<String> =
             Optional.ofNullable(correlationId.getNullable("correlation_id"))
 
-        /** A user-defined identifier to correlate this verification with. */
+        /**
+         * Returns the raw JSON value of [correlationId].
+         *
+         * Unlike [correlationId], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
         @JsonProperty("correlation_id")
         @ExcludeMissing
         fun _correlationId(): JsonField<String> = correlationId
@@ -815,7 +954,13 @@ private constructor(
             /** A user-defined identifier to correlate this verification with. */
             fun correlationId(correlationId: String) = correlationId(JsonField.of(correlationId))
 
-            /** A user-defined identifier to correlate this verification with. */
+            /**
+             * Sets [Builder.correlationId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.correlationId] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun correlationId(correlationId: JsonField<String>) = apply {
                 this.correlationId = correlationId
             }
@@ -896,6 +1041,9 @@ private constructor(
         /**
          * This allows you to automatically retrieve and fill the OTP code on mobile apps. Currently
          * only Android devices are supported.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
          */
         fun appRealm(): Optional<AppRealm> = Optional.ofNullable(appRealm.getNullable("app_realm"))
 
@@ -903,6 +1051,9 @@ private constructor(
          * The URL where webhooks will be sent when verification events occur, including
          * verification creation, attempt creation, and delivery status changes. For more details,
          * refer to [Webhook](/api-reference/v2/verify/webhook).
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
          */
         fun callbackUrl(): Optional<String> =
             Optional.ofNullable(callbackUrl.getNullable("callback_url"))
@@ -910,6 +1061,9 @@ private constructor(
         /**
          * The size of the code generated. It should be between 4 and 8. Defaults to the code size
          * specified from the Dashboard.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
          */
         fun codeSize(): Optional<Long> = Optional.ofNullable(codeSize.getNullable("code_size"))
 
@@ -917,6 +1071,9 @@ private constructor(
          * The custom code to use for OTP verification. This feature is only available for
          * compatibility purposes and subject to Prelude’s approval. Contact us to discuss your use
          * case. For more details, refer to [Multi Routing](/concepts/multi-routing).
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
          */
         fun customCode(): Optional<String> =
             Optional.ofNullable(customCode.getNullable("custom_code"))
@@ -925,72 +1082,99 @@ private constructor(
          * A BCP-47 formatted locale string with the language the text message will be sent to. If
          * there's no locale set, the language will be determined by the country code of the phone
          * number. If the language specified doesn't exist, it defaults to US English.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
          */
         fun locale(): Optional<String> = Optional.ofNullable(locale.getNullable("locale"))
 
-        /** The Sender ID to use for this message. The Sender ID needs to be enabled by Prelude. */
+        /**
+         * The Sender ID to use for this message. The Sender ID needs to be enabled by Prelude.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun senderId(): Optional<String> = Optional.ofNullable(senderId.getNullable("sender_id"))
 
         /**
          * The identifier of a verification template. It applies use case-specific settings, such as
          * the message content or certain verification parameters.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
          */
         fun templateId(): Optional<String> =
             Optional.ofNullable(templateId.getNullable("template_id"))
 
-        /** The variables to be replaced in the template. */
+        /**
+         * The variables to be replaced in the template.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun variables(): Optional<Variables> =
             Optional.ofNullable(variables.getNullable("variables"))
 
         /**
-         * This allows you to automatically retrieve and fill the OTP code on mobile apps. Currently
-         * only Android devices are supported.
+         * Returns the raw JSON value of [appRealm].
+         *
+         * Unlike [appRealm], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("app_realm") @ExcludeMissing fun _appRealm(): JsonField<AppRealm> = appRealm
 
         /**
-         * The URL where webhooks will be sent when verification events occur, including
-         * verification creation, attempt creation, and delivery status changes. For more details,
-         * refer to [Webhook](/api-reference/v2/verify/webhook).
+         * Returns the raw JSON value of [callbackUrl].
+         *
+         * Unlike [callbackUrl], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("callback_url")
         @ExcludeMissing
         fun _callbackUrl(): JsonField<String> = callbackUrl
 
         /**
-         * The size of the code generated. It should be between 4 and 8. Defaults to the code size
-         * specified from the Dashboard.
+         * Returns the raw JSON value of [codeSize].
+         *
+         * Unlike [codeSize], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("code_size") @ExcludeMissing fun _codeSize(): JsonField<Long> = codeSize
 
         /**
-         * The custom code to use for OTP verification. This feature is only available for
-         * compatibility purposes and subject to Prelude’s approval. Contact us to discuss your use
-         * case. For more details, refer to [Multi Routing](/concepts/multi-routing).
+         * Returns the raw JSON value of [customCode].
+         *
+         * Unlike [customCode], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("custom_code")
         @ExcludeMissing
         fun _customCode(): JsonField<String> = customCode
 
         /**
-         * A BCP-47 formatted locale string with the language the text message will be sent to. If
-         * there's no locale set, the language will be determined by the country code of the phone
-         * number. If the language specified doesn't exist, it defaults to US English.
+         * Returns the raw JSON value of [locale].
+         *
+         * Unlike [locale], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("locale") @ExcludeMissing fun _locale(): JsonField<String> = locale
 
-        /** The Sender ID to use for this message. The Sender ID needs to be enabled by Prelude. */
+        /**
+         * Returns the raw JSON value of [senderId].
+         *
+         * Unlike [senderId], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("sender_id") @ExcludeMissing fun _senderId(): JsonField<String> = senderId
 
         /**
-         * The identifier of a verification template. It applies use case-specific settings, such as
-         * the message content or certain verification parameters.
+         * Returns the raw JSON value of [templateId].
+         *
+         * Unlike [templateId], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("template_id")
         @ExcludeMissing
         fun _templateId(): JsonField<String> = templateId
 
-        /** The variables to be replaced in the template. */
+        /**
+         * Returns the raw JSON value of [variables].
+         *
+         * Unlike [variables], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("variables")
         @ExcludeMissing
         fun _variables(): JsonField<Variables> = variables
@@ -1058,8 +1242,11 @@ private constructor(
             fun appRealm(appRealm: AppRealm) = appRealm(JsonField.of(appRealm))
 
             /**
-             * This allows you to automatically retrieve and fill the OTP code on mobile apps.
-             * Currently only Android devices are supported.
+             * Sets [Builder.appRealm] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.appRealm] with a well-typed [AppRealm] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
             fun appRealm(appRealm: JsonField<AppRealm>) = apply { this.appRealm = appRealm }
 
@@ -1071,9 +1258,11 @@ private constructor(
             fun callbackUrl(callbackUrl: String) = callbackUrl(JsonField.of(callbackUrl))
 
             /**
-             * The URL where webhooks will be sent when verification events occur, including
-             * verification creation, attempt creation, and delivery status changes. For more
-             * details, refer to [Webhook](/api-reference/v2/verify/webhook).
+             * Sets [Builder.callbackUrl] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.callbackUrl] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
             fun callbackUrl(callbackUrl: JsonField<String>) = apply {
                 this.callbackUrl = callbackUrl
@@ -1086,8 +1275,11 @@ private constructor(
             fun codeSize(codeSize: Long) = codeSize(JsonField.of(codeSize))
 
             /**
-             * The size of the code generated. It should be between 4 and 8. Defaults to the code
-             * size specified from the Dashboard.
+             * Sets [Builder.codeSize] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.codeSize] with a well-typed [Long] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
             fun codeSize(codeSize: JsonField<Long>) = apply { this.codeSize = codeSize }
 
@@ -1099,9 +1291,11 @@ private constructor(
             fun customCode(customCode: String) = customCode(JsonField.of(customCode))
 
             /**
-             * The custom code to use for OTP verification. This feature is only available for
-             * compatibility purposes and subject to Prelude’s approval. Contact us to discuss your
-             * use case. For more details, refer to [Multi Routing](/concepts/multi-routing).
+             * Sets [Builder.customCode] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.customCode] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
             fun customCode(customCode: JsonField<String>) = apply { this.customCode = customCode }
 
@@ -1113,9 +1307,11 @@ private constructor(
             fun locale(locale: String) = locale(JsonField.of(locale))
 
             /**
-             * A BCP-47 formatted locale string with the language the text message will be sent to.
-             * If there's no locale set, the language will be determined by the country code of the
-             * phone number. If the language specified doesn't exist, it defaults to US English.
+             * Sets [Builder.locale] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.locale] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
             fun locale(locale: JsonField<String>) = apply { this.locale = locale }
 
@@ -1125,7 +1321,11 @@ private constructor(
             fun senderId(senderId: String) = senderId(JsonField.of(senderId))
 
             /**
-             * The Sender ID to use for this message. The Sender ID needs to be enabled by Prelude.
+             * Sets [Builder.senderId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.senderId] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
             fun senderId(senderId: JsonField<String>) = apply { this.senderId = senderId }
 
@@ -1136,15 +1336,24 @@ private constructor(
             fun templateId(templateId: String) = templateId(JsonField.of(templateId))
 
             /**
-             * The identifier of a verification template. It applies use case-specific settings,
-             * such as the message content or certain verification parameters.
+             * Sets [Builder.templateId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.templateId] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
             fun templateId(templateId: JsonField<String>) = apply { this.templateId = templateId }
 
             /** The variables to be replaced in the template. */
             fun variables(variables: Variables) = variables(JsonField.of(variables))
 
-            /** The variables to be replaced in the template. */
+            /**
+             * Sets [Builder.variables] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.variables] with a well-typed [Variables] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun variables(variables: JsonField<Variables>) = apply { this.variables = variables }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -1198,18 +1407,39 @@ private constructor(
             private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
 
-            /** The platform the SMS will be sent to. We are currently only supporting "android". */
+            /**
+             * The platform the SMS will be sent to. We are currently only supporting "android".
+             *
+             * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
             fun platform(): Platform = platform.getRequired("platform")
 
-            /** The Android SMS Retriever API hash code that identifies your app. */
+            /**
+             * The Android SMS Retriever API hash code that identifies your app.
+             *
+             * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
             fun value(): String = value.getRequired("value")
 
-            /** The platform the SMS will be sent to. We are currently only supporting "android". */
+            /**
+             * Returns the raw JSON value of [platform].
+             *
+             * Unlike [platform], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
             @JsonProperty("platform")
             @ExcludeMissing
             fun _platform(): JsonField<Platform> = platform
 
-            /** The Android SMS Retriever API hash code that identifies your app. */
+            /**
+             * Returns the raw JSON value of [value].
+             *
+             * Unlike [value], this method doesn't throw if the JSON field has an unexpected type.
+             */
             @JsonProperty("value") @ExcludeMissing fun _value(): JsonField<String> = value
 
             @JsonAnyGetter
@@ -1264,14 +1494,24 @@ private constructor(
                 fun platform(platform: Platform) = platform(JsonField.of(platform))
 
                 /**
-                 * The platform the SMS will be sent to. We are currently only supporting "android".
+                 * Sets [Builder.platform] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.platform] with a well-typed [Platform] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
                  */
                 fun platform(platform: JsonField<Platform>) = apply { this.platform = platform }
 
                 /** The Android SMS Retriever API hash code that identifies your app. */
                 fun value(value: String) = value(JsonField.of(value))
 
-                /** The Android SMS Retriever API hash code that identifies your app. */
+                /**
+                 * Sets [Builder.value] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.value] with a well-typed [String] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
+                 */
                 fun value(value: JsonField<String>) = apply { this.value = value }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -1556,83 +1796,141 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** The version of your application. */
+        /**
+         * The version of your application.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun appVersion(): Optional<String> =
             Optional.ofNullable(appVersion.getNullable("app_version"))
 
         /**
          * The unique identifier for the user's device. For Android, this corresponds to the
          * `ANDROID_ID` and for iOS, this corresponds to the `identifierForVendor`.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
          */
         fun deviceId(): Optional<String> = Optional.ofNullable(deviceId.getNullable("device_id"))
 
-        /** The model of the user's device. */
+        /**
+         * The model of the user's device.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun deviceModel(): Optional<String> =
             Optional.ofNullable(deviceModel.getNullable("device_model"))
 
-        /** The type of the user's device. */
+        /**
+         * The type of the user's device.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun devicePlatform(): Optional<DevicePlatform> =
             Optional.ofNullable(devicePlatform.getNullable("device_platform"))
 
-        /** The IP address of the user's device. */
+        /**
+         * The IP address of the user's device.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun ip(): Optional<String> = Optional.ofNullable(ip.getNullable("ip"))
 
         /**
          * This signal should provide a higher level of trust, indicating that the user is genuine.
          * For more details, refer to [Signals](/guides/prevent-fraud#signals).
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
          */
         fun isTrustedUser(): Optional<Boolean> =
             Optional.ofNullable(isTrustedUser.getNullable("is_trusted_user"))
 
-        /** The version of the user's device operating system. */
+        /**
+         * The version of the user's device operating system.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun osVersion(): Optional<String> = Optional.ofNullable(osVersion.getNullable("os_version"))
 
         /**
          * The user agent of the user's device. If the individual fields (os_version,
          * device_platform, device_model) are provided, we will prioritize those values instead of
          * parsing them from the user agent string.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
          */
         fun userAgent(): Optional<String> = Optional.ofNullable(userAgent.getNullable("user_agent"))
 
-        /** The version of your application. */
+        /**
+         * Returns the raw JSON value of [appVersion].
+         *
+         * Unlike [appVersion], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("app_version")
         @ExcludeMissing
         fun _appVersion(): JsonField<String> = appVersion
 
         /**
-         * The unique identifier for the user's device. For Android, this corresponds to the
-         * `ANDROID_ID` and for iOS, this corresponds to the `identifierForVendor`.
+         * Returns the raw JSON value of [deviceId].
+         *
+         * Unlike [deviceId], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("device_id") @ExcludeMissing fun _deviceId(): JsonField<String> = deviceId
 
-        /** The model of the user's device. */
+        /**
+         * Returns the raw JSON value of [deviceModel].
+         *
+         * Unlike [deviceModel], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("device_model")
         @ExcludeMissing
         fun _deviceModel(): JsonField<String> = deviceModel
 
-        /** The type of the user's device. */
+        /**
+         * Returns the raw JSON value of [devicePlatform].
+         *
+         * Unlike [devicePlatform], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
         @JsonProperty("device_platform")
         @ExcludeMissing
         fun _devicePlatform(): JsonField<DevicePlatform> = devicePlatform
 
-        /** The IP address of the user's device. */
+        /**
+         * Returns the raw JSON value of [ip].
+         *
+         * Unlike [ip], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("ip") @ExcludeMissing fun _ip(): JsonField<String> = ip
 
         /**
-         * This signal should provide a higher level of trust, indicating that the user is genuine.
-         * For more details, refer to [Signals](/guides/prevent-fraud#signals).
+         * Returns the raw JSON value of [isTrustedUser].
+         *
+         * Unlike [isTrustedUser], this method doesn't throw if the JSON field has an unexpected
+         * type.
          */
         @JsonProperty("is_trusted_user")
         @ExcludeMissing
         fun _isTrustedUser(): JsonField<Boolean> = isTrustedUser
 
-        /** The version of the user's device operating system. */
+        /**
+         * Returns the raw JSON value of [osVersion].
+         *
+         * Unlike [osVersion], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("os_version") @ExcludeMissing fun _osVersion(): JsonField<String> = osVersion
 
         /**
-         * The user agent of the user's device. If the individual fields (os_version,
-         * device_platform, device_model) are provided, we will prioritize those values instead of
-         * parsing them from the user agent string.
+         * Returns the raw JSON value of [userAgent].
+         *
+         * Unlike [userAgent], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("user_agent") @ExcludeMissing fun _userAgent(): JsonField<String> = userAgent
 
@@ -1695,7 +1993,13 @@ private constructor(
             /** The version of your application. */
             fun appVersion(appVersion: String) = appVersion(JsonField.of(appVersion))
 
-            /** The version of your application. */
+            /**
+             * Sets [Builder.appVersion] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.appVersion] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun appVersion(appVersion: JsonField<String>) = apply { this.appVersion = appVersion }
 
             /**
@@ -1705,15 +2009,24 @@ private constructor(
             fun deviceId(deviceId: String) = deviceId(JsonField.of(deviceId))
 
             /**
-             * The unique identifier for the user's device. For Android, this corresponds to the
-             * `ANDROID_ID` and for iOS, this corresponds to the `identifierForVendor`.
+             * Sets [Builder.deviceId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.deviceId] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
             fun deviceId(deviceId: JsonField<String>) = apply { this.deviceId = deviceId }
 
             /** The model of the user's device. */
             fun deviceModel(deviceModel: String) = deviceModel(JsonField.of(deviceModel))
 
-            /** The model of the user's device. */
+            /**
+             * Sets [Builder.deviceModel] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.deviceModel] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun deviceModel(deviceModel: JsonField<String>) = apply {
                 this.deviceModel = deviceModel
             }
@@ -1722,7 +2035,13 @@ private constructor(
             fun devicePlatform(devicePlatform: DevicePlatform) =
                 devicePlatform(JsonField.of(devicePlatform))
 
-            /** The type of the user's device. */
+            /**
+             * Sets [Builder.devicePlatform] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.devicePlatform] with a well-typed [DevicePlatform]
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
             fun devicePlatform(devicePlatform: JsonField<DevicePlatform>) = apply {
                 this.devicePlatform = devicePlatform
             }
@@ -1730,7 +2049,13 @@ private constructor(
             /** The IP address of the user's device. */
             fun ip(ip: String) = ip(JsonField.of(ip))
 
-            /** The IP address of the user's device. */
+            /**
+             * Sets [Builder.ip] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.ip] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun ip(ip: JsonField<String>) = apply { this.ip = ip }
 
             /**
@@ -1740,8 +2065,11 @@ private constructor(
             fun isTrustedUser(isTrustedUser: Boolean) = isTrustedUser(JsonField.of(isTrustedUser))
 
             /**
-             * This signal should provide a higher level of trust, indicating that the user is
-             * genuine. For more details, refer to [Signals](/guides/prevent-fraud#signals).
+             * Sets [Builder.isTrustedUser] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.isTrustedUser] with a well-typed [Boolean] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
             fun isTrustedUser(isTrustedUser: JsonField<Boolean>) = apply {
                 this.isTrustedUser = isTrustedUser
@@ -1750,7 +2078,13 @@ private constructor(
             /** The version of the user's device operating system. */
             fun osVersion(osVersion: String) = osVersion(JsonField.of(osVersion))
 
-            /** The version of the user's device operating system. */
+            /**
+             * Sets [Builder.osVersion] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.osVersion] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun osVersion(osVersion: JsonField<String>) = apply { this.osVersion = osVersion }
 
             /**
@@ -1761,9 +2095,11 @@ private constructor(
             fun userAgent(userAgent: String) = userAgent(JsonField.of(userAgent))
 
             /**
-             * The user agent of the user's device. If the individual fields (os_version,
-             * device_platform, device_model) are provided, we will prioritize those values instead
-             * of parsing them from the user agent string.
+             * Sets [Builder.userAgent] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.userAgent] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
             fun userAgent(userAgent: JsonField<String>) = apply { this.userAgent = userAgent }
 

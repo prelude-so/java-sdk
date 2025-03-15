@@ -33,22 +33,49 @@ private constructor(
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
-    /** A unique identifier for your prediction request. */
+    /**
+     * A unique identifier for your prediction request.
+     *
+     * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun id(): String = id.getRequired("id")
 
-    /** A label indicating the trustworthiness of the phone number. */
+    /**
+     * A label indicating the trustworthiness of the phone number.
+     *
+     * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun prediction(): Prediction = prediction.getRequired("prediction")
 
+    /**
+     * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun reasoning(): Reasoning = reasoning.getRequired("reasoning")
 
-    /** A unique identifier for your prediction request. */
+    /**
+     * Returns the raw JSON value of [id].
+     *
+     * Unlike [id], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
-    /** A label indicating the trustworthiness of the phone number. */
+    /**
+     * Returns the raw JSON value of [prediction].
+     *
+     * Unlike [prediction], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("prediction")
     @ExcludeMissing
     fun _prediction(): JsonField<Prediction> = prediction
 
+    /**
+     * Returns the raw JSON value of [reasoning].
+     *
+     * Unlike [reasoning], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("reasoning") @ExcludeMissing fun _reasoning(): JsonField<Reasoning> = reasoning
 
     @JsonAnyGetter
@@ -104,17 +131,35 @@ private constructor(
         /** A unique identifier for your prediction request. */
         fun id(id: String) = id(JsonField.of(id))
 
-        /** A unique identifier for your prediction request. */
+        /**
+         * Sets [Builder.id] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.id] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun id(id: JsonField<String>) = apply { this.id = id }
 
         /** A label indicating the trustworthiness of the phone number. */
         fun prediction(prediction: Prediction) = prediction(JsonField.of(prediction))
 
-        /** A label indicating the trustworthiness of the phone number. */
+        /**
+         * Sets [Builder.prediction] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.prediction] with a well-typed [Prediction] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun prediction(prediction: JsonField<Prediction>) = apply { this.prediction = prediction }
 
         fun reasoning(reasoning: Reasoning) = reasoning(JsonField.of(reasoning))
 
+        /**
+         * Sets [Builder.reasoning] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.reasoning] with a well-typed [Reasoning] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun reasoning(reasoning: JsonField<Reasoning>) = apply { this.reasoning = reasoning }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -260,21 +305,34 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** A label explaining why the phone number was classified as not trustworthy */
+        /**
+         * A label explaining why the phone number was classified as not trustworthy
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun cause(): Optional<Cause> = Optional.ofNullable(cause.getNullable("cause"))
 
         /**
          * Indicates the risk of the phone number being genuine or involved in fraudulent patterns.
          * The higher the riskier.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
          */
         fun score(): Optional<Double> = Optional.ofNullable(score.getNullable("score"))
 
-        /** A label explaining why the phone number was classified as not trustworthy */
+        /**
+         * Returns the raw JSON value of [cause].
+         *
+         * Unlike [cause], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("cause") @ExcludeMissing fun _cause(): JsonField<Cause> = cause
 
         /**
-         * Indicates the risk of the phone number being genuine or involved in fraudulent patterns.
-         * The higher the riskier.
+         * Returns the raw JSON value of [score].
+         *
+         * Unlike [score], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("score") @ExcludeMissing fun _score(): JsonField<Double> = score
 
@@ -319,7 +377,13 @@ private constructor(
             /** A label explaining why the phone number was classified as not trustworthy */
             fun cause(cause: Cause) = cause(JsonField.of(cause))
 
-            /** A label explaining why the phone number was classified as not trustworthy */
+            /**
+             * Sets [Builder.cause] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.cause] with a well-typed [Cause] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun cause(cause: JsonField<Cause>) = apply { this.cause = cause }
 
             /**
@@ -329,8 +393,11 @@ private constructor(
             fun score(score: Double) = score(JsonField.of(score))
 
             /**
-             * Indicates the risk of the phone number being genuine or involved in fraudulent
-             * patterns. The higher the riskier.
+             * Sets [Builder.score] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.score] with a well-typed [Double] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
             fun score(score: JsonField<Double>) = apply { this.score = score }
 
