@@ -35,24 +35,32 @@ private constructor(
     /**
      * You should send a feedback event back to Watch API when your user demonstrates authentic
      * behavior.
+     *
+     * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
     fun feedback(): Feedback = body.feedback()
 
     /**
      * The verification target. Either a phone number or an email address. To use the email
      * verification feature contact us to discuss your use case.
+     *
+     * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
     fun target(): Target = body.target()
 
     /**
-     * You should send a feedback event back to Watch API when your user demonstrates authentic
-     * behavior.
+     * Returns the raw JSON value of [feedback].
+     *
+     * Unlike [feedback], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _feedback(): JsonField<Feedback> = body._feedback()
 
     /**
-     * The verification target. Either a phone number or an email address. To use the email
-     * verification feature contact us to discuss your use case.
+     * Returns the raw JSON value of [target].
+     *
+     * Unlike [target], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _target(): JsonField<Target> = body._target()
 
@@ -85,24 +93,32 @@ private constructor(
         /**
          * You should send a feedback event back to Watch API when your user demonstrates authentic
          * behavior.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
         fun feedback(): Feedback = feedback.getRequired("feedback")
 
         /**
          * The verification target. Either a phone number or an email address. To use the email
          * verification feature contact us to discuss your use case.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
         fun target(): Target = target.getRequired("target")
 
         /**
-         * You should send a feedback event back to Watch API when your user demonstrates authentic
-         * behavior.
+         * Returns the raw JSON value of [feedback].
+         *
+         * Unlike [feedback], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("feedback") @ExcludeMissing fun _feedback(): JsonField<Feedback> = feedback
 
         /**
-         * The verification target. Either a phone number or an email address. To use the email
-         * verification feature contact us to discuss your use case.
+         * Returns the raw JSON value of [target].
+         *
+         * Unlike [target], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("target") @ExcludeMissing fun _target(): JsonField<Target> = target
 
@@ -159,8 +175,11 @@ private constructor(
             fun feedback(feedback: Feedback) = feedback(JsonField.of(feedback))
 
             /**
-             * You should send a feedback event back to Watch API when your user demonstrates
-             * authentic behavior.
+             * Sets [Builder.feedback] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.feedback] with a well-typed [Feedback] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
             fun feedback(feedback: JsonField<Feedback>) = apply { this.feedback = feedback }
 
@@ -171,8 +190,11 @@ private constructor(
             fun target(target: Target) = target(JsonField.of(target))
 
             /**
-             * The verification target. Either a phone number or an email address. To use the email
-             * verification feature contact us to discuss your use case.
+             * Sets [Builder.target] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.target] with a well-typed [Target] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
             fun target(target: JsonField<Target>) = apply { this.target = target }
 
@@ -259,8 +281,11 @@ private constructor(
         fun feedback(feedback: Feedback) = apply { body.feedback(feedback) }
 
         /**
-         * You should send a feedback event back to Watch API when your user demonstrates authentic
-         * behavior.
+         * Sets [Builder.feedback] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.feedback] with a well-typed [Feedback] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
          */
         fun feedback(feedback: JsonField<Feedback>) = apply { body.feedback(feedback) }
 
@@ -271,8 +296,10 @@ private constructor(
         fun target(target: Target) = apply { body.target(target) }
 
         /**
-         * The verification target. Either a phone number or an email address. To use the email
-         * verification feature contact us to discuss your use case.
+         * Sets [Builder.target] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.target] with a well-typed [Target] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun target(target: JsonField<Target>) = apply { body.target(target) }
 
@@ -417,12 +444,16 @@ private constructor(
         /**
          * `CONFIRM_TARGET` should be sent when you are sure that the user with this target (e.g.
          * phone number) is trustworthy.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
         fun type(): Type = type.getRequired("type")
 
         /**
-         * `CONFIRM_TARGET` should be sent when you are sure that the user with this target (e.g.
-         * phone number) is trustworthy.
+         * Returns the raw JSON value of [type].
+         *
+         * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
@@ -475,8 +506,11 @@ private constructor(
             fun type(type: Type) = type(JsonField.of(type))
 
             /**
-             * `CONFIRM_TARGET` should be sent when you are sure that the user with this target
-             * (e.g. phone number) is trustworthy.
+             * Sets [Builder.type] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.type] with a well-typed [Type] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
              */
             fun type(type: JsonField<Type>) = apply { this.type = type }
 
@@ -634,16 +668,34 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** The type of the target. Either "phone_number" or "email_address". */
+        /**
+         * The type of the target. Either "phone_number" or "email_address".
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun type(): Type = type.getRequired("type")
 
-        /** An E.164 formatted phone number or an email address. */
+        /**
+         * An E.164 formatted phone number or an email address.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun value(): String = value.getRequired("value")
 
-        /** The type of the target. Either "phone_number" or "email_address". */
+        /**
+         * Returns the raw JSON value of [type].
+         *
+         * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
-        /** An E.164 formatted phone number or an email address. */
+        /**
+         * Returns the raw JSON value of [value].
+         *
+         * Unlike [value], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("value") @ExcludeMissing fun _value(): JsonField<String> = value
 
         @JsonAnyGetter
@@ -695,13 +747,25 @@ private constructor(
             /** The type of the target. Either "phone_number" or "email_address". */
             fun type(type: Type) = type(JsonField.of(type))
 
-            /** The type of the target. Either "phone_number" or "email_address". */
+            /**
+             * Sets [Builder.type] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.type] with a well-typed [Type] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun type(type: JsonField<Type>) = apply { this.type = type }
 
             /** An E.164 formatted phone number or an email address. */
             fun value(value: String) = value(JsonField.of(value))
 
-            /** An E.164 formatted phone number or an email address. */
+            /**
+             * Sets [Builder.value] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.value] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun value(value: JsonField<String>) = apply { this.value = value }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {

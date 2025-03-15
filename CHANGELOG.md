@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.2.1 (2025-03-15)
+
+Full Changelog: [v0.2.0...v0.2.1](https://github.com/prelude-so/java-sdk/compare/v0.2.0...v0.2.1)
+
+### Chores
+
+* **internal:** remove extra empty newlines ([#104](https://github.com/prelude-so/java-sdk/issues/104)) ([2234162](https://github.com/prelude-so/java-sdk/commit/2234162dc6e6cc224f0489fa41b0987eade2145d))
+* **internal:** version bump ([#102](https://github.com/prelude-so/java-sdk/issues/102)) ([a8c29dd](https://github.com/prelude-so/java-sdk/commit/a8c29dd890a12fb927932bc67a0a827262bc18fa))
+
+
+### Documentation
+
+* deduplicate and refine comments ([#105](https://github.com/prelude-so/java-sdk/issues/105)) ([081b27a](https://github.com/prelude-so/java-sdk/commit/081b27aeaa2c06a3ba088fcc5f8476bda4e1fde9))
+
 ## 0.2.0 (2025-03-11)
 
 Full Changelog: [v0.1.0...v0.2.0](https://github.com/prelude-so/java-sdk/compare/v0.1.0...v0.2.0)

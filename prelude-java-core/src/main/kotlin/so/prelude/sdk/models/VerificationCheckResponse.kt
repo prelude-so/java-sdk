@@ -36,26 +36,62 @@ private constructor(
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
-    /** The status of the check. */
+    /**
+     * The status of the check.
+     *
+     * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun status(): Status = status.getRequired("status")
 
-    /** The verification identifier. */
+    /**
+     * The verification identifier.
+     *
+     * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun id(): Optional<String> = Optional.ofNullable(id.getNullable("id"))
 
-    /** The metadata for this verification. */
+    /**
+     * The metadata for this verification.
+     *
+     * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata.getNullable("metadata"))
 
+    /**
+     * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun requestId(): Optional<String> = Optional.ofNullable(requestId.getNullable("request_id"))
 
-    /** The status of the check. */
+    /**
+     * Returns the raw JSON value of [status].
+     *
+     * Unlike [status], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("status") @ExcludeMissing fun _status(): JsonField<Status> = status
 
-    /** The verification identifier. */
+    /**
+     * Returns the raw JSON value of [id].
+     *
+     * Unlike [id], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
-    /** The metadata for this verification. */
+    /**
+     * Returns the raw JSON value of [metadata].
+     *
+     * Unlike [metadata], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("metadata") @ExcludeMissing fun _metadata(): JsonField<Metadata> = metadata
 
+    /**
+     * Returns the raw JSON value of [requestId].
+     *
+     * Unlike [requestId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("request_id") @ExcludeMissing fun _requestId(): JsonField<String> = requestId
 
     @JsonAnyGetter
@@ -112,23 +148,46 @@ private constructor(
         /** The status of the check. */
         fun status(status: Status) = status(JsonField.of(status))
 
-        /** The status of the check. */
+        /**
+         * Sets [Builder.status] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.status] with a well-typed [Status] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun status(status: JsonField<Status>) = apply { this.status = status }
 
         /** The verification identifier. */
         fun id(id: String) = id(JsonField.of(id))
 
-        /** The verification identifier. */
+        /**
+         * Sets [Builder.id] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.id] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun id(id: JsonField<String>) = apply { this.id = id }
 
         /** The metadata for this verification. */
         fun metadata(metadata: Metadata) = metadata(JsonField.of(metadata))
 
-        /** The metadata for this verification. */
+        /**
+         * Sets [Builder.metadata] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.metadata] with a well-typed [Metadata] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
 
         fun requestId(requestId: String) = requestId(JsonField.of(requestId))
 
+        /**
+         * Sets [Builder.requestId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.requestId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun requestId(requestId: JsonField<String>) = apply { this.requestId = requestId }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -277,9 +336,19 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
+        /**
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
         fun correlationId(): Optional<String> =
             Optional.ofNullable(correlationId.getNullable("correlation_id"))
 
+        /**
+         * Returns the raw JSON value of [correlationId].
+         *
+         * Unlike [correlationId], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
         @JsonProperty("correlation_id")
         @ExcludeMissing
         fun _correlationId(): JsonField<String> = correlationId
@@ -321,6 +390,13 @@ private constructor(
 
             fun correlationId(correlationId: String) = correlationId(JsonField.of(correlationId))
 
+            /**
+             * Sets [Builder.correlationId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.correlationId] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun correlationId(correlationId: JsonField<String>) = apply {
                 this.correlationId = correlationId
             }

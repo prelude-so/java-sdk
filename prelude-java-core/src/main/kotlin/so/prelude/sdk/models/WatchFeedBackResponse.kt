@@ -15,6 +15,7 @@ import so.prelude.sdk.core.NoAutoDetect
 import so.prelude.sdk.core.checkRequired
 import so.prelude.sdk.core.immutableEmptyMap
 import so.prelude.sdk.core.toImmutable
+import so.prelude.sdk.errors.PreludeInvalidDataException
 
 @NoAutoDetect
 class WatchFeedBackResponse
@@ -24,10 +25,19 @@ private constructor(
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
-    /** A unique identifier for your feedback request. */
+    /**
+     * A unique identifier for your feedback request.
+     *
+     * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun id(): String = id.getRequired("id")
 
-    /** A unique identifier for your feedback request. */
+    /**
+     * Returns the raw JSON value of [id].
+     *
+     * Unlike [id], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
     @JsonAnyGetter
@@ -75,7 +85,12 @@ private constructor(
         /** A unique identifier for your feedback request. */
         fun id(id: String) = id(JsonField.of(id))
 
-        /** A unique identifier for your feedback request. */
+        /**
+         * Sets [Builder.id] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.id] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun id(id: JsonField<String>) = apply { this.id = id }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
