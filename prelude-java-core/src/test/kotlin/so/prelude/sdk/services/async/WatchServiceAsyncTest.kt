@@ -10,7 +10,7 @@ import so.prelude.sdk.models.WatchFeedBackParams
 import so.prelude.sdk.models.WatchPredictParams
 
 @ExtendWith(TestServerExtension::class)
-class WatchServiceAsyncTest {
+internal class WatchServiceAsyncTest {
 
     @Test
     fun feedBack() {
