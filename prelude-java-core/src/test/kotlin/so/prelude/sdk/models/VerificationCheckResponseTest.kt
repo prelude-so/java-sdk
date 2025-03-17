@@ -5,7 +5,7 @@ package so.prelude.sdk.models
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class VerificationCheckResponseTest {
+internal class VerificationCheckResponseTest {
 
     @Test
     fun createVerificationCheckResponse() {

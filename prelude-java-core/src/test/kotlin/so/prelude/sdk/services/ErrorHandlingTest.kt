@@ -31,7 +31,7 @@ import so.prelude.sdk.errors.UnprocessableEntityException
 import so.prelude.sdk.models.VerificationCreateParams
 
 @WireMockTest
-class ErrorHandlingTest {
+internal class ErrorHandlingTest {
 
     companion object {
 
