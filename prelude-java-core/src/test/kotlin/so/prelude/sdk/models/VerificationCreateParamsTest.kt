@@ -7,7 +7,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import so.prelude.sdk.core.JsonValue
 
-class VerificationCreateParamsTest {
+internal class VerificationCreateParamsTest {
 
     @Test
     fun create() {

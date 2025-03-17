@@ -11,7 +11,7 @@ import so.prelude.sdk.models.VerificationCheckParams
 import so.prelude.sdk.models.VerificationCreateParams
 
 @ExtendWith(TestServerExtension::class)
-class VerificationServiceAsyncTest {
+internal class VerificationServiceAsyncTest {
 
     @Test
     fun create() {

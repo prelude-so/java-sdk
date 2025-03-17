@@ -7,7 +7,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import so.prelude.sdk.core.JsonValue
 
-class TransactionalSendParamsTest {
+internal class TransactionalSendParamsTest {
 
     @Test
     fun create() {
