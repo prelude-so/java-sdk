@@ -46,30 +46,4 @@ internal class VerificationCheckParamsTest {
                     .build()
             )
     }
-
-    @Test
-    fun bodyWithoutOptionalFields() {
-        val params =
-            VerificationCheckParams.builder()
-                .code("12345")
-                .target(
-                    VerificationCheckParams.Target.builder()
-                        .type(VerificationCheckParams.Target.Type.PHONE_NUMBER)
-                        .value("+30123456789")
-                        .build()
-                )
-                .build()
-
-        val body = params._body()
-
-        assertNotNull(body)
-        assertThat(body.code()).isEqualTo("12345")
-        assertThat(body.target())
-            .isEqualTo(
-                VerificationCheckParams.Target.builder()
-                    .type(VerificationCheckParams.Target.Type.PHONE_NUMBER)
-                    .value("+30123456789")
-                    .build()
-            )
-    }
 }
