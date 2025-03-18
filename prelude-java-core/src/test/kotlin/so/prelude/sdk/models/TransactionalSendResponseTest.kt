@@ -10,7 +10,7 @@ import so.prelude.sdk.core.JsonValue
 internal class TransactionalSendResponseTest {
 
     @Test
-    fun createTransactionalSendResponse() {
+    fun create() {
         val transactionalSendResponse =
             TransactionalSendResponse.builder()
                 .id("id")
@@ -27,7 +27,7 @@ internal class TransactionalSendResponseTest {
                 .correlationId("correlation_id")
                 .from("from")
                 .build()
-        assertThat(transactionalSendResponse).isNotNull
+
         assertThat(transactionalSendResponse.id()).isEqualTo("id")
         assertThat(transactionalSendResponse.createdAt())
             .isEqualTo(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))

@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 internal class VerificationCheckResponseTest {
 
     @Test
-    fun createVerificationCheckResponse() {
+    fun create() {
         val verificationCheckResponse =
             VerificationCheckResponse.builder()
                 .status(VerificationCheckResponse.Status.SUCCESS)
@@ -20,7 +20,7 @@ internal class VerificationCheckResponseTest {
                 )
                 .requestId("request_id")
                 .build()
-        assertThat(verificationCheckResponse).isNotNull
+
         assertThat(verificationCheckResponse.status())
             .isEqualTo(VerificationCheckResponse.Status.SUCCESS)
         assertThat(verificationCheckResponse.id()).contains("vrf_01jc0t6fwwfgfsq1md24mhyztj")
