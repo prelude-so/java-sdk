@@ -8,9 +8,9 @@ import org.junit.jupiter.api.Test
 internal class WatchFeedBackResponseTest {
 
     @Test
-    fun createWatchFeedBackResponse() {
+    fun create() {
         val watchFeedBackResponse = WatchFeedBackResponse.builder().id("id").build()
-        assertThat(watchFeedBackResponse).isNotNull
+
         assertThat(watchFeedBackResponse.id()).isEqualTo("id")
     }
 }
