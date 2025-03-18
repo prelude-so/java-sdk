@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 internal class VerificationCreateResponseTest {
 
     @Test
-    fun createVerificationCreateResponse() {
+    fun create() {
         val verificationCreateResponse =
             VerificationCreateResponse.builder()
                 .id("vrf_01jc0t6fwwfgfsq1md24mhyztj")
@@ -21,7 +21,7 @@ internal class VerificationCreateResponseTest {
                 )
                 .requestId("request_id")
                 .build()
-        assertThat(verificationCreateResponse).isNotNull
+
         assertThat(verificationCreateResponse.id()).isEqualTo("vrf_01jc0t6fwwfgfsq1md24mhyztj")
         assertThat(verificationCreateResponse.method())
             .isEqualTo(VerificationCreateResponse.Method.MESSAGE)

@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 internal class WatchPredictResponseTest {
 
     @Test
-    fun createWatchPredictResponse() {
+    fun create() {
         val watchPredictResponse =
             WatchPredictResponse.builder()
                 .id("id")
@@ -20,7 +20,7 @@ internal class WatchPredictResponseTest {
                         .build()
                 )
                 .build()
-        assertThat(watchPredictResponse).isNotNull
+
         assertThat(watchPredictResponse.id()).isEqualTo("id")
         assertThat(watchPredictResponse.prediction())
             .isEqualTo(WatchPredictResponse.Prediction.ALLOW)
