@@ -4,6 +4,7 @@ package so.prelude.sdk.services.async
 
 import java.util.concurrent.CompletableFuture
 import so.prelude.sdk.core.ClientOptions
+import so.prelude.sdk.core.JsonValue
 import so.prelude.sdk.core.RequestOptions
 import so.prelude.sdk.core.handlers.errorHandler
 import so.prelude.sdk.core.handlers.jsonHandler
@@ -15,7 +16,6 @@ import so.prelude.sdk.core.http.HttpResponseFor
 import so.prelude.sdk.core.http.json
 import so.prelude.sdk.core.http.parseable
 import so.prelude.sdk.core.prepareAsync
-import so.prelude.sdk.errors.PreludeError
 import so.prelude.sdk.models.WatchFeedBackParams
 import so.prelude.sdk.models.WatchFeedBackResponse
 import so.prelude.sdk.models.WatchPredictParams
@@ -47,7 +47,7 @@ class WatchServiceAsyncImpl internal constructor(private val clientOptions: Clie
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         WatchServiceAsync.WithRawResponse {
 
-        private val errorHandler: Handler<PreludeError> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
         private val feedBackHandler: Handler<WatchFeedBackResponse> =
             jsonHandler<WatchFeedBackResponse>(clientOptions.jsonMapper)

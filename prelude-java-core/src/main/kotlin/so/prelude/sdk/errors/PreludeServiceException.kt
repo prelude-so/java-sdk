@@ -1,23 +1,17 @@
+// File generated from our OpenAPI spec by Stainless.
+
 package so.prelude.sdk.errors
 
+import so.prelude.sdk.core.JsonValue
 import so.prelude.sdk.core.http.Headers
 
 abstract class PreludeServiceException
-@JvmOverloads
-constructor(
-    private val statusCode: Int,
-    private val headers: Headers,
-    private val body: String,
-    private val error: PreludeError,
-    message: String = "$statusCode: $error",
-    cause: Throwable? = null,
-) : PreludeException(message, cause) {
+protected constructor(message: String, cause: Throwable? = null) :
+    PreludeException(message, cause) {
 
-    fun statusCode(): Int = statusCode
+    abstract fun statusCode(): Int
 
-    fun headers(): Headers = headers
+    abstract fun headers(): Headers
 
-    fun body(): String = body
-
-    fun error(): PreludeError = error
+    abstract fun body(): JsonValue
 }
