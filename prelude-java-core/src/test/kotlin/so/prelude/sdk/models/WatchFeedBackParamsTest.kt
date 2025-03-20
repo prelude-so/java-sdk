@@ -2,7 +2,6 @@
 
 package so.prelude.sdk.models
 
-import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -44,7 +43,6 @@ internal class WatchFeedBackParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.feedback())
             .isEqualTo(
                 WatchFeedBackParams.Feedback.builder()
