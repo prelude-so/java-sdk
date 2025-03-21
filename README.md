@@ -207,16 +207,16 @@ The SDK throws custom unchecked exception types:
 
 - [`PreludeServiceException`](prelude-java-core/src/main/kotlin/so/prelude/sdk/errors/PreludeServiceException.kt): Base class for HTTP errors. See this table for which exception subclass is thrown for each HTTP status code:
 
-  | Status | Exception                       |
-  | ------ | ------------------------------- |
-  | 400    | `BadRequestException`           |
-  | 401    | `AuthenticationException`       |
-  | 403    | `PermissionDeniedException`     |
-  | 404    | `NotFoundException`             |
-  | 422    | `UnprocessableEntityException`  |
-  | 429    | `RateLimitException`            |
-  | 5xx    | `InternalServerException`       |
-  | others | `UnexpectedStatusCodeException` |
+  | Status | Exception                                                                                                                   |
+  | ------ | --------------------------------------------------------------------------------------------------------------------------- |
+  | 400    | [`BadRequestException`](prelude-java-core/src/main/kotlin/so/prelude/sdk/errors/BadRequestException.kt)                     |
+  | 401    | [`UnauthorizedException`](prelude-java-core/src/main/kotlin/so/prelude/sdk/errors/UnauthorizedException.kt)                 |
+  | 403    | [`PermissionDeniedException`](prelude-java-core/src/main/kotlin/so/prelude/sdk/errors/PermissionDeniedException.kt)         |
+  | 404    | [`NotFoundException`](prelude-java-core/src/main/kotlin/so/prelude/sdk/errors/NotFoundException.kt)                         |
+  | 422    | [`UnprocessableEntityException`](prelude-java-core/src/main/kotlin/so/prelude/sdk/errors/UnprocessableEntityException.kt)   |
+  | 429    | [`RateLimitException`](prelude-java-core/src/main/kotlin/so/prelude/sdk/errors/RateLimitException.kt)                       |
+  | 5xx    | [`InternalServerException`](prelude-java-core/src/main/kotlin/so/prelude/sdk/errors/InternalServerException.kt)             |
+  | others | [`UnexpectedStatusCodeException`](prelude-java-core/src/main/kotlin/so/prelude/sdk/errors/UnexpectedStatusCodeException.kt) |
 
 - [`PreludeIoException`](prelude-java-core/src/main/kotlin/so/prelude/sdk/errors/PreludeIoException.kt): I/O networking errors.
 
