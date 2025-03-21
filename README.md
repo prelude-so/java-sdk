@@ -7,7 +7,7 @@
 
 <!-- x-release-please-end -->
 
-The Prelude Java SDK provides convenient access to the Prelude REST API from applications written in Java.
+The Prelude Java SDK provides convenient access to the [Prelude REST API](https://docs.prelude.so) from applications written in Java.
 
 It is generated with [Stainless](https://www.stainless.com/).
 
@@ -31,9 +31,9 @@ implementation("so.prelude.sdk:prelude-java:0.2.0")
 
 ```xml
 <dependency>
-    <groupId>so.prelude.sdk</groupId>
-    <artifactId>prelude-java</artifactId>
-    <version>0.2.0</version>
+  <groupId>so.prelude.sdk</groupId>
+  <artifactId>prelude-java</artifactId>
+  <version>0.2.0</version>
 </dependency>
 ```
 
