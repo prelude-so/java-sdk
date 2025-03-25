@@ -7,45 +7,65 @@ import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.OffsetDateTime
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import so.prelude.sdk.core.ExcludeMissing
 import so.prelude.sdk.core.JsonField
 import so.prelude.sdk.core.JsonMissing
 import so.prelude.sdk.core.JsonValue
-import so.prelude.sdk.core.NoAutoDetect
 import so.prelude.sdk.core.checkRequired
-import so.prelude.sdk.core.immutableEmptyMap
-import so.prelude.sdk.core.toImmutable
 import so.prelude.sdk.errors.PreludeInvalidDataException
 
-@NoAutoDetect
 class TransactionalSendResponse
-@JsonCreator
 private constructor(
-    @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("created_at")
-    @ExcludeMissing
-    private val createdAt: JsonField<OffsetDateTime> = JsonMissing.of(),
-    @JsonProperty("expires_at")
-    @ExcludeMissing
-    private val expiresAt: JsonField<OffsetDateTime> = JsonMissing.of(),
-    @JsonProperty("template_id")
-    @ExcludeMissing
-    private val templateId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("to") @ExcludeMissing private val to: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("variables")
-    @ExcludeMissing
-    private val variables: JsonField<Variables> = JsonMissing.of(),
-    @JsonProperty("callback_url")
-    @ExcludeMissing
-    private val callbackUrl: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("correlation_id")
-    @ExcludeMissing
-    private val correlationId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("from") @ExcludeMissing private val from: JsonField<String> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val id: JsonField<String>,
+    private val createdAt: JsonField<OffsetDateTime>,
+    private val expiresAt: JsonField<OffsetDateTime>,
+    private val templateId: JsonField<String>,
+    private val to: JsonField<String>,
+    private val variables: JsonField<Variables>,
+    private val callbackUrl: JsonField<String>,
+    private val correlationId: JsonField<String>,
+    private val from: JsonField<String>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("created_at")
+        @ExcludeMissing
+        createdAt: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("expires_at")
+        @ExcludeMissing
+        expiresAt: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("template_id")
+        @ExcludeMissing
+        templateId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("to") @ExcludeMissing to: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("variables")
+        @ExcludeMissing
+        variables: JsonField<Variables> = JsonMissing.of(),
+        @JsonProperty("callback_url")
+        @ExcludeMissing
+        callbackUrl: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("correlation_id")
+        @ExcludeMissing
+        correlationId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("from") @ExcludeMissing from: JsonField<String> = JsonMissing.of(),
+    ) : this(
+        id,
+        createdAt,
+        expiresAt,
+        templateId,
+        to,
+        variables,
+        callbackUrl,
+        correlationId,
+        from,
+        mutableMapOf(),
+    )
 
     /**
      * The message identifier.
@@ -192,28 +212,15 @@ private constructor(
      */
     @JsonProperty("from") @ExcludeMissing fun _from(): JsonField<String> = from
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): TransactionalSendResponse = apply {
-        if (validated) {
-            return@apply
-        }
-
-        id()
-        createdAt()
-        expiresAt()
-        templateId()
-        to()
-        variables().validate()
-        callbackUrl()
-        correlationId()
-        from()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -417,32 +424,44 @@ private constructor(
                 callbackUrl,
                 correlationId,
                 from,
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
     }
 
+    private var validated: Boolean = false
+
+    fun validate(): TransactionalSendResponse = apply {
+        if (validated) {
+            return@apply
+        }
+
+        id()
+        createdAt()
+        expiresAt()
+        templateId()
+        to()
+        variables().validate()
+        callbackUrl()
+        correlationId()
+        from()
+        validated = true
+    }
+
     /** The variables to be replaced in the template. */
-    @NoAutoDetect
     class Variables
-    @JsonCreator
-    private constructor(
+    private constructor(private val additionalProperties: MutableMap<String, JsonValue>) {
+
+        @JsonCreator private constructor() : this(mutableMapOf())
+
         @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap()
-    ) {
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
 
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Variables = apply {
-            if (validated) {
-                return@apply
-            }
-
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -486,7 +505,17 @@ private constructor(
              *
              * Further updates to this [Builder] will not mutate the returned instance.
              */
-            fun build(): Variables = Variables(additionalProperties.toImmutable())
+            fun build(): Variables = Variables(additionalProperties.toMutableMap())
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Variables = apply {
+            if (validated) {
+                return@apply
+            }
+
+            validated = true
         }
 
         override fun equals(other: Any?): Boolean {

@@ -6,24 +6,25 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
+import java.util.Collections
 import java.util.Objects
 import so.prelude.sdk.core.ExcludeMissing
 import so.prelude.sdk.core.JsonField
 import so.prelude.sdk.core.JsonMissing
 import so.prelude.sdk.core.JsonValue
-import so.prelude.sdk.core.NoAutoDetect
 import so.prelude.sdk.core.checkRequired
-import so.prelude.sdk.core.immutableEmptyMap
-import so.prelude.sdk.core.toImmutable
 import so.prelude.sdk.errors.PreludeInvalidDataException
 
-@NoAutoDetect
 class WatchFeedBackResponse
-@JsonCreator
 private constructor(
-    @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val id: JsonField<String>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of()
+    ) : this(id, mutableMapOf())
 
     /**
      * A unique identifier for your feedback request.
@@ -40,20 +41,15 @@ private constructor(
      */
     @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): WatchFeedBackResponse = apply {
-        if (validated) {
-            return@apply
-        }
-
-        id()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -125,7 +121,18 @@ private constructor(
          * @throws IllegalStateException if any required field is unset.
          */
         fun build(): WatchFeedBackResponse =
-            WatchFeedBackResponse(checkRequired("id", id), additionalProperties.toImmutable())
+            WatchFeedBackResponse(checkRequired("id", id), additionalProperties.toMutableMap())
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): WatchFeedBackResponse = apply {
+        if (validated) {
+            return@apply
+        }
+
+        id()
+        validated = true
     }
 
     override fun equals(other: Any?): Boolean {

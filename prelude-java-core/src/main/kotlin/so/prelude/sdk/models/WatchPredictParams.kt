@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import so.prelude.sdk.core.Enum
@@ -13,13 +14,10 @@ import so.prelude.sdk.core.ExcludeMissing
 import so.prelude.sdk.core.JsonField
 import so.prelude.sdk.core.JsonMissing
 import so.prelude.sdk.core.JsonValue
-import so.prelude.sdk.core.NoAutoDetect
 import so.prelude.sdk.core.Params
 import so.prelude.sdk.core.checkRequired
 import so.prelude.sdk.core.http.Headers
 import so.prelude.sdk.core.http.QueryParams
-import so.prelude.sdk.core.immutableEmptyMap
-import so.prelude.sdk.core.toImmutable
 import so.prelude.sdk.errors.PreludeInvalidDataException
 
 /**
@@ -71,185 +69,6 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun _body(): Body = body
-
-    override fun _headers(): Headers = additionalHeaders
-
-    override fun _queryParams(): QueryParams = additionalQueryParams
-
-    @NoAutoDetect
-    class Body
-    @JsonCreator
-    private constructor(
-        @JsonProperty("target")
-        @ExcludeMissing
-        private val target: JsonField<Target> = JsonMissing.of(),
-        @JsonProperty("signals")
-        @ExcludeMissing
-        private val signals: JsonField<Signals> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-    ) {
-
-        /**
-         * The verification target. Either a phone number or an email address. To use the email
-         * verification feature contact us to discuss your use case.
-         *
-         * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun target(): Target = target.getRequired("target")
-
-        /**
-         * It is highly recommended that you provide the signals to increase prediction performance.
-         *
-         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun signals(): Optional<Signals> = Optional.ofNullable(signals.getNullable("signals"))
-
-        /**
-         * Returns the raw JSON value of [target].
-         *
-         * Unlike [target], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("target") @ExcludeMissing fun _target(): JsonField<Target> = target
-
-        /**
-         * Returns the raw JSON value of [signals].
-         *
-         * Unlike [signals], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("signals") @ExcludeMissing fun _signals(): JsonField<Signals> = signals
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Body = apply {
-            if (validated) {
-                return@apply
-            }
-
-            target().validate()
-            signals().ifPresent { it.validate() }
-            validated = true
-        }
-
-        fun toBuilder() = Builder().from(this)
-
-        companion object {
-
-            /**
-             * Returns a mutable builder for constructing an instance of [Body].
-             *
-             * The following fields are required:
-             * ```java
-             * .target()
-             * ```
-             */
-            @JvmStatic fun builder() = Builder()
-        }
-
-        /** A builder for [Body]. */
-        class Builder internal constructor() {
-
-            private var target: JsonField<Target>? = null
-            private var signals: JsonField<Signals> = JsonMissing.of()
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(body: Body) = apply {
-                target = body.target
-                signals = body.signals
-                additionalProperties = body.additionalProperties.toMutableMap()
-            }
-
-            /**
-             * The verification target. Either a phone number or an email address. To use the email
-             * verification feature contact us to discuss your use case.
-             */
-            fun target(target: Target) = target(JsonField.of(target))
-
-            /**
-             * Sets [Builder.target] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.target] with a well-typed [Target] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun target(target: JsonField<Target>) = apply { this.target = target }
-
-            /**
-             * It is highly recommended that you provide the signals to increase prediction
-             * performance.
-             */
-            fun signals(signals: Signals) = signals(JsonField.of(signals))
-
-            /**
-             * Sets [Builder.signals] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.signals] with a well-typed [Signals] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun signals(signals: JsonField<Signals>) = apply { this.signals = signals }
-
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
-
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
-
-            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
-
-            /**
-             * Returns an immutable instance of [Body].
-             *
-             * Further updates to this [Builder] will not mutate the returned instance.
-             *
-             * The following fields are required:
-             * ```java
-             * .target()
-             * ```
-             *
-             * @throws IllegalStateException if any required field is unset.
-             */
-            fun build(): Body =
-                Body(checkRequired("target", target), signals, additionalProperties.toImmutable())
-        }
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Body && target == other.target && signals == other.signals && additionalProperties == other.additionalProperties /* spotless:on */
-        }
-
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(target, signals, additionalProperties) }
-        /* spotless:on */
-
-        override fun hashCode(): Int = hashCode
-
-        override fun toString() =
-            "Body{target=$target, signals=$signals, additionalProperties=$additionalProperties}"
-    }
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -266,7 +85,6 @@ private constructor(
     }
 
     /** A builder for [WatchPredictParams]. */
-    @NoAutoDetect
     class Builder internal constructor() {
 
         private var body: Body.Builder = Body.builder()
@@ -444,21 +262,206 @@ private constructor(
             )
     }
 
+    @JvmSynthetic internal fun _body(): Body = body
+
+    override fun _headers(): Headers = additionalHeaders
+
+    override fun _queryParams(): QueryParams = additionalQueryParams
+
+    class Body
+    private constructor(
+        private val target: JsonField<Target>,
+        private val signals: JsonField<Signals>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
+    ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("target") @ExcludeMissing target: JsonField<Target> = JsonMissing.of(),
+            @JsonProperty("signals") @ExcludeMissing signals: JsonField<Signals> = JsonMissing.of(),
+        ) : this(target, signals, mutableMapOf())
+
+        /**
+         * The verification target. Either a phone number or an email address. To use the email
+         * verification feature contact us to discuss your use case.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun target(): Target = target.getRequired("target")
+
+        /**
+         * It is highly recommended that you provide the signals to increase prediction performance.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun signals(): Optional<Signals> = Optional.ofNullable(signals.getNullable("signals"))
+
+        /**
+         * Returns the raw JSON value of [target].
+         *
+         * Unlike [target], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("target") @ExcludeMissing fun _target(): JsonField<Target> = target
+
+        /**
+         * Returns the raw JSON value of [signals].
+         *
+         * Unlike [signals], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("signals") @ExcludeMissing fun _signals(): JsonField<Signals> = signals
+
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
+
+        fun toBuilder() = Builder().from(this)
+
+        companion object {
+
+            /**
+             * Returns a mutable builder for constructing an instance of [Body].
+             *
+             * The following fields are required:
+             * ```java
+             * .target()
+             * ```
+             */
+            @JvmStatic fun builder() = Builder()
+        }
+
+        /** A builder for [Body]. */
+        class Builder internal constructor() {
+
+            private var target: JsonField<Target>? = null
+            private var signals: JsonField<Signals> = JsonMissing.of()
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            @JvmSynthetic
+            internal fun from(body: Body) = apply {
+                target = body.target
+                signals = body.signals
+                additionalProperties = body.additionalProperties.toMutableMap()
+            }
+
+            /**
+             * The verification target. Either a phone number or an email address. To use the email
+             * verification feature contact us to discuss your use case.
+             */
+            fun target(target: Target) = target(JsonField.of(target))
+
+            /**
+             * Sets [Builder.target] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.target] with a well-typed [Target] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun target(target: JsonField<Target>) = apply { this.target = target }
+
+            /**
+             * It is highly recommended that you provide the signals to increase prediction
+             * performance.
+             */
+            fun signals(signals: Signals) = signals(JsonField.of(signals))
+
+            /**
+             * Sets [Builder.signals] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.signals] with a well-typed [Signals] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun signals(signals: JsonField<Signals>) = apply { this.signals = signals }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
+
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
+            /**
+             * Returns an immutable instance of [Body].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```java
+             * .target()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
+             */
+            fun build(): Body =
+                Body(checkRequired("target", target), signals, additionalProperties.toMutableMap())
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Body = apply {
+            if (validated) {
+                return@apply
+            }
+
+            target().validate()
+            signals().ifPresent { it.validate() }
+            validated = true
+        }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Body && target == other.target && signals == other.signals && additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(target, signals, additionalProperties) }
+        /* spotless:on */
+
+        override fun hashCode(): Int = hashCode
+
+        override fun toString() =
+            "Body{target=$target, signals=$signals, additionalProperties=$additionalProperties}"
+    }
+
     /**
      * The verification target. Either a phone number or an email address. To use the email
      * verification feature contact us to discuss your use case.
      */
-    @NoAutoDetect
     class Target
-    @JsonCreator
     private constructor(
-        @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
-        @JsonProperty("value")
-        @ExcludeMissing
-        private val value: JsonField<String> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val type: JsonField<Type>,
+        private val value: JsonField<String>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("type") @ExcludeMissing type: JsonField<Type> = JsonMissing.of(),
+            @JsonProperty("value") @ExcludeMissing value: JsonField<String> = JsonMissing.of(),
+        ) : this(type, value, mutableMapOf())
 
         /**
          * The type of the target. Either "phone_number" or "email_address".
@@ -490,21 +493,15 @@ private constructor(
          */
         @JsonProperty("value") @ExcludeMissing fun _value(): JsonField<String> = value
 
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Target = apply {
-            if (validated) {
-                return@apply
-            }
-
-            type()
-            value()
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -596,8 +593,20 @@ private constructor(
                 Target(
                     checkRequired("type", type),
                     checkRequired("value", value),
-                    additionalProperties.toImmutable(),
+                    additionalProperties.toMutableMap(),
                 )
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Target = apply {
+            if (validated) {
+                return@apply
+            }
+
+            type()
+            value()
+            validated = true
         }
 
         /** The type of the target. Either "phone_number" or "email_address". */
@@ -720,23 +729,28 @@ private constructor(
     }
 
     /** It is highly recommended that you provide the signals to increase prediction performance. */
-    @NoAutoDetect
     class Signals
-    @JsonCreator
     private constructor(
-        @JsonProperty("device_id")
-        @ExcludeMissing
-        private val deviceId: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("device_model")
-        @ExcludeMissing
-        private val deviceModel: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("device_type")
-        @ExcludeMissing
-        private val deviceType: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("ip") @ExcludeMissing private val ip: JsonField<String> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val deviceId: JsonField<String>,
+        private val deviceModel: JsonField<String>,
+        private val deviceType: JsonField<String>,
+        private val ip: JsonField<String>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("device_id")
+            @ExcludeMissing
+            deviceId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("device_model")
+            @ExcludeMissing
+            deviceModel: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("device_type")
+            @ExcludeMissing
+            deviceType: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("ip") @ExcludeMissing ip: JsonField<String> = JsonMissing.of(),
+        ) : this(deviceId, deviceModel, deviceType, ip, mutableMapOf())
 
         /**
          * The unique identifier for the user's device. For Android, this corresponds to the
@@ -805,23 +819,15 @@ private constructor(
          */
         @JsonProperty("ip") @ExcludeMissing fun _ip(): JsonField<String> = ip
 
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Signals = apply {
-            if (validated) {
-                return@apply
-            }
-
-            deviceId()
-            deviceModel()
-            deviceType()
-            ip()
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -927,7 +933,21 @@ private constructor(
              * Further updates to this [Builder] will not mutate the returned instance.
              */
             fun build(): Signals =
-                Signals(deviceId, deviceModel, deviceType, ip, additionalProperties.toImmutable())
+                Signals(deviceId, deviceModel, deviceType, ip, additionalProperties.toMutableMap())
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Signals = apply {
+            if (validated) {
+                return@apply
+            }
+
+            deviceId()
+            deviceModel()
+            deviceType()
+            ip()
+            validated = true
         }
 
         override fun equals(other: Any?): Boolean {
