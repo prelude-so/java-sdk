@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import so.prelude.sdk.core.Enum
@@ -13,25 +14,27 @@ import so.prelude.sdk.core.ExcludeMissing
 import so.prelude.sdk.core.JsonField
 import so.prelude.sdk.core.JsonMissing
 import so.prelude.sdk.core.JsonValue
-import so.prelude.sdk.core.NoAutoDetect
 import so.prelude.sdk.core.checkRequired
-import so.prelude.sdk.core.immutableEmptyMap
-import so.prelude.sdk.core.toImmutable
 import so.prelude.sdk.errors.PreludeInvalidDataException
 
-@NoAutoDetect
 class WatchPredictResponse
-@JsonCreator
 private constructor(
-    @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("prediction")
-    @ExcludeMissing
-    private val prediction: JsonField<Prediction> = JsonMissing.of(),
-    @JsonProperty("reasoning")
-    @ExcludeMissing
-    private val reasoning: JsonField<Reasoning> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val id: JsonField<String>,
+    private val prediction: JsonField<Prediction>,
+    private val reasoning: JsonField<Reasoning>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("prediction")
+        @ExcludeMissing
+        prediction: JsonField<Prediction> = JsonMissing.of(),
+        @JsonProperty("reasoning")
+        @ExcludeMissing
+        reasoning: JsonField<Reasoning> = JsonMissing.of(),
+    ) : this(id, prediction, reasoning, mutableMapOf())
 
     /**
      * A unique identifier for your prediction request.
@@ -78,22 +81,15 @@ private constructor(
      */
     @JsonProperty("reasoning") @ExcludeMissing fun _reasoning(): JsonField<Reasoning> = reasoning
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): WatchPredictResponse = apply {
-        if (validated) {
-            return@apply
-        }
-
-        id()
-        prediction()
-        reasoning().validate()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -200,8 +196,21 @@ private constructor(
                 checkRequired("id", id),
                 checkRequired("prediction", prediction),
                 checkRequired("reasoning", reasoning),
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): WatchPredictResponse = apply {
+        if (validated) {
+            return@apply
+        }
+
+        id()
+        prediction()
+        reasoning().validate()
+        validated = true
     }
 
     /** A label indicating the trustworthiness of the phone number. */
@@ -305,19 +314,18 @@ private constructor(
         override fun toString() = value.toString()
     }
 
-    @NoAutoDetect
     class Reasoning
-    @JsonCreator
     private constructor(
-        @JsonProperty("cause")
-        @ExcludeMissing
-        private val cause: JsonField<Cause> = JsonMissing.of(),
-        @JsonProperty("score")
-        @ExcludeMissing
-        private val score: JsonField<Double> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val cause: JsonField<Cause>,
+        private val score: JsonField<Double>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("cause") @ExcludeMissing cause: JsonField<Cause> = JsonMissing.of(),
+            @JsonProperty("score") @ExcludeMissing score: JsonField<Double> = JsonMissing.of(),
+        ) : this(cause, score, mutableMapOf())
 
         /**
          * A label explaining why the phone number was classified as not trustworthy
@@ -350,21 +358,15 @@ private constructor(
          */
         @JsonProperty("score") @ExcludeMissing fun _score(): JsonField<Double> = score
 
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Reasoning = apply {
-            if (validated) {
-                return@apply
-            }
-
-            cause()
-            score()
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -439,7 +441,19 @@ private constructor(
              *
              * Further updates to this [Builder] will not mutate the returned instance.
              */
-            fun build(): Reasoning = Reasoning(cause, score, additionalProperties.toImmutable())
+            fun build(): Reasoning = Reasoning(cause, score, additionalProperties.toMutableMap())
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Reasoning = apply {
+            if (validated) {
+                return@apply
+            }
+
+            cause()
+            score()
+            validated = true
         }
 
         /** A label explaining why the phone number was classified as not trustworthy */

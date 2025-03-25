@@ -6,19 +6,17 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
+import java.util.Collections
 import java.util.Objects
 import so.prelude.sdk.core.Enum
 import so.prelude.sdk.core.ExcludeMissing
 import so.prelude.sdk.core.JsonField
 import so.prelude.sdk.core.JsonMissing
 import so.prelude.sdk.core.JsonValue
-import so.prelude.sdk.core.NoAutoDetect
 import so.prelude.sdk.core.Params
 import so.prelude.sdk.core.checkRequired
 import so.prelude.sdk.core.http.Headers
 import so.prelude.sdk.core.http.QueryParams
-import so.prelude.sdk.core.immutableEmptyMap
-import so.prelude.sdk.core.toImmutable
 import so.prelude.sdk.errors.PreludeInvalidDataException
 
 /**
@@ -70,192 +68,6 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun _body(): Body = body
-
-    override fun _headers(): Headers = additionalHeaders
-
-    override fun _queryParams(): QueryParams = additionalQueryParams
-
-    @NoAutoDetect
-    class Body
-    @JsonCreator
-    private constructor(
-        @JsonProperty("feedback")
-        @ExcludeMissing
-        private val feedback: JsonField<Feedback> = JsonMissing.of(),
-        @JsonProperty("target")
-        @ExcludeMissing
-        private val target: JsonField<Target> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-    ) {
-
-        /**
-         * You should send a feedback event back to Watch API when your user demonstrates authentic
-         * behavior.
-         *
-         * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun feedback(): Feedback = feedback.getRequired("feedback")
-
-        /**
-         * The verification target. Either a phone number or an email address. To use the email
-         * verification feature contact us to discuss your use case.
-         *
-         * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun target(): Target = target.getRequired("target")
-
-        /**
-         * Returns the raw JSON value of [feedback].
-         *
-         * Unlike [feedback], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("feedback") @ExcludeMissing fun _feedback(): JsonField<Feedback> = feedback
-
-        /**
-         * Returns the raw JSON value of [target].
-         *
-         * Unlike [target], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("target") @ExcludeMissing fun _target(): JsonField<Target> = target
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Body = apply {
-            if (validated) {
-                return@apply
-            }
-
-            feedback().validate()
-            target().validate()
-            validated = true
-        }
-
-        fun toBuilder() = Builder().from(this)
-
-        companion object {
-
-            /**
-             * Returns a mutable builder for constructing an instance of [Body].
-             *
-             * The following fields are required:
-             * ```java
-             * .feedback()
-             * .target()
-             * ```
-             */
-            @JvmStatic fun builder() = Builder()
-        }
-
-        /** A builder for [Body]. */
-        class Builder internal constructor() {
-
-            private var feedback: JsonField<Feedback>? = null
-            private var target: JsonField<Target>? = null
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(body: Body) = apply {
-                feedback = body.feedback
-                target = body.target
-                additionalProperties = body.additionalProperties.toMutableMap()
-            }
-
-            /**
-             * You should send a feedback event back to Watch API when your user demonstrates
-             * authentic behavior.
-             */
-            fun feedback(feedback: Feedback) = feedback(JsonField.of(feedback))
-
-            /**
-             * Sets [Builder.feedback] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.feedback] with a well-typed [Feedback] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun feedback(feedback: JsonField<Feedback>) = apply { this.feedback = feedback }
-
-            /**
-             * The verification target. Either a phone number or an email address. To use the email
-             * verification feature contact us to discuss your use case.
-             */
-            fun target(target: Target) = target(JsonField.of(target))
-
-            /**
-             * Sets [Builder.target] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.target] with a well-typed [Target] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun target(target: JsonField<Target>) = apply { this.target = target }
-
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
-
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
-
-            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
-
-            /**
-             * Returns an immutable instance of [Body].
-             *
-             * Further updates to this [Builder] will not mutate the returned instance.
-             *
-             * The following fields are required:
-             * ```java
-             * .feedback()
-             * .target()
-             * ```
-             *
-             * @throws IllegalStateException if any required field is unset.
-             */
-            fun build(): Body =
-                Body(
-                    checkRequired("feedback", feedback),
-                    checkRequired("target", target),
-                    additionalProperties.toImmutable(),
-                )
-        }
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Body && feedback == other.feedback && target == other.target && additionalProperties == other.additionalProperties /* spotless:on */
-        }
-
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(feedback, target, additionalProperties) }
-        /* spotless:on */
-
-        override fun hashCode(): Int = hashCode
-
-        override fun toString() =
-            "Body{feedback=$feedback, target=$target, additionalProperties=$additionalProperties}"
-    }
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -273,7 +85,6 @@ private constructor(
     }
 
     /** A builder for [WatchFeedBackParams]. */
-    @NoAutoDetect
     class Builder internal constructor() {
 
         private var body: Body.Builder = Body.builder()
@@ -454,18 +265,213 @@ private constructor(
             )
     }
 
+    @JvmSynthetic internal fun _body(): Body = body
+
+    override fun _headers(): Headers = additionalHeaders
+
+    override fun _queryParams(): QueryParams = additionalQueryParams
+
+    class Body
+    private constructor(
+        private val feedback: JsonField<Feedback>,
+        private val target: JsonField<Target>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
+    ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("feedback")
+            @ExcludeMissing
+            feedback: JsonField<Feedback> = JsonMissing.of(),
+            @JsonProperty("target") @ExcludeMissing target: JsonField<Target> = JsonMissing.of(),
+        ) : this(feedback, target, mutableMapOf())
+
+        /**
+         * You should send a feedback event back to Watch API when your user demonstrates authentic
+         * behavior.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun feedback(): Feedback = feedback.getRequired("feedback")
+
+        /**
+         * The verification target. Either a phone number or an email address. To use the email
+         * verification feature contact us to discuss your use case.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun target(): Target = target.getRequired("target")
+
+        /**
+         * Returns the raw JSON value of [feedback].
+         *
+         * Unlike [feedback], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("feedback") @ExcludeMissing fun _feedback(): JsonField<Feedback> = feedback
+
+        /**
+         * Returns the raw JSON value of [target].
+         *
+         * Unlike [target], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("target") @ExcludeMissing fun _target(): JsonField<Target> = target
+
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
+
+        fun toBuilder() = Builder().from(this)
+
+        companion object {
+
+            /**
+             * Returns a mutable builder for constructing an instance of [Body].
+             *
+             * The following fields are required:
+             * ```java
+             * .feedback()
+             * .target()
+             * ```
+             */
+            @JvmStatic fun builder() = Builder()
+        }
+
+        /** A builder for [Body]. */
+        class Builder internal constructor() {
+
+            private var feedback: JsonField<Feedback>? = null
+            private var target: JsonField<Target>? = null
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            @JvmSynthetic
+            internal fun from(body: Body) = apply {
+                feedback = body.feedback
+                target = body.target
+                additionalProperties = body.additionalProperties.toMutableMap()
+            }
+
+            /**
+             * You should send a feedback event back to Watch API when your user demonstrates
+             * authentic behavior.
+             */
+            fun feedback(feedback: Feedback) = feedback(JsonField.of(feedback))
+
+            /**
+             * Sets [Builder.feedback] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.feedback] with a well-typed [Feedback] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun feedback(feedback: JsonField<Feedback>) = apply { this.feedback = feedback }
+
+            /**
+             * The verification target. Either a phone number or an email address. To use the email
+             * verification feature contact us to discuss your use case.
+             */
+            fun target(target: Target) = target(JsonField.of(target))
+
+            /**
+             * Sets [Builder.target] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.target] with a well-typed [Target] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun target(target: JsonField<Target>) = apply { this.target = target }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
+
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
+            /**
+             * Returns an immutable instance of [Body].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```java
+             * .feedback()
+             * .target()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
+             */
+            fun build(): Body =
+                Body(
+                    checkRequired("feedback", feedback),
+                    checkRequired("target", target),
+                    additionalProperties.toMutableMap(),
+                )
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Body = apply {
+            if (validated) {
+                return@apply
+            }
+
+            feedback().validate()
+            target().validate()
+            validated = true
+        }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Body && feedback == other.feedback && target == other.target && additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(feedback, target, additionalProperties) }
+        /* spotless:on */
+
+        override fun hashCode(): Int = hashCode
+
+        override fun toString() =
+            "Body{feedback=$feedback, target=$target, additionalProperties=$additionalProperties}"
+    }
+
     /**
      * You should send a feedback event back to Watch API when your user demonstrates authentic
      * behavior.
      */
-    @NoAutoDetect
     class Feedback
-    @JsonCreator
     private constructor(
-        @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val type: JsonField<Type>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("type") @ExcludeMissing type: JsonField<Type> = JsonMissing.of()
+        ) : this(type, mutableMapOf())
 
         /**
          * `CONFIRM_TARGET` should be sent when you are sure that the user with this target (e.g.
@@ -483,20 +489,15 @@ private constructor(
          */
         @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Feedback = apply {
-            if (validated) {
-                return@apply
-            }
-
-            type()
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -572,7 +573,18 @@ private constructor(
              * @throws IllegalStateException if any required field is unset.
              */
             fun build(): Feedback =
-                Feedback(checkRequired("type", type), additionalProperties.toImmutable())
+                Feedback(checkRequired("type", type), additionalProperties.toMutableMap())
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Feedback = apply {
+            if (validated) {
+                return@apply
+            }
+
+            type()
+            validated = true
         }
 
         /**
@@ -694,17 +706,18 @@ private constructor(
      * The verification target. Either a phone number or an email address. To use the email
      * verification feature contact us to discuss your use case.
      */
-    @NoAutoDetect
     class Target
-    @JsonCreator
     private constructor(
-        @JsonProperty("type") @ExcludeMissing private val type: JsonField<Type> = JsonMissing.of(),
-        @JsonProperty("value")
-        @ExcludeMissing
-        private val value: JsonField<String> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val type: JsonField<Type>,
+        private val value: JsonField<String>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("type") @ExcludeMissing type: JsonField<Type> = JsonMissing.of(),
+            @JsonProperty("value") @ExcludeMissing value: JsonField<String> = JsonMissing.of(),
+        ) : this(type, value, mutableMapOf())
 
         /**
          * The type of the target. Either "phone_number" or "email_address".
@@ -736,21 +749,15 @@ private constructor(
          */
         @JsonProperty("value") @ExcludeMissing fun _value(): JsonField<String> = value
 
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Target = apply {
-            if (validated) {
-                return@apply
-            }
-
-            type()
-            value()
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -842,8 +849,20 @@ private constructor(
                 Target(
                     checkRequired("type", type),
                     checkRequired("value", value),
-                    additionalProperties.toImmutable(),
+                    additionalProperties.toMutableMap(),
                 )
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Target = apply {
+            if (validated) {
+                return@apply
+            }
+
+            type()
+            value()
+            validated = true
         }
 
         /** The type of the target. Either "phone_number" or "email_address". */
