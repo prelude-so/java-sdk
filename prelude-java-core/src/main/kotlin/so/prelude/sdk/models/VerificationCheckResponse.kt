@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import so.prelude.sdk.core.Enum
@@ -13,28 +14,25 @@ import so.prelude.sdk.core.ExcludeMissing
 import so.prelude.sdk.core.JsonField
 import so.prelude.sdk.core.JsonMissing
 import so.prelude.sdk.core.JsonValue
-import so.prelude.sdk.core.NoAutoDetect
 import so.prelude.sdk.core.checkRequired
-import so.prelude.sdk.core.immutableEmptyMap
-import so.prelude.sdk.core.toImmutable
 import so.prelude.sdk.errors.PreludeInvalidDataException
 
-@NoAutoDetect
 class VerificationCheckResponse
-@JsonCreator
 private constructor(
-    @JsonProperty("status")
-    @ExcludeMissing
-    private val status: JsonField<Status> = JsonMissing.of(),
-    @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("metadata")
-    @ExcludeMissing
-    private val metadata: JsonField<Metadata> = JsonMissing.of(),
-    @JsonProperty("request_id")
-    @ExcludeMissing
-    private val requestId: JsonField<String> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val status: JsonField<Status>,
+    private val id: JsonField<String>,
+    private val metadata: JsonField<Metadata>,
+    private val requestId: JsonField<String>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("status") @ExcludeMissing status: JsonField<Status> = JsonMissing.of(),
+        @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("metadata") @ExcludeMissing metadata: JsonField<Metadata> = JsonMissing.of(),
+        @JsonProperty("request_id") @ExcludeMissing requestId: JsonField<String> = JsonMissing.of(),
+    ) : this(status, id, metadata, requestId, mutableMapOf())
 
     /**
      * The status of the check.
@@ -94,23 +92,15 @@ private constructor(
      */
     @JsonProperty("request_id") @ExcludeMissing fun _requestId(): JsonField<String> = requestId
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): VerificationCheckResponse = apply {
-        if (validated) {
-            return@apply
-        }
-
-        status()
-        id()
-        metadata().ifPresent { it.validate() }
-        requestId()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -227,8 +217,22 @@ private constructor(
                 id,
                 metadata,
                 requestId,
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): VerificationCheckResponse = apply {
+        if (validated) {
+            return@apply
+        }
+
+        status()
+        id()
+        metadata().ifPresent { it.validate() }
+        requestId()
+        validated = true
     }
 
     /** The status of the check. */
@@ -337,16 +341,18 @@ private constructor(
     }
 
     /** The metadata for this verification. */
-    @NoAutoDetect
     class Metadata
-    @JsonCreator
     private constructor(
-        @JsonProperty("correlation_id")
-        @ExcludeMissing
-        private val correlationId: JsonField<String> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val correlationId: JsonField<String>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("correlation_id")
+            @ExcludeMissing
+            correlationId: JsonField<String> = JsonMissing.of()
+        ) : this(correlationId, mutableMapOf())
 
         /**
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -365,20 +371,15 @@ private constructor(
         @ExcludeMissing
         fun _correlationId(): JsonField<String> = correlationId
 
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Metadata = apply {
-            if (validated) {
-                return@apply
-            }
-
-            correlationId()
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -437,7 +438,18 @@ private constructor(
              *
              * Further updates to this [Builder] will not mutate the returned instance.
              */
-            fun build(): Metadata = Metadata(correlationId, additionalProperties.toImmutable())
+            fun build(): Metadata = Metadata(correlationId, additionalProperties.toMutableMap())
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Metadata = apply {
+            if (validated) {
+                return@apply
+            }
+
+            correlationId()
+            validated = true
         }
 
         override fun equals(other: Any?): Boolean {
