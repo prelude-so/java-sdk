@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Collections
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 import so.prelude.sdk.core.Enum
 import so.prelude.sdk.core.ExcludeMissing
 import so.prelude.sdk.core.JsonField
@@ -208,10 +209,29 @@ private constructor(
         }
 
         id()
-        prediction()
+        prediction().validate()
         reasoning().validate()
         validated = true
     }
+
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: PreludeInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    @JvmSynthetic
+    internal fun validity(): Int =
+        (if (id.asKnown().isPresent) 1 else 0) +
+            (prediction.asKnown().getOrNull()?.validity() ?: 0) +
+            (reasoning.asKnown().getOrNull()?.validity() ?: 0)
 
     /** A label indicating the trustworthiness of the phone number. */
     class Prediction @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
@@ -300,6 +320,33 @@ private constructor(
          */
         fun asString(): String =
             _value().asString().orElseThrow { PreludeInvalidDataException("Value is not a String") }
+
+        private var validated: Boolean = false
+
+        fun validate(): Prediction = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: PreludeInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -451,10 +498,29 @@ private constructor(
                 return@apply
             }
 
-            cause()
+            cause().ifPresent { it.validate() }
             score()
             validated = true
         }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: PreludeInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (cause.asKnown().getOrNull()?.validity() ?: 0) +
+                (if (score.asKnown().isPresent) 1 else 0)
 
         /** A label explaining why the phone number was classified as not trustworthy */
         class Cause @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
@@ -557,6 +623,33 @@ private constructor(
                 _value().asString().orElseThrow {
                     PreludeInvalidDataException("Value is not a String")
                 }
+
+            private var validated: Boolean = false
+
+            fun validate(): Cause = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                known()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: PreludeInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {

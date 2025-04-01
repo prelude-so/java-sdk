@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Collections
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 import so.prelude.sdk.core.Enum
 import so.prelude.sdk.core.ExcludeMissing
 import so.prelude.sdk.core.JsonField
@@ -630,6 +631,28 @@ private constructor(
             validated = true
         }
 
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: PreludeInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (target.asKnown().getOrNull()?.validity() ?: 0) +
+                (if (dispatchId.asKnown().isPresent) 1 else 0) +
+                (metadata.asKnown().getOrNull()?.validity() ?: 0) +
+                (options.asKnown().getOrNull()?.validity() ?: 0) +
+                (signals.asKnown().getOrNull()?.validity() ?: 0)
+
         override fun equals(other: Any?): Boolean {
             if (this === other) {
                 return true
@@ -806,10 +829,29 @@ private constructor(
                 return@apply
             }
 
-            type()
+            type().validate()
             value()
             validated = true
         }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: PreludeInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (type.asKnown().getOrNull()?.validity() ?: 0) +
+                (if (value.asKnown().isPresent) 1 else 0)
 
         /** The type of the target. Either "phone_number" or "email_address". */
         class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
@@ -898,6 +940,33 @@ private constructor(
                 _value().asString().orElseThrow {
                     PreludeInvalidDataException("Value is not a String")
                 }
+
+            private var validated: Boolean = false
+
+            fun validate(): Type = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                known()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: PreludeInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
@@ -1047,6 +1116,23 @@ private constructor(
             correlationId()
             validated = true
         }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: PreludeInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int = (if (correlationId.asKnown().isPresent) 1 else 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -1476,6 +1562,31 @@ private constructor(
             validated = true
         }
 
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: PreludeInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (appRealm.asKnown().getOrNull()?.validity() ?: 0) +
+                (if (callbackUrl.asKnown().isPresent) 1 else 0) +
+                (if (codeSize.asKnown().isPresent) 1 else 0) +
+                (if (customCode.asKnown().isPresent) 1 else 0) +
+                (if (locale.asKnown().isPresent) 1 else 0) +
+                (if (senderId.asKnown().isPresent) 1 else 0) +
+                (if (templateId.asKnown().isPresent) 1 else 0) +
+                (variables.asKnown().getOrNull()?.validity() ?: 0)
+
         /**
          * This allows you to automatically retrieve and fill the OTP code on mobile apps. Currently
          * only Android devices are supported.
@@ -1646,10 +1757,29 @@ private constructor(
                     return@apply
                 }
 
-                platform()
+                platform().validate()
                 value()
                 validated = true
             }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: PreludeInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic
+            internal fun validity(): Int =
+                (platform.asKnown().getOrNull()?.validity() ?: 0) +
+                    (if (value.asKnown().isPresent) 1 else 0)
 
             /** The platform the SMS will be sent to. We are currently only supporting "android". */
             class Platform @JsonCreator private constructor(private val value: JsonField<String>) :
@@ -1736,6 +1866,33 @@ private constructor(
                     _value().asString().orElseThrow {
                         PreludeInvalidDataException("Value is not a String")
                     }
+
+                private var validated: Boolean = false
+
+                fun validate(): Platform = apply {
+                    if (validated) {
+                        return@apply
+                    }
+
+                    known()
+                    validated = true
+                }
+
+                fun isValid(): Boolean =
+                    try {
+                        validate()
+                        true
+                    } catch (e: PreludeInvalidDataException) {
+                        false
+                    }
+
+                /**
+                 * Returns a score indicating how many valid values are contained in this object
+                 * recursively.
+                 *
+                 * Used for best match union deserialization.
+                 */
+                @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
                 override fun equals(other: Any?): Boolean {
                     if (this === other) {
@@ -1837,6 +1994,24 @@ private constructor(
 
                 validated = true
             }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: PreludeInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic
+            internal fun validity(): Int =
+                additionalProperties.count { (_, value) -> !value.isNull() && !value.isMissing() }
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
@@ -2269,13 +2444,38 @@ private constructor(
             appVersion()
             deviceId()
             deviceModel()
-            devicePlatform()
+            devicePlatform().ifPresent { it.validate() }
             ip()
             isTrustedUser()
             osVersion()
             userAgent()
             validated = true
         }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: PreludeInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (if (appVersion.asKnown().isPresent) 1 else 0) +
+                (if (deviceId.asKnown().isPresent) 1 else 0) +
+                (if (deviceModel.asKnown().isPresent) 1 else 0) +
+                (devicePlatform.asKnown().getOrNull()?.validity() ?: 0) +
+                (if (ip.asKnown().isPresent) 1 else 0) +
+                (if (isTrustedUser.asKnown().isPresent) 1 else 0) +
+                (if (osVersion.asKnown().isPresent) 1 else 0) +
+                (if (userAgent.asKnown().isPresent) 1 else 0)
 
         /** The type of the user's device. */
         class DevicePlatform
@@ -2387,6 +2587,33 @@ private constructor(
                 _value().asString().orElseThrow {
                     PreludeInvalidDataException("Value is not a String")
                 }
+
+            private var validated: Boolean = false
+
+            fun validate(): DevicePlatform = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                known()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: PreludeInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
