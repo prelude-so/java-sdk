@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Collections
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 import so.prelude.sdk.core.Enum
 import so.prelude.sdk.core.ExcludeMissing
 import so.prelude.sdk.core.JsonField
@@ -428,6 +429,25 @@ private constructor(
             validated = true
         }
 
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: PreludeInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (target.asKnown().getOrNull()?.validity() ?: 0) +
+                (signals.asKnown().getOrNull()?.validity() ?: 0)
+
         override fun equals(other: Any?): Boolean {
             if (this === other) {
                 return true
@@ -604,10 +624,29 @@ private constructor(
                 return@apply
             }
 
-            type()
+            type().validate()
             value()
             validated = true
         }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: PreludeInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (type.asKnown().getOrNull()?.validity() ?: 0) +
+                (if (value.asKnown().isPresent) 1 else 0)
 
         /** The type of the target. Either "phone_number" or "email_address". */
         class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
@@ -696,6 +735,33 @@ private constructor(
                 _value().asString().orElseThrow {
                     PreludeInvalidDataException("Value is not a String")
                 }
+
+            private var validated: Boolean = false
+
+            fun validate(): Type = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                known()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: PreludeInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
@@ -949,6 +1015,27 @@ private constructor(
             ip()
             validated = true
         }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: PreludeInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (if (deviceId.asKnown().isPresent) 1 else 0) +
+                (if (deviceModel.asKnown().isPresent) 1 else 0) +
+                (if (deviceType.asKnown().isPresent) 1 else 0) +
+                (if (ip.asKnown().isPresent) 1 else 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
