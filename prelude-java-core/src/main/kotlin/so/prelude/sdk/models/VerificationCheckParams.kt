@@ -95,6 +95,16 @@ private constructor(
             additionalQueryParams = verificationCheckParams.additionalQueryParams.toBuilder()
         }
 
+        /**
+         * Sets the entire request body.
+         *
+         * This is generally only useful if you are already constructing the body separately.
+         * Otherwise, it's more convenient to use the top-level setters instead:
+         * - [code]
+         * - [target]
+         */
+        fun body(body: Body) = apply { this.body = body.toBuilder() }
+
         /** The OTP code to validate. */
         fun code(code: String) = apply { body.code(code) }
 
@@ -258,7 +268,7 @@ private constructor(
             )
     }
 
-    @JvmSynthetic internal fun _body(): Body = body
+    fun _body(): Body = body
 
     override fun _headers(): Headers = additionalHeaders
 
