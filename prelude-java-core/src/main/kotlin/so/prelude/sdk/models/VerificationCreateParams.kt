@@ -408,8 +408,7 @@ private constructor(
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun dispatchId(): Optional<String> =
-            Optional.ofNullable(dispatchId.getNullable("dispatch_id"))
+        fun dispatchId(): Optional<String> = dispatchId.getOptional("dispatch_id")
 
         /**
          * The metadata for this verification. This object will be returned with every response or
@@ -418,7 +417,7 @@ private constructor(
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata.getNullable("metadata"))
+        fun metadata(): Optional<Metadata> = metadata.getOptional("metadata")
 
         /**
          * Verification options
@@ -426,7 +425,7 @@ private constructor(
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun options(): Optional<Options> = Optional.ofNullable(options.getNullable("options"))
+        fun options(): Optional<Options> = options.getOptional("options")
 
         /**
          * The signals used for anti-fraud. For more details, refer to
@@ -435,7 +434,7 @@ private constructor(
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun signals(): Optional<Signals> = Optional.ofNullable(signals.getNullable("signals"))
+        fun signals(): Optional<Signals> = signals.getOptional("signals")
 
         /**
          * Returns the raw JSON value of [target].
@@ -1036,8 +1035,7 @@ private constructor(
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun correlationId(): Optional<String> =
-            Optional.ofNullable(correlationId.getNullable("correlation_id"))
+        fun correlationId(): Optional<String> = correlationId.getOptional("correlation_id")
 
         /**
          * Returns the raw JSON value of [correlationId].
@@ -1221,7 +1219,7 @@ private constructor(
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun appRealm(): Optional<AppRealm> = Optional.ofNullable(appRealm.getNullable("app_realm"))
+        fun appRealm(): Optional<AppRealm> = appRealm.getOptional("app_realm")
 
         /**
          * The URL where webhooks will be sent when verification events occur, including
@@ -1231,8 +1229,7 @@ private constructor(
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun callbackUrl(): Optional<String> =
-            Optional.ofNullable(callbackUrl.getNullable("callback_url"))
+        fun callbackUrl(): Optional<String> = callbackUrl.getOptional("callback_url")
 
         /**
          * The size of the code generated. It should be between 4 and 8. Defaults to the code size
@@ -1241,7 +1238,7 @@ private constructor(
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun codeSize(): Optional<Long> = Optional.ofNullable(codeSize.getNullable("code_size"))
+        fun codeSize(): Optional<Long> = codeSize.getOptional("code_size")
 
         /**
          * The custom code to use for OTP verification. This feature is only available for
@@ -1251,8 +1248,7 @@ private constructor(
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun customCode(): Optional<String> =
-            Optional.ofNullable(customCode.getNullable("custom_code"))
+        fun customCode(): Optional<String> = customCode.getOptional("custom_code")
 
         /**
          * A BCP-47 formatted locale string with the language the text message will be sent to. If
@@ -1262,7 +1258,7 @@ private constructor(
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun locale(): Optional<String> = Optional.ofNullable(locale.getNullable("locale"))
+        fun locale(): Optional<String> = locale.getOptional("locale")
 
         /**
          * The Sender ID to use for this message. The Sender ID needs to be enabled by Prelude.
@@ -1270,7 +1266,7 @@ private constructor(
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun senderId(): Optional<String> = Optional.ofNullable(senderId.getNullable("sender_id"))
+        fun senderId(): Optional<String> = senderId.getOptional("sender_id")
 
         /**
          * The identifier of a verification template. It applies use case-specific settings, such as
@@ -1279,8 +1275,7 @@ private constructor(
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun templateId(): Optional<String> =
-            Optional.ofNullable(templateId.getNullable("template_id"))
+        fun templateId(): Optional<String> = templateId.getOptional("template_id")
 
         /**
          * The variables to be replaced in the template.
@@ -1288,8 +1283,7 @@ private constructor(
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun variables(): Optional<Variables> =
-            Optional.ofNullable(variables.getNullable("variables"))
+        fun variables(): Optional<Variables> = variables.getOptional("variables")
 
         /**
          * Returns the raw JSON value of [appRealm].
@@ -2121,8 +2115,7 @@ private constructor(
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun appVersion(): Optional<String> =
-            Optional.ofNullable(appVersion.getNullable("app_version"))
+        fun appVersion(): Optional<String> = appVersion.getOptional("app_version")
 
         /**
          * The unique identifier for the user's device. For Android, this corresponds to the
@@ -2131,7 +2124,7 @@ private constructor(
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun deviceId(): Optional<String> = Optional.ofNullable(deviceId.getNullable("device_id"))
+        fun deviceId(): Optional<String> = deviceId.getOptional("device_id")
 
         /**
          * The model of the user's device.
@@ -2139,8 +2132,7 @@ private constructor(
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun deviceModel(): Optional<String> =
-            Optional.ofNullable(deviceModel.getNullable("device_model"))
+        fun deviceModel(): Optional<String> = deviceModel.getOptional("device_model")
 
         /**
          * The type of the user's device.
@@ -2149,7 +2141,7 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun devicePlatform(): Optional<DevicePlatform> =
-            Optional.ofNullable(devicePlatform.getNullable("device_platform"))
+            devicePlatform.getOptional("device_platform")
 
         /**
          * The IP address of the user's device.
@@ -2157,7 +2149,7 @@ private constructor(
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun ip(): Optional<String> = Optional.ofNullable(ip.getNullable("ip"))
+        fun ip(): Optional<String> = ip.getOptional("ip")
 
         /**
          * This signal should provide a higher level of trust, indicating that the user is genuine.
@@ -2166,8 +2158,7 @@ private constructor(
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun isTrustedUser(): Optional<Boolean> =
-            Optional.ofNullable(isTrustedUser.getNullable("is_trusted_user"))
+        fun isTrustedUser(): Optional<Boolean> = isTrustedUser.getOptional("is_trusted_user")
 
         /**
          * The version of the user's device operating system.
@@ -2175,7 +2166,7 @@ private constructor(
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun osVersion(): Optional<String> = Optional.ofNullable(osVersion.getNullable("os_version"))
+        fun osVersion(): Optional<String> = osVersion.getOptional("os_version")
 
         /**
          * The user agent of the user's device. If the individual fields (os_version,
@@ -2185,7 +2176,7 @@ private constructor(
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun userAgent(): Optional<String> = Optional.ofNullable(userAgent.getNullable("user_agent"))
+        fun userAgent(): Optional<String> = userAgent.getOptional("user_agent")
 
         /**
          * Returns the raw JSON value of [appVersion].

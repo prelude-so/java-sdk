@@ -307,7 +307,7 @@ private constructor(
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun signals(): Optional<Signals> = Optional.ofNullable(signals.getNullable("signals"))
+        fun signals(): Optional<Signals> = signals.getOptional("signals")
 
         /**
          * Returns the raw JSON value of [target].
@@ -835,7 +835,7 @@ private constructor(
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun deviceId(): Optional<String> = Optional.ofNullable(deviceId.getNullable("device_id"))
+        fun deviceId(): Optional<String> = deviceId.getOptional("device_id")
 
         /**
          * The model of the user's device.
@@ -843,8 +843,7 @@ private constructor(
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun deviceModel(): Optional<String> =
-            Optional.ofNullable(deviceModel.getNullable("device_model"))
+        fun deviceModel(): Optional<String> = deviceModel.getOptional("device_model")
 
         /**
          * The type of the user's device.
@@ -852,8 +851,7 @@ private constructor(
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun deviceType(): Optional<String> =
-            Optional.ofNullable(deviceType.getNullable("device_type"))
+        fun deviceType(): Optional<String> = deviceType.getOptional("device_type")
 
         /**
          * The IPv4 address of the user's device
@@ -861,7 +859,7 @@ private constructor(
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun ip(): Optional<String> = Optional.ofNullable(ip.getNullable("ip"))
+        fun ip(): Optional<String> = ip.getOptional("ip")
 
         /**
          * Returns the raw JSON value of [deviceId].
