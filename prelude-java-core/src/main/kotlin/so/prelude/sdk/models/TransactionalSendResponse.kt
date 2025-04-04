@@ -123,8 +123,7 @@ private constructor(
      * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun callbackUrl(): Optional<String> =
-        Optional.ofNullable(callbackUrl.getNullable("callback_url"))
+    fun callbackUrl(): Optional<String> = callbackUrl.getOptional("callback_url")
 
     /**
      * A unique, user-defined identifier that will be included in webhook events.
@@ -132,8 +131,7 @@ private constructor(
      * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun correlationId(): Optional<String> =
-        Optional.ofNullable(correlationId.getNullable("correlation_id"))
+    fun correlationId(): Optional<String> = correlationId.getOptional("correlation_id")
 
     /**
      * The Sender ID.
@@ -141,7 +139,7 @@ private constructor(
      * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun from(): Optional<String> = Optional.ofNullable(from.getNullable("from"))
+    fun from(): Optional<String> = from.getOptional("from")
 
     /**
      * Returns the raw JSON value of [id].

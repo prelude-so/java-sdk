@@ -67,13 +67,13 @@ private constructor(
      * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun metadata(): Optional<Metadata> = Optional.ofNullable(metadata.getNullable("metadata"))
+    fun metadata(): Optional<Metadata> = metadata.getOptional("metadata")
 
     /**
      * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun requestId(): Optional<String> = Optional.ofNullable(requestId.getNullable("request_id"))
+    fun requestId(): Optional<String> = requestId.getOptional("request_id")
 
     /**
      * Returns the raw JSON value of [id].
@@ -563,8 +563,7 @@ private constructor(
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun correlationId(): Optional<String> =
-            Optional.ofNullable(correlationId.getNullable("correlation_id"))
+        fun correlationId(): Optional<String> = correlationId.getOptional("correlation_id")
 
         /**
          * Returns the raw JSON value of [correlationId].

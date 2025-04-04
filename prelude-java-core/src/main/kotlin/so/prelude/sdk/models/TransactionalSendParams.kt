@@ -513,8 +513,7 @@ private constructor(
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun callbackUrl(): Optional<String> =
-            Optional.ofNullable(callbackUrl.getNullable("callback_url"))
+        fun callbackUrl(): Optional<String> = callbackUrl.getOptional("callback_url")
 
         /**
          * A unique, user-defined identifier that will be included in webhook events.
@@ -522,8 +521,7 @@ private constructor(
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun correlationId(): Optional<String> =
-            Optional.ofNullable(correlationId.getNullable("correlation_id"))
+        fun correlationId(): Optional<String> = correlationId.getOptional("correlation_id")
 
         /**
          * The message expiration date.
@@ -531,7 +529,7 @@ private constructor(
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun expiresAt(): Optional<String> = Optional.ofNullable(expiresAt.getNullable("expires_at"))
+        fun expiresAt(): Optional<String> = expiresAt.getOptional("expires_at")
 
         /**
          * The Sender ID.
@@ -539,7 +537,7 @@ private constructor(
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun from(): Optional<String> = Optional.ofNullable(from.getNullable("from"))
+        fun from(): Optional<String> = from.getOptional("from")
 
         /**
          * A BCP-47 formatted locale string with the language the text message will be sent to. If
@@ -550,7 +548,7 @@ private constructor(
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun locale(): Optional<String> = Optional.ofNullable(locale.getNullable("locale"))
+        fun locale(): Optional<String> = locale.getOptional("locale")
 
         /**
          * The variables to be replaced in the template.
@@ -558,8 +556,7 @@ private constructor(
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun variables(): Optional<Variables> =
-            Optional.ofNullable(variables.getNullable("variables"))
+        fun variables(): Optional<Variables> = variables.getOptional("variables")
 
         /**
          * Returns the raw JSON value of [templateId].
