@@ -380,7 +380,7 @@ private constructor(
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun cause(): Optional<Cause> = Optional.ofNullable(cause.getNullable("cause"))
+        fun cause(): Optional<Cause> = cause.getOptional("cause")
 
         /**
          * Indicates the risk of the phone number being genuine or involved in fraudulent patterns.
@@ -389,7 +389,7 @@ private constructor(
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
-        fun score(): Optional<Double> = Optional.ofNullable(score.getNullable("score"))
+        fun score(): Optional<Double> = score.getOptional("score")
 
         /**
          * Returns the raw JSON value of [cause].
