@@ -402,6 +402,19 @@ JsonValue complexValue = JsonValue.from(Map.of(
 ));
 ```
 
+Normally a `Builder` class's `build` method will throw [`IllegalStateException`](https://docs.oracle.com/javase/8/docs/api/java/lang/IllegalStateException.html) if any required parameter or property is unset.
+
+To forcibly omit a required parameter or property, pass [`JsonMissing`](prelude-java-core/src/main/kotlin/so/prelude/sdk/core/Values.kt):
+
+```java
+import so.prelude.sdk.core.JsonMissing;
+import so.prelude.sdk.models.VerificationCreateParams;
+
+VerificationCreateParams params = VerificationCreateParams.builder()
+    .target(JsonMissing.of())
+    .build();
+```
+
 ### Response properties
 
 To access undocumented response properties, call the `_additionalProperties()` method:
