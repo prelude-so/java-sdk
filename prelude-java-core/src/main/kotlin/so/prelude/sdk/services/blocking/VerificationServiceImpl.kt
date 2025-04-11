@@ -3,6 +3,7 @@
 package so.prelude.sdk.services.blocking
 
 import so.prelude.sdk.core.ClientOptions
+import so.prelude.sdk.core.JsonValue
 import so.prelude.sdk.core.RequestOptions
 import so.prelude.sdk.core.handlers.errorHandler
 import so.prelude.sdk.core.handlers.jsonHandler
@@ -14,7 +15,6 @@ import so.prelude.sdk.core.http.HttpResponseFor
 import so.prelude.sdk.core.http.json
 import so.prelude.sdk.core.http.parseable
 import so.prelude.sdk.core.prepare
-import so.prelude.sdk.errors.PreludeError
 import so.prelude.sdk.models.VerificationCheckParams
 import so.prelude.sdk.models.VerificationCheckResponse
 import so.prelude.sdk.models.VerificationCreateParams
@@ -46,7 +46,7 @@ class VerificationServiceImpl internal constructor(private val clientOptions: Cl
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         VerificationService.WithRawResponse {
 
-        private val errorHandler: Handler<PreludeError> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
         private val createHandler: Handler<VerificationCreateResponse> =
             jsonHandler<VerificationCreateResponse>(clientOptions.jsonMapper)

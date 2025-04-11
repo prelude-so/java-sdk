@@ -1,3 +1,5 @@
+// File generated from our OpenAPI spec by Stainless.
+
 package so.prelude.sdk.core.http
 
 import so.prelude.sdk.core.toImmutable

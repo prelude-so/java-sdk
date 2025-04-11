@@ -2,6 +2,7 @@
 
 package so.prelude.sdk.client
 
+import so.prelude.sdk.services.async.LookupServiceAsync
 import so.prelude.sdk.services.async.TransactionalServiceAsync
 import so.prelude.sdk.services.async.VerificationServiceAsync
 import so.prelude.sdk.services.async.WatchServiceAsync
@@ -35,6 +36,8 @@ interface PreludeClientAsync {
      */
     fun withRawResponse(): WithRawResponse
 
+    fun lookup(): LookupServiceAsync
+
     fun transactional(): TransactionalServiceAsync
 
     fun verification(): VerificationServiceAsync
@@ -58,6 +61,8 @@ interface PreludeClientAsync {
      * A view of [PreludeClientAsync] that provides access to raw HTTP responses for each method.
      */
     interface WithRawResponse {
+
+        fun lookup(): LookupServiceAsync.WithRawResponse
 
         fun transactional(): TransactionalServiceAsync.WithRawResponse
 

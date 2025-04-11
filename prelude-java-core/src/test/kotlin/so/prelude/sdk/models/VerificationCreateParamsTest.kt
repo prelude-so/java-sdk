@@ -2,12 +2,11 @@
 
 package so.prelude.sdk.models
 
-import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import so.prelude.sdk.core.JsonValue
 
-class VerificationCreateParamsTest {
+internal class VerificationCreateParamsTest {
 
     @Test
     fun create() {
@@ -22,6 +21,7 @@ class VerificationCreateParamsTest {
             .metadata(
                 VerificationCreateParams.Metadata.builder().correlationId("correlation_id").build()
             )
+            .method(VerificationCreateParams.Method.AUTO)
             .options(
                 VerificationCreateParams.Options.builder()
                     .appRealm(
@@ -48,7 +48,7 @@ class VerificationCreateParamsTest {
                     .appVersion("1.2.34")
                     .deviceId("8F0B8FDD-C2CB-4387-B20A-56E9B2E5A0D2")
                     .deviceModel("iPhone17,2")
-                    .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.ANDROID)
+                    .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
                     .ip("192.0.2.1")
                     .isTrustedUser(false)
                     .osVersion("18.0.1")
@@ -76,6 +76,7 @@ class VerificationCreateParamsTest {
                         .correlationId("correlation_id")
                         .build()
                 )
+                .method(VerificationCreateParams.Method.AUTO)
                 .options(
                     VerificationCreateParams.Options.builder()
                         .appRealm(
@@ -104,7 +105,7 @@ class VerificationCreateParamsTest {
                         .appVersion("1.2.34")
                         .deviceId("8F0B8FDD-C2CB-4387-B20A-56E9B2E5A0D2")
                         .deviceModel("iPhone17,2")
-                        .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.ANDROID)
+                        .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
                         .ip("192.0.2.1")
                         .isTrustedUser(false)
                         .osVersion("18.0.1")
@@ -117,7 +118,6 @@ class VerificationCreateParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.target())
             .isEqualTo(
                 VerificationCreateParams.Target.builder()
@@ -130,6 +130,7 @@ class VerificationCreateParamsTest {
             .contains(
                 VerificationCreateParams.Metadata.builder().correlationId("correlation_id").build()
             )
+        assertThat(body.method()).contains(VerificationCreateParams.Method.AUTO)
         assertThat(body.options())
             .contains(
                 VerificationCreateParams.Options.builder()
@@ -158,7 +159,7 @@ class VerificationCreateParamsTest {
                     .appVersion("1.2.34")
                     .deviceId("8F0B8FDD-C2CB-4387-B20A-56E9B2E5A0D2")
                     .deviceModel("iPhone17,2")
-                    .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.ANDROID)
+                    .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
                     .ip("192.0.2.1")
                     .isTrustedUser(false)
                     .osVersion("18.0.1")
@@ -183,7 +184,6 @@ class VerificationCreateParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.target())
             .isEqualTo(
                 VerificationCreateParams.Target.builder()

@@ -4,6 +4,8 @@ package so.prelude.sdk.client
 
 import so.prelude.sdk.core.ClientOptions
 import so.prelude.sdk.core.getPackageVersion
+import so.prelude.sdk.services.async.LookupServiceAsync
+import so.prelude.sdk.services.async.LookupServiceAsyncImpl
 import so.prelude.sdk.services.async.TransactionalServiceAsync
 import so.prelude.sdk.services.async.TransactionalServiceAsyncImpl
 import so.prelude.sdk.services.async.VerificationServiceAsync
@@ -28,6 +30,10 @@ class PreludeClientAsyncImpl(private val clientOptions: ClientOptions) : Prelude
         WithRawResponseImpl(clientOptions)
     }
 
+    private val lookup: LookupServiceAsync by lazy {
+        LookupServiceAsyncImpl(clientOptionsWithUserAgent)
+    }
+
     private val transactional: TransactionalServiceAsync by lazy {
         TransactionalServiceAsyncImpl(clientOptionsWithUserAgent)
     }
@@ -44,6 +50,8 @@ class PreludeClientAsyncImpl(private val clientOptions: ClientOptions) : Prelude
 
     override fun withRawResponse(): PreludeClientAsync.WithRawResponse = withRawResponse
 
+    override fun lookup(): LookupServiceAsync = lookup
+
     override fun transactional(): TransactionalServiceAsync = transactional
 
     override fun verification(): VerificationServiceAsync = verification
@@ -54,6 +62,10 @@ class PreludeClientAsyncImpl(private val clientOptions: ClientOptions) : Prelude
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         PreludeClientAsync.WithRawResponse {
+
+        private val lookup: LookupServiceAsync.WithRawResponse by lazy {
+            LookupServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
 
         private val transactional: TransactionalServiceAsync.WithRawResponse by lazy {
             TransactionalServiceAsyncImpl.WithRawResponseImpl(clientOptions)
@@ -66,6 +78,8 @@ class PreludeClientAsyncImpl(private val clientOptions: ClientOptions) : Prelude
         private val watch: WatchServiceAsync.WithRawResponse by lazy {
             WatchServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun lookup(): LookupServiceAsync.WithRawResponse = lookup
 
         override fun transactional(): TransactionalServiceAsync.WithRawResponse = transactional
 

@@ -11,7 +11,7 @@ import so.prelude.sdk.core.JsonValue
 import so.prelude.sdk.models.TransactionalSendParams
 
 @ExtendWith(TestServerExtension::class)
-class TransactionalServiceAsyncTest {
+internal class TransactionalServiceAsyncTest {
 
     @Disabled(
         "skipped: currently no good way to test endpoints defining callbacks, Prism mock server will fail trying to reach the provided callback url"

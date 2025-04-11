@@ -2,16 +2,20 @@
 
 <!-- x-release-please-start-version -->
 
-[![Maven Central](https://img.shields.io/maven-central/v/so.prelude.sdk/prelude-java)](https://central.sonatype.com/artifact/so.prelude.sdk/prelude-java/0.2.0)
-[![javadoc](https://javadoc.io/badge2/so.prelude.sdk/prelude-java/0.2.0/javadoc.svg)](https://javadoc.io/doc/so.prelude.sdk/prelude-java/0.2.0)
+[![Maven Central](https://img.shields.io/maven-central/v/so.prelude.sdk/prelude-java)](https://central.sonatype.com/artifact/so.prelude.sdk/prelude-java/0.3.0)
+[![javadoc](https://javadoc.io/badge2/so.prelude.sdk/prelude-java/0.3.0/javadoc.svg)](https://javadoc.io/doc/so.prelude.sdk/prelude-java/0.3.0)
 
 <!-- x-release-please-end -->
 
-The Prelude Java SDK provides convenient access to the Prelude REST API from applications written in Java.
+The Prelude Java SDK provides convenient access to the [Prelude REST API](https://docs.prelude.so) from applications written in Java.
 
 It is generated with [Stainless](https://www.stainless.com/).
 
-The REST API documentation can be found on [docs.prelude.so](https://docs.prelude.so). Javadocs are also available on [javadoc.io](https://javadoc.io/doc/so.prelude.sdk/prelude-java/0.1.0).
+<!-- x-release-please-start-version -->
+
+The REST API documentation can be found on [docs.prelude.so](https://docs.prelude.so). Javadocs are also available on [javadoc.io](https://javadoc.io/doc/so.prelude.sdk/prelude-java/0.3.0).
+
+<!-- x-release-please-end -->
 
 ## Installation
 
@@ -20,16 +24,16 @@ The REST API documentation can be found on [docs.prelude.so](https://docs.prelud
 ### Gradle
 
 ```kotlin
-implementation("so.prelude.sdk:prelude-java:0.2.0")
+implementation("so.prelude.sdk:prelude-java:0.3.0")
 ```
 
 ### Maven
 
 ```xml
 <dependency>
-    <groupId>so.prelude.sdk</groupId>
-    <artifactId>prelude-java</artifactId>
-    <version>0.2.0</version>
+  <groupId>so.prelude.sdk</groupId>
+  <artifactId>prelude-java</artifactId>
+  <version>0.3.0</version>
 </dependency>
 ```
 
@@ -47,7 +51,7 @@ import so.prelude.sdk.client.okhttp.PreludeOkHttpClient;
 import so.prelude.sdk.models.VerificationCreateParams;
 import so.prelude.sdk.models.VerificationCreateResponse;
 
-// Configures using the `API_TOKEN` environment variable
+// Configures using the `API_TOKEN` and `PRELUDE_BASE_URL` environment variables
 PreludeClient client = PreludeOkHttpClient.fromEnv();
 
 VerificationCreateParams params = VerificationCreateParams.builder()
@@ -67,7 +71,7 @@ Configure the client using environment variables:
 import so.prelude.sdk.client.PreludeClient;
 import so.prelude.sdk.client.okhttp.PreludeOkHttpClient;
 
-// Configures using the `API_TOKEN` environment variable
+// Configures using the `API_TOKEN` and `PRELUDE_BASE_URL` environment variables
 PreludeClient client = PreludeOkHttpClient.fromEnv();
 ```
 
@@ -89,7 +93,7 @@ import so.prelude.sdk.client.PreludeClient;
 import so.prelude.sdk.client.okhttp.PreludeOkHttpClient;
 
 PreludeClient client = PreludeOkHttpClient.builder()
-    // Configures using the `API_TOKEN` environment variable
+    // Configures using the `API_TOKEN` and `PRELUDE_BASE_URL` environment variables
     .fromEnv()
     .apiToken("My API Token")
     .build();
@@ -97,9 +101,10 @@ PreludeClient client = PreludeOkHttpClient.builder()
 
 See this table for the available options:
 
-| Setter     | Environment variable | Required | Default value |
-| ---------- | -------------------- | -------- | ------------- |
-| `apiToken` | `API_TOKEN`          | true     | -             |
+| Setter     | Environment variable | Required | Default value               |
+| ---------- | -------------------- | -------- | --------------------------- |
+| `apiToken` | `API_TOKEN`          | true     | -                           |
+| `baseUrl`  | `PRELUDE_BASE_URL`   | true     | `"https://api.prelude.dev"` |
 
 > [!TIP]
 > Don't create more than one client in the same application. Each client has a connection pool and
@@ -130,7 +135,7 @@ import so.prelude.sdk.client.okhttp.PreludeOkHttpClient;
 import so.prelude.sdk.models.VerificationCreateParams;
 import so.prelude.sdk.models.VerificationCreateResponse;
 
-// Configures using the `API_TOKEN` environment variable
+// Configures using the `API_TOKEN` and `PRELUDE_BASE_URL` environment variables
 PreludeClient client = PreludeOkHttpClient.fromEnv();
 
 VerificationCreateParams params = VerificationCreateParams.builder()
@@ -151,7 +156,7 @@ import so.prelude.sdk.client.okhttp.PreludeOkHttpClientAsync;
 import so.prelude.sdk.models.VerificationCreateParams;
 import so.prelude.sdk.models.VerificationCreateResponse;
 
-// Configures using the `API_TOKEN` environment variable
+// Configures using the `API_TOKEN` and `PRELUDE_BASE_URL` environment variables
 PreludeClientAsync client = PreludeOkHttpClientAsync.fromEnv();
 
 VerificationCreateParams params = VerificationCreateParams.builder()
@@ -203,16 +208,16 @@ The SDK throws custom unchecked exception types:
 
 - [`PreludeServiceException`](prelude-java-core/src/main/kotlin/so/prelude/sdk/errors/PreludeServiceException.kt): Base class for HTTP errors. See this table for which exception subclass is thrown for each HTTP status code:
 
-  | Status | Exception                       |
-  | ------ | ------------------------------- |
-  | 400    | `BadRequestException`           |
-  | 401    | `AuthenticationException`       |
-  | 403    | `PermissionDeniedException`     |
-  | 404    | `NotFoundException`             |
-  | 422    | `UnprocessableEntityException`  |
-  | 429    | `RateLimitException`            |
-  | 5xx    | `InternalServerException`       |
-  | others | `UnexpectedStatusCodeException` |
+  | Status | Exception                                                                                                                   |
+  | ------ | --------------------------------------------------------------------------------------------------------------------------- |
+  | 400    | [`BadRequestException`](prelude-java-core/src/main/kotlin/so/prelude/sdk/errors/BadRequestException.kt)                     |
+  | 401    | [`UnauthorizedException`](prelude-java-core/src/main/kotlin/so/prelude/sdk/errors/UnauthorizedException.kt)                 |
+  | 403    | [`PermissionDeniedException`](prelude-java-core/src/main/kotlin/so/prelude/sdk/errors/PermissionDeniedException.kt)         |
+  | 404    | [`NotFoundException`](prelude-java-core/src/main/kotlin/so/prelude/sdk/errors/NotFoundException.kt)                         |
+  | 422    | [`UnprocessableEntityException`](prelude-java-core/src/main/kotlin/so/prelude/sdk/errors/UnprocessableEntityException.kt)   |
+  | 429    | [`RateLimitException`](prelude-java-core/src/main/kotlin/so/prelude/sdk/errors/RateLimitException.kt)                       |
+  | 5xx    | [`InternalServerException`](prelude-java-core/src/main/kotlin/so/prelude/sdk/errors/InternalServerException.kt)             |
+  | others | [`UnexpectedStatusCodeException`](prelude-java-core/src/main/kotlin/so/prelude/sdk/errors/UnexpectedStatusCodeException.kt) |
 
 - [`PreludeIoException`](prelude-java-core/src/main/kotlin/so/prelude/sdk/errors/PreludeIoException.kt): I/O networking errors.
 
@@ -396,6 +401,19 @@ JsonValue complexValue = JsonValue.from(Map.of(
     3, 4
   )
 ));
+```
+
+Normally a `Builder` class's `build` method will throw [`IllegalStateException`](https://docs.oracle.com/javase/8/docs/api/java/lang/IllegalStateException.html) if any required parameter or property is unset.
+
+To forcibly omit a required parameter or property, pass [`JsonMissing`](prelude-java-core/src/main/kotlin/so/prelude/sdk/core/Values.kt):
+
+```java
+import so.prelude.sdk.core.JsonMissing;
+import so.prelude.sdk.models.VerificationCreateParams;
+
+VerificationCreateParams params = VerificationCreateParams.builder()
+    .target(JsonMissing.of())
+    .build();
 ```
 
 ### Response properties

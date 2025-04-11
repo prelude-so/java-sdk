@@ -1,7 +1,10 @@
 plugins {
-    id("prelude.kotlin")
-    id("java")
+    id("prelude.java")
     application
+}
+
+repositories {
+    mavenCentral()
 }
 
 dependencies {

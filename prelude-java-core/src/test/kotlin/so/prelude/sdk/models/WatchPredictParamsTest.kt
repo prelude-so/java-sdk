@@ -2,11 +2,10 @@
 
 package so.prelude.sdk.models
 
-import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class WatchPredictParamsTest {
+internal class WatchPredictParamsTest {
 
     @Test
     fun create() {
@@ -17,12 +16,20 @@ class WatchPredictParamsTest {
                     .value("+30123456789")
                     .build()
             )
+            .dispatchId("dispatch_id")
+            .metadata(WatchPredictParams.Metadata.builder().correlationId("correlation_id").build())
             .signals(
                 WatchPredictParams.Signals.builder()
-                    .deviceId("device_id")
-                    .deviceModel("device_model")
-                    .deviceType("device_type")
-                    .ip("ip")
+                    .appVersion("1.2.34")
+                    .deviceId("8F0B8FDD-C2CB-4387-B20A-56E9B2E5A0D2")
+                    .deviceModel("iPhone17,2")
+                    .devicePlatform(WatchPredictParams.Signals.DevicePlatform.IOS)
+                    .ip("192.0.2.1")
+                    .isTrustedUser(false)
+                    .osVersion("18.0.1")
+                    .userAgent(
+                        "Mozilla/5.0 (iPhone; CPU iPhone OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1"
+                    )
                     .build()
             )
             .build()
@@ -38,19 +45,28 @@ class WatchPredictParamsTest {
                         .value("+30123456789")
                         .build()
                 )
+                .dispatchId("dispatch_id")
+                .metadata(
+                    WatchPredictParams.Metadata.builder().correlationId("correlation_id").build()
+                )
                 .signals(
                     WatchPredictParams.Signals.builder()
-                        .deviceId("device_id")
-                        .deviceModel("device_model")
-                        .deviceType("device_type")
-                        .ip("ip")
+                        .appVersion("1.2.34")
+                        .deviceId("8F0B8FDD-C2CB-4387-B20A-56E9B2E5A0D2")
+                        .deviceModel("iPhone17,2")
+                        .devicePlatform(WatchPredictParams.Signals.DevicePlatform.IOS)
+                        .ip("192.0.2.1")
+                        .isTrustedUser(false)
+                        .osVersion("18.0.1")
+                        .userAgent(
+                            "Mozilla/5.0 (iPhone; CPU iPhone OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1"
+                        )
                         .build()
                 )
                 .build()
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.target())
             .isEqualTo(
                 WatchPredictParams.Target.builder()
@@ -58,13 +74,22 @@ class WatchPredictParamsTest {
                     .value("+30123456789")
                     .build()
             )
+        assertThat(body.dispatchId()).contains("dispatch_id")
+        assertThat(body.metadata())
+            .contains(WatchPredictParams.Metadata.builder().correlationId("correlation_id").build())
         assertThat(body.signals())
             .contains(
                 WatchPredictParams.Signals.builder()
-                    .deviceId("device_id")
-                    .deviceModel("device_model")
-                    .deviceType("device_type")
-                    .ip("ip")
+                    .appVersion("1.2.34")
+                    .deviceId("8F0B8FDD-C2CB-4387-B20A-56E9B2E5A0D2")
+                    .deviceModel("iPhone17,2")
+                    .devicePlatform(WatchPredictParams.Signals.DevicePlatform.IOS)
+                    .ip("192.0.2.1")
+                    .isTrustedUser(false)
+                    .osVersion("18.0.1")
+                    .userAgent(
+                        "Mozilla/5.0 (iPhone; CPU iPhone OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1"
+                    )
                     .build()
             )
     }
@@ -83,7 +108,6 @@ class WatchPredictParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.target())
             .isEqualTo(
                 WatchPredictParams.Target.builder()

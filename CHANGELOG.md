@@ -1,5 +1,81 @@
 # Changelog
 
+## 0.3.0 (2025-04-11)
+
+Full Changelog: [v0.2.0...v0.3.0](https://github.com/prelude-so/java-sdk/compare/v0.2.0...v0.3.0)
+
+### ⚠ BREAKING CHANGES
+
+* **client:** refactor exception structure and methods ([#113](https://github.com/prelude-so/java-sdk/issues/113))
+
+### Features
+
+* **api:** update via SDK Studio ([8d5019f](https://github.com/prelude-so/java-sdk/commit/8d5019f63142974d537df4a628603df68bda9c10))
+* **api:** update via SDK Studio ([b3d8ee8](https://github.com/prelude-so/java-sdk/commit/b3d8ee84b8563b498bb470d153a09c5c3425868a))
+* **client:** add enum validation method ([f505739](https://github.com/prelude-so/java-sdk/commit/f505739e95f15b012fc4f6e7c461a38749f36039))
+* **client:** expose request body setter and getter ([#125](https://github.com/prelude-so/java-sdk/issues/125)) ([638a799](https://github.com/prelude-so/java-sdk/commit/638a799ae7510a5772b8a0678f1df53e19a3ce92))
+* **client:** make union deserialization more robust ([#123](https://github.com/prelude-so/java-sdk/issues/123)) ([f505739](https://github.com/prelude-so/java-sdk/commit/f505739e95f15b012fc4f6e7c461a38749f36039))
+* **client:** support a lower jackson version ([#119](https://github.com/prelude-so/java-sdk/issues/119)) ([1190992](https://github.com/prelude-so/java-sdk/commit/1190992b68ef236c0e1d7ef0f17c7822cf3976ba))
+* **client:** support setting base URL via env var ([#131](https://github.com/prelude-so/java-sdk/issues/131)) ([bdb10bb](https://github.com/prelude-so/java-sdk/commit/bdb10bbee92e0a7ecc0987e4f1a098c5bd1afa68))
+* **client:** throw on incompatible jackson version ([1190992](https://github.com/prelude-so/java-sdk/commit/1190992b68ef236c0e1d7ef0f17c7822cf3976ba))
+
+
+### Bug Fixes
+
+* **client:** bump to better jackson version ([#133](https://github.com/prelude-so/java-sdk/issues/133)) ([26e1917](https://github.com/prelude-so/java-sdk/commit/26e1917223e7ae3f3b12b82535eca52b7cf723d6))
+* **client:** don't call `validate()` during deserialization if we don't have to ([#121](https://github.com/prelude-so/java-sdk/issues/121)) ([8278a87](https://github.com/prelude-so/java-sdk/commit/8278a87abfb1d3abb688350156f46d19b33a55c2))
+* **client:** limit json deserialization coercion ([#122](https://github.com/prelude-so/java-sdk/issues/122)) ([9c84e96](https://github.com/prelude-so/java-sdk/commit/9c84e96db9e6f0a9fafa0dac178bf6b28f61fd4f))
+* **client:** map deserialization bug ([fba5a3d](https://github.com/prelude-so/java-sdk/commit/fba5a3d8184321e2f18ef24fe2c3e276094a10ab))
+* **client:** return `Optional&lt;T&gt;` instead of `Optional<? extends T>` ([#128](https://github.com/prelude-so/java-sdk/issues/128)) ([4d0542f](https://github.com/prelude-so/java-sdk/commit/4d0542f0658afbd81edfc0d99dbc748ded112489))
+* **client:** support kotlin 1.8 runtime ([#111](https://github.com/prelude-so/java-sdk/issues/111)) ([52729f8](https://github.com/prelude-so/java-sdk/commit/52729f8dcdafec86c7aece8c69cdf0d2cbe7072d))
+
+
+### Performance Improvements
+
+* **client:** cached parsed type in `HttpResponseFor` ([#126](https://github.com/prelude-so/java-sdk/issues/126)) ([71b79be](https://github.com/prelude-so/java-sdk/commit/71b79be5964ff1f8c1cd041367822286cf4af5d2))
+
+
+### Chores
+
+* **client:** refactor exception structure and methods ([#113](https://github.com/prelude-so/java-sdk/issues/113)) ([76182b5](https://github.com/prelude-so/java-sdk/commit/76182b528d3296e1ce46856fe25c6875087d0c85))
+* **client:** remove unnecessary json state from some query param classes ([f505739](https://github.com/prelude-so/java-sdk/commit/f505739e95f15b012fc4f6e7c461a38749f36039))
+* **internal:** add generated comment ([#107](https://github.com/prelude-so/java-sdk/issues/107)) ([4ca9321](https://github.com/prelude-so/java-sdk/commit/4ca93214191c99076efde95a1d6999d2286d3fad))
+* **internal:** add invalid json deserialization tests ([f505739](https://github.com/prelude-so/java-sdk/commit/f505739e95f15b012fc4f6e7c461a38749f36039))
+* **internal:** add json roundtripping tests ([f505739](https://github.com/prelude-so/java-sdk/commit/f505739e95f15b012fc4f6e7c461a38749f36039))
+* **internal:** add missing release please block ([#112](https://github.com/prelude-so/java-sdk/issues/112)) ([219bd86](https://github.com/prelude-so/java-sdk/commit/219bd86d08767c3af1f0fb05cb9f0d111f65a670))
+* **internal:** codegen related update ([#124](https://github.com/prelude-so/java-sdk/issues/124)) ([122cda2](https://github.com/prelude-so/java-sdk/commit/122cda23e464cb431cefaca5ccf86da9bda94829))
+* **internal:** delete duplicate tests ([fdf9cd4](https://github.com/prelude-so/java-sdk/commit/fdf9cd4b5afeeeda86f39a4d091fc569050f7030))
+* **internal:** delete unused methods and annotations ([#120](https://github.com/prelude-so/java-sdk/issues/120)) ([fba5a3d](https://github.com/prelude-so/java-sdk/commit/fba5a3d8184321e2f18ef24fe2c3e276094a10ab))
+* **internal:** expand CI branch coverage ([#132](https://github.com/prelude-so/java-sdk/issues/132)) ([befddbb](https://github.com/prelude-so/java-sdk/commit/befddbb489be2d34c04c7c451f1f1f8e04341757))
+* **internal:** fix example formatting ([#115](https://github.com/prelude-so/java-sdk/issues/115)) ([0f67401](https://github.com/prelude-so/java-sdk/commit/0f674019ad21c96b191dfa66df3bf191fa92a5ba))
+* **internal:** generate more tests ([073a416](https://github.com/prelude-so/java-sdk/commit/073a41651b208b825534910564695d36e5c0738e))
+* **internal:** make multipart assertions more robust ([20a5e00](https://github.com/prelude-so/java-sdk/commit/20a5e00a69b82f0f97ac05d12cd592042411ecec))
+* **internal:** make test classes internal ([#106](https://github.com/prelude-so/java-sdk/issues/106)) ([271fcb9](https://github.com/prelude-so/java-sdk/commit/271fcb922b2ebae6b39a538cc8b034905525a6c3))
+* **internal:** reduce CI branch coverage ([9e9afa4](https://github.com/prelude-so/java-sdk/commit/9e9afa4c02ddd86e8f38eb6d1aa65d6c526ab8f7))
+* **internal:** refactor some test assertions ([fdf9cd4](https://github.com/prelude-so/java-sdk/commit/fdf9cd4b5afeeeda86f39a4d091fc569050f7030))
+* **internal:** reformat some tests ([#110](https://github.com/prelude-so/java-sdk/issues/110)) ([073a416](https://github.com/prelude-so/java-sdk/commit/073a41651b208b825534910564695d36e5c0738e))
+* **internal:** remove extra empty newlines ([#104](https://github.com/prelude-so/java-sdk/issues/104)) ([2234162](https://github.com/prelude-so/java-sdk/commit/2234162dc6e6cc224f0489fa41b0987eade2145d))
+* **internal:** remove unnecessary `assertNotNull` calls ([20a5e00](https://github.com/prelude-so/java-sdk/commit/20a5e00a69b82f0f97ac05d12cd592042411ecec))
+* **internal:** remove unnecessary import ([#116](https://github.com/prelude-so/java-sdk/issues/116)) ([3ae122d](https://github.com/prelude-so/java-sdk/commit/3ae122dfe7c4695706d4d9f79f3305429825422c))
+* **internal:** rename `getPathParam` ([#109](https://github.com/prelude-so/java-sdk/issues/109)) ([fdf9cd4](https://github.com/prelude-so/java-sdk/commit/fdf9cd4b5afeeeda86f39a4d091fc569050f7030))
+* **internal:** reorder some params methodsc ([fdf9cd4](https://github.com/prelude-so/java-sdk/commit/fdf9cd4b5afeeeda86f39a4d091fc569050f7030))
+* **internal:** swap from `getNullable` to `getOptional` ([#127](https://github.com/prelude-so/java-sdk/issues/127)) ([525f57d](https://github.com/prelude-so/java-sdk/commit/525f57ddc6fa35537981c4f761f869a75e20e14b))
+* **internal:** version bump ([#102](https://github.com/prelude-so/java-sdk/issues/102)) ([a8c29dd](https://github.com/prelude-so/java-sdk/commit/a8c29dd890a12fb927932bc67a0a827262bc18fa))
+* rerun ci ([16e1797](https://github.com/prelude-so/java-sdk/commit/16e17976d387aa7d478d71cded50b795784264c7))
+* **tests:** improve enum examples ([#130](https://github.com/prelude-so/java-sdk/issues/130)) ([008765e](https://github.com/prelude-so/java-sdk/commit/008765ee9692147083588ee7d43aae822c1c4434))
+
+
+### Documentation
+
+* add `build` method comments ([#108](https://github.com/prelude-so/java-sdk/issues/108)) ([bafd4ba](https://github.com/prelude-so/java-sdk/commit/bafd4ba207878071b2d32769785993bcfb8b2375))
+* add comments to `JsonField` classes ([4d0542f](https://github.com/prelude-so/java-sdk/commit/4d0542f0658afbd81edfc0d99dbc748ded112489))
+* deduplicate and refine comments ([#105](https://github.com/prelude-so/java-sdk/issues/105)) ([081b27a](https://github.com/prelude-so/java-sdk/commit/081b27aeaa2c06a3ba088fcc5f8476bda4e1fde9))
+* document how to forcibly omit required field ([c98bfc6](https://github.com/prelude-so/java-sdk/commit/c98bfc6bd43b3c9387913b694f74793bc9e9d9e2))
+* minor readme tweak ([#118](https://github.com/prelude-so/java-sdk/issues/118)) ([e860b24](https://github.com/prelude-so/java-sdk/commit/e860b244e1d132077638e6b08ea91728636fca98))
+* refine comments on multipart params ([#114](https://github.com/prelude-so/java-sdk/issues/114)) ([20a5e00](https://github.com/prelude-so/java-sdk/commit/20a5e00a69b82f0f97ac05d12cd592042411ecec))
+* swap examples used in readme ([#129](https://github.com/prelude-so/java-sdk/issues/129)) ([c98bfc6](https://github.com/prelude-so/java-sdk/commit/c98bfc6bd43b3c9387913b694f74793bc9e9d9e2))
+* update readme exception docs ([#117](https://github.com/prelude-so/java-sdk/issues/117)) ([9741cea](https://github.com/prelude-so/java-sdk/commit/9741ceaf73c4f77e10410e94c776ca2748df264e))
+
 ## 0.2.0 (2025-03-11)
 
 Full Changelog: [v0.1.0...v0.2.0](https://github.com/prelude-so/java-sdk/compare/v0.1.0...v0.2.0)
