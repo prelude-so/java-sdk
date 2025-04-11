@@ -2,6 +2,7 @@
 
 package so.prelude.sdk.client
 
+import so.prelude.sdk.services.blocking.LookupService
 import so.prelude.sdk.services.blocking.TransactionalService
 import so.prelude.sdk.services.blocking.VerificationService
 import so.prelude.sdk.services.blocking.WatchService
@@ -35,6 +36,8 @@ interface PreludeClient {
      */
     fun withRawResponse(): WithRawResponse
 
+    fun lookup(): LookupService
+
     fun transactional(): TransactionalService
 
     fun verification(): VerificationService
@@ -56,6 +59,8 @@ interface PreludeClient {
 
     /** A view of [PreludeClient] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
+
+        fun lookup(): LookupService.WithRawResponse
 
         fun transactional(): TransactionalService.WithRawResponse
 

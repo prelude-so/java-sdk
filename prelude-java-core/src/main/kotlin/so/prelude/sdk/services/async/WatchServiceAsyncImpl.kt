@@ -16,10 +16,12 @@ import so.prelude.sdk.core.http.HttpResponseFor
 import so.prelude.sdk.core.http.json
 import so.prelude.sdk.core.http.parseable
 import so.prelude.sdk.core.prepareAsync
-import so.prelude.sdk.models.WatchFeedBackParams
-import so.prelude.sdk.models.WatchFeedBackResponse
 import so.prelude.sdk.models.WatchPredictParams
 import so.prelude.sdk.models.WatchPredictResponse
+import so.prelude.sdk.models.WatchSendEventsParams
+import so.prelude.sdk.models.WatchSendEventsResponse
+import so.prelude.sdk.models.WatchSendFeedbacksParams
+import so.prelude.sdk.models.WatchSendFeedbacksResponse
 
 class WatchServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     WatchServiceAsync {
@@ -30,13 +32,6 @@ class WatchServiceAsyncImpl internal constructor(private val clientOptions: Clie
 
     override fun withRawResponse(): WatchServiceAsync.WithRawResponse = withRawResponse
 
-    override fun feedBack(
-        params: WatchFeedBackParams,
-        requestOptions: RequestOptions,
-    ): CompletableFuture<WatchFeedBackResponse> =
-        // post /v2/watch/feedback
-        withRawResponse().feedBack(params, requestOptions).thenApply { it.parse() }
-
     override fun predict(
         params: WatchPredictParams,
         requestOptions: RequestOptions,
@@ -44,41 +39,24 @@ class WatchServiceAsyncImpl internal constructor(private val clientOptions: Clie
         // post /v2/watch/predict
         withRawResponse().predict(params, requestOptions).thenApply { it.parse() }
 
+    override fun sendEvents(
+        params: WatchSendEventsParams,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<WatchSendEventsResponse> =
+        // post /v2/watch/event
+        withRawResponse().sendEvents(params, requestOptions).thenApply { it.parse() }
+
+    override fun sendFeedbacks(
+        params: WatchSendFeedbacksParams,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<WatchSendFeedbacksResponse> =
+        // post /v2/watch/feedback
+        withRawResponse().sendFeedbacks(params, requestOptions).thenApply { it.parse() }
+
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         WatchServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
-
-        private val feedBackHandler: Handler<WatchFeedBackResponse> =
-            jsonHandler<WatchFeedBackResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
-
-        override fun feedBack(
-            params: WatchFeedBackParams,
-            requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<WatchFeedBackResponse>> {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.POST)
-                    .addPathSegments("v2", "watch", "feedback")
-                    .body(json(clientOptions.jsonMapper, params._body()))
-                    .build()
-                    .prepareAsync(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            return request
-                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
-                .thenApply { response ->
-                    response.parseable {
-                        response
-                            .use { feedBackHandler.handle(it) }
-                            .also {
-                                if (requestOptions.responseValidation!!) {
-                                    it.validate()
-                                }
-                            }
-                    }
-                }
-        }
 
         private val predictHandler: Handler<WatchPredictResponse> =
             jsonHandler<WatchPredictResponse>(clientOptions.jsonMapper)
@@ -102,6 +80,68 @@ class WatchServiceAsyncImpl internal constructor(private val clientOptions: Clie
                     response.parseable {
                         response
                             .use { predictHandler.handle(it) }
+                            .also {
+                                if (requestOptions.responseValidation!!) {
+                                    it.validate()
+                                }
+                            }
+                    }
+                }
+        }
+
+        private val sendEventsHandler: Handler<WatchSendEventsResponse> =
+            jsonHandler<WatchSendEventsResponse>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
+
+        override fun sendEvents(
+            params: WatchSendEventsParams,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<WatchSendEventsResponse>> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.POST)
+                    .addPathSegments("v2", "watch", "event")
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            return request
+                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+                .thenApply { response ->
+                    response.parseable {
+                        response
+                            .use { sendEventsHandler.handle(it) }
+                            .also {
+                                if (requestOptions.responseValidation!!) {
+                                    it.validate()
+                                }
+                            }
+                    }
+                }
+        }
+
+        private val sendFeedbacksHandler: Handler<WatchSendFeedbacksResponse> =
+            jsonHandler<WatchSendFeedbacksResponse>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
+
+        override fun sendFeedbacks(
+            params: WatchSendFeedbacksParams,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<WatchSendFeedbacksResponse>> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.POST)
+                    .addPathSegments("v2", "watch", "feedback")
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            return request
+                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+                .thenApply { response ->
+                    response.parseable {
+                        response
+                            .use { sendFeedbacksHandler.handle(it) }
                             .also {
                                 if (requestOptions.responseValidation!!) {
                                     it.validate()
