@@ -18,8 +18,8 @@ interface WatchService {
     fun withRawResponse(): WithRawResponse
 
     /**
-     * Once the user with a trustworthy phone number demonstrates authentic behavior, call this
-     * endpoint to report their authenticity to our systems.
+     * Send feedback regarding your end-users verification funnel. Events will be analyzed for
+     * proactive fraud prevention and risk scoring.
      */
     fun feedBack(params: WatchFeedBackParams): WatchFeedBackResponse =
         feedBack(params, RequestOptions.none())
@@ -30,11 +30,7 @@ interface WatchService {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): WatchFeedBackResponse
 
-    /**
-     * Identify trustworthy phone numbers to mitigate fake traffic or traffic involved in fraud and
-     * international revenue share fraud (IRSF) patterns. This endpoint must be implemented in
-     * conjunction with the `watch/feedback` endpoint.
-     */
+    /** Predict the outcome of a verification based on Prelude’s anti-fraud system. */
     fun predict(params: WatchPredictParams): WatchPredictResponse =
         predict(params, RequestOptions.none())
 

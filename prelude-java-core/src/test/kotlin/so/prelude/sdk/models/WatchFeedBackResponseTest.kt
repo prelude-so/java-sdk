@@ -11,15 +11,25 @@ internal class WatchFeedBackResponseTest {
 
     @Test
     fun create() {
-        val watchFeedBackResponse = WatchFeedBackResponse.builder().id("id").build()
+        val watchFeedBackResponse =
+            WatchFeedBackResponse.builder()
+                .requestId("3d19215e-2991-4a05-a41a-527314e6ff6a")
+                .status(WatchFeedBackResponse.Status.SUCCESS)
+                .build()
 
-        assertThat(watchFeedBackResponse.id()).isEqualTo("id")
+        assertThat(watchFeedBackResponse.requestId())
+            .isEqualTo("3d19215e-2991-4a05-a41a-527314e6ff6a")
+        assertThat(watchFeedBackResponse.status()).isEqualTo(WatchFeedBackResponse.Status.SUCCESS)
     }
 
     @Test
     fun roundtrip() {
         val jsonMapper = jsonMapper()
-        val watchFeedBackResponse = WatchFeedBackResponse.builder().id("id").build()
+        val watchFeedBackResponse =
+            WatchFeedBackResponse.builder()
+                .requestId("3d19215e-2991-4a05-a41a-527314e6ff6a")
+                .status(WatchFeedBackResponse.Status.SUCCESS)
+                .build()
 
         val roundtrippedWatchFeedBackResponse =
             jsonMapper.readValue(

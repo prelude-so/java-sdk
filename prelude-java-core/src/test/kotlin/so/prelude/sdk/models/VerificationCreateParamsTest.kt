@@ -21,6 +21,7 @@ internal class VerificationCreateParamsTest {
             .metadata(
                 VerificationCreateParams.Metadata.builder().correlationId("correlation_id").build()
             )
+            .method(VerificationCreateParams.Method.AUTO)
             .options(
                 VerificationCreateParams.Options.builder()
                     .appRealm(
@@ -75,6 +76,7 @@ internal class VerificationCreateParamsTest {
                         .correlationId("correlation_id")
                         .build()
                 )
+                .method(VerificationCreateParams.Method.AUTO)
                 .options(
                     VerificationCreateParams.Options.builder()
                         .appRealm(
@@ -128,6 +130,7 @@ internal class VerificationCreateParamsTest {
             .contains(
                 VerificationCreateParams.Metadata.builder().correlationId("correlation_id").build()
             )
+        assertThat(body.method()).contains(VerificationCreateParams.Method.AUTO)
         assertThat(body.options())
             .contains(
                 VerificationCreateParams.Options.builder()
