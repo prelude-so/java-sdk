@@ -5,32 +5,34 @@ package so.prelude.sdk.models
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-internal class WatchFeedBackParamsTest {
+internal class WatchSendFeedbacksParamsTest {
 
     @Test
     fun create() {
-        WatchFeedBackParams.builder()
+        WatchSendFeedbacksParams.builder()
             .addFeedback(
-                WatchFeedBackParams.Feedback.builder()
+                WatchSendFeedbacksParams.Feedback.builder()
                     .target(
-                        WatchFeedBackParams.Feedback.Target.builder()
-                            .type(WatchFeedBackParams.Feedback.Target.Type.PHONE_NUMBER)
+                        WatchSendFeedbacksParams.Feedback.Target.builder()
+                            .type(WatchSendFeedbacksParams.Feedback.Target.Type.PHONE_NUMBER)
                             .value("+30123456789")
                             .build()
                     )
-                    .type(WatchFeedBackParams.Feedback.Type.VERIFICATION_STARTED)
+                    .type(WatchSendFeedbacksParams.Feedback.Type.VERIFICATION_STARTED)
                     .dispatchId("dispatch_id")
                     .metadata(
-                        WatchFeedBackParams.Feedback.Metadata.builder()
+                        WatchSendFeedbacksParams.Feedback.Metadata.builder()
                             .correlationId("correlation_id")
                             .build()
                     )
                     .signals(
-                        WatchFeedBackParams.Feedback.Signals.builder()
+                        WatchSendFeedbacksParams.Feedback.Signals.builder()
                             .appVersion("1.2.34")
                             .deviceId("8F0B8FDD-C2CB-4387-B20A-56E9B2E5A0D2")
                             .deviceModel("iPhone17,2")
-                            .devicePlatform(WatchFeedBackParams.Feedback.Signals.DevicePlatform.IOS)
+                            .devicePlatform(
+                                WatchSendFeedbacksParams.Feedback.Signals.DevicePlatform.IOS
+                            )
                             .ip("192.0.2.1")
                             .isTrustedUser(false)
                             .osVersion("18.0.1")
@@ -47,29 +49,29 @@ internal class WatchFeedBackParamsTest {
     @Test
     fun body() {
         val params =
-            WatchFeedBackParams.builder()
+            WatchSendFeedbacksParams.builder()
                 .addFeedback(
-                    WatchFeedBackParams.Feedback.builder()
+                    WatchSendFeedbacksParams.Feedback.builder()
                         .target(
-                            WatchFeedBackParams.Feedback.Target.builder()
-                                .type(WatchFeedBackParams.Feedback.Target.Type.PHONE_NUMBER)
+                            WatchSendFeedbacksParams.Feedback.Target.builder()
+                                .type(WatchSendFeedbacksParams.Feedback.Target.Type.PHONE_NUMBER)
                                 .value("+30123456789")
                                 .build()
                         )
-                        .type(WatchFeedBackParams.Feedback.Type.VERIFICATION_STARTED)
+                        .type(WatchSendFeedbacksParams.Feedback.Type.VERIFICATION_STARTED)
                         .dispatchId("dispatch_id")
                         .metadata(
-                            WatchFeedBackParams.Feedback.Metadata.builder()
+                            WatchSendFeedbacksParams.Feedback.Metadata.builder()
                                 .correlationId("correlation_id")
                                 .build()
                         )
                         .signals(
-                            WatchFeedBackParams.Feedback.Signals.builder()
+                            WatchSendFeedbacksParams.Feedback.Signals.builder()
                                 .appVersion("1.2.34")
                                 .deviceId("8F0B8FDD-C2CB-4387-B20A-56E9B2E5A0D2")
                                 .deviceModel("iPhone17,2")
                                 .devicePlatform(
-                                    WatchFeedBackParams.Feedback.Signals.DevicePlatform.IOS
+                                    WatchSendFeedbacksParams.Feedback.Signals.DevicePlatform.IOS
                                 )
                                 .ip("192.0.2.1")
                                 .isTrustedUser(false)
@@ -87,26 +89,28 @@ internal class WatchFeedBackParamsTest {
 
         assertThat(body.feedbacks())
             .containsExactly(
-                WatchFeedBackParams.Feedback.builder()
+                WatchSendFeedbacksParams.Feedback.builder()
                     .target(
-                        WatchFeedBackParams.Feedback.Target.builder()
-                            .type(WatchFeedBackParams.Feedback.Target.Type.PHONE_NUMBER)
+                        WatchSendFeedbacksParams.Feedback.Target.builder()
+                            .type(WatchSendFeedbacksParams.Feedback.Target.Type.PHONE_NUMBER)
                             .value("+30123456789")
                             .build()
                     )
-                    .type(WatchFeedBackParams.Feedback.Type.VERIFICATION_STARTED)
+                    .type(WatchSendFeedbacksParams.Feedback.Type.VERIFICATION_STARTED)
                     .dispatchId("dispatch_id")
                     .metadata(
-                        WatchFeedBackParams.Feedback.Metadata.builder()
+                        WatchSendFeedbacksParams.Feedback.Metadata.builder()
                             .correlationId("correlation_id")
                             .build()
                     )
                     .signals(
-                        WatchFeedBackParams.Feedback.Signals.builder()
+                        WatchSendFeedbacksParams.Feedback.Signals.builder()
                             .appVersion("1.2.34")
                             .deviceId("8F0B8FDD-C2CB-4387-B20A-56E9B2E5A0D2")
                             .deviceModel("iPhone17,2")
-                            .devicePlatform(WatchFeedBackParams.Feedback.Signals.DevicePlatform.IOS)
+                            .devicePlatform(
+                                WatchSendFeedbacksParams.Feedback.Signals.DevicePlatform.IOS
+                            )
                             .ip("192.0.2.1")
                             .isTrustedUser(false)
                             .osVersion("18.0.1")
@@ -122,16 +126,16 @@ internal class WatchFeedBackParamsTest {
     @Test
     fun bodyWithoutOptionalFields() {
         val params =
-            WatchFeedBackParams.builder()
+            WatchSendFeedbacksParams.builder()
                 .addFeedback(
-                    WatchFeedBackParams.Feedback.builder()
+                    WatchSendFeedbacksParams.Feedback.builder()
                         .target(
-                            WatchFeedBackParams.Feedback.Target.builder()
-                                .type(WatchFeedBackParams.Feedback.Target.Type.PHONE_NUMBER)
+                            WatchSendFeedbacksParams.Feedback.Target.builder()
+                                .type(WatchSendFeedbacksParams.Feedback.Target.Type.PHONE_NUMBER)
                                 .value("+30123456789")
                                 .build()
                         )
-                        .type(WatchFeedBackParams.Feedback.Type.VERIFICATION_STARTED)
+                        .type(WatchSendFeedbacksParams.Feedback.Type.VERIFICATION_STARTED)
                         .build()
                 )
                 .build()
@@ -140,14 +144,14 @@ internal class WatchFeedBackParamsTest {
 
         assertThat(body.feedbacks())
             .containsExactly(
-                WatchFeedBackParams.Feedback.builder()
+                WatchSendFeedbacksParams.Feedback.builder()
                     .target(
-                        WatchFeedBackParams.Feedback.Target.builder()
-                            .type(WatchFeedBackParams.Feedback.Target.Type.PHONE_NUMBER)
+                        WatchSendFeedbacksParams.Feedback.Target.builder()
+                            .type(WatchSendFeedbacksParams.Feedback.Target.Type.PHONE_NUMBER)
                             .value("+30123456789")
                             .build()
                     )
-                    .type(WatchFeedBackParams.Feedback.Type.VERIFICATION_STARTED)
+                    .type(WatchSendFeedbacksParams.Feedback.Type.VERIFICATION_STARTED)
                     .build()
             )
     }

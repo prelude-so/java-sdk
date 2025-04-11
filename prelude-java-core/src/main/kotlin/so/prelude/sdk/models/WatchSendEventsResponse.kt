@@ -17,7 +17,7 @@ import so.prelude.sdk.core.JsonValue
 import so.prelude.sdk.core.checkRequired
 import so.prelude.sdk.errors.PreludeInvalidDataException
 
-class WatchFeedBackResponse
+class WatchSendEventsResponse
 private constructor(
     private val requestId: JsonField<String>,
     private val status: JsonField<Status>,
@@ -40,7 +40,7 @@ private constructor(
     fun requestId(): String = requestId.getRequired("request_id")
 
     /**
-     * The status of the feedbacks sending.
+     * The status of the events dispatch.
      *
      * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
@@ -76,7 +76,7 @@ private constructor(
     companion object {
 
         /**
-         * Returns a mutable builder for constructing an instance of [WatchFeedBackResponse].
+         * Returns a mutable builder for constructing an instance of [WatchSendEventsResponse].
          *
          * The following fields are required:
          * ```java
@@ -87,7 +87,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
-    /** A builder for [WatchFeedBackResponse]. */
+    /** A builder for [WatchSendEventsResponse]. */
     class Builder internal constructor() {
 
         private var requestId: JsonField<String>? = null
@@ -95,10 +95,10 @@ private constructor(
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(watchFeedBackResponse: WatchFeedBackResponse) = apply {
-            requestId = watchFeedBackResponse.requestId
-            status = watchFeedBackResponse.status
-            additionalProperties = watchFeedBackResponse.additionalProperties.toMutableMap()
+        internal fun from(watchSendEventsResponse: WatchSendEventsResponse) = apply {
+            requestId = watchSendEventsResponse.requestId
+            status = watchSendEventsResponse.status
+            additionalProperties = watchSendEventsResponse.additionalProperties.toMutableMap()
         }
 
         /**
@@ -116,7 +116,7 @@ private constructor(
          */
         fun requestId(requestId: JsonField<String>) = apply { this.requestId = requestId }
 
-        /** The status of the feedbacks sending. */
+        /** The status of the events dispatch. */
         fun status(status: Status) = status(JsonField.of(status))
 
         /**
@@ -147,7 +147,7 @@ private constructor(
         }
 
         /**
-         * Returns an immutable instance of [WatchFeedBackResponse].
+         * Returns an immutable instance of [WatchSendEventsResponse].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
          *
@@ -159,8 +159,8 @@ private constructor(
          *
          * @throws IllegalStateException if any required field is unset.
          */
-        fun build(): WatchFeedBackResponse =
-            WatchFeedBackResponse(
+        fun build(): WatchSendEventsResponse =
+            WatchSendEventsResponse(
                 checkRequired("requestId", requestId),
                 checkRequired("status", status),
                 additionalProperties.toMutableMap(),
@@ -169,7 +169,7 @@ private constructor(
 
     private var validated: Boolean = false
 
-    fun validate(): WatchFeedBackResponse = apply {
+    fun validate(): WatchSendEventsResponse = apply {
         if (validated) {
             return@apply
         }
@@ -197,7 +197,7 @@ private constructor(
         (if (requestId.asKnown().isPresent) 1 else 0) +
             (status.asKnown().getOrNull()?.validity() ?: 0)
 
-    /** The status of the feedbacks sending. */
+    /** The status of the events dispatch. */
     class Status @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**
@@ -322,7 +322,7 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is WatchFeedBackResponse && requestId == other.requestId && status == other.status && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is WatchSendEventsResponse && requestId == other.requestId && status == other.status && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
@@ -332,5 +332,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "WatchFeedBackResponse{requestId=$requestId, status=$status, additionalProperties=$additionalProperties}"
+        "WatchSendEventsResponse{requestId=$requestId, status=$status, additionalProperties=$additionalProperties}"
 }

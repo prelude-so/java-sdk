@@ -27,7 +27,7 @@ import so.prelude.sdk.errors.PreludeInvalidDataException
  * Send feedback regarding your end-users verification funnel. Events will be analyzed for proactive
  * fraud prevention and risk scoring.
  */
-class WatchFeedBackParams
+class WatchSendFeedbacksParams
 private constructor(
     private val body: Body,
     private val additionalHeaders: Headers,
@@ -60,7 +60,7 @@ private constructor(
     companion object {
 
         /**
-         * Returns a mutable builder for constructing an instance of [WatchFeedBackParams].
+         * Returns a mutable builder for constructing an instance of [WatchSendFeedbacksParams].
          *
          * The following fields are required:
          * ```java
@@ -70,7 +70,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
-    /** A builder for [WatchFeedBackParams]. */
+    /** A builder for [WatchSendFeedbacksParams]. */
     class Builder internal constructor() {
 
         private var body: Body.Builder = Body.builder()
@@ -78,10 +78,10 @@ private constructor(
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         @JvmSynthetic
-        internal fun from(watchFeedBackParams: WatchFeedBackParams) = apply {
-            body = watchFeedBackParams.body.toBuilder()
-            additionalHeaders = watchFeedBackParams.additionalHeaders.toBuilder()
-            additionalQueryParams = watchFeedBackParams.additionalQueryParams.toBuilder()
+        internal fun from(watchSendFeedbacksParams: WatchSendFeedbacksParams) = apply {
+            body = watchSendFeedbacksParams.body.toBuilder()
+            additionalHeaders = watchSendFeedbacksParams.additionalHeaders.toBuilder()
+            additionalQueryParams = watchSendFeedbacksParams.additionalQueryParams.toBuilder()
         }
 
         /**
@@ -230,7 +230,7 @@ private constructor(
         }
 
         /**
-         * Returns an immutable instance of [WatchFeedBackParams].
+         * Returns an immutable instance of [WatchSendFeedbacksParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
          *
@@ -241,8 +241,8 @@ private constructor(
          *
          * @throws IllegalStateException if any required field is unset.
          */
-        fun build(): WatchFeedBackParams =
-            WatchFeedBackParams(
+        fun build(): WatchSendFeedbacksParams =
+            WatchSendFeedbacksParams(
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -1974,11 +1974,11 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is WatchFeedBackParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return /* spotless:off */ other is WatchSendFeedbacksParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
     override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "WatchFeedBackParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "WatchSendFeedbacksParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }
