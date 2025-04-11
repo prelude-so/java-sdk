@@ -37,6 +37,7 @@ internal class VerificationServiceTest {
                             .correlationId("correlation_id")
                             .build()
                     )
+                    .method(VerificationCreateParams.Method.AUTO)
                     .options(
                         VerificationCreateParams.Options.builder()
                             .appRealm(

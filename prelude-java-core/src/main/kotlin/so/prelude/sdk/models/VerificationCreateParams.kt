@@ -61,6 +61,17 @@ private constructor(
     fun metadata(): Optional<Metadata> = body.metadata()
 
     /**
+     * The method used for verifying this phone number. The 'voice' option provides an accessible
+     * alternative for visually impaired users by delivering the verification code through a phone
+     * call rather than a text message. It also allows verification of landline numbers that cannot
+     * receive SMS messages. **Coming soon.**
+     *
+     * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun method(): Optional<Method> = body.method()
+
+    /**
      * Verification options
      *
      * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -70,7 +81,7 @@ private constructor(
 
     /**
      * The signals used for anti-fraud. For more details, refer to
-     * [Signals](/guides/prevent-fraud#signals).
+     * [Signals](/verify/v2/documentation/prevent-fraud#signals).
      *
      * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
@@ -97,6 +108,13 @@ private constructor(
      * Unlike [metadata], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _metadata(): JsonField<Metadata> = body._metadata()
+
+    /**
+     * Returns the raw JSON value of [method].
+     *
+     * Unlike [method], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _method(): JsonField<Method> = body._method()
 
     /**
      * Returns the raw JSON value of [options].
@@ -155,8 +173,8 @@ private constructor(
          * - [target]
          * - [dispatchId]
          * - [metadata]
+         * - [method]
          * - [options]
-         * - [signals]
          * - etc.
          */
         fun body(body: Body) = apply { this.body = body.toBuilder() }
@@ -202,6 +220,22 @@ private constructor(
          */
         fun metadata(metadata: JsonField<Metadata>) = apply { body.metadata(metadata) }
 
+        /**
+         * The method used for verifying this phone number. The 'voice' option provides an
+         * accessible alternative for visually impaired users by delivering the verification code
+         * through a phone call rather than a text message. It also allows verification of landline
+         * numbers that cannot receive SMS messages. **Coming soon.**
+         */
+        fun method(method: Method) = apply { body.method(method) }
+
+        /**
+         * Sets [Builder.method] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.method] with a well-typed [Method] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun method(method: JsonField<Method>) = apply { body.method(method) }
+
         /** Verification options */
         fun options(options: Options) = apply { body.options(options) }
 
@@ -215,7 +249,7 @@ private constructor(
 
         /**
          * The signals used for anti-fraud. For more details, refer to
-         * [Signals](/guides/prevent-fraud#signals).
+         * [Signals](/verify/v2/documentation/prevent-fraud#signals).
          */
         fun signals(signals: Signals) = apply { body.signals(signals) }
 
@@ -375,6 +409,7 @@ private constructor(
         private val target: JsonField<Target>,
         private val dispatchId: JsonField<String>,
         private val metadata: JsonField<Metadata>,
+        private val method: JsonField<Method>,
         private val options: JsonField<Options>,
         private val signals: JsonField<Signals>,
         private val additionalProperties: MutableMap<String, JsonValue>,
@@ -389,9 +424,10 @@ private constructor(
             @JsonProperty("metadata")
             @ExcludeMissing
             metadata: JsonField<Metadata> = JsonMissing.of(),
+            @JsonProperty("method") @ExcludeMissing method: JsonField<Method> = JsonMissing.of(),
             @JsonProperty("options") @ExcludeMissing options: JsonField<Options> = JsonMissing.of(),
             @JsonProperty("signals") @ExcludeMissing signals: JsonField<Signals> = JsonMissing.of(),
-        ) : this(target, dispatchId, metadata, options, signals, mutableMapOf())
+        ) : this(target, dispatchId, metadata, method, options, signals, mutableMapOf())
 
         /**
          * The verification target. Either a phone number or an email address. To use the email
@@ -420,6 +456,17 @@ private constructor(
         fun metadata(): Optional<Metadata> = metadata.getOptional("metadata")
 
         /**
+         * The method used for verifying this phone number. The 'voice' option provides an
+         * accessible alternative for visually impaired users by delivering the verification code
+         * through a phone call rather than a text message. It also allows verification of landline
+         * numbers that cannot receive SMS messages. **Coming soon.**
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun method(): Optional<Method> = method.getOptional("method")
+
+        /**
          * Verification options
          *
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -429,7 +476,7 @@ private constructor(
 
         /**
          * The signals used for anti-fraud. For more details, refer to
-         * [Signals](/guides/prevent-fraud#signals).
+         * [Signals](/verify/v2/documentation/prevent-fraud#signals).
          *
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
@@ -458,6 +505,13 @@ private constructor(
          * Unlike [metadata], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("metadata") @ExcludeMissing fun _metadata(): JsonField<Metadata> = metadata
+
+        /**
+         * Returns the raw JSON value of [method].
+         *
+         * Unlike [method], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("method") @ExcludeMissing fun _method(): JsonField<Method> = method
 
         /**
          * Returns the raw JSON value of [options].
@@ -504,6 +558,7 @@ private constructor(
             private var target: JsonField<Target>? = null
             private var dispatchId: JsonField<String> = JsonMissing.of()
             private var metadata: JsonField<Metadata> = JsonMissing.of()
+            private var method: JsonField<Method> = JsonMissing.of()
             private var options: JsonField<Options> = JsonMissing.of()
             private var signals: JsonField<Signals> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -513,6 +568,7 @@ private constructor(
                 target = body.target
                 dispatchId = body.dispatchId
                 metadata = body.metadata
+                method = body.method
                 options = body.options
                 signals = body.signals
                 additionalProperties = body.additionalProperties.toMutableMap()
@@ -560,6 +616,23 @@ private constructor(
              */
             fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
 
+            /**
+             * The method used for verifying this phone number. The 'voice' option provides an
+             * accessible alternative for visually impaired users by delivering the verification
+             * code through a phone call rather than a text message. It also allows verification of
+             * landline numbers that cannot receive SMS messages. **Coming soon.**
+             */
+            fun method(method: Method) = method(JsonField.of(method))
+
+            /**
+             * Sets [Builder.method] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.method] with a well-typed [Method] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun method(method: JsonField<Method>) = apply { this.method = method }
+
             /** Verification options */
             fun options(options: Options) = options(JsonField.of(options))
 
@@ -574,7 +647,7 @@ private constructor(
 
             /**
              * The signals used for anti-fraud. For more details, refer to
-             * [Signals](/guides/prevent-fraud#signals).
+             * [Signals](/verify/v2/documentation/prevent-fraud#signals).
              */
             fun signals(signals: Signals) = signals(JsonField.of(signals))
 
@@ -623,6 +696,7 @@ private constructor(
                     checkRequired("target", target),
                     dispatchId,
                     metadata,
+                    method,
                     options,
                     signals,
                     additionalProperties.toMutableMap(),
@@ -639,6 +713,7 @@ private constructor(
             target().validate()
             dispatchId()
             metadata().ifPresent { it.validate() }
+            method().ifPresent { it.validate() }
             options().ifPresent { it.validate() }
             signals().ifPresent { it.validate() }
             validated = true
@@ -663,6 +738,7 @@ private constructor(
             (target.asKnown().getOrNull()?.validity() ?: 0) +
                 (if (dispatchId.asKnown().isPresent) 1 else 0) +
                 (metadata.asKnown().getOrNull()?.validity() ?: 0) +
+                (method.asKnown().getOrNull()?.validity() ?: 0) +
                 (options.asKnown().getOrNull()?.validity() ?: 0) +
                 (signals.asKnown().getOrNull()?.validity() ?: 0)
 
@@ -671,17 +747,17 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && target == other.target && dispatchId == other.dispatchId && metadata == other.metadata && options == other.options && signals == other.signals && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && target == other.target && dispatchId == other.dispatchId && metadata == other.metadata && method == other.method && options == other.options && signals == other.signals && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(target, dispatchId, metadata, options, signals, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(target, dispatchId, metadata, method, options, signals, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{target=$target, dispatchId=$dispatchId, metadata=$metadata, options=$options, signals=$signals, additionalProperties=$additionalProperties}"
+            "Body{target=$target, dispatchId=$dispatchId, metadata=$metadata, method=$method, options=$options, signals=$signals, additionalProperties=$additionalProperties}"
     }
 
     /**
@@ -1164,6 +1240,137 @@ private constructor(
             "Metadata{correlationId=$correlationId, additionalProperties=$additionalProperties}"
     }
 
+    /**
+     * The method used for verifying this phone number. The 'voice' option provides an accessible
+     * alternative for visually impaired users by delivering the verification code through a phone
+     * call rather than a text message. It also allows verification of landline numbers that cannot
+     * receive SMS messages. **Coming soon.**
+     */
+    class Method @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
+
+        /**
+         * Returns this class instance's raw value.
+         *
+         * This is usually only useful if this instance was deserialized from data that doesn't
+         * match any known member, and you want to know that value. For example, if the SDK is on an
+         * older version than the API, then the API may respond with new members that the SDK is
+         * unaware of.
+         */
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+        companion object {
+
+            @JvmField val AUTO = of("auto")
+
+            @JvmField val VOICE = of("voice")
+
+            @JvmStatic fun of(value: String) = Method(JsonField.of(value))
+        }
+
+        /** An enum containing [Method]'s known values. */
+        enum class Known {
+            AUTO,
+            VOICE,
+        }
+
+        /**
+         * An enum containing [Method]'s known values, as well as an [_UNKNOWN] member.
+         *
+         * An instance of [Method] can contain an unknown value in a couple of cases:
+         * - It was deserialized from data that doesn't match any known member. For example, if the
+         *   SDK is on an older version than the API, then the API may respond with new members that
+         *   the SDK is unaware of.
+         * - It was constructed with an arbitrary value using the [of] method.
+         */
+        enum class Value {
+            AUTO,
+            VOICE,
+            /** An enum member indicating that [Method] was instantiated with an unknown value. */
+            _UNKNOWN,
+        }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
+         * if the class was instantiated with an unknown value.
+         *
+         * Use the [known] method instead if you're certain the value is always known or if you want
+         * to throw for the unknown case.
+         */
+        fun value(): Value =
+            when (this) {
+                AUTO -> Value.AUTO
+                VOICE -> Value.VOICE
+                else -> Value._UNKNOWN
+            }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value.
+         *
+         * Use the [value] method instead if you're uncertain the value is always known and don't
+         * want to throw for the unknown case.
+         *
+         * @throws PreludeInvalidDataException if this class instance's value is a not a known
+         *   member.
+         */
+        fun known(): Known =
+            when (this) {
+                AUTO -> Known.AUTO
+                VOICE -> Known.VOICE
+                else -> throw PreludeInvalidDataException("Unknown Method: $value")
+            }
+
+        /**
+         * Returns this class instance's primitive wire representation.
+         *
+         * This differs from the [toString] method because that method is primarily for debugging
+         * and generally doesn't throw.
+         *
+         * @throws PreludeInvalidDataException if this class instance's value does not have the
+         *   expected primitive type.
+         */
+        fun asString(): String =
+            _value().asString().orElseThrow { PreludeInvalidDataException("Value is not a String") }
+
+        private var validated: Boolean = false
+
+        fun validate(): Method = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: PreludeInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Method && value == other.value /* spotless:on */
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
+    }
+
     /** Verification options */
     class Options
     private constructor(
@@ -1224,7 +1431,7 @@ private constructor(
         /**
          * The URL where webhooks will be sent when verification events occur, including
          * verification creation, attempt creation, and delivery status changes. For more details,
-         * refer to [Webhook](/api-reference/v2/verify/webhook).
+         * refer to [Webhook](/verify/v2/documentation/webhook).
          *
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
@@ -1243,7 +1450,7 @@ private constructor(
         /**
          * The custom code to use for OTP verification. This feature is only available for
          * compatibility purposes and subject to Prelude’s approval. Contact us to discuss your use
-         * case. For more details, refer to [Multi Routing](/concepts/multi-routing).
+         * case. For more details, refer to [Multi Routing](/introduction/concepts/multi-routing).
          *
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
@@ -1411,7 +1618,7 @@ private constructor(
             /**
              * The URL where webhooks will be sent when verification events occur, including
              * verification creation, attempt creation, and delivery status changes. For more
-             * details, refer to [Webhook](/api-reference/v2/verify/webhook).
+             * details, refer to [Webhook](/verify/v2/documentation/webhook).
              */
             fun callbackUrl(callbackUrl: String) = callbackUrl(JsonField.of(callbackUrl))
 
@@ -1444,7 +1651,8 @@ private constructor(
             /**
              * The custom code to use for OTP verification. This feature is only available for
              * compatibility purposes and subject to Prelude’s approval. Contact us to discuss your
-             * use case. For more details, refer to [Multi Routing](/concepts/multi-routing).
+             * use case. For more details, refer to
+             * [Multi Routing](/introduction/concepts/multi-routing).
              */
             fun customCode(customCode: String) = customCode(JsonField.of(customCode))
 
@@ -2058,7 +2266,7 @@ private constructor(
 
     /**
      * The signals used for anti-fraud. For more details, refer to
-     * [Signals](/guides/prevent-fraud#signals).
+     * [Signals](/verify/v2/documentation/prevent-fraud#signals).
      */
     class Signals
     private constructor(
@@ -2153,7 +2361,7 @@ private constructor(
 
         /**
          * This signal should provide a higher level of trust, indicating that the user is genuine.
-         * For more details, refer to [Signals](/guides/prevent-fraud#signals).
+         * For more details, refer to [Signals](/verify/v2/documentation/prevent-fraud#signals).
          *
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
@@ -2358,7 +2566,8 @@ private constructor(
 
             /**
              * This signal should provide a higher level of trust, indicating that the user is
-             * genuine. For more details, refer to [Signals](/guides/prevent-fraud#signals).
+             * genuine. For more details, refer to
+             * [Signals](/verify/v2/documentation/prevent-fraud#signals).
              */
             fun isTrustedUser(isTrustedUser: Boolean) = isTrustedUser(JsonField.of(isTrustedUser))
 

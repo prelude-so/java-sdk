@@ -13,26 +13,16 @@ internal class WatchPredictResponseTest {
     fun create() {
         val watchPredictResponse =
             WatchPredictResponse.builder()
-                .id("id")
-                .prediction(WatchPredictResponse.Prediction.ALLOW)
-                .reasoning(
-                    WatchPredictResponse.Reasoning.builder()
-                        .cause(WatchPredictResponse.Reasoning.Cause.NONE)
-                        .score(0.0)
-                        .build()
-                )
+                .id("prd_01jc0t6fwwfgfsq1md24mhyztj")
+                .prediction(WatchPredictResponse.Prediction.LEGITIMATE)
+                .requestId("3d19215e-2991-4a05-a41a-527314e6ff6a")
                 .build()
 
-        assertThat(watchPredictResponse.id()).isEqualTo("id")
+        assertThat(watchPredictResponse.id()).isEqualTo("prd_01jc0t6fwwfgfsq1md24mhyztj")
         assertThat(watchPredictResponse.prediction())
-            .isEqualTo(WatchPredictResponse.Prediction.ALLOW)
-        assertThat(watchPredictResponse.reasoning())
-            .isEqualTo(
-                WatchPredictResponse.Reasoning.builder()
-                    .cause(WatchPredictResponse.Reasoning.Cause.NONE)
-                    .score(0.0)
-                    .build()
-            )
+            .isEqualTo(WatchPredictResponse.Prediction.LEGITIMATE)
+        assertThat(watchPredictResponse.requestId())
+            .isEqualTo("3d19215e-2991-4a05-a41a-527314e6ff6a")
     }
 
     @Test
@@ -40,14 +30,9 @@ internal class WatchPredictResponseTest {
         val jsonMapper = jsonMapper()
         val watchPredictResponse =
             WatchPredictResponse.builder()
-                .id("id")
-                .prediction(WatchPredictResponse.Prediction.ALLOW)
-                .reasoning(
-                    WatchPredictResponse.Reasoning.builder()
-                        .cause(WatchPredictResponse.Reasoning.Cause.NONE)
-                        .score(0.0)
-                        .build()
-                )
+                .id("prd_01jc0t6fwwfgfsq1md24mhyztj")
+                .prediction(WatchPredictResponse.Prediction.LEGITIMATE)
+                .requestId("3d19215e-2991-4a05-a41a-527314e6ff6a")
                 .build()
 
         val roundtrippedWatchPredictResponse =
