@@ -13,7 +13,7 @@ It is generated with [Stainless](https://www.stainless.com/).
 
 <!-- x-release-please-start-version -->
 
-The REST API documentation can be found on [docs.prelude.so](https://docs.prelude.so). Javadocs are also available on [javadoc.io](https://javadoc.io/doc/so.prelude.sdk/prelude-java/0.3.0).
+The REST API documentation can be found on [docs.prelude.so](https://docs.prelude.so). Javadocs are available on [javadoc.io](https://javadoc.io/doc/so.prelude.sdk/prelude-java/0.3.0).
 
 <!-- x-release-please-end -->
 
