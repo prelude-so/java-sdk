@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.3.1 (2025-04-16)
+
+Full Changelog: [v0.3.0...v0.3.1](https://github.com/prelude-so/java-sdk/compare/v0.3.0...v0.3.1)
+
+### Performance Improvements
+
+* **internal:** improve compilation+test speed ([85c53e5](https://github.com/prelude-so/java-sdk/commit/85c53e5a10af6d7707ddbb8c4abc607409504efb))
+
+
+### Documentation
+
+* **client:** update jackson compat error message ([baba4df](https://github.com/prelude-so/java-sdk/commit/baba4df213abca5ee86da2fff25036be9429bda0))
+* explain http client customization ([54858cc](https://github.com/prelude-so/java-sdk/commit/54858cc612ea274f70a1326d02d1ea471dce51b1))
+* explain jackson compat in readme ([ddc293e](https://github.com/prelude-so/java-sdk/commit/ddc293eab99bd06e99788a29a9190012e347fa33))
+* update documentation links to be more uniform ([cba387a](https://github.com/prelude-so/java-sdk/commit/cba387afc144b663148b491cda78436e0a3c72b3))
+
 ## 0.3.0 (2025-04-11)
 
 Full Changelog: [v0.2.0...v0.3.0](https://github.com/prelude-so/java-sdk/compare/v0.2.0...v0.3.0)
