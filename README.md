@@ -328,6 +328,42 @@ PreludeClient client = PreludeOkHttpClient.builder()
     .build();
 ```
 
+### Custom HTTP client
+
+The SDK consists of three artifacts:
+
+- `prelude-java-core`
+  - Contains core SDK logic
+  - Does not depend on [OkHttp](https://square.github.io/okhttp)
+  - Exposes [`PreludeClient`](prelude-java-core/src/main/kotlin/so/prelude/sdk/client/PreludeClient.kt), [`PreludeClientAsync`](prelude-java-core/src/main/kotlin/so/prelude/sdk/client/PreludeClientAsync.kt), [`PreludeClientImpl`](prelude-java-core/src/main/kotlin/so/prelude/sdk/client/PreludeClientImpl.kt), and [`PreludeClientAsyncImpl`](prelude-java-core/src/main/kotlin/so/prelude/sdk/client/PreludeClientAsyncImpl.kt), all of which can work with any HTTP client
+- `prelude-java-client-okhttp`
+  - Depends on [OkHttp](https://square.github.io/okhttp)
+  - Exposes [`PreludeOkHttpClient`](prelude-java-client-okhttp/src/main/kotlin/so/prelude/sdk/client/okhttp/PreludeOkHttpClient.kt) and [`PreludeOkHttpClientAsync`](prelude-java-client-okhttp/src/main/kotlin/so/prelude/sdk/client/okhttp/PreludeOkHttpClientAsync.kt), which provide a way to construct [`PreludeClientImpl`](prelude-java-core/src/main/kotlin/so/prelude/sdk/client/PreludeClientImpl.kt) and [`PreludeClientAsyncImpl`](prelude-java-core/src/main/kotlin/so/prelude/sdk/client/PreludeClientAsyncImpl.kt), respectively, using OkHttp
+- `prelude-java`
+  - Depends on and exposes the APIs of both `prelude-java-core` and `prelude-java-client-okhttp`
+  - Does not have its own logic
+
+This structure allows replacing the SDK's default HTTP client without pulling in unnecessary dependencies.
+
+#### Customized [`OkHttpClient`](https://square.github.io/okhttp/3.x/okhttp/okhttp3/OkHttpClient.html)
+
+> [!TIP]
+> Try the available [network options](#network-options) before replacing the default client.
+
+To use a customized `OkHttpClient`:
+
+1. Replace your [`prelude-java` dependency](#installation) with `prelude-java-core`
+2. Copy `prelude-java-client-okhttp`'s [`OkHttpClient`](prelude-java-client-okhttp/src/main/kotlin/so/prelude/sdk/client/okhttp/OkHttpClient.kt) class into your code and customize it
+3. Construct [`PreludeClientImpl`](prelude-java-core/src/main/kotlin/so/prelude/sdk/client/PreludeClientImpl.kt) or [`PreludeClientAsyncImpl`](prelude-java-core/src/main/kotlin/so/prelude/sdk/client/PreludeClientAsyncImpl.kt), similarly to [`PreludeOkHttpClient`](prelude-java-client-okhttp/src/main/kotlin/so/prelude/sdk/client/okhttp/PreludeOkHttpClient.kt) or [`PreludeOkHttpClientAsync`](prelude-java-client-okhttp/src/main/kotlin/so/prelude/sdk/client/okhttp/PreludeOkHttpClientAsync.kt), using your customized client
+
+### Completely custom HTTP client
+
+To use a completely custom HTTP client:
+
+1. Replace your [`prelude-java` dependency](#installation) with `prelude-java-core`
+2. Write a class that implements the [`HttpClient`](prelude-java-core/src/main/kotlin/so/prelude/sdk/core/http/HttpClient.kt) interface
+3. Construct [`PreludeClientImpl`](prelude-java-core/src/main/kotlin/so/prelude/sdk/client/PreludeClientImpl.kt) or [`PreludeClientAsyncImpl`](prelude-java-core/src/main/kotlin/so/prelude/sdk/client/PreludeClientAsyncImpl.kt), similarly to [`PreludeOkHttpClient`](prelude-java-client-okhttp/src/main/kotlin/so/prelude/sdk/client/okhttp/PreludeOkHttpClient.kt) or [`PreludeOkHttpClientAsync`](prelude-java-client-okhttp/src/main/kotlin/so/prelude/sdk/client/okhttp/PreludeOkHttpClientAsync.kt), using your new client class
+
 ## Undocumented API functionality
 
 The SDK is typed for convenient usage of the documented API. However, it also supports working with undocumented or not yet supported parts of the API.
