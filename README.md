@@ -2,8 +2,8 @@
 
 <!-- x-release-please-start-version -->
 
-[![Maven Central](https://img.shields.io/maven-central/v/so.prelude.sdk/prelude-java)](https://central.sonatype.com/artifact/so.prelude.sdk/prelude-java/0.3.0)
-[![javadoc](https://javadoc.io/badge2/so.prelude.sdk/prelude-java/0.3.0/javadoc.svg)](https://javadoc.io/doc/so.prelude.sdk/prelude-java/0.3.0)
+[![Maven Central](https://img.shields.io/maven-central/v/so.prelude.sdk/prelude-java)](https://central.sonatype.com/artifact/so.prelude.sdk/prelude-java/0.4.0)
+[![javadoc](https://javadoc.io/badge2/so.prelude.sdk/prelude-java/0.4.0/javadoc.svg)](https://javadoc.io/doc/so.prelude.sdk/prelude-java/0.4.0)
 
 <!-- x-release-please-end -->
 
@@ -13,7 +13,7 @@ It is generated with [Stainless](https://www.stainless.com/).
 
 <!-- x-release-please-start-version -->
 
-The REST API documentation can be found on [docs.prelude.so](https://docs.prelude.so). Javadocs are also available on [javadoc.io](https://javadoc.io/doc/so.prelude.sdk/prelude-java/0.3.0).
+The REST API documentation can be found on [docs.prelude.so](https://docs.prelude.so). Javadocs are available on [javadoc.io](https://javadoc.io/doc/so.prelude.sdk/prelude-java/0.4.0).
 
 <!-- x-release-please-end -->
 
@@ -24,7 +24,7 @@ The REST API documentation can be found on [docs.prelude.so](https://docs.prelud
 ### Gradle
 
 ```kotlin
-implementation("so.prelude.sdk:prelude-java:0.3.0")
+implementation("so.prelude.sdk:prelude-java:0.4.0")
 ```
 
 ### Maven
@@ -33,7 +33,7 @@ implementation("so.prelude.sdk:prelude-java:0.3.0")
 <dependency>
   <groupId>so.prelude.sdk</groupId>
   <artifactId>prelude-java</artifactId>
-  <version>0.3.0</version>
+  <version>0.4.0</version>
 </dependency>
 ```
 
@@ -241,6 +241,17 @@ Or to `debug` for more verbose logging:
 $ export PRELUDE_LOG=debug
 ```
 
+## Jackson
+
+The SDK depends on [Jackson](https://github.com/FasterXML/jackson) for JSON serialization/deserialization. It is compatible with version 2.13.4 or higher, but depends on version 2.18.2 by default.
+
+The SDK throws an exception if it detects an incompatible Jackson version at runtime (e.g. if the default version was overridden in your Maven or Gradle config).
+
+If the SDK threw an exception, but you're _certain_ the version is compatible, then disable the version check using the `checkJacksonVersionCompatibility` on [`PreludeOkHttpClient`](prelude-java-client-okhttp/src/main/kotlin/so/prelude/sdk/client/okhttp/PreludeOkHttpClient.kt) or [`PreludeOkHttpClientAsync`](prelude-java-client-okhttp/src/main/kotlin/so/prelude/sdk/client/okhttp/PreludeOkHttpClientAsync.kt).
+
+> [!CAUTION]
+> We make no guarantee that the SDK works correctly when the Jackson version check is disabled.
+
 ## Network options
 
 ### Retries
@@ -276,7 +287,6 @@ Requests time out after 1 minute by default.
 To set a custom timeout, configure the method call using the `timeout` method:
 
 ```java
-import so.prelude.sdk.models.VerificationCreateParams;
 import so.prelude.sdk.models.VerificationCreateResponse;
 
 VerificationCreateResponse verification = client.verification().create(
@@ -316,6 +326,42 @@ PreludeClient client = PreludeOkHttpClient.builder()
     ))
     .build();
 ```
+
+### Custom HTTP client
+
+The SDK consists of three artifacts:
+
+- `prelude-java-core`
+  - Contains core SDK logic
+  - Does not depend on [OkHttp](https://square.github.io/okhttp)
+  - Exposes [`PreludeClient`](prelude-java-core/src/main/kotlin/so/prelude/sdk/client/PreludeClient.kt), [`PreludeClientAsync`](prelude-java-core/src/main/kotlin/so/prelude/sdk/client/PreludeClientAsync.kt), [`PreludeClientImpl`](prelude-java-core/src/main/kotlin/so/prelude/sdk/client/PreludeClientImpl.kt), and [`PreludeClientAsyncImpl`](prelude-java-core/src/main/kotlin/so/prelude/sdk/client/PreludeClientAsyncImpl.kt), all of which can work with any HTTP client
+- `prelude-java-client-okhttp`
+  - Depends on [OkHttp](https://square.github.io/okhttp)
+  - Exposes [`PreludeOkHttpClient`](prelude-java-client-okhttp/src/main/kotlin/so/prelude/sdk/client/okhttp/PreludeOkHttpClient.kt) and [`PreludeOkHttpClientAsync`](prelude-java-client-okhttp/src/main/kotlin/so/prelude/sdk/client/okhttp/PreludeOkHttpClientAsync.kt), which provide a way to construct [`PreludeClientImpl`](prelude-java-core/src/main/kotlin/so/prelude/sdk/client/PreludeClientImpl.kt) and [`PreludeClientAsyncImpl`](prelude-java-core/src/main/kotlin/so/prelude/sdk/client/PreludeClientAsyncImpl.kt), respectively, using OkHttp
+- `prelude-java`
+  - Depends on and exposes the APIs of both `prelude-java-core` and `prelude-java-client-okhttp`
+  - Does not have its own logic
+
+This structure allows replacing the SDK's default HTTP client without pulling in unnecessary dependencies.
+
+#### Customized [`OkHttpClient`](https://square.github.io/okhttp/3.x/okhttp/okhttp3/OkHttpClient.html)
+
+> [!TIP]
+> Try the available [network options](#network-options) before replacing the default client.
+
+To use a customized `OkHttpClient`:
+
+1. Replace your [`prelude-java` dependency](#installation) with `prelude-java-core`
+2. Copy `prelude-java-client-okhttp`'s [`OkHttpClient`](prelude-java-client-okhttp/src/main/kotlin/so/prelude/sdk/client/okhttp/OkHttpClient.kt) class into your code and customize it
+3. Construct [`PreludeClientImpl`](prelude-java-core/src/main/kotlin/so/prelude/sdk/client/PreludeClientImpl.kt) or [`PreludeClientAsyncImpl`](prelude-java-core/src/main/kotlin/so/prelude/sdk/client/PreludeClientAsyncImpl.kt), similarly to [`PreludeOkHttpClient`](prelude-java-client-okhttp/src/main/kotlin/so/prelude/sdk/client/okhttp/PreludeOkHttpClient.kt) or [`PreludeOkHttpClientAsync`](prelude-java-client-okhttp/src/main/kotlin/so/prelude/sdk/client/okhttp/PreludeOkHttpClientAsync.kt), using your customized client
+
+### Completely custom HTTP client
+
+To use a completely custom HTTP client:
+
+1. Replace your [`prelude-java` dependency](#installation) with `prelude-java-core`
+2. Write a class that implements the [`HttpClient`](prelude-java-core/src/main/kotlin/so/prelude/sdk/core/http/HttpClient.kt) interface
+3. Construct [`PreludeClientImpl`](prelude-java-core/src/main/kotlin/so/prelude/sdk/client/PreludeClientImpl.kt) or [`PreludeClientAsyncImpl`](prelude-java-core/src/main/kotlin/so/prelude/sdk/client/PreludeClientAsyncImpl.kt), similarly to [`PreludeOkHttpClient`](prelude-java-client-okhttp/src/main/kotlin/so/prelude/sdk/client/okhttp/PreludeOkHttpClient.kt) or [`PreludeOkHttpClientAsync`](prelude-java-client-okhttp/src/main/kotlin/so/prelude/sdk/client/okhttp/PreludeOkHttpClientAsync.kt), using your new client class
 
 ## Undocumented API functionality
 
@@ -488,7 +534,6 @@ VerificationCreateResponse verification = client.verification().create(params).v
 Or configure the method call to validate the response using the `responseValidation` method:
 
 ```java
-import so.prelude.sdk.models.VerificationCreateParams;
 import so.prelude.sdk.models.VerificationCreateResponse;
 
 VerificationCreateResponse verification = client.verification().create(

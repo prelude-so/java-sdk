@@ -14,12 +14,14 @@ import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo
 import com.github.tomakehurst.wiremock.junit5.WireMockTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.parallel.ResourceLock
 import so.prelude.sdk.client.PreludeClient
 import so.prelude.sdk.client.okhttp.PreludeOkHttpClient
 import so.prelude.sdk.core.JsonValue
 import so.prelude.sdk.models.VerificationCreateParams
 
 @WireMockTest
+@ResourceLock("https://github.com/wiremock/wiremock/issues/169")
 internal class ServiceParamsTest {
 
     private lateinit var client: PreludeClient

@@ -3,9 +3,11 @@
 package so.prelude.sdk.services.async
 
 import java.util.concurrent.CompletableFuture
+import kotlin.jvm.optionals.getOrNull
 import so.prelude.sdk.core.ClientOptions
 import so.prelude.sdk.core.JsonValue
 import so.prelude.sdk.core.RequestOptions
+import so.prelude.sdk.core.checkRequired
 import so.prelude.sdk.core.handlers.errorHandler
 import so.prelude.sdk.core.handlers.jsonHandler
 import so.prelude.sdk.core.handlers.withErrorHandler
@@ -47,6 +49,9 @@ class LookupServiceAsyncImpl internal constructor(private val clientOptions: Cli
             params: LookupLookupParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<LookupLookupResponse>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("phoneNumber", params.phoneNumber().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)

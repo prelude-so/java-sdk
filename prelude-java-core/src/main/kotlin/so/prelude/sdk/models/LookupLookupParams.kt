@@ -9,7 +9,6 @@ import kotlin.jvm.optionals.getOrNull
 import so.prelude.sdk.core.Enum
 import so.prelude.sdk.core.JsonField
 import so.prelude.sdk.core.Params
-import so.prelude.sdk.core.checkRequired
 import so.prelude.sdk.core.http.Headers
 import so.prelude.sdk.core.http.QueryParams
 import so.prelude.sdk.core.toImmutable
@@ -21,14 +20,14 @@ import so.prelude.sdk.errors.PreludeInvalidDataException
  */
 class LookupLookupParams
 private constructor(
-    private val phoneNumber: String,
+    private val phoneNumber: String?,
     private val type: List<Type>?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
     /** An E.164 formatted phone number to look up. */
-    fun phoneNumber(): String = phoneNumber
+    fun phoneNumber(): Optional<String> = Optional.ofNullable(phoneNumber)
 
     /**
      * Optional features. Possible values are:
@@ -45,14 +44,9 @@ private constructor(
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [LookupLookupParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .phoneNumber()
-         * ```
-         */
+        @JvmStatic fun none(): LookupLookupParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [LookupLookupParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -73,7 +67,10 @@ private constructor(
         }
 
         /** An E.164 formatted phone number to look up. */
-        fun phoneNumber(phoneNumber: String) = apply { this.phoneNumber = phoneNumber }
+        fun phoneNumber(phoneNumber: String?) = apply { this.phoneNumber = phoneNumber }
+
+        /** Alias for calling [Builder.phoneNumber] with `phoneNumber.orElse(null)`. */
+        fun phoneNumber(phoneNumber: Optional<String>) = phoneNumber(phoneNumber.getOrNull())
 
         /**
          * Optional features. Possible values are:
@@ -196,17 +193,10 @@ private constructor(
          * Returns an immutable instance of [LookupLookupParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .phoneNumber()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): LookupLookupParams =
             LookupLookupParams(
-                checkRequired("phoneNumber", phoneNumber),
+                phoneNumber,
                 type?.toImmutable(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -215,7 +205,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> phoneNumber
+            0 -> phoneNumber ?: ""
             else -> ""
         }
 

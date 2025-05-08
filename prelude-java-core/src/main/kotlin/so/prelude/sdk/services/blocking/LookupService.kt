@@ -19,14 +19,36 @@ interface LookupService {
      * Retrieve detailed information about a phone number including carrier data, line type, and
      * portability status.
      */
-    fun lookup(params: LookupLookupParams): LookupLookupResponse =
-        lookup(params, RequestOptions.none())
+    fun lookup(phoneNumber: String): LookupLookupResponse =
+        lookup(phoneNumber, LookupLookupParams.none())
+
+    /** @see [lookup] */
+    fun lookup(
+        phoneNumber: String,
+        params: LookupLookupParams = LookupLookupParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): LookupLookupResponse =
+        lookup(params.toBuilder().phoneNumber(phoneNumber).build(), requestOptions)
+
+    /** @see [lookup] */
+    fun lookup(
+        phoneNumber: String,
+        params: LookupLookupParams = LookupLookupParams.none(),
+    ): LookupLookupResponse = lookup(phoneNumber, params, RequestOptions.none())
 
     /** @see [lookup] */
     fun lookup(
         params: LookupLookupParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): LookupLookupResponse
+
+    /** @see [lookup] */
+    fun lookup(params: LookupLookupParams): LookupLookupResponse =
+        lookup(params, RequestOptions.none())
+
+    /** @see [lookup] */
+    fun lookup(phoneNumber: String, requestOptions: RequestOptions): LookupLookupResponse =
+        lookup(phoneNumber, LookupLookupParams.none(), requestOptions)
 
     /** A view of [LookupService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
@@ -36,8 +58,25 @@ interface LookupService {
          * same as [LookupService.lookup].
          */
         @MustBeClosed
-        fun lookup(params: LookupLookupParams): HttpResponseFor<LookupLookupResponse> =
-            lookup(params, RequestOptions.none())
+        fun lookup(phoneNumber: String): HttpResponseFor<LookupLookupResponse> =
+            lookup(phoneNumber, LookupLookupParams.none())
+
+        /** @see [lookup] */
+        @MustBeClosed
+        fun lookup(
+            phoneNumber: String,
+            params: LookupLookupParams = LookupLookupParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<LookupLookupResponse> =
+            lookup(params.toBuilder().phoneNumber(phoneNumber).build(), requestOptions)
+
+        /** @see [lookup] */
+        @MustBeClosed
+        fun lookup(
+            phoneNumber: String,
+            params: LookupLookupParams = LookupLookupParams.none(),
+        ): HttpResponseFor<LookupLookupResponse> =
+            lookup(phoneNumber, params, RequestOptions.none())
 
         /** @see [lookup] */
         @MustBeClosed
@@ -45,5 +84,18 @@ interface LookupService {
             params: LookupLookupParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<LookupLookupResponse>
+
+        /** @see [lookup] */
+        @MustBeClosed
+        fun lookup(params: LookupLookupParams): HttpResponseFor<LookupLookupResponse> =
+            lookup(params, RequestOptions.none())
+
+        /** @see [lookup] */
+        @MustBeClosed
+        fun lookup(
+            phoneNumber: String,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<LookupLookupResponse> =
+            lookup(phoneNumber, LookupLookupParams.none(), requestOptions)
     }
 }
