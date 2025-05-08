@@ -287,7 +287,6 @@ Requests time out after 1 minute by default.
 To set a custom timeout, configure the method call using the `timeout` method:
 
 ```java
-import so.prelude.sdk.models.VerificationCreateParams;
 import so.prelude.sdk.models.VerificationCreateResponse;
 
 VerificationCreateResponse verification = client.verification().create(
@@ -535,7 +534,6 @@ VerificationCreateResponse verification = client.verification().create(params).v
 Or configure the method call to validate the response using the `responseValidation` method:
 
 ```java
-import so.prelude.sdk.models.VerificationCreateParams;
 import so.prelude.sdk.models.VerificationCreateResponse;
 
 VerificationCreateResponse verification = client.verification().create(
