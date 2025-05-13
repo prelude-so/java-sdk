@@ -15,7 +15,9 @@ import so.prelude.sdk.core.ExcludeMissing
 import so.prelude.sdk.core.JsonField
 import so.prelude.sdk.core.JsonMissing
 import so.prelude.sdk.core.JsonValue
+import so.prelude.sdk.core.checkKnown
 import so.prelude.sdk.core.checkRequired
+import so.prelude.sdk.core.toImmutable
 import so.prelude.sdk.errors.PreludeInvalidDataException
 
 class VerificationCreateResponse
@@ -23,6 +25,7 @@ private constructor(
     private val id: JsonField<String>,
     private val method: JsonField<Method>,
     private val status: JsonField<Status>,
+    private val channels: JsonField<List<String>>,
     private val metadata: JsonField<Metadata>,
     private val requestId: JsonField<String>,
     private val additionalProperties: MutableMap<String, JsonValue>,
@@ -33,9 +36,12 @@ private constructor(
         @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of(),
         @JsonProperty("method") @ExcludeMissing method: JsonField<Method> = JsonMissing.of(),
         @JsonProperty("status") @ExcludeMissing status: JsonField<Status> = JsonMissing.of(),
+        @JsonProperty("channels")
+        @ExcludeMissing
+        channels: JsonField<List<String>> = JsonMissing.of(),
         @JsonProperty("metadata") @ExcludeMissing metadata: JsonField<Metadata> = JsonMissing.of(),
         @JsonProperty("request_id") @ExcludeMissing requestId: JsonField<String> = JsonMissing.of(),
-    ) : this(id, method, status, metadata, requestId, mutableMapOf())
+    ) : this(id, method, status, channels, metadata, requestId, mutableMapOf())
 
     /**
      * The verification identifier.
@@ -60,6 +66,14 @@ private constructor(
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
     fun status(): Status = status.getRequired("status")
+
+    /**
+     * The ordered sequence of channels to be used for verification
+     *
+     * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun channels(): Optional<List<String>> = channels.getOptional("channels")
 
     /**
      * The metadata for this verification.
@@ -95,6 +109,13 @@ private constructor(
      * Unlike [status], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("status") @ExcludeMissing fun _status(): JsonField<Status> = status
+
+    /**
+     * Returns the raw JSON value of [channels].
+     *
+     * Unlike [channels], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("channels") @ExcludeMissing fun _channels(): JsonField<List<String>> = channels
 
     /**
      * Returns the raw JSON value of [metadata].
@@ -143,6 +164,7 @@ private constructor(
         private var id: JsonField<String>? = null
         private var method: JsonField<Method>? = null
         private var status: JsonField<Status>? = null
+        private var channels: JsonField<MutableList<String>>? = null
         private var metadata: JsonField<Metadata> = JsonMissing.of()
         private var requestId: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -152,6 +174,7 @@ private constructor(
             id = verificationCreateResponse.id
             method = verificationCreateResponse.method
             status = verificationCreateResponse.status
+            channels = verificationCreateResponse.channels.map { it.toMutableList() }
             metadata = verificationCreateResponse.metadata
             requestId = verificationCreateResponse.requestId
             additionalProperties = verificationCreateResponse.additionalProperties.toMutableMap()
@@ -189,6 +212,32 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun status(status: JsonField<Status>) = apply { this.status = status }
+
+        /** The ordered sequence of channels to be used for verification */
+        fun channels(channels: List<String>) = channels(JsonField.of(channels))
+
+        /**
+         * Sets [Builder.channels] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.channels] with a well-typed `List<String>` value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun channels(channels: JsonField<List<String>>) = apply {
+            this.channels = channels.map { it.toMutableList() }
+        }
+
+        /**
+         * Adds a single [String] to [channels].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
+        fun addChannel(channel: String) = apply {
+            channels =
+                (channels ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("channels", it).add(channel)
+                }
+        }
 
         /** The metadata for this verification. */
         fun metadata(metadata: Metadata) = metadata(JsonField.of(metadata))
@@ -251,6 +300,7 @@ private constructor(
                 checkRequired("id", id),
                 checkRequired("method", method),
                 checkRequired("status", status),
+                (channels ?: JsonMissing.of()).map { it.toImmutable() },
                 metadata,
                 requestId,
                 additionalProperties.toMutableMap(),
@@ -267,6 +317,7 @@ private constructor(
         id()
         method().validate()
         status().validate()
+        channels()
         metadata().ifPresent { it.validate() }
         requestId()
         validated = true
@@ -290,6 +341,7 @@ private constructor(
         (if (id.asKnown().isPresent) 1 else 0) +
             (method.asKnown().getOrNull()?.validity() ?: 0) +
             (status.asKnown().getOrNull()?.validity() ?: 0) +
+            (channels.asKnown().getOrNull()?.size ?: 0) +
             (metadata.asKnown().getOrNull()?.validity() ?: 0) +
             (if (requestId.asKnown().isPresent) 1 else 0)
 
@@ -696,15 +748,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is VerificationCreateResponse && id == other.id && method == other.method && status == other.status && metadata == other.metadata && requestId == other.requestId && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is VerificationCreateResponse && id == other.id && method == other.method && status == other.status && channels == other.channels && metadata == other.metadata && requestId == other.requestId && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(id, method, status, metadata, requestId, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(id, method, status, channels, metadata, requestId, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "VerificationCreateResponse{id=$id, method=$method, status=$status, metadata=$metadata, requestId=$requestId, additionalProperties=$additionalProperties}"
+        "VerificationCreateResponse{id=$id, method=$method, status=$status, channels=$channels, metadata=$metadata, requestId=$requestId, additionalProperties=$additionalProperties}"
 }

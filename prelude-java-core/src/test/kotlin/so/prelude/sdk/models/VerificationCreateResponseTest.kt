@@ -3,6 +3,7 @@
 package so.prelude.sdk.models
 
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
+import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import so.prelude.sdk.core.jsonMapper
@@ -16,6 +17,7 @@ internal class VerificationCreateResponseTest {
                 .id("vrf_01jc0t6fwwfgfsq1md24mhyztj")
                 .method(VerificationCreateResponse.Method.MESSAGE)
                 .status(VerificationCreateResponse.Status.SUCCESS)
+                .addChannel("string")
                 .metadata(
                     VerificationCreateResponse.Metadata.builder()
                         .correlationId("correlation_id")
@@ -29,6 +31,7 @@ internal class VerificationCreateResponseTest {
             .isEqualTo(VerificationCreateResponse.Method.MESSAGE)
         assertThat(verificationCreateResponse.status())
             .isEqualTo(VerificationCreateResponse.Status.SUCCESS)
+        assertThat(verificationCreateResponse.channels().getOrNull()).containsExactly("string")
         assertThat(verificationCreateResponse.metadata())
             .contains(
                 VerificationCreateResponse.Metadata.builder()
@@ -46,6 +49,7 @@ internal class VerificationCreateResponseTest {
                 .id("vrf_01jc0t6fwwfgfsq1md24mhyztj")
                 .method(VerificationCreateResponse.Method.MESSAGE)
                 .status(VerificationCreateResponse.Status.SUCCESS)
+                .addChannel("string")
                 .metadata(
                     VerificationCreateResponse.Metadata.builder()
                         .correlationId("correlation_id")

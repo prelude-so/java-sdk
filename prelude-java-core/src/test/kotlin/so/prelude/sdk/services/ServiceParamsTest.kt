@@ -13,6 +13,7 @@ import com.github.tomakehurst.wiremock.client.WireMock.verify
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo
 import com.github.tomakehurst.wiremock.junit5.WireMockTest
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.parallel.ResourceLock
 import so.prelude.sdk.client.PreludeClient
@@ -35,6 +36,9 @@ internal class ServiceParamsTest {
                 .build()
     }
 
+    @Disabled(
+        "skipped: currently no good way to test endpoints defining callbacks, Prism mock server will fail trying to reach the provided callback url"
+    )
     @Test
     fun create() {
         val verificationService = client.verification()
@@ -54,7 +58,6 @@ internal class ServiceParamsTest {
                         .correlationId("correlation_id")
                         .build()
                 )
-                .method(VerificationCreateParams.Method.AUTO)
                 .options(
                     VerificationCreateParams.Options.builder()
                         .appRealm(
@@ -67,8 +70,10 @@ internal class ServiceParamsTest {
                         )
                         .callbackUrl("callback_url")
                         .codeSize(5L)
-                        .customCode("custom_code")
+                        .customCode("123456")
                         .locale("el-GR")
+                        .method(VerificationCreateParams.Options.Method.AUTO)
+                        .preferredChannel(VerificationCreateParams.Options.PreferredChannel.SMS)
                         .senderId("sender_id")
                         .templateId("prelude:psd2")
                         .variables(
