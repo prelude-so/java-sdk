@@ -21,7 +21,6 @@ internal class VerificationCreateParamsTest {
             .metadata(
                 VerificationCreateParams.Metadata.builder().correlationId("correlation_id").build()
             )
-            .method(VerificationCreateParams.Method.AUTO)
             .options(
                 VerificationCreateParams.Options.builder()
                     .appRealm(
@@ -32,8 +31,10 @@ internal class VerificationCreateParamsTest {
                     )
                     .callbackUrl("callback_url")
                     .codeSize(5L)
-                    .customCode("custom_code")
+                    .customCode("123456")
                     .locale("el-GR")
+                    .method(VerificationCreateParams.Options.Method.AUTO)
+                    .preferredChannel(VerificationCreateParams.Options.PreferredChannel.SMS)
                     .senderId("sender_id")
                     .templateId("prelude:psd2")
                     .variables(
@@ -76,7 +77,6 @@ internal class VerificationCreateParamsTest {
                         .correlationId("correlation_id")
                         .build()
                 )
-                .method(VerificationCreateParams.Method.AUTO)
                 .options(
                     VerificationCreateParams.Options.builder()
                         .appRealm(
@@ -89,8 +89,10 @@ internal class VerificationCreateParamsTest {
                         )
                         .callbackUrl("callback_url")
                         .codeSize(5L)
-                        .customCode("custom_code")
+                        .customCode("123456")
                         .locale("el-GR")
+                        .method(VerificationCreateParams.Options.Method.AUTO)
+                        .preferredChannel(VerificationCreateParams.Options.PreferredChannel.SMS)
                         .senderId("sender_id")
                         .templateId("prelude:psd2")
                         .variables(
@@ -130,7 +132,6 @@ internal class VerificationCreateParamsTest {
             .contains(
                 VerificationCreateParams.Metadata.builder().correlationId("correlation_id").build()
             )
-        assertThat(body.method()).contains(VerificationCreateParams.Method.AUTO)
         assertThat(body.options())
             .contains(
                 VerificationCreateParams.Options.builder()
@@ -142,8 +143,10 @@ internal class VerificationCreateParamsTest {
                     )
                     .callbackUrl("callback_url")
                     .codeSize(5L)
-                    .customCode("custom_code")
+                    .customCode("123456")
                     .locale("el-GR")
+                    .method(VerificationCreateParams.Options.Method.AUTO)
+                    .preferredChannel(VerificationCreateParams.Options.PreferredChannel.SMS)
                     .senderId("sender_id")
                     .templateId("prelude:psd2")
                     .variables(

@@ -61,17 +61,6 @@ private constructor(
     fun metadata(): Optional<Metadata> = body.metadata()
 
     /**
-     * The method used for verifying this phone number. The 'voice' option provides an accessible
-     * alternative for visually impaired users by delivering the verification code through a phone
-     * call rather than a text message. It also allows verification of landline numbers that cannot
-     * receive SMS messages. **Coming soon.**
-     *
-     * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
-    fun method(): Optional<Method> = body.method()
-
-    /**
      * Verification options
      *
      * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -108,13 +97,6 @@ private constructor(
      * Unlike [metadata], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _metadata(): JsonField<Metadata> = body._metadata()
-
-    /**
-     * Returns the raw JSON value of [method].
-     *
-     * Unlike [method], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    fun _method(): JsonField<Method> = body._method()
 
     /**
      * Returns the raw JSON value of [options].
@@ -173,8 +155,8 @@ private constructor(
          * - [target]
          * - [dispatchId]
          * - [metadata]
-         * - [method]
          * - [options]
+         * - [signals]
          * - etc.
          */
         fun body(body: Body) = apply { this.body = body.toBuilder() }
@@ -219,22 +201,6 @@ private constructor(
          * value.
          */
         fun metadata(metadata: JsonField<Metadata>) = apply { body.metadata(metadata) }
-
-        /**
-         * The method used for verifying this phone number. The 'voice' option provides an
-         * accessible alternative for visually impaired users by delivering the verification code
-         * through a phone call rather than a text message. It also allows verification of landline
-         * numbers that cannot receive SMS messages. **Coming soon.**
-         */
-        fun method(method: Method) = apply { body.method(method) }
-
-        /**
-         * Sets [Builder.method] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.method] with a well-typed [Method] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun method(method: JsonField<Method>) = apply { body.method(method) }
 
         /** Verification options */
         fun options(options: Options) = apply { body.options(options) }
@@ -409,7 +375,6 @@ private constructor(
         private val target: JsonField<Target>,
         private val dispatchId: JsonField<String>,
         private val metadata: JsonField<Metadata>,
-        private val method: JsonField<Method>,
         private val options: JsonField<Options>,
         private val signals: JsonField<Signals>,
         private val additionalProperties: MutableMap<String, JsonValue>,
@@ -424,10 +389,9 @@ private constructor(
             @JsonProperty("metadata")
             @ExcludeMissing
             metadata: JsonField<Metadata> = JsonMissing.of(),
-            @JsonProperty("method") @ExcludeMissing method: JsonField<Method> = JsonMissing.of(),
             @JsonProperty("options") @ExcludeMissing options: JsonField<Options> = JsonMissing.of(),
             @JsonProperty("signals") @ExcludeMissing signals: JsonField<Signals> = JsonMissing.of(),
-        ) : this(target, dispatchId, metadata, method, options, signals, mutableMapOf())
+        ) : this(target, dispatchId, metadata, options, signals, mutableMapOf())
 
         /**
          * The verification target. Either a phone number or an email address. To use the email
@@ -454,17 +418,6 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun metadata(): Optional<Metadata> = metadata.getOptional("metadata")
-
-        /**
-         * The method used for verifying this phone number. The 'voice' option provides an
-         * accessible alternative for visually impaired users by delivering the verification code
-         * through a phone call rather than a text message. It also allows verification of landline
-         * numbers that cannot receive SMS messages. **Coming soon.**
-         *
-         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun method(): Optional<Method> = method.getOptional("method")
 
         /**
          * Verification options
@@ -505,13 +458,6 @@ private constructor(
          * Unlike [metadata], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("metadata") @ExcludeMissing fun _metadata(): JsonField<Metadata> = metadata
-
-        /**
-         * Returns the raw JSON value of [method].
-         *
-         * Unlike [method], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("method") @ExcludeMissing fun _method(): JsonField<Method> = method
 
         /**
          * Returns the raw JSON value of [options].
@@ -558,7 +504,6 @@ private constructor(
             private var target: JsonField<Target>? = null
             private var dispatchId: JsonField<String> = JsonMissing.of()
             private var metadata: JsonField<Metadata> = JsonMissing.of()
-            private var method: JsonField<Method> = JsonMissing.of()
             private var options: JsonField<Options> = JsonMissing.of()
             private var signals: JsonField<Signals> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -568,7 +513,6 @@ private constructor(
                 target = body.target
                 dispatchId = body.dispatchId
                 metadata = body.metadata
-                method = body.method
                 options = body.options
                 signals = body.signals
                 additionalProperties = body.additionalProperties.toMutableMap()
@@ -615,23 +559,6 @@ private constructor(
              * supported value.
              */
             fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
-
-            /**
-             * The method used for verifying this phone number. The 'voice' option provides an
-             * accessible alternative for visually impaired users by delivering the verification
-             * code through a phone call rather than a text message. It also allows verification of
-             * landline numbers that cannot receive SMS messages. **Coming soon.**
-             */
-            fun method(method: Method) = method(JsonField.of(method))
-
-            /**
-             * Sets [Builder.method] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.method] with a well-typed [Method] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun method(method: JsonField<Method>) = apply { this.method = method }
 
             /** Verification options */
             fun options(options: Options) = options(JsonField.of(options))
@@ -696,7 +623,6 @@ private constructor(
                     checkRequired("target", target),
                     dispatchId,
                     metadata,
-                    method,
                     options,
                     signals,
                     additionalProperties.toMutableMap(),
@@ -713,7 +639,6 @@ private constructor(
             target().validate()
             dispatchId()
             metadata().ifPresent { it.validate() }
-            method().ifPresent { it.validate() }
             options().ifPresent { it.validate() }
             signals().ifPresent { it.validate() }
             validated = true
@@ -738,7 +663,6 @@ private constructor(
             (target.asKnown().getOrNull()?.validity() ?: 0) +
                 (if (dispatchId.asKnown().isPresent) 1 else 0) +
                 (metadata.asKnown().getOrNull()?.validity() ?: 0) +
-                (method.asKnown().getOrNull()?.validity() ?: 0) +
                 (options.asKnown().getOrNull()?.validity() ?: 0) +
                 (signals.asKnown().getOrNull()?.validity() ?: 0)
 
@@ -747,17 +671,17 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && target == other.target && dispatchId == other.dispatchId && metadata == other.metadata && method == other.method && options == other.options && signals == other.signals && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && target == other.target && dispatchId == other.dispatchId && metadata == other.metadata && options == other.options && signals == other.signals && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(target, dispatchId, metadata, method, options, signals, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(target, dispatchId, metadata, options, signals, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{target=$target, dispatchId=$dispatchId, metadata=$metadata, method=$method, options=$options, signals=$signals, additionalProperties=$additionalProperties}"
+            "Body{target=$target, dispatchId=$dispatchId, metadata=$metadata, options=$options, signals=$signals, additionalProperties=$additionalProperties}"
     }
 
     /**
@@ -1240,137 +1164,6 @@ private constructor(
             "Metadata{correlationId=$correlationId, additionalProperties=$additionalProperties}"
     }
 
-    /**
-     * The method used for verifying this phone number. The 'voice' option provides an accessible
-     * alternative for visually impaired users by delivering the verification code through a phone
-     * call rather than a text message. It also allows verification of landline numbers that cannot
-     * receive SMS messages. **Coming soon.**
-     */
-    class Method @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
-
-        /**
-         * Returns this class instance's raw value.
-         *
-         * This is usually only useful if this instance was deserialized from data that doesn't
-         * match any known member, and you want to know that value. For example, if the SDK is on an
-         * older version than the API, then the API may respond with new members that the SDK is
-         * unaware of.
-         */
-        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-        companion object {
-
-            @JvmField val AUTO = of("auto")
-
-            @JvmField val VOICE = of("voice")
-
-            @JvmStatic fun of(value: String) = Method(JsonField.of(value))
-        }
-
-        /** An enum containing [Method]'s known values. */
-        enum class Known {
-            AUTO,
-            VOICE,
-        }
-
-        /**
-         * An enum containing [Method]'s known values, as well as an [_UNKNOWN] member.
-         *
-         * An instance of [Method] can contain an unknown value in a couple of cases:
-         * - It was deserialized from data that doesn't match any known member. For example, if the
-         *   SDK is on an older version than the API, then the API may respond with new members that
-         *   the SDK is unaware of.
-         * - It was constructed with an arbitrary value using the [of] method.
-         */
-        enum class Value {
-            AUTO,
-            VOICE,
-            /** An enum member indicating that [Method] was instantiated with an unknown value. */
-            _UNKNOWN,
-        }
-
-        /**
-         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
-         * if the class was instantiated with an unknown value.
-         *
-         * Use the [known] method instead if you're certain the value is always known or if you want
-         * to throw for the unknown case.
-         */
-        fun value(): Value =
-            when (this) {
-                AUTO -> Value.AUTO
-                VOICE -> Value.VOICE
-                else -> Value._UNKNOWN
-            }
-
-        /**
-         * Returns an enum member corresponding to this class instance's value.
-         *
-         * Use the [value] method instead if you're uncertain the value is always known and don't
-         * want to throw for the unknown case.
-         *
-         * @throws PreludeInvalidDataException if this class instance's value is a not a known
-         *   member.
-         */
-        fun known(): Known =
-            when (this) {
-                AUTO -> Known.AUTO
-                VOICE -> Known.VOICE
-                else -> throw PreludeInvalidDataException("Unknown Method: $value")
-            }
-
-        /**
-         * Returns this class instance's primitive wire representation.
-         *
-         * This differs from the [toString] method because that method is primarily for debugging
-         * and generally doesn't throw.
-         *
-         * @throws PreludeInvalidDataException if this class instance's value does not have the
-         *   expected primitive type.
-         */
-        fun asString(): String =
-            _value().asString().orElseThrow { PreludeInvalidDataException("Value is not a String") }
-
-        private var validated: Boolean = false
-
-        fun validate(): Method = apply {
-            if (validated) {
-                return@apply
-            }
-
-            known()
-            validated = true
-        }
-
-        fun isValid(): Boolean =
-            try {
-                validate()
-                true
-            } catch (e: PreludeInvalidDataException) {
-                false
-            }
-
-        /**
-         * Returns a score indicating how many valid values are contained in this object
-         * recursively.
-         *
-         * Used for best match union deserialization.
-         */
-        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Method && value == other.value /* spotless:on */
-        }
-
-        override fun hashCode() = value.hashCode()
-
-        override fun toString() = value.toString()
-    }
-
     /** Verification options */
     class Options
     private constructor(
@@ -1379,6 +1172,8 @@ private constructor(
         private val codeSize: JsonField<Long>,
         private val customCode: JsonField<String>,
         private val locale: JsonField<String>,
+        private val method: JsonField<Method>,
+        private val preferredChannel: JsonField<PreferredChannel>,
         private val senderId: JsonField<String>,
         private val templateId: JsonField<String>,
         private val variables: JsonField<Variables>,
@@ -1398,6 +1193,10 @@ private constructor(
             @ExcludeMissing
             customCode: JsonField<String> = JsonMissing.of(),
             @JsonProperty("locale") @ExcludeMissing locale: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("method") @ExcludeMissing method: JsonField<Method> = JsonMissing.of(),
+            @JsonProperty("preferred_channel")
+            @ExcludeMissing
+            preferredChannel: JsonField<PreferredChannel> = JsonMissing.of(),
             @JsonProperty("sender_id")
             @ExcludeMissing
             senderId: JsonField<String> = JsonMissing.of(),
@@ -1413,6 +1212,8 @@ private constructor(
             codeSize,
             customCode,
             locale,
+            method,
+            preferredChannel,
             senderId,
             templateId,
             variables,
@@ -1448,9 +1249,9 @@ private constructor(
         fun codeSize(): Optional<Long> = codeSize.getOptional("code_size")
 
         /**
-         * The custom code to use for OTP verification. This feature is only available for
-         * compatibility purposes and subject to Prelude’s approval. Contact us to discuss your use
-         * case. For more details, refer to [Multi Routing](/introduction/concepts/multi-routing).
+         * The custom code to use for OTP verification. To use the custom code feature, contact us
+         * to enable it for your account. For more details, refer to
+         * [Custom Code](/verify/v2/documentation/custom-code).
          *
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
@@ -1466,6 +1267,26 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun locale(): Optional<String> = locale.getOptional("locale")
+
+        /**
+         * The method used for verifying this phone number. The 'voice' option provides an
+         * accessible alternative for visually impaired users by delivering the verification code
+         * through a phone call rather than a text message. It also allows verification of landline
+         * numbers that cannot receive SMS messages.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun method(): Optional<Method> = method.getOptional("method")
+
+        /**
+         * The preferred channel to be used in priority for verification.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun preferredChannel(): Optional<PreferredChannel> =
+            preferredChannel.getOptional("preferred_channel")
 
         /**
          * The Sender ID to use for this message. The Sender ID needs to be enabled by Prelude.
@@ -1532,6 +1353,23 @@ private constructor(
         @JsonProperty("locale") @ExcludeMissing fun _locale(): JsonField<String> = locale
 
         /**
+         * Returns the raw JSON value of [method].
+         *
+         * Unlike [method], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("method") @ExcludeMissing fun _method(): JsonField<Method> = method
+
+        /**
+         * Returns the raw JSON value of [preferredChannel].
+         *
+         * Unlike [preferredChannel], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("preferred_channel")
+        @ExcludeMissing
+        fun _preferredChannel(): JsonField<PreferredChannel> = preferredChannel
+
+        /**
          * Returns the raw JSON value of [senderId].
          *
          * Unlike [senderId], this method doesn't throw if the JSON field has an unexpected type.
@@ -1582,6 +1420,8 @@ private constructor(
             private var codeSize: JsonField<Long> = JsonMissing.of()
             private var customCode: JsonField<String> = JsonMissing.of()
             private var locale: JsonField<String> = JsonMissing.of()
+            private var method: JsonField<Method> = JsonMissing.of()
+            private var preferredChannel: JsonField<PreferredChannel> = JsonMissing.of()
             private var senderId: JsonField<String> = JsonMissing.of()
             private var templateId: JsonField<String> = JsonMissing.of()
             private var variables: JsonField<Variables> = JsonMissing.of()
@@ -1594,6 +1434,8 @@ private constructor(
                 codeSize = options.codeSize
                 customCode = options.customCode
                 locale = options.locale
+                method = options.method
+                preferredChannel = options.preferredChannel
                 senderId = options.senderId
                 templateId = options.templateId
                 variables = options.variables
@@ -1649,10 +1491,9 @@ private constructor(
             fun codeSize(codeSize: JsonField<Long>) = apply { this.codeSize = codeSize }
 
             /**
-             * The custom code to use for OTP verification. This feature is only available for
-             * compatibility purposes and subject to Prelude’s approval. Contact us to discuss your
-             * use case. For more details, refer to
-             * [Multi Routing](/introduction/concepts/multi-routing).
+             * The custom code to use for OTP verification. To use the custom code feature, contact
+             * us to enable it for your account. For more details, refer to
+             * [Custom Code](/verify/v2/documentation/custom-code).
              */
             fun customCode(customCode: String) = customCode(JsonField.of(customCode))
 
@@ -1680,6 +1521,38 @@ private constructor(
              * supported value.
              */
             fun locale(locale: JsonField<String>) = apply { this.locale = locale }
+
+            /**
+             * The method used for verifying this phone number. The 'voice' option provides an
+             * accessible alternative for visually impaired users by delivering the verification
+             * code through a phone call rather than a text message. It also allows verification of
+             * landline numbers that cannot receive SMS messages.
+             */
+            fun method(method: Method) = method(JsonField.of(method))
+
+            /**
+             * Sets [Builder.method] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.method] with a well-typed [Method] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun method(method: JsonField<Method>) = apply { this.method = method }
+
+            /** The preferred channel to be used in priority for verification. */
+            fun preferredChannel(preferredChannel: PreferredChannel) =
+                preferredChannel(JsonField.of(preferredChannel))
+
+            /**
+             * Sets [Builder.preferredChannel] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.preferredChannel] with a well-typed
+             * [PreferredChannel] value instead. This method is primarily for setting the field to
+             * an undocumented or not yet supported value.
+             */
+            fun preferredChannel(preferredChannel: JsonField<PreferredChannel>) = apply {
+                this.preferredChannel = preferredChannel
+            }
 
             /**
              * The Sender ID to use for this message. The Sender ID needs to be enabled by Prelude.
@@ -1753,6 +1626,8 @@ private constructor(
                     codeSize,
                     customCode,
                     locale,
+                    method,
+                    preferredChannel,
                     senderId,
                     templateId,
                     variables,
@@ -1772,6 +1647,8 @@ private constructor(
             codeSize()
             customCode()
             locale()
+            method().ifPresent { it.validate() }
+            preferredChannel().ifPresent { it.validate() }
             senderId()
             templateId()
             variables().ifPresent { it.validate() }
@@ -1799,6 +1676,8 @@ private constructor(
                 (if (codeSize.asKnown().isPresent) 1 else 0) +
                 (if (customCode.asKnown().isPresent) 1 else 0) +
                 (if (locale.asKnown().isPresent) 1 else 0) +
+                (method.asKnown().getOrNull()?.validity() ?: 0) +
+                (preferredChannel.asKnown().getOrNull()?.validity() ?: 0) +
                 (if (senderId.asKnown().isPresent) 1 else 0) +
                 (if (templateId.asKnown().isPresent) 1 else 0) +
                 (variables.asKnown().getOrNull()?.validity() ?: 0)
@@ -2141,6 +2020,293 @@ private constructor(
                 "AppRealm{platform=$platform, value=$value, additionalProperties=$additionalProperties}"
         }
 
+        /**
+         * The method used for verifying this phone number. The 'voice' option provides an
+         * accessible alternative for visually impaired users by delivering the verification code
+         * through a phone call rather than a text message. It also allows verification of landline
+         * numbers that cannot receive SMS messages.
+         */
+        class Method @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
+
+            /**
+             * Returns this class instance's raw value.
+             *
+             * This is usually only useful if this instance was deserialized from data that doesn't
+             * match any known member, and you want to know that value. For example, if the SDK is
+             * on an older version than the API, then the API may respond with new members that the
+             * SDK is unaware of.
+             */
+            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+            companion object {
+
+                @JvmField val AUTO = of("auto")
+
+                @JvmField val VOICE = of("voice")
+
+                @JvmStatic fun of(value: String) = Method(JsonField.of(value))
+            }
+
+            /** An enum containing [Method]'s known values. */
+            enum class Known {
+                AUTO,
+                VOICE,
+            }
+
+            /**
+             * An enum containing [Method]'s known values, as well as an [_UNKNOWN] member.
+             *
+             * An instance of [Method] can contain an unknown value in a couple of cases:
+             * - It was deserialized from data that doesn't match any known member. For example, if
+             *   the SDK is on an older version than the API, then the API may respond with new
+             *   members that the SDK is unaware of.
+             * - It was constructed with an arbitrary value using the [of] method.
+             */
+            enum class Value {
+                AUTO,
+                VOICE,
+                /**
+                 * An enum member indicating that [Method] was instantiated with an unknown value.
+                 */
+                _UNKNOWN,
+            }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value, or
+             * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+             *
+             * Use the [known] method instead if you're certain the value is always known or if you
+             * want to throw for the unknown case.
+             */
+            fun value(): Value =
+                when (this) {
+                    AUTO -> Value.AUTO
+                    VOICE -> Value.VOICE
+                    else -> Value._UNKNOWN
+                }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value.
+             *
+             * Use the [value] method instead if you're uncertain the value is always known and
+             * don't want to throw for the unknown case.
+             *
+             * @throws PreludeInvalidDataException if this class instance's value is a not a known
+             *   member.
+             */
+            fun known(): Known =
+                when (this) {
+                    AUTO -> Known.AUTO
+                    VOICE -> Known.VOICE
+                    else -> throw PreludeInvalidDataException("Unknown Method: $value")
+                }
+
+            /**
+             * Returns this class instance's primitive wire representation.
+             *
+             * This differs from the [toString] method because that method is primarily for
+             * debugging and generally doesn't throw.
+             *
+             * @throws PreludeInvalidDataException if this class instance's value does not have the
+             *   expected primitive type.
+             */
+            fun asString(): String =
+                _value().asString().orElseThrow {
+                    PreludeInvalidDataException("Value is not a String")
+                }
+
+            private var validated: Boolean = false
+
+            fun validate(): Method = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                known()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: PreludeInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is Method && value == other.value /* spotless:on */
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
+        }
+
+        /** The preferred channel to be used in priority for verification. */
+        class PreferredChannel
+        @JsonCreator
+        private constructor(private val value: JsonField<String>) : Enum {
+
+            /**
+             * Returns this class instance's raw value.
+             *
+             * This is usually only useful if this instance was deserialized from data that doesn't
+             * match any known member, and you want to know that value. For example, if the SDK is
+             * on an older version than the API, then the API may respond with new members that the
+             * SDK is unaware of.
+             */
+            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+            companion object {
+
+                @JvmField val SMS = of("sms")
+
+                @JvmField val RCS = of("rcs")
+
+                @JvmField val WHATSAPP = of("whatsapp")
+
+                @JvmField val VIBER = of("viber")
+
+                @JvmField val ZALO = of("zalo")
+
+                @JvmStatic fun of(value: String) = PreferredChannel(JsonField.of(value))
+            }
+
+            /** An enum containing [PreferredChannel]'s known values. */
+            enum class Known {
+                SMS,
+                RCS,
+                WHATSAPP,
+                VIBER,
+                ZALO,
+            }
+
+            /**
+             * An enum containing [PreferredChannel]'s known values, as well as an [_UNKNOWN]
+             * member.
+             *
+             * An instance of [PreferredChannel] can contain an unknown value in a couple of cases:
+             * - It was deserialized from data that doesn't match any known member. For example, if
+             *   the SDK is on an older version than the API, then the API may respond with new
+             *   members that the SDK is unaware of.
+             * - It was constructed with an arbitrary value using the [of] method.
+             */
+            enum class Value {
+                SMS,
+                RCS,
+                WHATSAPP,
+                VIBER,
+                ZALO,
+                /**
+                 * An enum member indicating that [PreferredChannel] was instantiated with an
+                 * unknown value.
+                 */
+                _UNKNOWN,
+            }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value, or
+             * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+             *
+             * Use the [known] method instead if you're certain the value is always known or if you
+             * want to throw for the unknown case.
+             */
+            fun value(): Value =
+                when (this) {
+                    SMS -> Value.SMS
+                    RCS -> Value.RCS
+                    WHATSAPP -> Value.WHATSAPP
+                    VIBER -> Value.VIBER
+                    ZALO -> Value.ZALO
+                    else -> Value._UNKNOWN
+                }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value.
+             *
+             * Use the [value] method instead if you're uncertain the value is always known and
+             * don't want to throw for the unknown case.
+             *
+             * @throws PreludeInvalidDataException if this class instance's value is a not a known
+             *   member.
+             */
+            fun known(): Known =
+                when (this) {
+                    SMS -> Known.SMS
+                    RCS -> Known.RCS
+                    WHATSAPP -> Known.WHATSAPP
+                    VIBER -> Known.VIBER
+                    ZALO -> Known.ZALO
+                    else -> throw PreludeInvalidDataException("Unknown PreferredChannel: $value")
+                }
+
+            /**
+             * Returns this class instance's primitive wire representation.
+             *
+             * This differs from the [toString] method because that method is primarily for
+             * debugging and generally doesn't throw.
+             *
+             * @throws PreludeInvalidDataException if this class instance's value does not have the
+             *   expected primitive type.
+             */
+            fun asString(): String =
+                _value().asString().orElseThrow {
+                    PreludeInvalidDataException("Value is not a String")
+                }
+
+            private var validated: Boolean = false
+
+            fun validate(): PreferredChannel = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                known()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: PreludeInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is PreferredChannel && value == other.value /* spotless:on */
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
+        }
+
         /** The variables to be replaced in the template. */
         class Variables
         @JsonCreator
@@ -2251,17 +2417,17 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Options && appRealm == other.appRealm && callbackUrl == other.callbackUrl && codeSize == other.codeSize && customCode == other.customCode && locale == other.locale && senderId == other.senderId && templateId == other.templateId && variables == other.variables && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Options && appRealm == other.appRealm && callbackUrl == other.callbackUrl && codeSize == other.codeSize && customCode == other.customCode && locale == other.locale && method == other.method && preferredChannel == other.preferredChannel && senderId == other.senderId && templateId == other.templateId && variables == other.variables && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(appRealm, callbackUrl, codeSize, customCode, locale, senderId, templateId, variables, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(appRealm, callbackUrl, codeSize, customCode, locale, method, preferredChannel, senderId, templateId, variables, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Options{appRealm=$appRealm, callbackUrl=$callbackUrl, codeSize=$codeSize, customCode=$customCode, locale=$locale, senderId=$senderId, templateId=$templateId, variables=$variables, additionalProperties=$additionalProperties}"
+            "Options{appRealm=$appRealm, callbackUrl=$callbackUrl, codeSize=$codeSize, customCode=$customCode, locale=$locale, method=$method, preferredChannel=$preferredChannel, senderId=$senderId, templateId=$templateId, variables=$variables, additionalProperties=$additionalProperties}"
     }
 
     /**
@@ -2361,7 +2527,8 @@ private constructor(
 
         /**
          * This signal should provide a higher level of trust, indicating that the user is genuine.
-         * For more details, refer to [Signals](/verify/v2/documentation/prevent-fraud#signals).
+         * Contact us to discuss your use case. For more details, refer to
+         * [Signals](/verify/v2/documentation/prevent-fraud#signals).
          *
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
@@ -2566,7 +2733,7 @@ private constructor(
 
             /**
              * This signal should provide a higher level of trust, indicating that the user is
-             * genuine. For more details, refer to
+             * genuine. Contact us to discuss your use case. For more details, refer to
              * [Signals](/verify/v2/documentation/prevent-fraud#signals).
              */
             fun isTrustedUser(isTrustedUser: Boolean) = isTrustedUser(JsonField.of(isTrustedUser))

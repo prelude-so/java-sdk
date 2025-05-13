@@ -13,6 +13,7 @@ import org.assertj.core.api.Assertions.entry
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.api.parallel.ResourceLock
 import so.prelude.sdk.client.PreludeClient
 import so.prelude.sdk.client.okhttp.PreludeOkHttpClient
 import so.prelude.sdk.core.JsonValue
@@ -30,6 +31,7 @@ import so.prelude.sdk.errors.UnprocessableEntityException
 import so.prelude.sdk.models.VerificationCreateParams
 
 @WireMockTest
+@ResourceLock("https://github.com/wiremock/wiremock/issues/169")
 internal class ErrorHandlingTest {
 
     companion object {
@@ -82,7 +84,6 @@ internal class ErrorHandlingTest {
                                 .correlationId("correlation_id")
                                 .build()
                         )
-                        .method(VerificationCreateParams.Method.AUTO)
                         .options(
                             VerificationCreateParams.Options.builder()
                                 .appRealm(
@@ -96,8 +97,12 @@ internal class ErrorHandlingTest {
                                 )
                                 .callbackUrl("callback_url")
                                 .codeSize(5L)
-                                .customCode("custom_code")
+                                .customCode("123456")
                                 .locale("el-GR")
+                                .method(VerificationCreateParams.Options.Method.AUTO)
+                                .preferredChannel(
+                                    VerificationCreateParams.Options.PreferredChannel.SMS
+                                )
                                 .senderId("sender_id")
                                 .templateId("prelude:psd2")
                                 .variables(
@@ -156,7 +161,6 @@ internal class ErrorHandlingTest {
                                 .correlationId("correlation_id")
                                 .build()
                         )
-                        .method(VerificationCreateParams.Method.AUTO)
                         .options(
                             VerificationCreateParams.Options.builder()
                                 .appRealm(
@@ -170,8 +174,12 @@ internal class ErrorHandlingTest {
                                 )
                                 .callbackUrl("callback_url")
                                 .codeSize(5L)
-                                .customCode("custom_code")
+                                .customCode("123456")
                                 .locale("el-GR")
+                                .method(VerificationCreateParams.Options.Method.AUTO)
+                                .preferredChannel(
+                                    VerificationCreateParams.Options.PreferredChannel.SMS
+                                )
                                 .senderId("sender_id")
                                 .templateId("prelude:psd2")
                                 .variables(
@@ -230,7 +238,6 @@ internal class ErrorHandlingTest {
                                 .correlationId("correlation_id")
                                 .build()
                         )
-                        .method(VerificationCreateParams.Method.AUTO)
                         .options(
                             VerificationCreateParams.Options.builder()
                                 .appRealm(
@@ -244,8 +251,12 @@ internal class ErrorHandlingTest {
                                 )
                                 .callbackUrl("callback_url")
                                 .codeSize(5L)
-                                .customCode("custom_code")
+                                .customCode("123456")
                                 .locale("el-GR")
+                                .method(VerificationCreateParams.Options.Method.AUTO)
+                                .preferredChannel(
+                                    VerificationCreateParams.Options.PreferredChannel.SMS
+                                )
                                 .senderId("sender_id")
                                 .templateId("prelude:psd2")
                                 .variables(
@@ -304,7 +315,6 @@ internal class ErrorHandlingTest {
                                 .correlationId("correlation_id")
                                 .build()
                         )
-                        .method(VerificationCreateParams.Method.AUTO)
                         .options(
                             VerificationCreateParams.Options.builder()
                                 .appRealm(
@@ -318,8 +328,12 @@ internal class ErrorHandlingTest {
                                 )
                                 .callbackUrl("callback_url")
                                 .codeSize(5L)
-                                .customCode("custom_code")
+                                .customCode("123456")
                                 .locale("el-GR")
+                                .method(VerificationCreateParams.Options.Method.AUTO)
+                                .preferredChannel(
+                                    VerificationCreateParams.Options.PreferredChannel.SMS
+                                )
                                 .senderId("sender_id")
                                 .templateId("prelude:psd2")
                                 .variables(
@@ -378,7 +392,6 @@ internal class ErrorHandlingTest {
                                 .correlationId("correlation_id")
                                 .build()
                         )
-                        .method(VerificationCreateParams.Method.AUTO)
                         .options(
                             VerificationCreateParams.Options.builder()
                                 .appRealm(
@@ -392,8 +405,12 @@ internal class ErrorHandlingTest {
                                 )
                                 .callbackUrl("callback_url")
                                 .codeSize(5L)
-                                .customCode("custom_code")
+                                .customCode("123456")
                                 .locale("el-GR")
+                                .method(VerificationCreateParams.Options.Method.AUTO)
+                                .preferredChannel(
+                                    VerificationCreateParams.Options.PreferredChannel.SMS
+                                )
                                 .senderId("sender_id")
                                 .templateId("prelude:psd2")
                                 .variables(
@@ -452,7 +469,6 @@ internal class ErrorHandlingTest {
                                 .correlationId("correlation_id")
                                 .build()
                         )
-                        .method(VerificationCreateParams.Method.AUTO)
                         .options(
                             VerificationCreateParams.Options.builder()
                                 .appRealm(
@@ -466,8 +482,12 @@ internal class ErrorHandlingTest {
                                 )
                                 .callbackUrl("callback_url")
                                 .codeSize(5L)
-                                .customCode("custom_code")
+                                .customCode("123456")
                                 .locale("el-GR")
+                                .method(VerificationCreateParams.Options.Method.AUTO)
+                                .preferredChannel(
+                                    VerificationCreateParams.Options.PreferredChannel.SMS
+                                )
                                 .senderId("sender_id")
                                 .templateId("prelude:psd2")
                                 .variables(
@@ -526,7 +546,6 @@ internal class ErrorHandlingTest {
                                 .correlationId("correlation_id")
                                 .build()
                         )
-                        .method(VerificationCreateParams.Method.AUTO)
                         .options(
                             VerificationCreateParams.Options.builder()
                                 .appRealm(
@@ -540,8 +559,12 @@ internal class ErrorHandlingTest {
                                 )
                                 .callbackUrl("callback_url")
                                 .codeSize(5L)
-                                .customCode("custom_code")
+                                .customCode("123456")
                                 .locale("el-GR")
+                                .method(VerificationCreateParams.Options.Method.AUTO)
+                                .preferredChannel(
+                                    VerificationCreateParams.Options.PreferredChannel.SMS
+                                )
                                 .senderId("sender_id")
                                 .templateId("prelude:psd2")
                                 .variables(
@@ -600,7 +623,6 @@ internal class ErrorHandlingTest {
                                 .correlationId("correlation_id")
                                 .build()
                         )
-                        .method(VerificationCreateParams.Method.AUTO)
                         .options(
                             VerificationCreateParams.Options.builder()
                                 .appRealm(
@@ -614,8 +636,12 @@ internal class ErrorHandlingTest {
                                 )
                                 .callbackUrl("callback_url")
                                 .codeSize(5L)
-                                .customCode("custom_code")
+                                .customCode("123456")
                                 .locale("el-GR")
+                                .method(VerificationCreateParams.Options.Method.AUTO)
+                                .preferredChannel(
+                                    VerificationCreateParams.Options.PreferredChannel.SMS
+                                )
                                 .senderId("sender_id")
                                 .templateId("prelude:psd2")
                                 .variables(
@@ -672,7 +698,6 @@ internal class ErrorHandlingTest {
                                 .correlationId("correlation_id")
                                 .build()
                         )
-                        .method(VerificationCreateParams.Method.AUTO)
                         .options(
                             VerificationCreateParams.Options.builder()
                                 .appRealm(
@@ -686,8 +711,12 @@ internal class ErrorHandlingTest {
                                 )
                                 .callbackUrl("callback_url")
                                 .codeSize(5L)
-                                .customCode("custom_code")
+                                .customCode("123456")
                                 .locale("el-GR")
+                                .method(VerificationCreateParams.Options.Method.AUTO)
+                                .preferredChannel(
+                                    VerificationCreateParams.Options.PreferredChannel.SMS
+                                )
                                 .senderId("sender_id")
                                 .templateId("prelude:psd2")
                                 .variables(

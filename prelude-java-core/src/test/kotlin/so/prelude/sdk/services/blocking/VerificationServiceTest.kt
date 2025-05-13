@@ -2,6 +2,7 @@
 
 package so.prelude.sdk.services.blocking
 
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import so.prelude.sdk.TestServerExtension
@@ -13,6 +14,9 @@ import so.prelude.sdk.models.VerificationCreateParams
 @ExtendWith(TestServerExtension::class)
 internal class VerificationServiceTest {
 
+    @Disabled(
+        "skipped: currently no good way to test endpoints defining callbacks, Prism mock server will fail trying to reach the provided callback url"
+    )
     @Test
     fun create() {
         val client =
@@ -37,7 +41,6 @@ internal class VerificationServiceTest {
                             .correlationId("correlation_id")
                             .build()
                     )
-                    .method(VerificationCreateParams.Method.AUTO)
                     .options(
                         VerificationCreateParams.Options.builder()
                             .appRealm(
@@ -50,8 +53,10 @@ internal class VerificationServiceTest {
                             )
                             .callbackUrl("callback_url")
                             .codeSize(5L)
-                            .customCode("custom_code")
+                            .customCode("123456")
                             .locale("el-GR")
+                            .method(VerificationCreateParams.Options.Method.AUTO)
+                            .preferredChannel(VerificationCreateParams.Options.PreferredChannel.SMS)
                             .senderId("sender_id")
                             .templateId("prelude:psd2")
                             .variables(
