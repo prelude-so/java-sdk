@@ -1434,7 +1434,7 @@ private constructor(
 
             /**
              * This signal should provide a higher level of trust, indicating that the user is
-             * genuine. For more details, refer to
+             * genuine. Contact us to discuss your use case. For more details, refer to
              * [Signals](/verify/v2/documentation/prevent-fraud#signals).
              *
              * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if
@@ -1651,7 +1651,7 @@ private constructor(
 
                 /**
                  * This signal should provide a higher level of trust, indicating that the user is
-                 * genuine. For more details, refer to
+                 * genuine. Contact us to discuss your use case. For more details, refer to
                  * [Signals](/verify/v2/documentation/prevent-fraud#signals).
                  */
                 fun isTrustedUser(isTrustedUser: Boolean) =
