@@ -1,5 +1,47 @@
 # Changelog
 
+## 0.4.0 (2025-05-13)
+
+Full Changelog: [v0.3.0...v0.4.0](https://github.com/prelude-so/java-sdk/compare/v0.3.0...v0.4.0)
+
+### ⚠ BREAKING CHANGES
+
+* **client:** extract auto pagination to shared classes
+* **client:** **Migration:** - If you were referencing the `AutoPager` class on a specific `*Page` or `*PageAsync` type, then you should instead reference the shared `AutoPager` and `AutoPagerAsync` types, under the `core` package
+    - `AutoPagerAsync` now has different usage. You can call `.subscribe(...)` on the returned object instead to get called back each page item. You can also call `onCompleteFuture()` to get a future that completes when all items have been processed. Finally, you can call `.close()` on the returned object to stop auto-paginating early
+    - If you were referencing `getNextPage` or `getNextPageParams`:
+       - Swap to `nextPage()` and `nextPageParams()`
+       - Note that these both now return non-optional types (use `hasNextPage()` before calling these, since they will throw if it's impossible to get another page)
+
+### Features
+
+* **api:** update via SDK Studio ([dd3d6ad](https://github.com/prelude-so/java-sdk/commit/dd3d6ad8e9e61fe05cee692c71311e71ac314fe5))
+* **client:** allow providing some params positionally ([05f45f3](https://github.com/prelude-so/java-sdk/commit/05f45f3434a9f0de216cec338ffa499ee010e73c))
+* **client:** extract auto pagination to shared classes ([7e51ebc](https://github.com/prelude-so/java-sdk/commit/7e51ebc64079d1ce7549ce9cc3b21492b0fef0f5))
+
+
+### Performance Improvements
+
+* **internal:** improve compilation+test speed ([85c53e5](https://github.com/prelude-so/java-sdk/commit/85c53e5a10af6d7707ddbb8c4abc607409504efb))
+
+
+### Chores
+
+* **ci:** add timeout thresholds for CI jobs ([af7a95d](https://github.com/prelude-so/java-sdk/commit/af7a95d1587f241500659bc6180dfec06daf9487))
+* **ci:** only use depot for staging repos ([dbeb5eb](https://github.com/prelude-so/java-sdk/commit/dbeb5eb2dce0744be8430bb75aa561a8c1b0aeda))
+* **ci:** run on more branches and use depot runners ([a6a1964](https://github.com/prelude-so/java-sdk/commit/a6a1964a7156bcba13d30a784083f09d6cac39ac))
+* **internal:** java 17 -&gt; 21 on ci ([4df8bf1](https://github.com/prelude-so/java-sdk/commit/4df8bf18595b847d63b24434ced5cb43c3c81b8c))
+* **internal:** remove flaky `-Xbackend-threads=0` option ([61327dd](https://github.com/prelude-so/java-sdk/commit/61327dde5843aadd99fecdc1b594b3b82ef4ecfd))
+* **internal:** update java toolchain ([3f69cd3](https://github.com/prelude-so/java-sdk/commit/3f69cd34a86615e94d5fc04349ae64255afc5c5d))
+
+
+### Documentation
+
+* **client:** update jackson compat error message ([baba4df](https://github.com/prelude-so/java-sdk/commit/baba4df213abca5ee86da2fff25036be9429bda0))
+* explain http client customization ([54858cc](https://github.com/prelude-so/java-sdk/commit/54858cc612ea274f70a1326d02d1ea471dce51b1))
+* explain jackson compat in readme ([ddc293e](https://github.com/prelude-so/java-sdk/commit/ddc293eab99bd06e99788a29a9190012e347fa33))
+* update documentation links to be more uniform ([cba387a](https://github.com/prelude-so/java-sdk/commit/cba387afc144b663148b491cda78436e0a3c72b3))
+
 ## 0.3.0 (2025-04-11)
 
 Full Changelog: [v0.2.0...v0.3.0](https://github.com/prelude-so/java-sdk/compare/v0.2.0...v0.3.0)
