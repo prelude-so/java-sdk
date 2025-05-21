@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.1 (2025-05-21)
+
+Full Changelog: [v0.4.0...v0.4.1](https://github.com/prelude-so/java-sdk/compare/v0.4.0...v0.4.1)
+
+### Chores
+
+* **docs:** grammar improvements ([b03d574](https://github.com/prelude-so/java-sdk/commit/b03d574c3bbd7229591c73569541fa67e2436426))
+
 ## 0.4.0 (2025-05-13)
 
 Full Changelog: [v0.3.0...v0.4.0](https://github.com/prelude-so/java-sdk/compare/v0.3.0...v0.4.0)
