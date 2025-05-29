@@ -2,7 +2,6 @@
 
 package so.prelude.sdk.services.async
 
-import com.google.errorprone.annotations.MustBeClosed
 import java.util.concurrent.CompletableFuture
 import so.prelude.sdk.core.RequestOptions
 import so.prelude.sdk.core.http.HttpResponseFor
@@ -64,14 +63,12 @@ interface WatchServiceAsync {
          * Returns a raw HTTP response for `post /v2/watch/predict`, but is otherwise the same as
          * [WatchServiceAsync.predict].
          */
-        @MustBeClosed
         fun predict(
             params: WatchPredictParams
         ): CompletableFuture<HttpResponseFor<WatchPredictResponse>> =
             predict(params, RequestOptions.none())
 
         /** @see [predict] */
-        @MustBeClosed
         fun predict(
             params: WatchPredictParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -81,14 +78,12 @@ interface WatchServiceAsync {
          * Returns a raw HTTP response for `post /v2/watch/event`, but is otherwise the same as
          * [WatchServiceAsync.sendEvents].
          */
-        @MustBeClosed
         fun sendEvents(
             params: WatchSendEventsParams
         ): CompletableFuture<HttpResponseFor<WatchSendEventsResponse>> =
             sendEvents(params, RequestOptions.none())
 
         /** @see [sendEvents] */
-        @MustBeClosed
         fun sendEvents(
             params: WatchSendEventsParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -98,14 +93,12 @@ interface WatchServiceAsync {
          * Returns a raw HTTP response for `post /v2/watch/feedback`, but is otherwise the same as
          * [WatchServiceAsync.sendFeedbacks].
          */
-        @MustBeClosed
         fun sendFeedbacks(
             params: WatchSendFeedbacksParams
         ): CompletableFuture<HttpResponseFor<WatchSendFeedbacksResponse>> =
             sendFeedbacks(params, RequestOptions.none())
 
         /** @see [sendFeedbacks] */
-        @MustBeClosed
         fun sendFeedbacks(
             params: WatchSendFeedbacksParams,
             requestOptions: RequestOptions = RequestOptions.none(),

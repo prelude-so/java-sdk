@@ -2,7 +2,6 @@
 
 package so.prelude.sdk.services.async
 
-import com.google.errorprone.annotations.MustBeClosed
 import java.util.concurrent.CompletableFuture
 import so.prelude.sdk.core.RequestOptions
 import so.prelude.sdk.core.http.HttpResponseFor
@@ -52,14 +51,12 @@ interface VerificationServiceAsync {
          * Returns a raw HTTP response for `post /v2/verification`, but is otherwise the same as
          * [VerificationServiceAsync.create].
          */
-        @MustBeClosed
         fun create(
             params: VerificationCreateParams
         ): CompletableFuture<HttpResponseFor<VerificationCreateResponse>> =
             create(params, RequestOptions.none())
 
         /** @see [create] */
-        @MustBeClosed
         fun create(
             params: VerificationCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -69,14 +66,12 @@ interface VerificationServiceAsync {
          * Returns a raw HTTP response for `post /v2/verification/check`, but is otherwise the same
          * as [VerificationServiceAsync.check].
          */
-        @MustBeClosed
         fun check(
             params: VerificationCheckParams
         ): CompletableFuture<HttpResponseFor<VerificationCheckResponse>> =
             check(params, RequestOptions.none())
 
         /** @see [check] */
-        @MustBeClosed
         fun check(
             params: VerificationCheckParams,
             requestOptions: RequestOptions = RequestOptions.none(),
