@@ -2,7 +2,6 @@
 
 package so.prelude.sdk.services.async
 
-import com.google.errorprone.annotations.MustBeClosed
 import java.util.concurrent.CompletableFuture
 import so.prelude.sdk.core.RequestOptions
 import so.prelude.sdk.core.http.HttpResponseFor
@@ -36,14 +35,12 @@ interface TransactionalServiceAsync {
          * Returns a raw HTTP response for `post /v2/transactional`, but is otherwise the same as
          * [TransactionalServiceAsync.send].
          */
-        @MustBeClosed
         fun send(
             params: TransactionalSendParams
         ): CompletableFuture<HttpResponseFor<TransactionalSendResponse>> =
             send(params, RequestOptions.none())
 
         /** @see [send] */
-        @MustBeClosed
         fun send(
             params: TransactionalSendParams,
             requestOptions: RequestOptions = RequestOptions.none(),

@@ -1251,7 +1251,7 @@ private constructor(
         /**
          * The custom code to use for OTP verification. To use the custom code feature, contact us
          * to enable it for your account. For more details, refer to
-         * [Custom Code](/verify/v2/documentation/custom-code).
+         * [Custom Code](/verify/v2/documentation/custom-codes).
          *
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
@@ -1493,7 +1493,7 @@ private constructor(
             /**
              * The custom code to use for OTP verification. To use the custom code feature, contact
              * us to enable it for your account. For more details, refer to
-             * [Custom Code](/verify/v2/documentation/custom-code).
+             * [Custom Code](/verify/v2/documentation/custom-codes).
              */
             fun customCode(customCode: String) = customCode(JsonField.of(customCode))
 
@@ -2182,6 +2182,12 @@ private constructor(
 
                 @JvmField val ZALO = of("zalo")
 
+                @JvmField val TELEGRAM = of("telegram")
+
+                @JvmField val SILENT = of("silent")
+
+                @JvmField val VOICE = of("voice")
+
                 @JvmStatic fun of(value: String) = PreferredChannel(JsonField.of(value))
             }
 
@@ -2192,6 +2198,9 @@ private constructor(
                 WHATSAPP,
                 VIBER,
                 ZALO,
+                TELEGRAM,
+                SILENT,
+                VOICE,
             }
 
             /**
@@ -2210,6 +2219,9 @@ private constructor(
                 WHATSAPP,
                 VIBER,
                 ZALO,
+                TELEGRAM,
+                SILENT,
+                VOICE,
                 /**
                  * An enum member indicating that [PreferredChannel] was instantiated with an
                  * unknown value.
@@ -2231,6 +2243,9 @@ private constructor(
                     WHATSAPP -> Value.WHATSAPP
                     VIBER -> Value.VIBER
                     ZALO -> Value.ZALO
+                    TELEGRAM -> Value.TELEGRAM
+                    SILENT -> Value.SILENT
+                    VOICE -> Value.VOICE
                     else -> Value._UNKNOWN
                 }
 
@@ -2250,6 +2265,9 @@ private constructor(
                     WHATSAPP -> Known.WHATSAPP
                     VIBER -> Known.VIBER
                     ZALO -> Known.ZALO
+                    TELEGRAM -> Known.TELEGRAM
+                    SILENT -> Known.SILENT
+                    VOICE -> Known.VOICE
                     else -> throw PreludeInvalidDataException("Unknown PreferredChannel: $value")
                 }
 
