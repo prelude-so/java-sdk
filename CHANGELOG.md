@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.5.0 (2025-06-02)
+
+Full Changelog: [v0.4.0...v0.5.0](https://github.com/prelude-so/java-sdk/compare/v0.4.0...v0.5.0)
+
+### Features
+
+* **api:** update via SDK Studio ([f266567](https://github.com/prelude-so/java-sdk/commit/f266567129e61db748394695be867d17f6d3efb8))
+
+
+### Bug Fixes
+
+* **client:** remove `@MustBeClosed` for future returning methods ([dfc3b84](https://github.com/prelude-so/java-sdk/commit/dfc3b845591011d54a30c95b816508f9187bfa5a))
+
+
+### Chores
+
+* **docs:** grammar improvements ([b03d574](https://github.com/prelude-so/java-sdk/commit/b03d574c3bbd7229591c73569541fa67e2436426))
+
 ## 0.4.0 (2025-05-13)
 
 Full Changelog: [v0.3.0...v0.4.0](https://github.com/prelude-so/java-sdk/compare/v0.3.0...v0.4.0)
