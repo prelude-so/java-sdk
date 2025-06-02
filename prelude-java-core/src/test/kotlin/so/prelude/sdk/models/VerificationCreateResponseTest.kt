@@ -23,7 +23,11 @@ internal class VerificationCreateResponseTest {
                         .correlationId("correlation_id")
                         .build()
                 )
+                .reason(VerificationCreateResponse.Reason.INVALID_PHONE_NUMBER)
                 .requestId("request_id")
+                .silent(
+                    VerificationCreateResponse.Silent.builder().requestUrl("request_url").build()
+                )
                 .build()
 
         assertThat(verificationCreateResponse.id()).isEqualTo("vrf_01jc0t6fwwfgfsq1md24mhyztj")
@@ -38,7 +42,11 @@ internal class VerificationCreateResponseTest {
                     .correlationId("correlation_id")
                     .build()
             )
+        assertThat(verificationCreateResponse.reason())
+            .contains(VerificationCreateResponse.Reason.INVALID_PHONE_NUMBER)
         assertThat(verificationCreateResponse.requestId()).contains("request_id")
+        assertThat(verificationCreateResponse.silent())
+            .contains(VerificationCreateResponse.Silent.builder().requestUrl("request_url").build())
     }
 
     @Test
@@ -55,7 +63,11 @@ internal class VerificationCreateResponseTest {
                         .correlationId("correlation_id")
                         .build()
                 )
+                .reason(VerificationCreateResponse.Reason.INVALID_PHONE_NUMBER)
                 .requestId("request_id")
+                .silent(
+                    VerificationCreateResponse.Silent.builder().requestUrl("request_url").build()
+                )
                 .build()
 
         val roundtrippedVerificationCreateResponse =
