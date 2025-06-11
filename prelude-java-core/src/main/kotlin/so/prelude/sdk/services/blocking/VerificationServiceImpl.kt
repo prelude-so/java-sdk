@@ -59,6 +59,7 @@ class VerificationServiceImpl internal constructor(private val clientOptions: Cl
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v2", "verification")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
@@ -87,6 +88,7 @@ class VerificationServiceImpl internal constructor(private val clientOptions: Cl
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v2", "verification", "check")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
