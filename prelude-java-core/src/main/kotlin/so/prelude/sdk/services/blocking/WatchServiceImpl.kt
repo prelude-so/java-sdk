@@ -68,6 +68,7 @@ class WatchServiceImpl internal constructor(private val clientOptions: ClientOpt
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v2", "watch", "predict")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
@@ -96,6 +97,7 @@ class WatchServiceImpl internal constructor(private val clientOptions: ClientOpt
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v2", "watch", "event")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
@@ -124,6 +126,7 @@ class WatchServiceImpl internal constructor(private val clientOptions: ClientOpt
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v2", "watch", "feedback")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()

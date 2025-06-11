@@ -50,6 +50,7 @@ class TransactionalServiceImpl internal constructor(private val clientOptions: C
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v2", "transactional")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
