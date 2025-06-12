@@ -3,6 +3,7 @@
 package so.prelude.sdk.services.async
 
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 import so.prelude.sdk.core.ClientOptions
 import so.prelude.sdk.core.JsonValue
 import so.prelude.sdk.core.RequestOptions
@@ -32,6 +33,9 @@ class WatchServiceAsyncImpl internal constructor(private val clientOptions: Clie
 
     override fun withRawResponse(): WatchServiceAsync.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): WatchServiceAsync =
+        WatchServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
+
     override fun predict(
         params: WatchPredictParams,
         requestOptions: RequestOptions,
@@ -57,6 +61,13 @@ class WatchServiceAsyncImpl internal constructor(private val clientOptions: Clie
         WatchServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): WatchServiceAsync.WithRawResponse =
+            WatchServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val predictHandler: Handler<WatchPredictResponse> =
             jsonHandler<WatchPredictResponse>(clientOptions.jsonMapper)

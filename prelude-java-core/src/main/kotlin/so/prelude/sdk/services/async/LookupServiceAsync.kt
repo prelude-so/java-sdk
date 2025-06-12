@@ -3,6 +3,8 @@
 package so.prelude.sdk.services.async
 
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
+import so.prelude.sdk.core.ClientOptions
 import so.prelude.sdk.core.RequestOptions
 import so.prelude.sdk.core.http.HttpResponseFor
 import so.prelude.sdk.models.LookupLookupParams
@@ -14,6 +16,13 @@ interface LookupServiceAsync {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): LookupServiceAsync
 
     /**
      * Retrieve detailed information about a phone number including carrier data, line type, and
@@ -57,6 +66,15 @@ interface LookupServiceAsync {
      * A view of [LookupServiceAsync] that provides access to raw HTTP responses for each method.
      */
     interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): LookupServiceAsync.WithRawResponse
 
         /**
          * Returns a raw HTTP response for `get /v2/lookup/{phone_number}`, but is otherwise the

@@ -3,6 +3,7 @@
 package so.prelude.sdk.services.async
 
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 import so.prelude.sdk.core.ClientOptions
 import so.prelude.sdk.core.JsonValue
@@ -29,6 +30,9 @@ class LookupServiceAsyncImpl internal constructor(private val clientOptions: Cli
 
     override fun withRawResponse(): LookupServiceAsync.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): LookupServiceAsync =
+        LookupServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
+
     override fun lookup(
         params: LookupLookupParams,
         requestOptions: RequestOptions,
@@ -40,6 +44,13 @@ class LookupServiceAsyncImpl internal constructor(private val clientOptions: Cli
         LookupServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): LookupServiceAsync.WithRawResponse =
+            LookupServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val lookupHandler: Handler<LookupLookupResponse> =
             jsonHandler<LookupLookupResponse>(clientOptions.jsonMapper)

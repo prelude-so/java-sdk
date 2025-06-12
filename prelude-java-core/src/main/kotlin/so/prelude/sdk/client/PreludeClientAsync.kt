@@ -2,6 +2,8 @@
 
 package so.prelude.sdk.client
 
+import java.util.function.Consumer
+import so.prelude.sdk.core.ClientOptions
 import so.prelude.sdk.services.async.LookupServiceAsync
 import so.prelude.sdk.services.async.TransactionalServiceAsync
 import so.prelude.sdk.services.async.VerificationServiceAsync
@@ -36,6 +38,13 @@ interface PreludeClientAsync {
      */
     fun withRawResponse(): WithRawResponse
 
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): PreludeClientAsync
+
     fun lookup(): LookupServiceAsync
 
     fun transactional(): TransactionalServiceAsync
@@ -61,6 +70,15 @@ interface PreludeClientAsync {
      * A view of [PreludeClientAsync] that provides access to raw HTTP responses for each method.
      */
     interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): PreludeClientAsync.WithRawResponse
 
         fun lookup(): LookupServiceAsync.WithRawResponse
 
