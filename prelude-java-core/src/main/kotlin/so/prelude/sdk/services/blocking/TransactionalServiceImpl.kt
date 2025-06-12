@@ -2,6 +2,7 @@
 
 package so.prelude.sdk.services.blocking
 
+import java.util.function.Consumer
 import so.prelude.sdk.core.ClientOptions
 import so.prelude.sdk.core.JsonValue
 import so.prelude.sdk.core.RequestOptions
@@ -27,6 +28,9 @@ class TransactionalServiceImpl internal constructor(private val clientOptions: C
 
     override fun withRawResponse(): TransactionalService.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): TransactionalService =
+        TransactionalServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
+
     override fun send(
         params: TransactionalSendParams,
         requestOptions: RequestOptions,
@@ -38,6 +42,13 @@ class TransactionalServiceImpl internal constructor(private val clientOptions: C
         TransactionalService.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): TransactionalService.WithRawResponse =
+            TransactionalServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val sendHandler: Handler<TransactionalSendResponse> =
             jsonHandler<TransactionalSendResponse>(clientOptions.jsonMapper)

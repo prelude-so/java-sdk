@@ -3,6 +3,8 @@
 package so.prelude.sdk.services.blocking
 
 import com.google.errorprone.annotations.MustBeClosed
+import java.util.function.Consumer
+import so.prelude.sdk.core.ClientOptions
 import so.prelude.sdk.core.RequestOptions
 import so.prelude.sdk.core.http.HttpResponseFor
 import so.prelude.sdk.models.VerificationCheckParams
@@ -16,6 +18,13 @@ interface VerificationService {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): VerificationService
 
     /**
      * Create a new verification for a specific phone number. If another non-expired verification
@@ -45,6 +54,15 @@ interface VerificationService {
      * A view of [VerificationService] that provides access to raw HTTP responses for each method.
      */
     interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): VerificationService.WithRawResponse
 
         /**
          * Returns a raw HTTP response for `post /v2/verification`, but is otherwise the same as
