@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.6.0 (2025-06-23)
+
+Full Changelog: [v0.5.0...v0.6.0](https://github.com/prelude-so/java-sdk/compare/v0.5.0...v0.6.0)
+
+### Features
+
+* **client:** add a `withOptions` method ([66c2b6f](https://github.com/prelude-so/java-sdk/commit/66c2b6fe83c33f09a6c39b3318ccaf10aca25956))
+* **client:** implement per-endpoint base URL support ([26d9ec8](https://github.com/prelude-so/java-sdk/commit/26d9ec832a078df08e1557a337530ee2596ad6c6))
+
+
+### Bug Fixes
+
+* **client:** bump max requests per host to max requests (5 -&gt; 64) ([c9ecf45](https://github.com/prelude-so/java-sdk/commit/c9ecf45da5d98a0d1a678a74683d90143560ad81))
+
+
+### Chores
+
+* **ci:** enable for pull requests ([94b02c4](https://github.com/prelude-so/java-sdk/commit/94b02c441b54022c8d63eab6febe76e7ba2d72da))
+
 ## 0.5.0 (2025-06-02)
 
 Full Changelog: [v0.4.0...v0.5.0](https://github.com/prelude-so/java-sdk/compare/v0.4.0...v0.5.0)
