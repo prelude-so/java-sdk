@@ -3,6 +3,7 @@
 package so.prelude.sdk.services.async
 
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 import so.prelude.sdk.core.ClientOptions
 import so.prelude.sdk.core.JsonValue
 import so.prelude.sdk.core.RequestOptions
@@ -32,6 +33,9 @@ class WatchServiceAsyncImpl internal constructor(private val clientOptions: Clie
 
     override fun withRawResponse(): WatchServiceAsync.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): WatchServiceAsync =
+        WatchServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
+
     override fun predict(
         params: WatchPredictParams,
         requestOptions: RequestOptions,
@@ -58,6 +62,13 @@ class WatchServiceAsyncImpl internal constructor(private val clientOptions: Clie
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): WatchServiceAsync.WithRawResponse =
+            WatchServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
+
         private val predictHandler: Handler<WatchPredictResponse> =
             jsonHandler<WatchPredictResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
@@ -69,6 +80,7 @@ class WatchServiceAsyncImpl internal constructor(private val clientOptions: Clie
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v2", "watch", "predict")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
@@ -100,6 +112,7 @@ class WatchServiceAsyncImpl internal constructor(private val clientOptions: Clie
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v2", "watch", "event")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
@@ -131,6 +144,7 @@ class WatchServiceAsyncImpl internal constructor(private val clientOptions: Clie
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v2", "watch", "feedback")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()

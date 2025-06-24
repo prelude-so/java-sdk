@@ -2,6 +2,7 @@
 
 package so.prelude.sdk.services.blocking
 
+import java.util.function.Consumer
 import so.prelude.sdk.core.ClientOptions
 import so.prelude.sdk.core.JsonValue
 import so.prelude.sdk.core.RequestOptions
@@ -31,6 +32,9 @@ class WatchServiceImpl internal constructor(private val clientOptions: ClientOpt
 
     override fun withRawResponse(): WatchService.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): WatchService =
+        WatchServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
+
     override fun predict(
         params: WatchPredictParams,
         requestOptions: RequestOptions,
@@ -57,6 +61,13 @@ class WatchServiceImpl internal constructor(private val clientOptions: ClientOpt
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): WatchService.WithRawResponse =
+            WatchServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
+
         private val predictHandler: Handler<WatchPredictResponse> =
             jsonHandler<WatchPredictResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
@@ -68,6 +79,7 @@ class WatchServiceImpl internal constructor(private val clientOptions: ClientOpt
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v2", "watch", "predict")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
@@ -96,6 +108,7 @@ class WatchServiceImpl internal constructor(private val clientOptions: ClientOpt
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v2", "watch", "event")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
@@ -124,6 +137,7 @@ class WatchServiceImpl internal constructor(private val clientOptions: ClientOpt
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v2", "watch", "feedback")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()

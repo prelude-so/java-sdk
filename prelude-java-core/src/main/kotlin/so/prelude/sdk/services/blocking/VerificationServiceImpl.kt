@@ -2,6 +2,7 @@
 
 package so.prelude.sdk.services.blocking
 
+import java.util.function.Consumer
 import so.prelude.sdk.core.ClientOptions
 import so.prelude.sdk.core.JsonValue
 import so.prelude.sdk.core.RequestOptions
@@ -29,6 +30,9 @@ class VerificationServiceImpl internal constructor(private val clientOptions: Cl
 
     override fun withRawResponse(): VerificationService.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): VerificationService =
+        VerificationServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
+
     override fun create(
         params: VerificationCreateParams,
         requestOptions: RequestOptions,
@@ -48,6 +52,13 @@ class VerificationServiceImpl internal constructor(private val clientOptions: Cl
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): VerificationService.WithRawResponse =
+            VerificationServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
+
         private val createHandler: Handler<VerificationCreateResponse> =
             jsonHandler<VerificationCreateResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
@@ -59,6 +70,7 @@ class VerificationServiceImpl internal constructor(private val clientOptions: Cl
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v2", "verification")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
@@ -87,6 +99,7 @@ class VerificationServiceImpl internal constructor(private val clientOptions: Cl
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v2", "verification", "check")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()

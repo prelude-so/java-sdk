@@ -2,6 +2,7 @@
 
 package so.prelude.sdk.services.blocking
 
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 import so.prelude.sdk.core.ClientOptions
 import so.prelude.sdk.core.JsonValue
@@ -28,6 +29,9 @@ class LookupServiceImpl internal constructor(private val clientOptions: ClientOp
 
     override fun withRawResponse(): LookupService.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): LookupService =
+        LookupServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
+
     override fun lookup(
         params: LookupLookupParams,
         requestOptions: RequestOptions,
@@ -39,6 +43,13 @@ class LookupServiceImpl internal constructor(private val clientOptions: ClientOp
         LookupService.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): LookupService.WithRawResponse =
+            LookupServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val lookupHandler: Handler<LookupLookupResponse> =
             jsonHandler<LookupLookupResponse>(clientOptions.jsonMapper)
@@ -54,6 +65,7 @@ class LookupServiceImpl internal constructor(private val clientOptions: ClientOp
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v2", "lookup", params._pathParam(0))
                     .build()
                     .prepare(clientOptions, params)

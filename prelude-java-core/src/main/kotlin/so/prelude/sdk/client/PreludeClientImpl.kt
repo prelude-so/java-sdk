@@ -2,6 +2,7 @@
 
 package so.prelude.sdk.client
 
+import java.util.function.Consumer
 import so.prelude.sdk.core.ClientOptions
 import so.prelude.sdk.core.getPackageVersion
 import so.prelude.sdk.services.blocking.LookupService
@@ -46,6 +47,9 @@ class PreludeClientImpl(private val clientOptions: ClientOptions) : PreludeClien
 
     override fun withRawResponse(): PreludeClient.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): PreludeClient =
+        PreludeClientImpl(clientOptions.toBuilder().apply(modifier::accept).build())
+
     override fun lookup(): LookupService = lookup
 
     override fun transactional(): TransactionalService = transactional
@@ -74,6 +78,13 @@ class PreludeClientImpl(private val clientOptions: ClientOptions) : PreludeClien
         private val watch: WatchService.WithRawResponse by lazy {
             WatchServiceImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): PreludeClient.WithRawResponse =
+            PreludeClientImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         override fun lookup(): LookupService.WithRawResponse = lookup
 

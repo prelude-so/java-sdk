@@ -3,6 +3,7 @@
 package so.prelude.sdk.services.async
 
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 import so.prelude.sdk.core.ClientOptions
 import so.prelude.sdk.core.JsonValue
 import so.prelude.sdk.core.RequestOptions
@@ -28,6 +29,9 @@ class TransactionalServiceAsyncImpl internal constructor(private val clientOptio
 
     override fun withRawResponse(): TransactionalServiceAsync.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): TransactionalServiceAsync =
+        TransactionalServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
+
     override fun send(
         params: TransactionalSendParams,
         requestOptions: RequestOptions,
@@ -40,6 +44,13 @@ class TransactionalServiceAsyncImpl internal constructor(private val clientOptio
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): TransactionalServiceAsync.WithRawResponse =
+            TransactionalServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
+
         private val sendHandler: Handler<TransactionalSendResponse> =
             jsonHandler<TransactionalSendResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
@@ -51,6 +62,7 @@ class TransactionalServiceAsyncImpl internal constructor(private val clientOptio
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("v2", "transactional")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
