@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.6.1 (2025-06-29)
+
+Full Changelog: [v0.6.0...v0.6.1](https://github.com/prelude-so/java-sdk/compare/v0.6.0...v0.6.1)
+
+### Bug Fixes
+
+* **ci:** release-doctor — report correct token name ([13a503f](https://github.com/prelude-so/java-sdk/commit/13a503fd0a97619293d536bc25fe9e63a70d63d2))
+* **client:** don't close client on `withOptions` usage when original is gc'd ([e3e197f](https://github.com/prelude-so/java-sdk/commit/e3e197f8fae4362cb000303e4825588c0e06977a))
+
+
+### Chores
+
+* **ci:** only run for pushes and fork pull requests ([5acd1d3](https://github.com/prelude-so/java-sdk/commit/5acd1d32ca11e01c29af6726933c7a956b2f09ac))
+
 ## 0.6.0 (2025-06-23)
 
 Full Changelog: [v0.5.0...v0.6.0](https://github.com/prelude-so/java-sdk/compare/v0.5.0...v0.6.0)
