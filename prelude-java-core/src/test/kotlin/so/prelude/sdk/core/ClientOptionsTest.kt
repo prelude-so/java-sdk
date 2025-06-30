@@ -14,9 +14,10 @@ import so.prelude.sdk.core.http.HttpClient
 @ExtendWith(MockitoExtension::class)
 internal class ClientOptionsTest {
 
+    private val httpClient = mock<HttpClient>()
+
     @Test
     fun toBuilder_whenOriginalClientOptionsGarbageCollected_doesNotCloseOriginalClient() {
-        val httpClient = mock<HttpClient>()
         var clientOptions =
             ClientOptions.builder().httpClient(httpClient).apiToken("My API Token").build()
         verify(httpClient, never()).close()
