@@ -54,7 +54,8 @@ private constructor(
     fun callbackUrl(): Optional<String> = body.callbackUrl()
 
     /**
-     * A unique, user-defined identifier that will be included in webhook events.
+     * A user-defined identifier to correlate this transactional message with. It is returned in the
+     * response and any webhook events that refer to this transactionalmessage.
      *
      * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
@@ -237,7 +238,10 @@ private constructor(
          */
         fun callbackUrl(callbackUrl: JsonField<String>) = apply { body.callbackUrl(callbackUrl) }
 
-        /** A unique, user-defined identifier that will be included in webhook events. */
+        /**
+         * A user-defined identifier to correlate this transactional message with. It is returned in
+         * the response and any webhook events that refer to this transactionalmessage.
+         */
         fun correlationId(correlationId: String) = apply { body.correlationId(correlationId) }
 
         /**
@@ -516,7 +520,8 @@ private constructor(
         fun callbackUrl(): Optional<String> = callbackUrl.getOptional("callback_url")
 
         /**
-         * A unique, user-defined identifier that will be included in webhook events.
+         * A user-defined identifier to correlate this transactional message with. It is returned in
+         * the response and any webhook events that refer to this transactionalmessage.
          *
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
@@ -713,7 +718,11 @@ private constructor(
                 this.callbackUrl = callbackUrl
             }
 
-            /** A unique, user-defined identifier that will be included in webhook events. */
+            /**
+             * A user-defined identifier to correlate this transactional message with. It is
+             * returned in the response and any webhook events that refer to this
+             * transactionalmessage.
+             */
             fun correlationId(correlationId: String) = correlationId(JsonField.of(correlationId))
 
             /**
