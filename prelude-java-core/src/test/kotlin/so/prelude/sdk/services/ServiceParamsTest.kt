@@ -52,7 +52,7 @@ internal class ServiceParamsTest {
                         .value("+30123456789")
                         .build()
                 )
-                .dispatchId("dispatch_id")
+                .dispatchId("123e4567-e89b-12d3-a456-426614174000")
                 .metadata(
                     VerificationCreateParams.Metadata.builder()
                         .correlationId("correlation_id")

@@ -25,7 +25,7 @@ private constructor(
     private val id: JsonField<String>,
     private val method: JsonField<Method>,
     private val status: JsonField<Status>,
-    private val channels: JsonField<List<String>>,
+    private val channels: JsonField<List<Channel>>,
     private val metadata: JsonField<Metadata>,
     private val reason: JsonField<Reason>,
     private val requestId: JsonField<String>,
@@ -40,7 +40,7 @@ private constructor(
         @JsonProperty("status") @ExcludeMissing status: JsonField<Status> = JsonMissing.of(),
         @JsonProperty("channels")
         @ExcludeMissing
-        channels: JsonField<List<String>> = JsonMissing.of(),
+        channels: JsonField<List<Channel>> = JsonMissing.of(),
         @JsonProperty("metadata") @ExcludeMissing metadata: JsonField<Metadata> = JsonMissing.of(),
         @JsonProperty("reason") @ExcludeMissing reason: JsonField<Reason> = JsonMissing.of(),
         @JsonProperty("request_id") @ExcludeMissing requestId: JsonField<String> = JsonMissing.of(),
@@ -77,7 +77,7 @@ private constructor(
      * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun channels(): Optional<List<String>> = channels.getOptional("channels")
+    fun channels(): Optional<List<Channel>> = channels.getOptional("channels")
 
     /**
      * The metadata for this verification.
@@ -135,7 +135,7 @@ private constructor(
      *
      * Unlike [channels], this method doesn't throw if the JSON field has an unexpected type.
      */
-    @JsonProperty("channels") @ExcludeMissing fun _channels(): JsonField<List<String>> = channels
+    @JsonProperty("channels") @ExcludeMissing fun _channels(): JsonField<List<Channel>> = channels
 
     /**
      * Returns the raw JSON value of [metadata].
@@ -198,7 +198,7 @@ private constructor(
         private var id: JsonField<String>? = null
         private var method: JsonField<Method>? = null
         private var status: JsonField<Status>? = null
-        private var channels: JsonField<MutableList<String>>? = null
+        private var channels: JsonField<MutableList<Channel>>? = null
         private var metadata: JsonField<Metadata> = JsonMissing.of()
         private var reason: JsonField<Reason> = JsonMissing.of()
         private var requestId: JsonField<String> = JsonMissing.of()
@@ -252,25 +252,25 @@ private constructor(
         fun status(status: JsonField<Status>) = apply { this.status = status }
 
         /** The ordered sequence of channels to be used for verification */
-        fun channels(channels: List<String>) = channels(JsonField.of(channels))
+        fun channels(channels: List<Channel>) = channels(JsonField.of(channels))
 
         /**
          * Sets [Builder.channels] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.channels] with a well-typed `List<String>` value
+         * You should usually call [Builder.channels] with a well-typed `List<Channel>` value
          * instead. This method is primarily for setting the field to an undocumented or not yet
          * supported value.
          */
-        fun channels(channels: JsonField<List<String>>) = apply {
+        fun channels(channels: JsonField<List<Channel>>) = apply {
             this.channels = channels.map { it.toMutableList() }
         }
 
         /**
-         * Adds a single [String] to [channels].
+         * Adds a single [Channel] to [channels].
          *
          * @throws IllegalStateException if the field was previously set to a non-list.
          */
-        fun addChannel(channel: String) = apply {
+        fun addChannel(channel: Channel) = apply {
             channels =
                 (channels ?: JsonField.of(mutableListOf())).also {
                     checkKnown("channels", it).add(channel)
@@ -379,7 +379,7 @@ private constructor(
         id()
         method().validate()
         status().validate()
-        channels()
+        channels().ifPresent { it.forEach { it.validate() } }
         metadata().ifPresent { it.validate() }
         reason().ifPresent { it.validate() }
         requestId()
@@ -405,7 +405,7 @@ private constructor(
         (if (id.asKnown().isPresent) 1 else 0) +
             (method.asKnown().getOrNull()?.validity() ?: 0) +
             (status.asKnown().getOrNull()?.validity() ?: 0) +
-            (channels.asKnown().getOrNull()?.size ?: 0) +
+            (channels.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
             (metadata.asKnown().getOrNull()?.validity() ?: 0) +
             (reason.asKnown().getOrNull()?.validity() ?: 0) +
             (if (requestId.asKnown().isPresent) 1 else 0) +
@@ -675,6 +675,167 @@ private constructor(
         override fun toString() = value.toString()
     }
 
+    class Channel @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
+
+        /**
+         * Returns this class instance's raw value.
+         *
+         * This is usually only useful if this instance was deserialized from data that doesn't
+         * match any known member, and you want to know that value. For example, if the SDK is on an
+         * older version than the API, then the API may respond with new members that the SDK is
+         * unaware of.
+         */
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+        companion object {
+
+            @JvmField val SMS = of("sms")
+
+            @JvmField val RCS = of("rcs")
+
+            @JvmField val WHATSAPP = of("whatsapp")
+
+            @JvmField val VIBER = of("viber")
+
+            @JvmField val ZALO = of("zalo")
+
+            @JvmField val TELEGRAM = of("telegram")
+
+            @JvmField val SILENT = of("silent")
+
+            @JvmField val VOICE = of("voice")
+
+            @JvmStatic fun of(value: String) = Channel(JsonField.of(value))
+        }
+
+        /** An enum containing [Channel]'s known values. */
+        enum class Known {
+            SMS,
+            RCS,
+            WHATSAPP,
+            VIBER,
+            ZALO,
+            TELEGRAM,
+            SILENT,
+            VOICE,
+        }
+
+        /**
+         * An enum containing [Channel]'s known values, as well as an [_UNKNOWN] member.
+         *
+         * An instance of [Channel] can contain an unknown value in a couple of cases:
+         * - It was deserialized from data that doesn't match any known member. For example, if the
+         *   SDK is on an older version than the API, then the API may respond with new members that
+         *   the SDK is unaware of.
+         * - It was constructed with an arbitrary value using the [of] method.
+         */
+        enum class Value {
+            SMS,
+            RCS,
+            WHATSAPP,
+            VIBER,
+            ZALO,
+            TELEGRAM,
+            SILENT,
+            VOICE,
+            /** An enum member indicating that [Channel] was instantiated with an unknown value. */
+            _UNKNOWN,
+        }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
+         * if the class was instantiated with an unknown value.
+         *
+         * Use the [known] method instead if you're certain the value is always known or if you want
+         * to throw for the unknown case.
+         */
+        fun value(): Value =
+            when (this) {
+                SMS -> Value.SMS
+                RCS -> Value.RCS
+                WHATSAPP -> Value.WHATSAPP
+                VIBER -> Value.VIBER
+                ZALO -> Value.ZALO
+                TELEGRAM -> Value.TELEGRAM
+                SILENT -> Value.SILENT
+                VOICE -> Value.VOICE
+                else -> Value._UNKNOWN
+            }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value.
+         *
+         * Use the [value] method instead if you're uncertain the value is always known and don't
+         * want to throw for the unknown case.
+         *
+         * @throws PreludeInvalidDataException if this class instance's value is a not a known
+         *   member.
+         */
+        fun known(): Known =
+            when (this) {
+                SMS -> Known.SMS
+                RCS -> Known.RCS
+                WHATSAPP -> Known.WHATSAPP
+                VIBER -> Known.VIBER
+                ZALO -> Known.ZALO
+                TELEGRAM -> Known.TELEGRAM
+                SILENT -> Known.SILENT
+                VOICE -> Known.VOICE
+                else -> throw PreludeInvalidDataException("Unknown Channel: $value")
+            }
+
+        /**
+         * Returns this class instance's primitive wire representation.
+         *
+         * This differs from the [toString] method because that method is primarily for debugging
+         * and generally doesn't throw.
+         *
+         * @throws PreludeInvalidDataException if this class instance's value does not have the
+         *   expected primitive type.
+         */
+        fun asString(): String =
+            _value().asString().orElseThrow { PreludeInvalidDataException("Value is not a String") }
+
+        private var validated: Boolean = false
+
+        fun validate(): Channel = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: PreludeInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Channel && value == other.value /* spotless:on */
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
+    }
+
     /** The metadata for this verification. */
     class Metadata
     private constructor(
@@ -690,6 +851,9 @@ private constructor(
         ) : this(correlationId, mutableMapOf())
 
         /**
+         * A user-defined identifier to correlate this verification with. It is returned in the
+         * response and any webhook events that refer to this verification.
+         *
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
@@ -735,6 +899,10 @@ private constructor(
                 additionalProperties = metadata.additionalProperties.toMutableMap()
             }
 
+            /**
+             * A user-defined identifier to correlate this verification with. It is returned in the
+             * response and any webhook events that refer to this verification.
+             */
             fun correlationId(correlationId: String) = correlationId(JsonField.of(correlationId))
 
             /**
@@ -836,26 +1004,32 @@ private constructor(
 
         companion object {
 
-            @JvmField val SUSPICIOUS = of("suspicious")
+            @JvmField val EXPIRED_SIGNATURE = of("expired_signature")
 
-            @JvmField val REPEATED_ATTEMPTS = of("repeated_attempts")
+            @JvmField val IN_BLOCK_LIST = of("in_block_list")
 
             @JvmField val INVALID_PHONE_LINE = of("invalid_phone_line")
 
             @JvmField val INVALID_PHONE_NUMBER = of("invalid_phone_number")
 
-            @JvmField val IN_BLOCK_LIST = of("in_block_list")
+            @JvmField val INVALID_SIGNATURE = of("invalid_signature")
+
+            @JvmField val REPEATED_ATTEMPTS = of("repeated_attempts")
+
+            @JvmField val SUSPICIOUS = of("suspicious")
 
             @JvmStatic fun of(value: String) = Reason(JsonField.of(value))
         }
 
         /** An enum containing [Reason]'s known values. */
         enum class Known {
-            SUSPICIOUS,
-            REPEATED_ATTEMPTS,
+            EXPIRED_SIGNATURE,
+            IN_BLOCK_LIST,
             INVALID_PHONE_LINE,
             INVALID_PHONE_NUMBER,
-            IN_BLOCK_LIST,
+            INVALID_SIGNATURE,
+            REPEATED_ATTEMPTS,
+            SUSPICIOUS,
         }
 
         /**
@@ -868,11 +1042,13 @@ private constructor(
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {
-            SUSPICIOUS,
-            REPEATED_ATTEMPTS,
+            EXPIRED_SIGNATURE,
+            IN_BLOCK_LIST,
             INVALID_PHONE_LINE,
             INVALID_PHONE_NUMBER,
-            IN_BLOCK_LIST,
+            INVALID_SIGNATURE,
+            REPEATED_ATTEMPTS,
+            SUSPICIOUS,
             /** An enum member indicating that [Reason] was instantiated with an unknown value. */
             _UNKNOWN,
         }
@@ -886,11 +1062,13 @@ private constructor(
          */
         fun value(): Value =
             when (this) {
-                SUSPICIOUS -> Value.SUSPICIOUS
-                REPEATED_ATTEMPTS -> Value.REPEATED_ATTEMPTS
+                EXPIRED_SIGNATURE -> Value.EXPIRED_SIGNATURE
+                IN_BLOCK_LIST -> Value.IN_BLOCK_LIST
                 INVALID_PHONE_LINE -> Value.INVALID_PHONE_LINE
                 INVALID_PHONE_NUMBER -> Value.INVALID_PHONE_NUMBER
-                IN_BLOCK_LIST -> Value.IN_BLOCK_LIST
+                INVALID_SIGNATURE -> Value.INVALID_SIGNATURE
+                REPEATED_ATTEMPTS -> Value.REPEATED_ATTEMPTS
+                SUSPICIOUS -> Value.SUSPICIOUS
                 else -> Value._UNKNOWN
             }
 
@@ -905,11 +1083,13 @@ private constructor(
          */
         fun known(): Known =
             when (this) {
-                SUSPICIOUS -> Known.SUSPICIOUS
-                REPEATED_ATTEMPTS -> Known.REPEATED_ATTEMPTS
+                EXPIRED_SIGNATURE -> Known.EXPIRED_SIGNATURE
+                IN_BLOCK_LIST -> Known.IN_BLOCK_LIST
                 INVALID_PHONE_LINE -> Known.INVALID_PHONE_LINE
                 INVALID_PHONE_NUMBER -> Known.INVALID_PHONE_NUMBER
-                IN_BLOCK_LIST -> Known.IN_BLOCK_LIST
+                INVALID_SIGNATURE -> Known.INVALID_SIGNATURE
+                REPEATED_ATTEMPTS -> Known.REPEATED_ATTEMPTS
+                SUSPICIOUS -> Known.SUSPICIOUS
                 else -> throw PreludeInvalidDataException("Unknown Reason: $value")
             }
 
