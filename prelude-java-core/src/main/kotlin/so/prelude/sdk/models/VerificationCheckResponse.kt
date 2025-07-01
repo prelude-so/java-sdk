@@ -403,6 +403,9 @@ private constructor(
         ) : this(correlationId, mutableMapOf())
 
         /**
+         * A user-defined identifier to correlate this verification with. It is returned in the
+         * response and any webhook events that refer to this verification.
+         *
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
          */
@@ -448,6 +451,10 @@ private constructor(
                 additionalProperties = metadata.additionalProperties.toMutableMap()
             }
 
+            /**
+             * A user-defined identifier to correlate this verification with. It is returned in the
+             * response and any webhook events that refer to this verification.
+             */
             fun correlationId(correlationId: String) = correlationId(JsonField.of(correlationId))
 
             /**
