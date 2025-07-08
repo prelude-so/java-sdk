@@ -31,7 +31,7 @@ internal class WatchServiceAsyncTest {
                             .value("+30123456789")
                             .build()
                     )
-                    .dispatchId("dispatch_id")
+                    .dispatchId("123e4567-e89b-12d3-a456-426614174000")
                     .metadata(
                         WatchPredictParams.Metadata.builder()
                             .correlationId("correlation_id")
@@ -112,7 +112,7 @@ internal class WatchServiceAsyncTest {
                                     .build()
                             )
                             .type(WatchSendFeedbacksParams.Feedback.Type.VERIFICATION_STARTED)
-                            .dispatchId("dispatch_id")
+                            .dispatchId("123e4567-e89b-12d3-a456-426614174000")
                             .metadata(
                                 WatchSendFeedbacksParams.Feedback.Metadata.builder()
                                     .correlationId("correlation_id")
