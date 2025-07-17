@@ -5,13 +5,13 @@ package so.prelude.sdk.services.async
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 import so.prelude.sdk.core.ClientOptions
-import so.prelude.sdk.core.JsonValue
 import so.prelude.sdk.core.RequestOptions
+import so.prelude.sdk.core.handlers.errorBodyHandler
 import so.prelude.sdk.core.handlers.errorHandler
 import so.prelude.sdk.core.handlers.jsonHandler
-import so.prelude.sdk.core.handlers.withErrorHandler
 import so.prelude.sdk.core.http.HttpMethod
 import so.prelude.sdk.core.http.HttpRequest
+import so.prelude.sdk.core.http.HttpResponse
 import so.prelude.sdk.core.http.HttpResponse.Handler
 import so.prelude.sdk.core.http.HttpResponseFor
 import so.prelude.sdk.core.http.json
@@ -42,7 +42,8 @@ class TransactionalServiceAsyncImpl internal constructor(private val clientOptio
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         TransactionalServiceAsync.WithRawResponse {
 
-        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<HttpResponse> =
+            errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         override fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
@@ -53,7 +54,6 @@ class TransactionalServiceAsyncImpl internal constructor(private val clientOptio
 
         private val sendHandler: Handler<TransactionalSendResponse> =
             jsonHandler<TransactionalSendResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun send(
             params: TransactionalSendParams,
@@ -71,7 +71,7 @@ class TransactionalServiceAsyncImpl internal constructor(private val clientOptio
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { sendHandler.handle(it) }
                             .also {

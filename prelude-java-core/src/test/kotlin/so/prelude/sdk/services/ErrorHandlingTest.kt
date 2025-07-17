@@ -136,8 +136,162 @@ internal class ErrorHandlingTest {
     }
 
     @Test
+    fun verificationCreate400WithRawResponse() {
+        val verificationService = client.verification().withRawResponse()
+        stubFor(
+            post(anyUrl())
+                .willReturn(
+                    status(400).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON_BYTES)
+                )
+        )
+
+        val e =
+            assertThrows<BadRequestException> {
+                verificationService.create(
+                    VerificationCreateParams.builder()
+                        .target(
+                            VerificationCreateParams.Target.builder()
+                                .type(VerificationCreateParams.Target.Type.PHONE_NUMBER)
+                                .value("+30123456789")
+                                .build()
+                        )
+                        .dispatchId("123e4567-e89b-12d3-a456-426614174000")
+                        .metadata(
+                            VerificationCreateParams.Metadata.builder()
+                                .correlationId("correlation_id")
+                                .build()
+                        )
+                        .options(
+                            VerificationCreateParams.Options.builder()
+                                .appRealm(
+                                    VerificationCreateParams.Options.AppRealm.builder()
+                                        .platform(
+                                            VerificationCreateParams.Options.AppRealm.Platform
+                                                .ANDROID
+                                        )
+                                        .value("value")
+                                        .build()
+                                )
+                                .callbackUrl("callback_url")
+                                .codeSize(5L)
+                                .customCode("123456")
+                                .locale("el-GR")
+                                .method(VerificationCreateParams.Options.Method.AUTO)
+                                .preferredChannel(
+                                    VerificationCreateParams.Options.PreferredChannel.SMS
+                                )
+                                .senderId("sender_id")
+                                .templateId("prelude:psd2")
+                                .variables(
+                                    VerificationCreateParams.Options.Variables.builder()
+                                        .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .signals(
+                            VerificationCreateParams.Signals.builder()
+                                .appVersion("1.2.34")
+                                .deviceId("8F0B8FDD-C2CB-4387-B20A-56E9B2E5A0D2")
+                                .deviceModel("iPhone17,2")
+                                .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
+                                .ip("192.0.2.1")
+                                .isTrustedUser(false)
+                                .osVersion("18.0.1")
+                                .userAgent(
+                                    "Mozilla/5.0 (iPhone; CPU iPhone OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1"
+                                )
+                                .build()
+                        )
+                        .build()
+                )
+            }
+
+        assertThat(e.statusCode()).isEqualTo(400)
+        assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
+        assertThat(e.body()).isEqualTo(ERROR_JSON)
+    }
+
+    @Test
     fun verificationCreate401() {
         val verificationService = client.verification()
+        stubFor(
+            post(anyUrl())
+                .willReturn(
+                    status(401).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON_BYTES)
+                )
+        )
+
+        val e =
+            assertThrows<UnauthorizedException> {
+                verificationService.create(
+                    VerificationCreateParams.builder()
+                        .target(
+                            VerificationCreateParams.Target.builder()
+                                .type(VerificationCreateParams.Target.Type.PHONE_NUMBER)
+                                .value("+30123456789")
+                                .build()
+                        )
+                        .dispatchId("123e4567-e89b-12d3-a456-426614174000")
+                        .metadata(
+                            VerificationCreateParams.Metadata.builder()
+                                .correlationId("correlation_id")
+                                .build()
+                        )
+                        .options(
+                            VerificationCreateParams.Options.builder()
+                                .appRealm(
+                                    VerificationCreateParams.Options.AppRealm.builder()
+                                        .platform(
+                                            VerificationCreateParams.Options.AppRealm.Platform
+                                                .ANDROID
+                                        )
+                                        .value("value")
+                                        .build()
+                                )
+                                .callbackUrl("callback_url")
+                                .codeSize(5L)
+                                .customCode("123456")
+                                .locale("el-GR")
+                                .method(VerificationCreateParams.Options.Method.AUTO)
+                                .preferredChannel(
+                                    VerificationCreateParams.Options.PreferredChannel.SMS
+                                )
+                                .senderId("sender_id")
+                                .templateId("prelude:psd2")
+                                .variables(
+                                    VerificationCreateParams.Options.Variables.builder()
+                                        .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .signals(
+                            VerificationCreateParams.Signals.builder()
+                                .appVersion("1.2.34")
+                                .deviceId("8F0B8FDD-C2CB-4387-B20A-56E9B2E5A0D2")
+                                .deviceModel("iPhone17,2")
+                                .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
+                                .ip("192.0.2.1")
+                                .isTrustedUser(false)
+                                .osVersion("18.0.1")
+                                .userAgent(
+                                    "Mozilla/5.0 (iPhone; CPU iPhone OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1"
+                                )
+                                .build()
+                        )
+                        .build()
+                )
+            }
+
+        assertThat(e.statusCode()).isEqualTo(401)
+        assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
+        assertThat(e.body()).isEqualTo(ERROR_JSON)
+    }
+
+    @Test
+    fun verificationCreate401WithRawResponse() {
+        val verificationService = client.verification().withRawResponse()
         stubFor(
             post(anyUrl())
                 .willReturn(
@@ -290,8 +444,162 @@ internal class ErrorHandlingTest {
     }
 
     @Test
+    fun verificationCreate403WithRawResponse() {
+        val verificationService = client.verification().withRawResponse()
+        stubFor(
+            post(anyUrl())
+                .willReturn(
+                    status(403).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON_BYTES)
+                )
+        )
+
+        val e =
+            assertThrows<PermissionDeniedException> {
+                verificationService.create(
+                    VerificationCreateParams.builder()
+                        .target(
+                            VerificationCreateParams.Target.builder()
+                                .type(VerificationCreateParams.Target.Type.PHONE_NUMBER)
+                                .value("+30123456789")
+                                .build()
+                        )
+                        .dispatchId("123e4567-e89b-12d3-a456-426614174000")
+                        .metadata(
+                            VerificationCreateParams.Metadata.builder()
+                                .correlationId("correlation_id")
+                                .build()
+                        )
+                        .options(
+                            VerificationCreateParams.Options.builder()
+                                .appRealm(
+                                    VerificationCreateParams.Options.AppRealm.builder()
+                                        .platform(
+                                            VerificationCreateParams.Options.AppRealm.Platform
+                                                .ANDROID
+                                        )
+                                        .value("value")
+                                        .build()
+                                )
+                                .callbackUrl("callback_url")
+                                .codeSize(5L)
+                                .customCode("123456")
+                                .locale("el-GR")
+                                .method(VerificationCreateParams.Options.Method.AUTO)
+                                .preferredChannel(
+                                    VerificationCreateParams.Options.PreferredChannel.SMS
+                                )
+                                .senderId("sender_id")
+                                .templateId("prelude:psd2")
+                                .variables(
+                                    VerificationCreateParams.Options.Variables.builder()
+                                        .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .signals(
+                            VerificationCreateParams.Signals.builder()
+                                .appVersion("1.2.34")
+                                .deviceId("8F0B8FDD-C2CB-4387-B20A-56E9B2E5A0D2")
+                                .deviceModel("iPhone17,2")
+                                .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
+                                .ip("192.0.2.1")
+                                .isTrustedUser(false)
+                                .osVersion("18.0.1")
+                                .userAgent(
+                                    "Mozilla/5.0 (iPhone; CPU iPhone OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1"
+                                )
+                                .build()
+                        )
+                        .build()
+                )
+            }
+
+        assertThat(e.statusCode()).isEqualTo(403)
+        assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
+        assertThat(e.body()).isEqualTo(ERROR_JSON)
+    }
+
+    @Test
     fun verificationCreate404() {
         val verificationService = client.verification()
+        stubFor(
+            post(anyUrl())
+                .willReturn(
+                    status(404).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON_BYTES)
+                )
+        )
+
+        val e =
+            assertThrows<NotFoundException> {
+                verificationService.create(
+                    VerificationCreateParams.builder()
+                        .target(
+                            VerificationCreateParams.Target.builder()
+                                .type(VerificationCreateParams.Target.Type.PHONE_NUMBER)
+                                .value("+30123456789")
+                                .build()
+                        )
+                        .dispatchId("123e4567-e89b-12d3-a456-426614174000")
+                        .metadata(
+                            VerificationCreateParams.Metadata.builder()
+                                .correlationId("correlation_id")
+                                .build()
+                        )
+                        .options(
+                            VerificationCreateParams.Options.builder()
+                                .appRealm(
+                                    VerificationCreateParams.Options.AppRealm.builder()
+                                        .platform(
+                                            VerificationCreateParams.Options.AppRealm.Platform
+                                                .ANDROID
+                                        )
+                                        .value("value")
+                                        .build()
+                                )
+                                .callbackUrl("callback_url")
+                                .codeSize(5L)
+                                .customCode("123456")
+                                .locale("el-GR")
+                                .method(VerificationCreateParams.Options.Method.AUTO)
+                                .preferredChannel(
+                                    VerificationCreateParams.Options.PreferredChannel.SMS
+                                )
+                                .senderId("sender_id")
+                                .templateId("prelude:psd2")
+                                .variables(
+                                    VerificationCreateParams.Options.Variables.builder()
+                                        .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .signals(
+                            VerificationCreateParams.Signals.builder()
+                                .appVersion("1.2.34")
+                                .deviceId("8F0B8FDD-C2CB-4387-B20A-56E9B2E5A0D2")
+                                .deviceModel("iPhone17,2")
+                                .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
+                                .ip("192.0.2.1")
+                                .isTrustedUser(false)
+                                .osVersion("18.0.1")
+                                .userAgent(
+                                    "Mozilla/5.0 (iPhone; CPU iPhone OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1"
+                                )
+                                .build()
+                        )
+                        .build()
+                )
+            }
+
+        assertThat(e.statusCode()).isEqualTo(404)
+        assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
+        assertThat(e.body()).isEqualTo(ERROR_JSON)
+    }
+
+    @Test
+    fun verificationCreate404WithRawResponse() {
+        val verificationService = client.verification().withRawResponse()
         stubFor(
             post(anyUrl())
                 .willReturn(
@@ -444,8 +752,162 @@ internal class ErrorHandlingTest {
     }
 
     @Test
+    fun verificationCreate422WithRawResponse() {
+        val verificationService = client.verification().withRawResponse()
+        stubFor(
+            post(anyUrl())
+                .willReturn(
+                    status(422).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON_BYTES)
+                )
+        )
+
+        val e =
+            assertThrows<UnprocessableEntityException> {
+                verificationService.create(
+                    VerificationCreateParams.builder()
+                        .target(
+                            VerificationCreateParams.Target.builder()
+                                .type(VerificationCreateParams.Target.Type.PHONE_NUMBER)
+                                .value("+30123456789")
+                                .build()
+                        )
+                        .dispatchId("123e4567-e89b-12d3-a456-426614174000")
+                        .metadata(
+                            VerificationCreateParams.Metadata.builder()
+                                .correlationId("correlation_id")
+                                .build()
+                        )
+                        .options(
+                            VerificationCreateParams.Options.builder()
+                                .appRealm(
+                                    VerificationCreateParams.Options.AppRealm.builder()
+                                        .platform(
+                                            VerificationCreateParams.Options.AppRealm.Platform
+                                                .ANDROID
+                                        )
+                                        .value("value")
+                                        .build()
+                                )
+                                .callbackUrl("callback_url")
+                                .codeSize(5L)
+                                .customCode("123456")
+                                .locale("el-GR")
+                                .method(VerificationCreateParams.Options.Method.AUTO)
+                                .preferredChannel(
+                                    VerificationCreateParams.Options.PreferredChannel.SMS
+                                )
+                                .senderId("sender_id")
+                                .templateId("prelude:psd2")
+                                .variables(
+                                    VerificationCreateParams.Options.Variables.builder()
+                                        .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .signals(
+                            VerificationCreateParams.Signals.builder()
+                                .appVersion("1.2.34")
+                                .deviceId("8F0B8FDD-C2CB-4387-B20A-56E9B2E5A0D2")
+                                .deviceModel("iPhone17,2")
+                                .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
+                                .ip("192.0.2.1")
+                                .isTrustedUser(false)
+                                .osVersion("18.0.1")
+                                .userAgent(
+                                    "Mozilla/5.0 (iPhone; CPU iPhone OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1"
+                                )
+                                .build()
+                        )
+                        .build()
+                )
+            }
+
+        assertThat(e.statusCode()).isEqualTo(422)
+        assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
+        assertThat(e.body()).isEqualTo(ERROR_JSON)
+    }
+
+    @Test
     fun verificationCreate429() {
         val verificationService = client.verification()
+        stubFor(
+            post(anyUrl())
+                .willReturn(
+                    status(429).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON_BYTES)
+                )
+        )
+
+        val e =
+            assertThrows<RateLimitException> {
+                verificationService.create(
+                    VerificationCreateParams.builder()
+                        .target(
+                            VerificationCreateParams.Target.builder()
+                                .type(VerificationCreateParams.Target.Type.PHONE_NUMBER)
+                                .value("+30123456789")
+                                .build()
+                        )
+                        .dispatchId("123e4567-e89b-12d3-a456-426614174000")
+                        .metadata(
+                            VerificationCreateParams.Metadata.builder()
+                                .correlationId("correlation_id")
+                                .build()
+                        )
+                        .options(
+                            VerificationCreateParams.Options.builder()
+                                .appRealm(
+                                    VerificationCreateParams.Options.AppRealm.builder()
+                                        .platform(
+                                            VerificationCreateParams.Options.AppRealm.Platform
+                                                .ANDROID
+                                        )
+                                        .value("value")
+                                        .build()
+                                )
+                                .callbackUrl("callback_url")
+                                .codeSize(5L)
+                                .customCode("123456")
+                                .locale("el-GR")
+                                .method(VerificationCreateParams.Options.Method.AUTO)
+                                .preferredChannel(
+                                    VerificationCreateParams.Options.PreferredChannel.SMS
+                                )
+                                .senderId("sender_id")
+                                .templateId("prelude:psd2")
+                                .variables(
+                                    VerificationCreateParams.Options.Variables.builder()
+                                        .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .signals(
+                            VerificationCreateParams.Signals.builder()
+                                .appVersion("1.2.34")
+                                .deviceId("8F0B8FDD-C2CB-4387-B20A-56E9B2E5A0D2")
+                                .deviceModel("iPhone17,2")
+                                .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
+                                .ip("192.0.2.1")
+                                .isTrustedUser(false)
+                                .osVersion("18.0.1")
+                                .userAgent(
+                                    "Mozilla/5.0 (iPhone; CPU iPhone OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1"
+                                )
+                                .build()
+                        )
+                        .build()
+                )
+            }
+
+        assertThat(e.statusCode()).isEqualTo(429)
+        assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
+        assertThat(e.body()).isEqualTo(ERROR_JSON)
+    }
+
+    @Test
+    fun verificationCreate429WithRawResponse() {
+        val verificationService = client.verification().withRawResponse()
         stubFor(
             post(anyUrl())
                 .willReturn(
@@ -598,8 +1060,162 @@ internal class ErrorHandlingTest {
     }
 
     @Test
+    fun verificationCreate500WithRawResponse() {
+        val verificationService = client.verification().withRawResponse()
+        stubFor(
+            post(anyUrl())
+                .willReturn(
+                    status(500).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON_BYTES)
+                )
+        )
+
+        val e =
+            assertThrows<InternalServerException> {
+                verificationService.create(
+                    VerificationCreateParams.builder()
+                        .target(
+                            VerificationCreateParams.Target.builder()
+                                .type(VerificationCreateParams.Target.Type.PHONE_NUMBER)
+                                .value("+30123456789")
+                                .build()
+                        )
+                        .dispatchId("123e4567-e89b-12d3-a456-426614174000")
+                        .metadata(
+                            VerificationCreateParams.Metadata.builder()
+                                .correlationId("correlation_id")
+                                .build()
+                        )
+                        .options(
+                            VerificationCreateParams.Options.builder()
+                                .appRealm(
+                                    VerificationCreateParams.Options.AppRealm.builder()
+                                        .platform(
+                                            VerificationCreateParams.Options.AppRealm.Platform
+                                                .ANDROID
+                                        )
+                                        .value("value")
+                                        .build()
+                                )
+                                .callbackUrl("callback_url")
+                                .codeSize(5L)
+                                .customCode("123456")
+                                .locale("el-GR")
+                                .method(VerificationCreateParams.Options.Method.AUTO)
+                                .preferredChannel(
+                                    VerificationCreateParams.Options.PreferredChannel.SMS
+                                )
+                                .senderId("sender_id")
+                                .templateId("prelude:psd2")
+                                .variables(
+                                    VerificationCreateParams.Options.Variables.builder()
+                                        .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .signals(
+                            VerificationCreateParams.Signals.builder()
+                                .appVersion("1.2.34")
+                                .deviceId("8F0B8FDD-C2CB-4387-B20A-56E9B2E5A0D2")
+                                .deviceModel("iPhone17,2")
+                                .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
+                                .ip("192.0.2.1")
+                                .isTrustedUser(false)
+                                .osVersion("18.0.1")
+                                .userAgent(
+                                    "Mozilla/5.0 (iPhone; CPU iPhone OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1"
+                                )
+                                .build()
+                        )
+                        .build()
+                )
+            }
+
+        assertThat(e.statusCode()).isEqualTo(500)
+        assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
+        assertThat(e.body()).isEqualTo(ERROR_JSON)
+    }
+
+    @Test
     fun verificationCreate999() {
         val verificationService = client.verification()
+        stubFor(
+            post(anyUrl())
+                .willReturn(
+                    status(999).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON_BYTES)
+                )
+        )
+
+        val e =
+            assertThrows<UnexpectedStatusCodeException> {
+                verificationService.create(
+                    VerificationCreateParams.builder()
+                        .target(
+                            VerificationCreateParams.Target.builder()
+                                .type(VerificationCreateParams.Target.Type.PHONE_NUMBER)
+                                .value("+30123456789")
+                                .build()
+                        )
+                        .dispatchId("123e4567-e89b-12d3-a456-426614174000")
+                        .metadata(
+                            VerificationCreateParams.Metadata.builder()
+                                .correlationId("correlation_id")
+                                .build()
+                        )
+                        .options(
+                            VerificationCreateParams.Options.builder()
+                                .appRealm(
+                                    VerificationCreateParams.Options.AppRealm.builder()
+                                        .platform(
+                                            VerificationCreateParams.Options.AppRealm.Platform
+                                                .ANDROID
+                                        )
+                                        .value("value")
+                                        .build()
+                                )
+                                .callbackUrl("callback_url")
+                                .codeSize(5L)
+                                .customCode("123456")
+                                .locale("el-GR")
+                                .method(VerificationCreateParams.Options.Method.AUTO)
+                                .preferredChannel(
+                                    VerificationCreateParams.Options.PreferredChannel.SMS
+                                )
+                                .senderId("sender_id")
+                                .templateId("prelude:psd2")
+                                .variables(
+                                    VerificationCreateParams.Options.Variables.builder()
+                                        .putAdditionalProperty("foo", JsonValue.from("bar"))
+                                        .build()
+                                )
+                                .build()
+                        )
+                        .signals(
+                            VerificationCreateParams.Signals.builder()
+                                .appVersion("1.2.34")
+                                .deviceId("8F0B8FDD-C2CB-4387-B20A-56E9B2E5A0D2")
+                                .deviceModel("iPhone17,2")
+                                .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
+                                .ip("192.0.2.1")
+                                .isTrustedUser(false)
+                                .osVersion("18.0.1")
+                                .userAgent(
+                                    "Mozilla/5.0 (iPhone; CPU iPhone OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1"
+                                )
+                                .build()
+                        )
+                        .build()
+                )
+            }
+
+        assertThat(e.statusCode()).isEqualTo(999)
+        assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
+        assertThat(e.body()).isEqualTo(ERROR_JSON)
+    }
+
+    @Test
+    fun verificationCreate999WithRawResponse() {
+        val verificationService = client.verification().withRawResponse()
         stubFor(
             post(anyUrl())
                 .willReturn(
