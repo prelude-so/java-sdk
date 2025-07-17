@@ -4,13 +4,13 @@ package so.prelude.sdk.services.blocking
 
 import java.util.function.Consumer
 import so.prelude.sdk.core.ClientOptions
-import so.prelude.sdk.core.JsonValue
 import so.prelude.sdk.core.RequestOptions
+import so.prelude.sdk.core.handlers.errorBodyHandler
 import so.prelude.sdk.core.handlers.errorHandler
 import so.prelude.sdk.core.handlers.jsonHandler
-import so.prelude.sdk.core.handlers.withErrorHandler
 import so.prelude.sdk.core.http.HttpMethod
 import so.prelude.sdk.core.http.HttpRequest
+import so.prelude.sdk.core.http.HttpResponse
 import so.prelude.sdk.core.http.HttpResponse.Handler
 import so.prelude.sdk.core.http.HttpResponseFor
 import so.prelude.sdk.core.http.json
@@ -41,7 +41,8 @@ class TransactionalServiceImpl internal constructor(private val clientOptions: C
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         TransactionalService.WithRawResponse {
 
-        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<HttpResponse> =
+            errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         override fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
@@ -52,7 +53,6 @@ class TransactionalServiceImpl internal constructor(private val clientOptions: C
 
         private val sendHandler: Handler<TransactionalSendResponse> =
             jsonHandler<TransactionalSendResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun send(
             params: TransactionalSendParams,
@@ -68,7 +68,7 @@ class TransactionalServiceImpl internal constructor(private val clientOptions: C
                     .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
+            return errorHandler.handle(response).parseable {
                 response
                     .use { sendHandler.handle(it) }
                     .also {
