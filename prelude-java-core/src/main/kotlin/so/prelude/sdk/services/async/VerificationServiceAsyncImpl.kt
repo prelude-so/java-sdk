@@ -5,13 +5,13 @@ package so.prelude.sdk.services.async
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 import so.prelude.sdk.core.ClientOptions
-import so.prelude.sdk.core.JsonValue
 import so.prelude.sdk.core.RequestOptions
+import so.prelude.sdk.core.handlers.errorBodyHandler
 import so.prelude.sdk.core.handlers.errorHandler
 import so.prelude.sdk.core.handlers.jsonHandler
-import so.prelude.sdk.core.handlers.withErrorHandler
 import so.prelude.sdk.core.http.HttpMethod
 import so.prelude.sdk.core.http.HttpRequest
+import so.prelude.sdk.core.http.HttpResponse
 import so.prelude.sdk.core.http.HttpResponse.Handler
 import so.prelude.sdk.core.http.HttpResponseFor
 import so.prelude.sdk.core.http.json
@@ -51,7 +51,8 @@ class VerificationServiceAsyncImpl internal constructor(private val clientOption
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         VerificationServiceAsync.WithRawResponse {
 
-        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<HttpResponse> =
+            errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         override fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
@@ -62,7 +63,6 @@ class VerificationServiceAsyncImpl internal constructor(private val clientOption
 
         private val createHandler: Handler<VerificationCreateResponse> =
             jsonHandler<VerificationCreateResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun create(
             params: VerificationCreateParams,
@@ -80,7 +80,7 @@ class VerificationServiceAsyncImpl internal constructor(private val clientOption
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { createHandler.handle(it) }
                             .also {
@@ -94,7 +94,6 @@ class VerificationServiceAsyncImpl internal constructor(private val clientOption
 
         private val checkHandler: Handler<VerificationCheckResponse> =
             jsonHandler<VerificationCheckResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun check(
             params: VerificationCheckParams,
@@ -112,7 +111,7 @@ class VerificationServiceAsyncImpl internal constructor(private val clientOption
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { checkHandler.handle(it) }
                             .also {

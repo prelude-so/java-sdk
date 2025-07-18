@@ -16,7 +16,7 @@ internal class WatchPredictParamsTest {
                     .value("+30123456789")
                     .build()
             )
-            .dispatchId("dispatch_id")
+            .dispatchId("123e4567-e89b-12d3-a456-426614174000")
             .metadata(WatchPredictParams.Metadata.builder().correlationId("correlation_id").build())
             .signals(
                 WatchPredictParams.Signals.builder()
@@ -45,7 +45,7 @@ internal class WatchPredictParamsTest {
                         .value("+30123456789")
                         .build()
                 )
-                .dispatchId("dispatch_id")
+                .dispatchId("123e4567-e89b-12d3-a456-426614174000")
                 .metadata(
                     WatchPredictParams.Metadata.builder().correlationId("correlation_id").build()
                 )
@@ -74,7 +74,7 @@ internal class WatchPredictParamsTest {
                     .value("+30123456789")
                     .build()
             )
-        assertThat(body.dispatchId()).contains("dispatch_id")
+        assertThat(body.dispatchId()).contains("123e4567-e89b-12d3-a456-426614174000")
         assertThat(body.metadata())
             .contains(WatchPredictParams.Metadata.builder().correlationId("correlation_id").build())
         assertThat(body.signals())
