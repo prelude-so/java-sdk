@@ -220,8 +220,12 @@ private constructor(
         fun timeout(): Timeout = timeout
 
         fun fromEnv() = apply {
-            System.getenv("PRELUDE_BASE_URL")?.let { baseUrl(it) }
-            System.getenv("API_TOKEN")?.let { apiToken(it) }
+            (System.getProperty("prelude.baseUrl") ?: System.getenv("PRELUDE_BASE_URL"))?.let {
+                baseUrl(it)
+            }
+            (System.getProperty("prelude.apiToken") ?: System.getenv("API_TOKEN"))?.let {
+                apiToken(it)
+            }
         }
 
         /**

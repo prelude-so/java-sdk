@@ -51,7 +51,8 @@ import so.prelude.sdk.client.okhttp.PreludeOkHttpClient;
 import so.prelude.sdk.models.VerificationCreateParams;
 import so.prelude.sdk.models.VerificationCreateResponse;
 
-// Configures using the `API_TOKEN` and `PRELUDE_BASE_URL` environment variables
+// Configures using the `prelude.apiToken` and `prelude.baseUrl` system properties
+// Or configures using the `API_TOKEN` and `PRELUDE_BASE_URL` environment variables
 PreludeClient client = PreludeOkHttpClient.fromEnv();
 
 VerificationCreateParams params = VerificationCreateParams.builder()
@@ -65,13 +66,14 @@ VerificationCreateResponse verification = client.verification().create(params);
 
 ## Client configuration
 
-Configure the client using environment variables:
+Configure the client using system properties or environment variables:
 
 ```java
 import so.prelude.sdk.client.PreludeClient;
 import so.prelude.sdk.client.okhttp.PreludeOkHttpClient;
 
-// Configures using the `API_TOKEN` and `PRELUDE_BASE_URL` environment variables
+// Configures using the `prelude.apiToken` and `prelude.baseUrl` system properties
+// Or configures using the `API_TOKEN` and `PRELUDE_BASE_URL` environment variables
 PreludeClient client = PreludeOkHttpClient.fromEnv();
 ```
 
@@ -93,7 +95,8 @@ import so.prelude.sdk.client.PreludeClient;
 import so.prelude.sdk.client.okhttp.PreludeOkHttpClient;
 
 PreludeClient client = PreludeOkHttpClient.builder()
-    // Configures using the `API_TOKEN` and `PRELUDE_BASE_URL` environment variables
+    // Configures using the `prelude.apiToken` and `prelude.baseUrl` system properties
+    Or configures using the `API_TOKEN` and `PRELUDE_BASE_URL` environment variables
     .fromEnv()
     .apiToken("My API Token")
     .build();
@@ -101,10 +104,12 @@ PreludeClient client = PreludeOkHttpClient.builder()
 
 See this table for the available options:
 
-| Setter     | Environment variable | Required | Default value               |
-| ---------- | -------------------- | -------- | --------------------------- |
-| `apiToken` | `API_TOKEN`          | true     | -                           |
-| `baseUrl`  | `PRELUDE_BASE_URL`   | true     | `"https://api.prelude.dev"` |
+| Setter     | System property    | Environment variable | Required | Default value               |
+| ---------- | ------------------ | -------------------- | -------- | --------------------------- |
+| `apiToken` | `prelude.apiToken` | `API_TOKEN`          | true     | -                           |
+| `baseUrl`  | `prelude.baseUrl`  | `PRELUDE_BASE_URL`   | true     | `"https://api.prelude.dev"` |
+
+System properties take precedence over environment variables.
 
 > [!TIP]
 > Don't create more than one client in the same application. Each client has a connection pool and
@@ -150,7 +155,8 @@ import so.prelude.sdk.client.okhttp.PreludeOkHttpClient;
 import so.prelude.sdk.models.VerificationCreateParams;
 import so.prelude.sdk.models.VerificationCreateResponse;
 
-// Configures using the `API_TOKEN` and `PRELUDE_BASE_URL` environment variables
+// Configures using the `prelude.apiToken` and `prelude.baseUrl` system properties
+// Or configures using the `API_TOKEN` and `PRELUDE_BASE_URL` environment variables
 PreludeClient client = PreludeOkHttpClient.fromEnv();
 
 VerificationCreateParams params = VerificationCreateParams.builder()
@@ -171,7 +177,8 @@ import so.prelude.sdk.client.okhttp.PreludeOkHttpClientAsync;
 import so.prelude.sdk.models.VerificationCreateParams;
 import so.prelude.sdk.models.VerificationCreateResponse;
 
-// Configures using the `API_TOKEN` and `PRELUDE_BASE_URL` environment variables
+// Configures using the `prelude.apiToken` and `prelude.baseUrl` system properties
+// Or configures using the `API_TOKEN` and `PRELUDE_BASE_URL` environment variables
 PreludeClientAsync client = PreludeOkHttpClientAsync.fromEnv();
 
 VerificationCreateParams params = VerificationCreateParams.builder()
