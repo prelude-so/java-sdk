@@ -96,7 +96,7 @@ import so.prelude.sdk.client.okhttp.PreludeOkHttpClient;
 
 PreludeClient client = PreludeOkHttpClient.builder()
     // Configures using the `prelude.apiToken` and `prelude.baseUrl` system properties
-    Or configures using the `API_TOKEN` and `PRELUDE_BASE_URL` environment variables
+    // Or configures using the `API_TOKEN` and `PRELUDE_BASE_URL` environment variables
     .fromEnv()
     .apiToken("My API Token")
     .build();
