@@ -16,16 +16,26 @@ import so.prelude.sdk.client.PreludeClientAsyncImpl
 import so.prelude.sdk.core.ClientOptions
 import so.prelude.sdk.core.Timeout
 import so.prelude.sdk.core.http.Headers
+import so.prelude.sdk.core.http.HttpClient
 import so.prelude.sdk.core.http.QueryParams
 import so.prelude.sdk.core.jsonMapper
 
+/**
+ * A class that allows building an instance of [PreludeClientAsync] with [OkHttpClient] as the
+ * underlying [HttpClient].
+ */
 class PreludeOkHttpClientAsync private constructor() {
 
     companion object {
 
-        /** Returns a mutable builder for constructing an instance of [PreludeOkHttpClientAsync]. */
+        /** Returns a mutable builder for constructing an instance of [PreludeClientAsync]. */
         @JvmStatic fun builder() = Builder()
 
+        /**
+         * Returns a client configured using system properties and environment variables.
+         *
+         * @see ClientOptions.Builder.fromEnv
+         */
         @JvmStatic fun fromEnv(): PreludeClientAsync = builder().fromEnv().build()
     }
 
@@ -102,19 +112,49 @@ class PreludeOkHttpClientAsync private constructor() {
             clientOptions.checkJacksonVersionCompatibility(checkJacksonVersionCompatibility)
         }
 
+        /**
+         * The Jackson JSON mapper to use for serializing and deserializing JSON.
+         *
+         * Defaults to [so.prelude.sdk.core.jsonMapper]. The default is usually sufficient and
+         * rarely needs to be overridden.
+         */
         fun jsonMapper(jsonMapper: JsonMapper) = apply { clientOptions.jsonMapper(jsonMapper) }
 
+        /**
+         * The clock to use for operations that require timing, like retries.
+         *
+         * This is primarily useful for using a fake clock in tests.
+         *
+         * Defaults to [Clock.systemUTC].
+         */
         fun clock(clock: Clock) = apply { clientOptions.clock(clock) }
 
+        /**
+         * The base URL to use for every request.
+         *
+         * Defaults to the production environment: `https://api.prelude.dev`.
+         */
         fun baseUrl(baseUrl: String?) = apply { clientOptions.baseUrl(baseUrl) }
 
         /** Alias for calling [Builder.baseUrl] with `baseUrl.orElse(null)`. */
         fun baseUrl(baseUrl: Optional<String>) = baseUrl(baseUrl.getOrNull())
 
+        /**
+         * Whether to call `validate` on every response before returning it.
+         *
+         * Defaults to false, which means the shape of the response will not be validated upfront.
+         * Instead, validation will only occur for the parts of the response that are accessed.
+         */
         fun responseValidation(responseValidation: Boolean) = apply {
             clientOptions.responseValidation(responseValidation)
         }
 
+        /**
+         * Sets the maximum time allowed for various parts of an HTTP call's lifecycle, excluding
+         * retries.
+         *
+         * Defaults to [Timeout.default].
+         */
         fun timeout(timeout: Timeout) = apply { clientOptions.timeout(timeout) }
 
         /**
@@ -126,8 +166,24 @@ class PreludeOkHttpClientAsync private constructor() {
          */
         fun timeout(timeout: Duration) = apply { clientOptions.timeout(timeout) }
 
+        /**
+         * The maximum number of times to retry failed requests, with a short exponential backoff
+         * between requests.
+         *
+         * Only the following error types are retried:
+         * - Connection errors (for example, due to a network connectivity problem)
+         * - 408 Request Timeout
+         * - 409 Conflict
+         * - 429 Rate Limit
+         * - 5xx Internal
+         *
+         * The API may also explicitly instruct the SDK to retry or not retry a request.
+         *
+         * Defaults to 2.
+         */
         fun maxRetries(maxRetries: Int) = apply { clientOptions.maxRetries(maxRetries) }
 
+        /** Bearer token for authorizing API requests. */
         fun apiToken(apiToken: String) = apply { clientOptions.apiToken(apiToken) }
 
         fun headers(headers: Headers) = apply { clientOptions.headers(headers) }
@@ -210,6 +266,11 @@ class PreludeOkHttpClientAsync private constructor() {
             clientOptions.removeAllQueryParams(keys)
         }
 
+        /**
+         * Updates configuration using system properties and environment variables.
+         *
+         * @see ClientOptions.Builder.fromEnv
+         */
         fun fromEnv() = apply { clientOptions.fromEnv() }
 
         /**
