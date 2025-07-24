@@ -1,5 +1,44 @@
 # Changelog
 
+## 0.7.0 (2025-07-24)
+
+Full Changelog: [v0.6.0...v0.7.0](https://github.com/prelude-so/java-sdk/compare/v0.6.0...v0.7.0)
+
+### Features
+
+* **api:** update via SDK Studio ([05d7d0e](https://github.com/prelude-so/java-sdk/commit/05d7d0e97100d46a5dcd928943fd531669942c81))
+* **client:** add `{QueryParams,Headers}#put(String, JsonValue)` methods ([357aeda](https://github.com/prelude-so/java-sdk/commit/357aeda6ead54ae0e5a04919ebbe23bf06ae4089))
+* **client:** add https config options ([dfbdf92](https://github.com/prelude-so/java-sdk/commit/dfbdf92410d52ff79134a52af6a700255c44e523))
+* **client:** allow configuring env via system properties ([2a2d667](https://github.com/prelude-so/java-sdk/commit/2a2d667a5cb0b725df3f536e5375da8dd580dd15))
+
+
+### Bug Fixes
+
+* **ci:** release-doctor — report correct token name ([13a503f](https://github.com/prelude-so/java-sdk/commit/13a503fd0a97619293d536bc25fe9e63a70d63d2))
+* **client:** don't close client on `withOptions` usage when original is gc'd ([e3e197f](https://github.com/prelude-so/java-sdk/commit/e3e197f8fae4362cb000303e4825588c0e06977a))
+* **client:** ensure error handling always occurs ([26bf51c](https://github.com/prelude-so/java-sdk/commit/26bf51c661c8d4df21d93f067b920654bcc2b310))
+
+
+### Chores
+
+* **ci:** bump `actions/setup-java` to v4 ([7d1f671](https://github.com/prelude-so/java-sdk/commit/7d1f6717e6ce4b61eaeb66b1d47ffadbfa5be454))
+* **ci:** ensure docs generation always succeeds ([89494ea](https://github.com/prelude-so/java-sdk/commit/89494ea07c90412a02c70d2c7a61c752c398e606))
+* **ci:** only run for pushes and fork pull requests ([5acd1d3](https://github.com/prelude-so/java-sdk/commit/5acd1d32ca11e01c29af6726933c7a956b2f09ac))
+* **internal:** allow running specific example from cli ([bd89c57](https://github.com/prelude-so/java-sdk/commit/bd89c5713ade2738b1ef0885d5f3565fbe49c6ef))
+* **internal:** refactor delegating from client to options ([c53e5b8](https://github.com/prelude-so/java-sdk/commit/c53e5b84bcf98b7b713993b9d30d141b4408ce7e))
+* **internal:** remove unnecessary `[...]` in `[@see](https://github.com/see)` ([b0a34a1](https://github.com/prelude-so/java-sdk/commit/b0a34a1e51d69333ce0fd67793e079c8d5249426))
+
+
+### Documentation
+
+* fix missing readme comment ([6f95540](https://github.com/prelude-so/java-sdk/commit/6f9554069aa8a8eea3fc934b90da2a67646a0e3b))
+* more code comments ([364e143](https://github.com/prelude-so/java-sdk/commit/364e143b14eb2fc2354bf98b2b19007da4dcdcf1))
+
+
+### Refactors
+
+* **internal:** minor `ClientOptionsTest` change ([e017858](https://github.com/prelude-so/java-sdk/commit/e0178588c5f5ce326ea910f648ecfb1799cb3ca8))
+
 ## 0.6.0 (2025-06-23)
 
 Full Changelog: [v0.5.0...v0.6.0](https://github.com/prelude-so/java-sdk/compare/v0.5.0...v0.6.0)
