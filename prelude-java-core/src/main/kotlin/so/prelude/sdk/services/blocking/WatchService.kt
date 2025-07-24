@@ -32,7 +32,7 @@ interface WatchService {
     fun predict(params: WatchPredictParams): WatchPredictResponse =
         predict(params, RequestOptions.none())
 
-    /** @see [predict] */
+    /** @see predict */
     fun predict(
         params: WatchPredictParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -45,7 +45,7 @@ interface WatchService {
     fun sendEvents(params: WatchSendEventsParams): WatchSendEventsResponse =
         sendEvents(params, RequestOptions.none())
 
-    /** @see [sendEvents] */
+    /** @see sendEvents */
     fun sendEvents(
         params: WatchSendEventsParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -58,7 +58,7 @@ interface WatchService {
     fun sendFeedbacks(params: WatchSendFeedbacksParams): WatchSendFeedbacksResponse =
         sendFeedbacks(params, RequestOptions.none())
 
-    /** @see [sendFeedbacks] */
+    /** @see sendFeedbacks */
     fun sendFeedbacks(
         params: WatchSendFeedbacksParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -82,7 +82,7 @@ interface WatchService {
         fun predict(params: WatchPredictParams): HttpResponseFor<WatchPredictResponse> =
             predict(params, RequestOptions.none())
 
-        /** @see [predict] */
+        /** @see predict */
         @MustBeClosed
         fun predict(
             params: WatchPredictParams,
@@ -97,7 +97,7 @@ interface WatchService {
         fun sendEvents(params: WatchSendEventsParams): HttpResponseFor<WatchSendEventsResponse> =
             sendEvents(params, RequestOptions.none())
 
-        /** @see [sendEvents] */
+        /** @see sendEvents */
         @MustBeClosed
         fun sendEvents(
             params: WatchSendEventsParams,
@@ -114,7 +114,7 @@ interface WatchService {
         ): HttpResponseFor<WatchSendFeedbacksResponse> =
             sendFeedbacks(params, RequestOptions.none())
 
-        /** @see [sendFeedbacks] */
+        /** @see sendFeedbacks */
         @MustBeClosed
         fun sendFeedbacks(
             params: WatchSendFeedbacksParams,
