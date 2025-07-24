@@ -28,7 +28,7 @@ interface TransactionalServiceAsync {
     fun send(params: TransactionalSendParams): CompletableFuture<TransactionalSendResponse> =
         send(params, RequestOptions.none())
 
-    /** @see [send] */
+    /** @see send */
     fun send(
         params: TransactionalSendParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -58,7 +58,7 @@ interface TransactionalServiceAsync {
         ): CompletableFuture<HttpResponseFor<TransactionalSendResponse>> =
             send(params, RequestOptions.none())
 
-        /** @see [send] */
+        /** @see send */
         fun send(
             params: TransactionalSendParams,
             requestOptions: RequestOptions = RequestOptions.none(),

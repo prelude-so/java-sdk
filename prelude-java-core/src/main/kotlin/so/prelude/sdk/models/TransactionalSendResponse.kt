@@ -126,7 +126,8 @@ private constructor(
     fun callbackUrl(): Optional<String> = callbackUrl.getOptional("callback_url")
 
     /**
-     * A unique, user-defined identifier that will be included in webhook events.
+     * A user-defined identifier to correlate this transactional message with. It is returned in the
+     * response and any webhook events that refer to this transactional message.
      *
      * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
@@ -352,7 +353,10 @@ private constructor(
          */
         fun callbackUrl(callbackUrl: JsonField<String>) = apply { this.callbackUrl = callbackUrl }
 
-        /** A unique, user-defined identifier that will be included in webhook events. */
+        /**
+         * A user-defined identifier to correlate this transactional message with. It is returned in
+         * the response and any webhook events that refer to this transactional message.
+         */
         fun correlationId(correlationId: String) = correlationId(JsonField.of(correlationId))
 
         /**

@@ -92,8 +92,10 @@ private constructor(
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
@@ -941,7 +943,8 @@ private constructor(
         ) : this(correlationId, mutableMapOf())
 
         /**
-         * A user-defined identifier to correlate this prediction with.
+         * A user-defined identifier to correlate this prediction with. It is returned in the
+         * response and any webhook events that refer to this prediction.
          *
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
@@ -988,7 +991,10 @@ private constructor(
                 additionalProperties = metadata.additionalProperties.toMutableMap()
             }
 
-            /** A user-defined identifier to correlate this prediction with. */
+            /**
+             * A user-defined identifier to correlate this prediction with. It is returned in the
+             * response and any webhook events that refer to this prediction.
+             */
             fun correlationId(correlationId: String) = correlationId(JsonField.of(correlationId))
 
             /**

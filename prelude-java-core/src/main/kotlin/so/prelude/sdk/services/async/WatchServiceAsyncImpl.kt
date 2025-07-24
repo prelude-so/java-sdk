@@ -5,13 +5,13 @@ package so.prelude.sdk.services.async
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 import so.prelude.sdk.core.ClientOptions
-import so.prelude.sdk.core.JsonValue
 import so.prelude.sdk.core.RequestOptions
+import so.prelude.sdk.core.handlers.errorBodyHandler
 import so.prelude.sdk.core.handlers.errorHandler
 import so.prelude.sdk.core.handlers.jsonHandler
-import so.prelude.sdk.core.handlers.withErrorHandler
 import so.prelude.sdk.core.http.HttpMethod
 import so.prelude.sdk.core.http.HttpRequest
+import so.prelude.sdk.core.http.HttpResponse
 import so.prelude.sdk.core.http.HttpResponse.Handler
 import so.prelude.sdk.core.http.HttpResponseFor
 import so.prelude.sdk.core.http.json
@@ -60,7 +60,8 @@ class WatchServiceAsyncImpl internal constructor(private val clientOptions: Clie
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         WatchServiceAsync.WithRawResponse {
 
-        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<HttpResponse> =
+            errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         override fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
@@ -71,7 +72,6 @@ class WatchServiceAsyncImpl internal constructor(private val clientOptions: Clie
 
         private val predictHandler: Handler<WatchPredictResponse> =
             jsonHandler<WatchPredictResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun predict(
             params: WatchPredictParams,
@@ -89,7 +89,7 @@ class WatchServiceAsyncImpl internal constructor(private val clientOptions: Clie
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { predictHandler.handle(it) }
                             .also {
@@ -103,7 +103,6 @@ class WatchServiceAsyncImpl internal constructor(private val clientOptions: Clie
 
         private val sendEventsHandler: Handler<WatchSendEventsResponse> =
             jsonHandler<WatchSendEventsResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun sendEvents(
             params: WatchSendEventsParams,
@@ -121,7 +120,7 @@ class WatchServiceAsyncImpl internal constructor(private val clientOptions: Clie
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { sendEventsHandler.handle(it) }
                             .also {
@@ -135,7 +134,6 @@ class WatchServiceAsyncImpl internal constructor(private val clientOptions: Clie
 
         private val sendFeedbacksHandler: Handler<WatchSendFeedbacksResponse> =
             jsonHandler<WatchSendFeedbacksResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun sendFeedbacks(
             params: WatchSendFeedbacksParams,
@@ -153,7 +151,7 @@ class WatchServiceAsyncImpl internal constructor(private val clientOptions: Clie
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { sendFeedbacksHandler.handle(it) }
                             .also {

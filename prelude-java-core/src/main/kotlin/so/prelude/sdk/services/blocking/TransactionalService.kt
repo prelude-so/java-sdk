@@ -28,7 +28,7 @@ interface TransactionalService {
     fun send(params: TransactionalSendParams): TransactionalSendResponse =
         send(params, RequestOptions.none())
 
-    /** @see [send] */
+    /** @see send */
     fun send(
         params: TransactionalSendParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -56,7 +56,7 @@ interface TransactionalService {
         fun send(params: TransactionalSendParams): HttpResponseFor<TransactionalSendResponse> =
             send(params, RequestOptions.none())
 
-        /** @see [send] */
+        /** @see send */
         @MustBeClosed
         fun send(
             params: TransactionalSendParams,

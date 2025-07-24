@@ -114,8 +114,10 @@ private constructor(
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
@@ -1030,7 +1032,8 @@ private constructor(
         ) : this(correlationId, mutableMapOf())
 
         /**
-         * A user-defined identifier to correlate this verification with.
+         * A user-defined identifier to correlate this verification with. It is returned in the
+         * response and any webhook events that refer to this verification.
          *
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
@@ -1077,7 +1080,10 @@ private constructor(
                 additionalProperties = metadata.additionalProperties.toMutableMap()
             }
 
-            /** A user-defined identifier to correlate this verification with. */
+            /**
+             * A user-defined identifier to correlate this verification with. It is returned in the
+             * response and any webhook events that refer to this verification.
+             */
             fun correlationId(correlationId: String) = correlationId(JsonField.of(correlationId))
 
             /**
@@ -2184,10 +2190,6 @@ private constructor(
 
                 @JvmField val TELEGRAM = of("telegram")
 
-                @JvmField val SILENT = of("silent")
-
-                @JvmField val VOICE = of("voice")
-
                 @JvmStatic fun of(value: String) = PreferredChannel(JsonField.of(value))
             }
 
@@ -2199,8 +2201,6 @@ private constructor(
                 VIBER,
                 ZALO,
                 TELEGRAM,
-                SILENT,
-                VOICE,
             }
 
             /**
@@ -2220,8 +2220,6 @@ private constructor(
                 VIBER,
                 ZALO,
                 TELEGRAM,
-                SILENT,
-                VOICE,
                 /**
                  * An enum member indicating that [PreferredChannel] was instantiated with an
                  * unknown value.
@@ -2244,8 +2242,6 @@ private constructor(
                     VIBER -> Value.VIBER
                     ZALO -> Value.ZALO
                     TELEGRAM -> Value.TELEGRAM
-                    SILENT -> Value.SILENT
-                    VOICE -> Value.VOICE
                     else -> Value._UNKNOWN
                 }
 
@@ -2266,8 +2262,6 @@ private constructor(
                     VIBER -> Known.VIBER
                     ZALO -> Known.ZALO
                     TELEGRAM -> Known.TELEGRAM
-                    SILENT -> Known.SILENT
-                    VOICE -> Known.VOICE
                     else -> throw PreludeInvalidDataException("Unknown PreferredChannel: $value")
                 }
 

@@ -31,7 +31,7 @@ interface LookupService {
     fun lookup(phoneNumber: String): LookupLookupResponse =
         lookup(phoneNumber, LookupLookupParams.none())
 
-    /** @see [lookup] */
+    /** @see lookup */
     fun lookup(
         phoneNumber: String,
         params: LookupLookupParams = LookupLookupParams.none(),
@@ -39,23 +39,23 @@ interface LookupService {
     ): LookupLookupResponse =
         lookup(params.toBuilder().phoneNumber(phoneNumber).build(), requestOptions)
 
-    /** @see [lookup] */
+    /** @see lookup */
     fun lookup(
         phoneNumber: String,
         params: LookupLookupParams = LookupLookupParams.none(),
     ): LookupLookupResponse = lookup(phoneNumber, params, RequestOptions.none())
 
-    /** @see [lookup] */
+    /** @see lookup */
     fun lookup(
         params: LookupLookupParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): LookupLookupResponse
 
-    /** @see [lookup] */
+    /** @see lookup */
     fun lookup(params: LookupLookupParams): LookupLookupResponse =
         lookup(params, RequestOptions.none())
 
-    /** @see [lookup] */
+    /** @see lookup */
     fun lookup(phoneNumber: String, requestOptions: RequestOptions): LookupLookupResponse =
         lookup(phoneNumber, LookupLookupParams.none(), requestOptions)
 
@@ -77,7 +77,7 @@ interface LookupService {
         fun lookup(phoneNumber: String): HttpResponseFor<LookupLookupResponse> =
             lookup(phoneNumber, LookupLookupParams.none())
 
-        /** @see [lookup] */
+        /** @see lookup */
         @MustBeClosed
         fun lookup(
             phoneNumber: String,
@@ -86,7 +86,7 @@ interface LookupService {
         ): HttpResponseFor<LookupLookupResponse> =
             lookup(params.toBuilder().phoneNumber(phoneNumber).build(), requestOptions)
 
-        /** @see [lookup] */
+        /** @see lookup */
         @MustBeClosed
         fun lookup(
             phoneNumber: String,
@@ -94,19 +94,19 @@ interface LookupService {
         ): HttpResponseFor<LookupLookupResponse> =
             lookup(phoneNumber, params, RequestOptions.none())
 
-        /** @see [lookup] */
+        /** @see lookup */
         @MustBeClosed
         fun lookup(
             params: LookupLookupParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<LookupLookupResponse>
 
-        /** @see [lookup] */
+        /** @see lookup */
         @MustBeClosed
         fun lookup(params: LookupLookupParams): HttpResponseFor<LookupLookupResponse> =
             lookup(params, RequestOptions.none())
 
-        /** @see [lookup] */
+        /** @see lookup */
         @MustBeClosed
         fun lookup(
             phoneNumber: String,

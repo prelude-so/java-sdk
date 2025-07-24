@@ -6,14 +6,14 @@ import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 import so.prelude.sdk.core.ClientOptions
-import so.prelude.sdk.core.JsonValue
 import so.prelude.sdk.core.RequestOptions
 import so.prelude.sdk.core.checkRequired
+import so.prelude.sdk.core.handlers.errorBodyHandler
 import so.prelude.sdk.core.handlers.errorHandler
 import so.prelude.sdk.core.handlers.jsonHandler
-import so.prelude.sdk.core.handlers.withErrorHandler
 import so.prelude.sdk.core.http.HttpMethod
 import so.prelude.sdk.core.http.HttpRequest
+import so.prelude.sdk.core.http.HttpResponse
 import so.prelude.sdk.core.http.HttpResponse.Handler
 import so.prelude.sdk.core.http.HttpResponseFor
 import so.prelude.sdk.core.http.parseable
@@ -43,7 +43,8 @@ class LookupServiceAsyncImpl internal constructor(private val clientOptions: Cli
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         LookupServiceAsync.WithRawResponse {
 
-        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<HttpResponse> =
+            errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         override fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
@@ -54,7 +55,6 @@ class LookupServiceAsyncImpl internal constructor(private val clientOptions: Cli
 
         private val lookupHandler: Handler<LookupLookupResponse> =
             jsonHandler<LookupLookupResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun lookup(
             params: LookupLookupParams,
@@ -74,7 +74,7 @@ class LookupServiceAsyncImpl internal constructor(private val clientOptions: Cli
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { lookupHandler.handle(it) }
                             .also {

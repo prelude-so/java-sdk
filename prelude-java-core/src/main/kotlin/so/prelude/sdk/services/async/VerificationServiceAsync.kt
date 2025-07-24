@@ -34,7 +34,7 @@ interface VerificationServiceAsync {
     fun create(params: VerificationCreateParams): CompletableFuture<VerificationCreateResponse> =
         create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: VerificationCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -44,7 +44,7 @@ interface VerificationServiceAsync {
     fun check(params: VerificationCheckParams): CompletableFuture<VerificationCheckResponse> =
         check(params, RequestOptions.none())
 
-    /** @see [check] */
+    /** @see check */
     fun check(
         params: VerificationCheckParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -74,7 +74,7 @@ interface VerificationServiceAsync {
         ): CompletableFuture<HttpResponseFor<VerificationCreateResponse>> =
             create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         fun create(
             params: VerificationCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -89,7 +89,7 @@ interface VerificationServiceAsync {
         ): CompletableFuture<HttpResponseFor<VerificationCheckResponse>> =
             check(params, RequestOptions.none())
 
-        /** @see [check] */
+        /** @see check */
         fun check(
             params: VerificationCheckParams,
             requestOptions: RequestOptions = RequestOptions.none(),

@@ -31,7 +31,7 @@ interface LookupServiceAsync {
     fun lookup(phoneNumber: String): CompletableFuture<LookupLookupResponse> =
         lookup(phoneNumber, LookupLookupParams.none())
 
-    /** @see [lookup] */
+    /** @see lookup */
     fun lookup(
         phoneNumber: String,
         params: LookupLookupParams = LookupLookupParams.none(),
@@ -39,23 +39,23 @@ interface LookupServiceAsync {
     ): CompletableFuture<LookupLookupResponse> =
         lookup(params.toBuilder().phoneNumber(phoneNumber).build(), requestOptions)
 
-    /** @see [lookup] */
+    /** @see lookup */
     fun lookup(
         phoneNumber: String,
         params: LookupLookupParams = LookupLookupParams.none(),
     ): CompletableFuture<LookupLookupResponse> = lookup(phoneNumber, params, RequestOptions.none())
 
-    /** @see [lookup] */
+    /** @see lookup */
     fun lookup(
         params: LookupLookupParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<LookupLookupResponse>
 
-    /** @see [lookup] */
+    /** @see lookup */
     fun lookup(params: LookupLookupParams): CompletableFuture<LookupLookupResponse> =
         lookup(params, RequestOptions.none())
 
-    /** @see [lookup] */
+    /** @see lookup */
     fun lookup(
         phoneNumber: String,
         requestOptions: RequestOptions,
@@ -83,7 +83,7 @@ interface LookupServiceAsync {
         fun lookup(phoneNumber: String): CompletableFuture<HttpResponseFor<LookupLookupResponse>> =
             lookup(phoneNumber, LookupLookupParams.none())
 
-        /** @see [lookup] */
+        /** @see lookup */
         fun lookup(
             phoneNumber: String,
             params: LookupLookupParams = LookupLookupParams.none(),
@@ -91,26 +91,26 @@ interface LookupServiceAsync {
         ): CompletableFuture<HttpResponseFor<LookupLookupResponse>> =
             lookup(params.toBuilder().phoneNumber(phoneNumber).build(), requestOptions)
 
-        /** @see [lookup] */
+        /** @see lookup */
         fun lookup(
             phoneNumber: String,
             params: LookupLookupParams = LookupLookupParams.none(),
         ): CompletableFuture<HttpResponseFor<LookupLookupResponse>> =
             lookup(phoneNumber, params, RequestOptions.none())
 
-        /** @see [lookup] */
+        /** @see lookup */
         fun lookup(
             params: LookupLookupParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<LookupLookupResponse>>
 
-        /** @see [lookup] */
+        /** @see lookup */
         fun lookup(
             params: LookupLookupParams
         ): CompletableFuture<HttpResponseFor<LookupLookupResponse>> =
             lookup(params, RequestOptions.none())
 
-        /** @see [lookup] */
+        /** @see lookup */
         fun lookup(
             phoneNumber: String,
             requestOptions: RequestOptions,

@@ -34,7 +34,7 @@ interface VerificationService {
     fun create(params: VerificationCreateParams): VerificationCreateResponse =
         create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: VerificationCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -44,7 +44,7 @@ interface VerificationService {
     fun check(params: VerificationCheckParams): VerificationCheckResponse =
         check(params, RequestOptions.none())
 
-    /** @see [check] */
+    /** @see check */
     fun check(
         params: VerificationCheckParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -72,7 +72,7 @@ interface VerificationService {
         fun create(params: VerificationCreateParams): HttpResponseFor<VerificationCreateResponse> =
             create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         @MustBeClosed
         fun create(
             params: VerificationCreateParams,
@@ -87,7 +87,7 @@ interface VerificationService {
         fun check(params: VerificationCheckParams): HttpResponseFor<VerificationCheckResponse> =
             check(params, RequestOptions.none())
 
-        /** @see [check] */
+        /** @see check */
         @MustBeClosed
         fun check(
             params: VerificationCheckParams,
