@@ -19,6 +19,7 @@ import kotlin.math.pow
 import so.prelude.sdk.core.RequestOptions
 import so.prelude.sdk.core.checkRequired
 import so.prelude.sdk.errors.PreludeIoException
+import so.prelude.sdk.errors.PreludeRetryableException
 
 class RetryingHttpClient
 private constructor(
@@ -176,9 +177,10 @@ private constructor(
     }
 
     private fun shouldRetry(throwable: Throwable): Boolean =
-        // Only retry IOException and PreludeIoException, other exceptions are not intended to be
-        // retried.
-        throwable is IOException || throwable is PreludeIoException
+        // Only retry known retryable exceptions, other exceptions are not intended to be retried.
+        throwable is IOException ||
+            throwable is PreludeIoException ||
+            throwable is PreludeRetryableException
 
     private fun getRetryBackoffDuration(retries: Int, response: HttpResponse?): Duration {
         // About the Retry-After header:
