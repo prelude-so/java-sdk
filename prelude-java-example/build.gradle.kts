@@ -18,7 +18,7 @@ tasks.withType<JavaCompile>().configureEach {
 
 application {
     // Use `./gradlew :prelude-java-example:run` to run `Main`
-    // Use `./gradlew :prelude-java-example:run -Dexample=Something` to run `SomethingExample`
+    // Use `./gradlew :prelude-java-example:run -Pexample=Something` to run `SomethingExample`
     mainClass = "so.prelude.sdk.example.${
         if (project.hasProperty("example"))
             "${project.property("example")}Example"
