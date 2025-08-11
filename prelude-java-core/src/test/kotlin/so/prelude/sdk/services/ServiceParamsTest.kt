@@ -36,9 +36,7 @@ internal class ServiceParamsTest {
                 .build()
     }
 
-    @Disabled(
-        "skipped: currently no good way to test endpoints defining callbacks, Prism mock server will fail trying to reach the provided callback url"
-    )
+    @Disabled("Prism doesn't support callbacks yet")
     @Test
     fun create() {
         val verificationService = client.verification()
