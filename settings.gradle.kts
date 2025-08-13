@@ -1,7 +1,14 @@
 rootProject.name = "prelude-java-root"
 
-include("prelude-java")
-include("prelude-java-client-okhttp")
-include("prelude-java-core")
-include("prelude-java-proguard-test")
-include("prelude-java-example")
+val projectNames = rootDir.listFiles()
+    ?.asSequence()
+    .orEmpty()
+    .filter { file ->
+        file.isDirectory &&
+        file.name.startsWith("prelude-java") &&
+        file.listFiles()?.asSequence().orEmpty().any { it.name == "build.gradle.kts" }
+    }
+    .map { it.name }
+    .toList()
+println("projects: $projectNames")
+projectNames.forEach { include(it) }
