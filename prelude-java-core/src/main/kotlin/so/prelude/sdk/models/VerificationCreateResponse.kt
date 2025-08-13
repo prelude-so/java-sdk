@@ -535,7 +535,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Method && value == other.value /* spotless:on */
+            return other is Method && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -667,7 +667,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Status && value == other.value /* spotless:on */
+            return other is Status && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -828,7 +828,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Channel && value == other.value /* spotless:on */
+            return other is Channel && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -976,12 +976,12 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Metadata && correlationId == other.correlationId && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Metadata &&
+                correlationId == other.correlationId &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(correlationId, additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -1137,7 +1137,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Reason && value == other.value /* spotless:on */
+            return other is Reason && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -1292,12 +1292,12 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Silent && requestUrl == other.requestUrl && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Silent &&
+                requestUrl == other.requestUrl &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(requestUrl, additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -1310,12 +1310,31 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is VerificationCreateResponse && id == other.id && method == other.method && status == other.status && channels == other.channels && metadata == other.metadata && reason == other.reason && requestId == other.requestId && silent == other.silent && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is VerificationCreateResponse &&
+            id == other.id &&
+            method == other.method &&
+            status == other.status &&
+            channels == other.channels &&
+            metadata == other.metadata &&
+            reason == other.reason &&
+            requestId == other.requestId &&
+            silent == other.silent &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(id, method, status, channels, metadata, reason, requestId, silent, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(
+            id,
+            method,
+            status,
+            channels,
+            metadata,
+            reason,
+            requestId,
+            silent,
+            additionalProperties,
+        )
+    }
 
     override fun hashCode(): Int = hashCode
 

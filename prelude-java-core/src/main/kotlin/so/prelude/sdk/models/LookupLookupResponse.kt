@@ -579,7 +579,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Flag && value == other.value /* spotless:on */
+            return other is Flag && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -835,7 +835,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is LineType && value == other.value /* spotless:on */
+            return other is LineType && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -1046,12 +1046,16 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is NetworkInfo && carrierName == other.carrierName && mcc == other.mcc && mnc == other.mnc && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is NetworkInfo &&
+                carrierName == other.carrierName &&
+                mcc == other.mcc &&
+                mnc == other.mnc &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(carrierName, mcc, mnc, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(carrierName, mcc, mnc, additionalProperties)
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -1262,12 +1266,16 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is OriginalNetworkInfo && carrierName == other.carrierName && mcc == other.mcc && mnc == other.mnc && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is OriginalNetworkInfo &&
+                carrierName == other.carrierName &&
+                mcc == other.mcc &&
+                mnc == other.mnc &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(carrierName, mcc, mnc, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(carrierName, mcc, mnc, additionalProperties)
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -1280,12 +1288,29 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is LookupLookupResponse && callerName == other.callerName && countryCode == other.countryCode && flags == other.flags && lineType == other.lineType && networkInfo == other.networkInfo && originalNetworkInfo == other.originalNetworkInfo && phoneNumber == other.phoneNumber && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is LookupLookupResponse &&
+            callerName == other.callerName &&
+            countryCode == other.countryCode &&
+            flags == other.flags &&
+            lineType == other.lineType &&
+            networkInfo == other.networkInfo &&
+            originalNetworkInfo == other.originalNetworkInfo &&
+            phoneNumber == other.phoneNumber &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(callerName, countryCode, flags, lineType, networkInfo, originalNetworkInfo, phoneNumber, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(
+            callerName,
+            countryCode,
+            flags,
+            lineType,
+            networkInfo,
+            originalNetworkInfo,
+            phoneNumber,
+            additionalProperties,
+        )
+    }
 
     override fun hashCode(): Int = hashCode
 
