@@ -332,7 +332,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+            return other is Type && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -345,10 +345,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is LookupLookupParams && phoneNumber == other.phoneNumber && type == other.type && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is LookupLookupParams &&
+            phoneNumber == other.phoneNumber &&
+            type == other.type &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(phoneNumber, type, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(phoneNumber, type, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "LookupLookupParams{phoneNumber=$phoneNumber, type=$type, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

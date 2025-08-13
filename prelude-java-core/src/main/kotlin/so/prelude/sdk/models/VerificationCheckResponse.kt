@@ -380,7 +380,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Status && value == other.value /* spotless:on */
+            return other is Status && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -528,12 +528,12 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Metadata && correlationId == other.correlationId && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Metadata &&
+                correlationId == other.correlationId &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(correlationId, additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -546,12 +546,17 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is VerificationCheckResponse && status == other.status && id == other.id && metadata == other.metadata && requestId == other.requestId && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is VerificationCheckResponse &&
+            status == other.status &&
+            id == other.id &&
+            metadata == other.metadata &&
+            requestId == other.requestId &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(status, id, metadata, requestId, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(status, id, metadata, requestId, additionalProperties)
+    }
 
     override fun hashCode(): Int = hashCode
 

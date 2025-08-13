@@ -357,7 +357,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Prediction && value == other.value /* spotless:on */
+            return other is Prediction && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -370,12 +370,16 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is WatchPredictResponse && id == other.id && prediction == other.prediction && requestId == other.requestId && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is WatchPredictResponse &&
+            id == other.id &&
+            prediction == other.prediction &&
+            requestId == other.requestId &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(id, prediction, requestId, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(id, prediction, requestId, additionalProperties)
+    }
 
     override fun hashCode(): Int = hashCode
 
