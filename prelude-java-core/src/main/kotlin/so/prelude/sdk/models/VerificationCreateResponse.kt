@@ -426,6 +426,8 @@ private constructor(
 
         companion object {
 
+            @JvmField val EMAIL = of("email")
+
             @JvmField val MESSAGE = of("message")
 
             @JvmField val SILENT = of("silent")
@@ -437,6 +439,7 @@ private constructor(
 
         /** An enum containing [Method]'s known values. */
         enum class Known {
+            EMAIL,
             MESSAGE,
             SILENT,
             VOICE,
@@ -452,6 +455,7 @@ private constructor(
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {
+            EMAIL,
             MESSAGE,
             SILENT,
             VOICE,
@@ -468,6 +472,7 @@ private constructor(
          */
         fun value(): Value =
             when (this) {
+                EMAIL -> Value.EMAIL
                 MESSAGE -> Value.MESSAGE
                 SILENT -> Value.SILENT
                 VOICE -> Value.VOICE
@@ -485,6 +490,7 @@ private constructor(
          */
         fun known(): Known =
             when (this) {
+                EMAIL -> Known.EMAIL
                 MESSAGE -> Known.MESSAGE
                 SILENT -> Known.SILENT
                 VOICE -> Known.VOICE
@@ -689,35 +695,35 @@ private constructor(
 
         companion object {
 
-            @JvmField val SMS = of("sms")
-
             @JvmField val RCS = of("rcs")
-
-            @JvmField val WHATSAPP = of("whatsapp")
-
-            @JvmField val VIBER = of("viber")
-
-            @JvmField val ZALO = of("zalo")
-
-            @JvmField val TELEGRAM = of("telegram")
 
             @JvmField val SILENT = of("silent")
 
+            @JvmField val SMS = of("sms")
+
+            @JvmField val TELEGRAM = of("telegram")
+
+            @JvmField val VIBER = of("viber")
+
             @JvmField val VOICE = of("voice")
+
+            @JvmField val WHATSAPP = of("whatsapp")
+
+            @JvmField val ZALO = of("zalo")
 
             @JvmStatic fun of(value: String) = Channel(JsonField.of(value))
         }
 
         /** An enum containing [Channel]'s known values. */
         enum class Known {
-            SMS,
             RCS,
-            WHATSAPP,
-            VIBER,
-            ZALO,
-            TELEGRAM,
             SILENT,
+            SMS,
+            TELEGRAM,
+            VIBER,
             VOICE,
+            WHATSAPP,
+            ZALO,
         }
 
         /**
@@ -730,14 +736,14 @@ private constructor(
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {
-            SMS,
             RCS,
-            WHATSAPP,
-            VIBER,
-            ZALO,
-            TELEGRAM,
             SILENT,
+            SMS,
+            TELEGRAM,
+            VIBER,
             VOICE,
+            WHATSAPP,
+            ZALO,
             /** An enum member indicating that [Channel] was instantiated with an unknown value. */
             _UNKNOWN,
         }
@@ -751,14 +757,14 @@ private constructor(
          */
         fun value(): Value =
             when (this) {
-                SMS -> Value.SMS
                 RCS -> Value.RCS
-                WHATSAPP -> Value.WHATSAPP
-                VIBER -> Value.VIBER
-                ZALO -> Value.ZALO
-                TELEGRAM -> Value.TELEGRAM
                 SILENT -> Value.SILENT
+                SMS -> Value.SMS
+                TELEGRAM -> Value.TELEGRAM
+                VIBER -> Value.VIBER
                 VOICE -> Value.VOICE
+                WHATSAPP -> Value.WHATSAPP
+                ZALO -> Value.ZALO
                 else -> Value._UNKNOWN
             }
 
@@ -773,14 +779,14 @@ private constructor(
          */
         fun known(): Known =
             when (this) {
-                SMS -> Known.SMS
                 RCS -> Known.RCS
-                WHATSAPP -> Known.WHATSAPP
-                VIBER -> Known.VIBER
-                ZALO -> Known.ZALO
-                TELEGRAM -> Known.TELEGRAM
                 SILENT -> Known.SILENT
+                SMS -> Known.SMS
+                TELEGRAM -> Known.TELEGRAM
+                VIBER -> Known.VIBER
                 VOICE -> Known.VOICE
+                WHATSAPP -> Known.WHATSAPP
+                ZALO -> Known.ZALO
                 else -> throw PreludeInvalidDataException("Unknown Channel: $value")
             }
 

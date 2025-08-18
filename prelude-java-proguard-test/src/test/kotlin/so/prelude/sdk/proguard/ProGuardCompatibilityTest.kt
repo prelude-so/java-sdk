@@ -59,9 +59,9 @@ internal class ProGuardCompatibilityTest {
         val verificationCreateResponse =
             VerificationCreateResponse.builder()
                 .id("vrf_01jc0t6fwwfgfsq1md24mhyztj")
-                .method(VerificationCreateResponse.Method.MESSAGE)
+                .method(VerificationCreateResponse.Method.EMAIL)
                 .status(VerificationCreateResponse.Status.SUCCESS)
-                .addChannel(VerificationCreateResponse.Channel.SMS)
+                .addChannel(VerificationCreateResponse.Channel.RCS)
                 .metadata(
                     VerificationCreateResponse.Metadata.builder()
                         .correlationId("correlation_id")
