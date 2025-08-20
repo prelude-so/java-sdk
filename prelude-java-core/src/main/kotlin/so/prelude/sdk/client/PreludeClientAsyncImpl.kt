@@ -62,7 +62,7 @@ class PreludeClientAsyncImpl(private val clientOptions: ClientOptions) : Prelude
 
     override fun watch(): WatchServiceAsync = watch
 
-    override fun close() = clientOptions.httpClient.close()
+    override fun close() = clientOptions.close()
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         PreludeClientAsync.WithRawResponse {
