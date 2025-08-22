@@ -1,5 +1,69 @@
 # Changelog
 
+## 0.7.0 (2025-08-22)
+
+Full Changelog: [v0.6.0...v0.7.0](https://github.com/prelude-so/java-sdk/compare/v0.6.0...v0.7.0)
+
+### Features
+
+* add retryable exception ([a3751d1](https://github.com/prelude-so/java-sdk/commit/a3751d1540ebfa05102ebef2e13d87120039926c))
+* **api:** api update ([ac82763](https://github.com/prelude-so/java-sdk/commit/ac82763387c8e536b6625b9f5748f28dad670e18))
+* **api:** update via SDK Studio ([05d7d0e](https://github.com/prelude-so/java-sdk/commit/05d7d0e97100d46a5dcd928943fd531669942c81))
+* **client:** add `{QueryParams,Headers}#put(String, JsonValue)` methods ([357aeda](https://github.com/prelude-so/java-sdk/commit/357aeda6ead54ae0e5a04919ebbe23bf06ae4089))
+* **client:** add https config options ([dfbdf92](https://github.com/prelude-so/java-sdk/commit/dfbdf92410d52ff79134a52af6a700255c44e523))
+* **client:** allow configuring env via system properties ([2a2d667](https://github.com/prelude-so/java-sdk/commit/2a2d667a5cb0b725df3f536e5375da8dd580dd15))
+* **client:** ensure compat with proguard ([ea6c8cd](https://github.com/prelude-so/java-sdk/commit/ea6c8cd93e7badd1afb21f95c4b4409a91426e91))
+
+
+### Bug Fixes
+
+* **ci:** release-doctor — report correct token name ([13a503f](https://github.com/prelude-so/java-sdk/commit/13a503fd0a97619293d536bc25fe9e63a70d63d2))
+* **client:** don't close client on `withOptions` usage when original is gc'd ([e3e197f](https://github.com/prelude-so/java-sdk/commit/e3e197f8fae4362cb000303e4825588c0e06977a))
+* **client:** ensure error handling always occurs ([26bf51c](https://github.com/prelude-so/java-sdk/commit/26bf51c661c8d4df21d93f067b920654bcc2b310))
+* **client:** r8 support ([2e92b1e](https://github.com/prelude-so/java-sdk/commit/2e92b1e3e8305fa0fb971e45de01d83f1cc36c2a))
+
+
+### Performance Improvements
+
+* **internal:** make formatting faster ([3bca64c](https://github.com/prelude-so/java-sdk/commit/3bca64c2b3404424ca8c47d5cb67e028c73bc3cc))
+
+
+### Chores
+
+* **ci:** add build job ([181072f](https://github.com/prelude-so/java-sdk/commit/181072f2bcbc7ddcc94744cadaa4687ea7849174))
+* **ci:** bump `actions/setup-java` to v4 ([7d1f671](https://github.com/prelude-so/java-sdk/commit/7d1f6717e6ce4b61eaeb66b1d47ffadbfa5be454))
+* **ci:** ensure docs generation always succeeds ([89494ea](https://github.com/prelude-so/java-sdk/commit/89494ea07c90412a02c70d2c7a61c752c398e606))
+* **ci:** only run for pushes and fork pull requests ([5acd1d3](https://github.com/prelude-so/java-sdk/commit/5acd1d32ca11e01c29af6726933c7a956b2f09ac))
+* **ci:** reduce log noise ([bcbc916](https://github.com/prelude-so/java-sdk/commit/bcbc916f0859187df38c264c43b9c66ec002ed55))
+* **client:** refactor closing / shutdown ([b477fcb](https://github.com/prelude-so/java-sdk/commit/b477fcb880aba2528c6a57cbaa2276f48551b514))
+* **example:** fix run example comment ([d6ed233](https://github.com/prelude-so/java-sdk/commit/d6ed233042b24af0555f98e5849992ceae6761a7))
+* increase max gradle JVM heap to 8GB ([8a6c9c5](https://github.com/prelude-so/java-sdk/commit/8a6c9c58085584c6bf4b7e5d119d052b5c11ef44))
+* **internal:** add async lock helper ([d85beae](https://github.com/prelude-so/java-sdk/commit/d85beae9c43293919652260162da9bee5b121d44))
+* **internal:** allow running specific example from cli ([bd89c57](https://github.com/prelude-so/java-sdk/commit/bd89c5713ade2738b1ef0885d5f3565fbe49c6ef))
+* **internal:** bump ci test timeout ([274ef6f](https://github.com/prelude-so/java-sdk/commit/274ef6f378cdc6a18062fd7a7f767be2e0885dc8))
+* **internal:** dynamically determine included projects ([5d1a730](https://github.com/prelude-so/java-sdk/commit/5d1a7304e3ee63474a07dfc0e70000082481207d))
+* **internal:** format identity methods ([6ac725f](https://github.com/prelude-so/java-sdk/commit/6ac725fbf46c06bca4b7b8cd2fa4f4bb6da6a400))
+* **internal:** reduce proguard ci logging ([b8bc048](https://github.com/prelude-so/java-sdk/commit/b8bc0485deb4a8554c6efef4ddc1f9ffa8c1f8ef))
+* **internal:** refactor delegating from client to options ([c53e5b8](https://github.com/prelude-so/java-sdk/commit/c53e5b84bcf98b7b713993b9d30d141b4408ce7e))
+* **internal:** remove unnecessary `[...]` in `[@see](https://github.com/see)` ([b0a34a1](https://github.com/prelude-so/java-sdk/commit/b0a34a1e51d69333ce0fd67793e079c8d5249426))
+* **internal:** support passing arguments to test script ([1684381](https://github.com/prelude-so/java-sdk/commit/1684381e5751595696632b0d8838e196bd7a90f2))
+* **internal:** support running formatters directly ([e74cc96](https://github.com/prelude-so/java-sdk/commit/e74cc966be8a882790885cd919d12fcaca81eeca))
+* **internal:** update comment in script ([fc668ac](https://github.com/prelude-so/java-sdk/commit/fc668aca5396d41e495d8c74265d2046b50b2315))
+* **internal:** update test skipping reason ([4912d8e](https://github.com/prelude-so/java-sdk/commit/4912d8e75ebdb7118e6214136f2961595685ae89))
+* remove memory upper bound from publishing step ([77b8fe3](https://github.com/prelude-so/java-sdk/commit/77b8fe35800d66facf78071b795a0bd8878f12ea))
+* update @stainless-api/prism-cli to v5.15.0 ([88986e3](https://github.com/prelude-so/java-sdk/commit/88986e30960d5cc6fde5f312aab0863cd19d648d))
+
+
+### Documentation
+
+* fix missing readme comment ([6f95540](https://github.com/prelude-so/java-sdk/commit/6f9554069aa8a8eea3fc934b90da2a67646a0e3b))
+* more code comments ([364e143](https://github.com/prelude-so/java-sdk/commit/364e143b14eb2fc2354bf98b2b19007da4dcdcf1))
+
+
+### Refactors
+
+* **internal:** minor `ClientOptionsTest` change ([e017858](https://github.com/prelude-so/java-sdk/commit/e0178588c5f5ce326ea910f648ecfb1799cb3ca8))
+
 ## 0.6.0 (2025-06-23)
 
 Full Changelog: [v0.5.0...v0.6.0](https://github.com/prelude-so/java-sdk/compare/v0.5.0...v0.6.0)
