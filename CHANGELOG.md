@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.8.0 (2025-09-04)
+
+Full Changelog: [v0.7.0...v0.8.0](https://github.com/prelude-so/java-sdk/compare/v0.7.0...v0.8.0)
+
+### Features
+
+* **api:** api update ([b7aefd7](https://github.com/prelude-so/java-sdk/commit/b7aefd7b4c89832b537dc402e938a251c8a79f77))
+
 ## 0.7.0 (2025-09-03)
 
 Full Changelog: [v0.6.0...v0.7.0](https://github.com/prelude-so/java-sdk/compare/v0.6.0...v0.7.0)
