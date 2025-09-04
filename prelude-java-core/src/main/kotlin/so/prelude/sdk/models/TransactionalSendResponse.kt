@@ -126,7 +126,8 @@ private constructor(
     fun callbackUrl(): Optional<String> = callbackUrl.getOptional("callback_url")
 
     /**
-     * A unique, user-defined identifier that will be included in webhook events.
+     * A user-defined identifier to correlate this transactional message with. It is returned in the
+     * response and any webhook events that refer to this transactional message.
      *
      * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
@@ -352,7 +353,10 @@ private constructor(
          */
         fun callbackUrl(callbackUrl: JsonField<String>) = apply { this.callbackUrl = callbackUrl }
 
-        /** A unique, user-defined identifier that will be included in webhook events. */
+        /**
+         * A user-defined identifier to correlate this transactional message with. It is returned in
+         * the response and any webhook events that refer to this transactional message.
+         */
         fun correlationId(correlationId: String) = correlationId(JsonField.of(correlationId))
 
         /**
@@ -562,12 +566,10 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Variables && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Variables && additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -579,12 +581,33 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is TransactionalSendResponse && id == other.id && createdAt == other.createdAt && expiresAt == other.expiresAt && templateId == other.templateId && to == other.to && variables == other.variables && callbackUrl == other.callbackUrl && correlationId == other.correlationId && from == other.from && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is TransactionalSendResponse &&
+            id == other.id &&
+            createdAt == other.createdAt &&
+            expiresAt == other.expiresAt &&
+            templateId == other.templateId &&
+            to == other.to &&
+            variables == other.variables &&
+            callbackUrl == other.callbackUrl &&
+            correlationId == other.correlationId &&
+            from == other.from &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(id, createdAt, expiresAt, templateId, to, variables, callbackUrl, correlationId, from, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(
+            id,
+            createdAt,
+            expiresAt,
+            templateId,
+            to,
+            variables,
+            callbackUrl,
+            correlationId,
+            from,
+            additionalProperties,
+        )
+    }
 
     override fun hashCode(): Int = hashCode
 

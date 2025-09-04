@@ -54,7 +54,8 @@ private constructor(
     fun callbackUrl(): Optional<String> = body.callbackUrl()
 
     /**
-     * A unique, user-defined identifier that will be included in webhook events.
+     * A user-defined identifier to correlate this transactional message with. It is returned in the
+     * response and any webhook events that refer to this transactionalmessage.
      *
      * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
@@ -154,8 +155,10 @@ private constructor(
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
@@ -237,7 +240,10 @@ private constructor(
          */
         fun callbackUrl(callbackUrl: JsonField<String>) = apply { body.callbackUrl(callbackUrl) }
 
-        /** A unique, user-defined identifier that will be included in webhook events. */
+        /**
+         * A user-defined identifier to correlate this transactional message with. It is returned in
+         * the response and any webhook events that refer to this transactionalmessage.
+         */
         fun correlationId(correlationId: String) = apply { body.correlationId(correlationId) }
 
         /**
@@ -516,7 +522,8 @@ private constructor(
         fun callbackUrl(): Optional<String> = callbackUrl.getOptional("callback_url")
 
         /**
-         * A unique, user-defined identifier that will be included in webhook events.
+         * A user-defined identifier to correlate this transactional message with. It is returned in
+         * the response and any webhook events that refer to this transactionalmessage.
          *
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
@@ -713,7 +720,11 @@ private constructor(
                 this.callbackUrl = callbackUrl
             }
 
-            /** A unique, user-defined identifier that will be included in webhook events. */
+            /**
+             * A user-defined identifier to correlate this transactional message with. It is
+             * returned in the response and any webhook events that refer to this
+             * transactionalmessage.
+             */
             fun correlationId(correlationId: String) = correlationId(JsonField.of(correlationId))
 
             /**
@@ -874,12 +885,31 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && templateId == other.templateId && to == other.to && callbackUrl == other.callbackUrl && correlationId == other.correlationId && expiresAt == other.expiresAt && from == other.from && locale == other.locale && variables == other.variables && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Body &&
+                templateId == other.templateId &&
+                to == other.to &&
+                callbackUrl == other.callbackUrl &&
+                correlationId == other.correlationId &&
+                expiresAt == other.expiresAt &&
+                from == other.from &&
+                locale == other.locale &&
+                variables == other.variables &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(templateId, to, callbackUrl, correlationId, expiresAt, from, locale, variables, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(
+                templateId,
+                to,
+                callbackUrl,
+                correlationId,
+                expiresAt,
+                from,
+                locale,
+                variables,
+                additionalProperties,
+            )
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -977,12 +1007,10 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Variables && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Variables && additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -994,10 +1022,13 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is TransactionalSendParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is TransactionalSendParams &&
+            body == other.body &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int = Objects.hash(body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "TransactionalSendParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

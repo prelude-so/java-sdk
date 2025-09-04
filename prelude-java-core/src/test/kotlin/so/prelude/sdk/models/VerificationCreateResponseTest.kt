@@ -15,9 +15,9 @@ internal class VerificationCreateResponseTest {
         val verificationCreateResponse =
             VerificationCreateResponse.builder()
                 .id("vrf_01jc0t6fwwfgfsq1md24mhyztj")
-                .method(VerificationCreateResponse.Method.MESSAGE)
+                .method(VerificationCreateResponse.Method.EMAIL)
                 .status(VerificationCreateResponse.Status.SUCCESS)
-                .addChannel("string")
+                .addChannel(VerificationCreateResponse.Channel.RCS)
                 .metadata(
                     VerificationCreateResponse.Metadata.builder()
                         .correlationId("correlation_id")
@@ -32,10 +32,11 @@ internal class VerificationCreateResponseTest {
 
         assertThat(verificationCreateResponse.id()).isEqualTo("vrf_01jc0t6fwwfgfsq1md24mhyztj")
         assertThat(verificationCreateResponse.method())
-            .isEqualTo(VerificationCreateResponse.Method.MESSAGE)
+            .isEqualTo(VerificationCreateResponse.Method.EMAIL)
         assertThat(verificationCreateResponse.status())
             .isEqualTo(VerificationCreateResponse.Status.SUCCESS)
-        assertThat(verificationCreateResponse.channels().getOrNull()).containsExactly("string")
+        assertThat(verificationCreateResponse.channels().getOrNull())
+            .containsExactly(VerificationCreateResponse.Channel.RCS)
         assertThat(verificationCreateResponse.metadata())
             .contains(
                 VerificationCreateResponse.Metadata.builder()
@@ -55,9 +56,9 @@ internal class VerificationCreateResponseTest {
         val verificationCreateResponse =
             VerificationCreateResponse.builder()
                 .id("vrf_01jc0t6fwwfgfsq1md24mhyztj")
-                .method(VerificationCreateResponse.Method.MESSAGE)
+                .method(VerificationCreateResponse.Method.EMAIL)
                 .status(VerificationCreateResponse.Status.SUCCESS)
-                .addChannel("string")
+                .addChannel(VerificationCreateResponse.Channel.RCS)
                 .metadata(
                     VerificationCreateResponse.Metadata.builder()
                         .correlationId("correlation_id")

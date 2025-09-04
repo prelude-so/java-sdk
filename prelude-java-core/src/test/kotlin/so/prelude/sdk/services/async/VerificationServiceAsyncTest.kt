@@ -14,9 +14,7 @@ import so.prelude.sdk.models.VerificationCreateParams
 @ExtendWith(TestServerExtension::class)
 internal class VerificationServiceAsyncTest {
 
-    @Disabled(
-        "skipped: currently no good way to test endpoints defining callbacks, Prism mock server will fail trying to reach the provided callback url"
-    )
+    @Disabled("Prism doesn't support callbacks yet")
     @Test
     fun create() {
         val client =
@@ -35,7 +33,7 @@ internal class VerificationServiceAsyncTest {
                             .value("+30123456789")
                             .build()
                     )
-                    .dispatchId("dispatch_id")
+                    .dispatchId("123e4567-e89b-12d3-a456-426614174000")
                     .metadata(
                         VerificationCreateParams.Metadata.builder()
                             .correlationId("correlation_id")

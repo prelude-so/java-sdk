@@ -17,7 +17,7 @@ internal class VerificationCreateParamsTest {
                     .value("+30123456789")
                     .build()
             )
-            .dispatchId("dispatch_id")
+            .dispatchId("123e4567-e89b-12d3-a456-426614174000")
             .metadata(
                 VerificationCreateParams.Metadata.builder().correlationId("correlation_id").build()
             )
@@ -71,7 +71,7 @@ internal class VerificationCreateParamsTest {
                         .value("+30123456789")
                         .build()
                 )
-                .dispatchId("dispatch_id")
+                .dispatchId("123e4567-e89b-12d3-a456-426614174000")
                 .metadata(
                     VerificationCreateParams.Metadata.builder()
                         .correlationId("correlation_id")
@@ -127,7 +127,7 @@ internal class VerificationCreateParamsTest {
                     .value("+30123456789")
                     .build()
             )
-        assertThat(body.dispatchId()).contains("dispatch_id")
+        assertThat(body.dispatchId()).contains("123e4567-e89b-12d3-a456-426614174000")
         assertThat(body.metadata())
             .contains(
                 VerificationCreateParams.Metadata.builder().correlationId("correlation_id").build()

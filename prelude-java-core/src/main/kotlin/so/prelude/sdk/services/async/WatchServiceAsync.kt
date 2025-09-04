@@ -32,7 +32,7 @@ interface WatchServiceAsync {
     fun predict(params: WatchPredictParams): CompletableFuture<WatchPredictResponse> =
         predict(params, RequestOptions.none())
 
-    /** @see [predict] */
+    /** @see predict */
     fun predict(
         params: WatchPredictParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -45,7 +45,7 @@ interface WatchServiceAsync {
     fun sendEvents(params: WatchSendEventsParams): CompletableFuture<WatchSendEventsResponse> =
         sendEvents(params, RequestOptions.none())
 
-    /** @see [sendEvents] */
+    /** @see sendEvents */
     fun sendEvents(
         params: WatchSendEventsParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -59,7 +59,7 @@ interface WatchServiceAsync {
         params: WatchSendFeedbacksParams
     ): CompletableFuture<WatchSendFeedbacksResponse> = sendFeedbacks(params, RequestOptions.none())
 
-    /** @see [sendFeedbacks] */
+    /** @see sendFeedbacks */
     fun sendFeedbacks(
         params: WatchSendFeedbacksParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -86,7 +86,7 @@ interface WatchServiceAsync {
         ): CompletableFuture<HttpResponseFor<WatchPredictResponse>> =
             predict(params, RequestOptions.none())
 
-        /** @see [predict] */
+        /** @see predict */
         fun predict(
             params: WatchPredictParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -101,7 +101,7 @@ interface WatchServiceAsync {
         ): CompletableFuture<HttpResponseFor<WatchSendEventsResponse>> =
             sendEvents(params, RequestOptions.none())
 
-        /** @see [sendEvents] */
+        /** @see sendEvents */
         fun sendEvents(
             params: WatchSendEventsParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -116,7 +116,7 @@ interface WatchServiceAsync {
         ): CompletableFuture<HttpResponseFor<WatchSendFeedbacksResponse>> =
             sendFeedbacks(params, RequestOptions.none())
 
-        /** @see [sendFeedbacks] */
+        /** @see sendFeedbacks */
         fun sendFeedbacks(
             params: WatchSendFeedbacksParams,
             requestOptions: RequestOptions = RequestOptions.none(),

@@ -51,8 +51,10 @@ private constructor(
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
@@ -420,12 +422,12 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && feedbacks == other.feedbacks && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Body &&
+                feedbacks == other.feedbacks &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(feedbacks, additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -1030,7 +1032,7 @@ private constructor(
                         return true
                     }
 
-                    return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+                    return other is Type && value == other.value
                 }
 
                 override fun hashCode() = value.hashCode()
@@ -1043,12 +1045,13 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Target && type == other.type && value == other.value && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is Target &&
+                    type == other.type &&
+                    value == other.value &&
+                    additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
             private val hashCode: Int by lazy { Objects.hash(type, value, additionalProperties) }
-            /* spotless:on */
 
             override fun hashCode(): Int = hashCode
 
@@ -1176,7 +1179,7 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+                return other is Type && value == other.value
             }
 
             override fun hashCode() = value.hashCode()
@@ -1199,7 +1202,8 @@ private constructor(
             ) : this(correlationId, mutableMapOf())
 
             /**
-             * A user-defined identifier to correlate this feedback with.
+             * A user-defined identifier to correlate this feedback with. It is returned in the
+             * response and any webhook events that refer to this feedback.
              *
              * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if
              *   the server responded with an unexpected value).
@@ -1246,7 +1250,10 @@ private constructor(
                     additionalProperties = metadata.additionalProperties.toMutableMap()
                 }
 
-                /** A user-defined identifier to correlate this feedback with. */
+                /**
+                 * A user-defined identifier to correlate this feedback with. It is returned in the
+                 * response and any webhook events that refer to this feedback.
+                 */
                 fun correlationId(correlationId: String) =
                     correlationId(JsonField.of(correlationId))
 
@@ -1324,12 +1331,12 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Metadata && correlationId == other.correlationId && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is Metadata &&
+                    correlationId == other.correlationId &&
+                    additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
             private val hashCode: Int by lazy { Objects.hash(correlationId, additionalProperties) }
-            /* spotless:on */
 
             override fun hashCode(): Int = hashCode
 
@@ -1925,7 +1932,7 @@ private constructor(
                         return true
                     }
 
-                    return /* spotless:off */ other is DevicePlatform && value == other.value /* spotless:on */
+                    return other is DevicePlatform && value == other.value
                 }
 
                 override fun hashCode() = value.hashCode()
@@ -1938,12 +1945,31 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Signals && appVersion == other.appVersion && deviceId == other.deviceId && deviceModel == other.deviceModel && devicePlatform == other.devicePlatform && ip == other.ip && isTrustedUser == other.isTrustedUser && osVersion == other.osVersion && userAgent == other.userAgent && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is Signals &&
+                    appVersion == other.appVersion &&
+                    deviceId == other.deviceId &&
+                    deviceModel == other.deviceModel &&
+                    devicePlatform == other.devicePlatform &&
+                    ip == other.ip &&
+                    isTrustedUser == other.isTrustedUser &&
+                    osVersion == other.osVersion &&
+                    userAgent == other.userAgent &&
+                    additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(appVersion, deviceId, deviceModel, devicePlatform, ip, isTrustedUser, osVersion, userAgent, additionalProperties) }
-            /* spotless:on */
+            private val hashCode: Int by lazy {
+                Objects.hash(
+                    appVersion,
+                    deviceId,
+                    deviceModel,
+                    devicePlatform,
+                    ip,
+                    isTrustedUser,
+                    osVersion,
+                    userAgent,
+                    additionalProperties,
+                )
+            }
 
             override fun hashCode(): Int = hashCode
 
@@ -1956,12 +1982,18 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Feedback && target == other.target && type == other.type && dispatchId == other.dispatchId && metadata == other.metadata && signals == other.signals && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Feedback &&
+                target == other.target &&
+                type == other.type &&
+                dispatchId == other.dispatchId &&
+                metadata == other.metadata &&
+                signals == other.signals &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(target, type, dispatchId, metadata, signals, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(target, type, dispatchId, metadata, signals, additionalProperties)
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -1974,10 +2006,13 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is WatchSendFeedbacksParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is WatchSendFeedbacksParams &&
+            body == other.body &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int = Objects.hash(body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "WatchSendFeedbacksParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
