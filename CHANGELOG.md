@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.8.0 (2025-09-12)
+
+Full Changelog: [v0.7.0...v0.8.0](https://github.com/prelude-so/java-sdk/compare/v0.7.0...v0.8.0)
+
+### Features
+
+* **api:** api update ([b7aefd7](https://github.com/prelude-so/java-sdk/commit/b7aefd7b4c89832b537dc402e938a251c8a79f77))
+
+
+### Chores
+
+* improve formatter performance ([1af87be](https://github.com/prelude-so/java-sdk/commit/1af87be2e63c96c84415e4be23258bcb65af6557))
+* **internal:** codegen related update ([8e567e2](https://github.com/prelude-so/java-sdk/commit/8e567e2b8d8335cd33cce75f0da5af2d5faa3c45))
+* **internal:** codegen related update ([6e543ae](https://github.com/prelude-so/java-sdk/commit/6e543ae524b6690590dc8021c0d1d2801be5a5d1))
+
 ## 0.7.0 (2025-09-03)
 
 Full Changelog: [v0.6.0...v0.7.0](https://github.com/prelude-so/java-sdk/compare/v0.6.0...v0.7.0)
