@@ -1,5 +1,32 @@
 # Changelog
 
+## 0.8.0 (2025-09-25)
+
+Full Changelog: [v0.7.0...v0.8.0](https://github.com/prelude-so/java-sdk/compare/v0.7.0...v0.8.0)
+
+### Features
+
+* **api:** api update ([b0c0946](https://github.com/prelude-so/java-sdk/commit/b0c094624d4486a4e8ce7a1f3fd474324c51461e))
+* **api:** api update ([c5585dc](https://github.com/prelude-so/java-sdk/commit/c5585dc3fdd8094745548ce20f1b00dd15ddd838))
+* **api:** api update ([b7aefd7](https://github.com/prelude-so/java-sdk/commit/b7aefd7b4c89832b537dc402e938a251c8a79f77))
+* **client:** expose sleeper option ([4e8e795](https://github.com/prelude-so/java-sdk/commit/4e8e795129239ad93f7cf575986e80f894873b99))
+
+
+### Bug Fixes
+
+* **client:** deserialization of empty objects ([daab1ad](https://github.com/prelude-so/java-sdk/commit/daab1ad721b3a858c15ba69211b0e32b362ab2be))
+* **client:** ensure single timer is created per client ([4e8e795](https://github.com/prelude-so/java-sdk/commit/4e8e795129239ad93f7cf575986e80f894873b99))
+* **client:** incorrect `getPackageVersion` impl ([5523d19](https://github.com/prelude-so/java-sdk/commit/5523d192c5e5bcee8ae0a4e196ad1530442f6ad1))
+
+
+### Chores
+
+* improve formatter performance ([f68f234](https://github.com/prelude-so/java-sdk/commit/f68f2347e9a780c8b4d3fe73c99b28c180b9fe30))
+* improve formatter performance ([1af87be](https://github.com/prelude-so/java-sdk/commit/1af87be2e63c96c84415e4be23258bcb65af6557))
+* **internal:** change some comment formatting ([abf3f8b](https://github.com/prelude-so/java-sdk/commit/abf3f8b52b360e2019042ada0ab2d4d7f9b8bd2c))
+* **internal:** codegen related update ([8e567e2](https://github.com/prelude-so/java-sdk/commit/8e567e2b8d8335cd33cce75f0da5af2d5faa3c45))
+* **internal:** codegen related update ([6e543ae](https://github.com/prelude-so/java-sdk/commit/6e543ae524b6690590dc8021c0d1d2801be5a5d1))
+
 ## 0.7.0 (2025-09-03)
 
 Full Changelog: [v0.6.0...v0.7.0](https://github.com/prelude-so/java-sdk/compare/v0.6.0...v0.7.0)
