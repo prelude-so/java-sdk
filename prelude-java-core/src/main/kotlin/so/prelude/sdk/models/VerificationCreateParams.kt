@@ -2660,6 +2660,7 @@ private constructor(
         private val devicePlatform: JsonField<DevicePlatform>,
         private val ip: JsonField<String>,
         private val isTrustedUser: JsonField<Boolean>,
+        private val ja4Fingerprint: JsonField<String>,
         private val osVersion: JsonField<String>,
         private val userAgent: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,
@@ -2683,6 +2684,9 @@ private constructor(
             @JsonProperty("is_trusted_user")
             @ExcludeMissing
             isTrustedUser: JsonField<Boolean> = JsonMissing.of(),
+            @JsonProperty("ja4_fingerprint")
+            @ExcludeMissing
+            ja4Fingerprint: JsonField<String> = JsonMissing.of(),
             @JsonProperty("os_version")
             @ExcludeMissing
             osVersion: JsonField<String> = JsonMissing.of(),
@@ -2696,6 +2700,7 @@ private constructor(
             devicePlatform,
             ip,
             isTrustedUser,
+            ja4Fingerprint,
             osVersion,
             userAgent,
             mutableMapOf(),
@@ -2752,6 +2757,16 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun isTrustedUser(): Optional<Boolean> = isTrustedUser.getOptional("is_trusted_user")
+
+        /**
+         * The JA4 fingerprint observed for the connection. Prelude will infer it automatically when
+         * requests go through our client SDK (which uses Prelude's edge), but you can also provide
+         * it explicitly if you terminate TLS yourself.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun ja4Fingerprint(): Optional<String> = ja4Fingerprint.getOptional("ja4_fingerprint")
 
         /**
          * The version of the user's device operating system.
@@ -2824,6 +2839,16 @@ private constructor(
         fun _isTrustedUser(): JsonField<Boolean> = isTrustedUser
 
         /**
+         * Returns the raw JSON value of [ja4Fingerprint].
+         *
+         * Unlike [ja4Fingerprint], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("ja4_fingerprint")
+        @ExcludeMissing
+        fun _ja4Fingerprint(): JsonField<String> = ja4Fingerprint
+
+        /**
          * Returns the raw JSON value of [osVersion].
          *
          * Unlike [osVersion], this method doesn't throw if the JSON field has an unexpected type.
@@ -2864,6 +2889,7 @@ private constructor(
             private var devicePlatform: JsonField<DevicePlatform> = JsonMissing.of()
             private var ip: JsonField<String> = JsonMissing.of()
             private var isTrustedUser: JsonField<Boolean> = JsonMissing.of()
+            private var ja4Fingerprint: JsonField<String> = JsonMissing.of()
             private var osVersion: JsonField<String> = JsonMissing.of()
             private var userAgent: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -2876,6 +2902,7 @@ private constructor(
                 devicePlatform = signals.devicePlatform
                 ip = signals.ip
                 isTrustedUser = signals.isTrustedUser
+                ja4Fingerprint = signals.ja4Fingerprint
                 osVersion = signals.osVersion
                 userAgent = signals.userAgent
                 additionalProperties = signals.additionalProperties.toMutableMap()
@@ -2967,6 +2994,25 @@ private constructor(
                 this.isTrustedUser = isTrustedUser
             }
 
+            /**
+             * The JA4 fingerprint observed for the connection. Prelude will infer it automatically
+             * when requests go through our client SDK (which uses Prelude's edge), but you can also
+             * provide it explicitly if you terminate TLS yourself.
+             */
+            fun ja4Fingerprint(ja4Fingerprint: String) =
+                ja4Fingerprint(JsonField.of(ja4Fingerprint))
+
+            /**
+             * Sets [Builder.ja4Fingerprint] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.ja4Fingerprint] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun ja4Fingerprint(ja4Fingerprint: JsonField<String>) = apply {
+                this.ja4Fingerprint = ja4Fingerprint
+            }
+
             /** The version of the user's device operating system. */
             fun osVersion(osVersion: String) = osVersion(JsonField.of(osVersion))
 
@@ -3027,6 +3073,7 @@ private constructor(
                     devicePlatform,
                     ip,
                     isTrustedUser,
+                    ja4Fingerprint,
                     osVersion,
                     userAgent,
                     additionalProperties.toMutableMap(),
@@ -3046,6 +3093,7 @@ private constructor(
             devicePlatform().ifPresent { it.validate() }
             ip()
             isTrustedUser()
+            ja4Fingerprint()
             osVersion()
             userAgent()
             validated = true
@@ -3073,6 +3121,7 @@ private constructor(
                 (devicePlatform.asKnown().getOrNull()?.validity() ?: 0) +
                 (if (ip.asKnown().isPresent) 1 else 0) +
                 (if (isTrustedUser.asKnown().isPresent) 1 else 0) +
+                (if (ja4Fingerprint.asKnown().isPresent) 1 else 0) +
                 (if (osVersion.asKnown().isPresent) 1 else 0) +
                 (if (userAgent.asKnown().isPresent) 1 else 0)
 
@@ -3239,6 +3288,7 @@ private constructor(
                 devicePlatform == other.devicePlatform &&
                 ip == other.ip &&
                 isTrustedUser == other.isTrustedUser &&
+                ja4Fingerprint == other.ja4Fingerprint &&
                 osVersion == other.osVersion &&
                 userAgent == other.userAgent &&
                 additionalProperties == other.additionalProperties
@@ -3252,6 +3302,7 @@ private constructor(
                 devicePlatform,
                 ip,
                 isTrustedUser,
+                ja4Fingerprint,
                 osVersion,
                 userAgent,
                 additionalProperties,
@@ -3261,7 +3312,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Signals{appVersion=$appVersion, deviceId=$deviceId, deviceModel=$deviceModel, devicePlatform=$devicePlatform, ip=$ip, isTrustedUser=$isTrustedUser, osVersion=$osVersion, userAgent=$userAgent, additionalProperties=$additionalProperties}"
+            "Signals{appVersion=$appVersion, deviceId=$deviceId, deviceModel=$deviceModel, devicePlatform=$devicePlatform, ip=$ip, isTrustedUser=$isTrustedUser, ja4Fingerprint=$ja4Fingerprint, osVersion=$osVersion, userAgent=$userAgent, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {
