@@ -21,6 +21,7 @@ import so.prelude.sdk.core.toImmutable
 import so.prelude.sdk.errors.PreludeInvalidDataException
 
 class VerificationCreateResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val id: JsonField<String>,
     private val method: JsonField<Method>,
@@ -864,6 +865,7 @@ private constructor(
 
     /** The metadata for this verification. */
     class Metadata
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val correlationId: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,
@@ -1184,6 +1186,7 @@ private constructor(
 
     /** The silent verification specific properties. */
     class Silent
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val requestUrl: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,

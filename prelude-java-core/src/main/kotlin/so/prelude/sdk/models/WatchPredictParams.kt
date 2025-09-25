@@ -332,6 +332,7 @@ private constructor(
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     class Body
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val target: JsonField<Target>,
         private val dispatchId: JsonField<String>,
@@ -610,6 +611,7 @@ private constructor(
 
     /** The prediction target. Only supports phone numbers for now. */
     class Target
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val type: JsonField<Type>,
         private val value: JsonField<String>,
@@ -936,6 +938,7 @@ private constructor(
 
     /** The metadata for this prediction. */
     class Metadata
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val correlationId: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,
@@ -1092,6 +1095,7 @@ private constructor(
      * [Signals](/verify/v2/documentation/prevent-fraud#signals).
      */
     class Signals
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val appVersion: JsonField<String>,
         private val deviceId: JsonField<String>,

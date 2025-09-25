@@ -373,6 +373,7 @@ private constructor(
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     class Body
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val target: JsonField<Target>,
         private val dispatchId: JsonField<String>,
@@ -697,6 +698,7 @@ private constructor(
      * verification feature contact us to discuss your use case.
      */
     class Target
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val type: JsonField<Type>,
         private val value: JsonField<String>,
@@ -1026,6 +1028,7 @@ private constructor(
      * webhook sent that refers to this verification.
      */
     class Metadata
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val correlationId: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,
@@ -1179,6 +1182,7 @@ private constructor(
 
     /** Verification options */
     class Options
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val appRealm: JsonField<AppRealm>,
         private val callbackUrl: JsonField<String>,
@@ -1741,6 +1745,7 @@ private constructor(
          * only Android devices are supported.
          */
         class AppRealm
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val platform: JsonField<Platform>,
             private val value: JsonField<String>,
@@ -2653,6 +2658,7 @@ private constructor(
      * [Signals](/verify/v2/documentation/prevent-fraud#signals).
      */
     class Signals
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val appVersion: JsonField<String>,
         private val deviceId: JsonField<String>,
