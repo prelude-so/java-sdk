@@ -257,6 +257,7 @@ private constructor(
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     class Body
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val events: JsonField<List<Event>>,
         private val additionalProperties: MutableMap<String, JsonValue>,
@@ -432,6 +433,7 @@ private constructor(
     }
 
     class Event
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val confidence: JsonField<Confidence>,
         private val label: JsonField<String>,
@@ -803,6 +805,7 @@ private constructor(
 
         /** The event target. Only supports phone numbers for now. */
         class Target
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val type: JsonField<Type>,
             private val value: JsonField<String>,

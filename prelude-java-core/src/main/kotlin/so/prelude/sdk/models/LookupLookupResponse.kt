@@ -20,6 +20,7 @@ import so.prelude.sdk.core.toImmutable
 import so.prelude.sdk.errors.PreludeInvalidDataException
 
 class LookupLookupResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val callerName: JsonField<String>,
     private val countryCode: JsonField<String>,
@@ -845,6 +846,7 @@ private constructor(
 
     /** The current carrier information. */
     class NetworkInfo
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val carrierName: JsonField<String>,
         private val mcc: JsonField<String>,
@@ -1065,6 +1067,7 @@ private constructor(
 
     /** The original carrier information. */
     class OriginalNetworkInfo
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val carrierName: JsonField<String>,
         private val mcc: JsonField<String>,

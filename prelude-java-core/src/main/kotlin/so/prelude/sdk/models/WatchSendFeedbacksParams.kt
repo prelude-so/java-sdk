@@ -258,6 +258,7 @@ private constructor(
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     class Body
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val feedbacks: JsonField<List<Feedback>>,
         private val additionalProperties: MutableMap<String, JsonValue>,
@@ -436,6 +437,7 @@ private constructor(
     }
 
     class Feedback
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val target: JsonField<Target>,
         private val type: JsonField<Type>,
@@ -727,6 +729,7 @@ private constructor(
 
         /** The feedback target. Only supports phone numbers for now. */
         class Target
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val type: JsonField<Type>,
             private val value: JsonField<String>,
@@ -1189,6 +1192,7 @@ private constructor(
 
         /** The metadata for this feedback. */
         class Metadata
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val correlationId: JsonField<String>,
             private val additionalProperties: MutableMap<String, JsonValue>,
@@ -1349,6 +1353,7 @@ private constructor(
          * [Signals](/verify/v2/documentation/prevent-fraud#signals).
          */
         class Signals
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val appVersion: JsonField<String>,
             private val deviceId: JsonField<String>,
