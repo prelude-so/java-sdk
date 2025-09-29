@@ -31,7 +31,7 @@ private constructor(
 
     /**
      * Optional features. Possible values are:
-     * - `cnam` - Retrieve CNAM (Caller ID Name) along with other information. Contact us if you
+     * * `cnam` - Retrieve CNAM (Caller ID Name) along with other information. Contact us if you
      *   need to use this functionality.
      */
     fun type(): Optional<List<Type>> = Optional.ofNullable(type)
@@ -76,7 +76,7 @@ private constructor(
 
         /**
          * Optional features. Possible values are:
-         * - `cnam` - Retrieve CNAM (Caller ID Name) along with other information. Contact us if you
+         * * `cnam` - Retrieve CNAM (Caller ID Name) along with other information. Contact us if you
          *   need to use this functionality.
          */
         fun type(type: List<Type>?) = apply { this.type = type?.toMutableList() }

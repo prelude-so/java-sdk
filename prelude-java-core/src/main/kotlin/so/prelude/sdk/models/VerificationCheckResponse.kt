@@ -19,6 +19,7 @@ import so.prelude.sdk.core.checkRequired
 import so.prelude.sdk.errors.PreludeInvalidDataException
 
 class VerificationCheckResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val status: JsonField<Status>,
     private val id: JsonField<String>,
@@ -390,6 +391,7 @@ private constructor(
 
     /** The metadata for this verification. */
     class Metadata
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val correlationId: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,

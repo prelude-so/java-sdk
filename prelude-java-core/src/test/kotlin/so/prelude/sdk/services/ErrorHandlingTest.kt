@@ -98,6 +98,7 @@ internal class ErrorHandlingTest {
                                 .callbackUrl("callback_url")
                                 .codeSize(5L)
                                 .customCode("123456")
+                                .integration(VerificationCreateParams.Options.Integration.AUTH0)
                                 .locale("el-GR")
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
@@ -120,6 +121,7 @@ internal class ErrorHandlingTest {
                                 .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
                                 .ip("192.0.2.1")
                                 .isTrustedUser(false)
+                                .ja4Fingerprint("t13d1516h2_8daaf6152771_e5627efa2ab1")
                                 .osVersion("18.0.1")
                                 .userAgent(
                                     "Mozilla/5.0 (iPhone; CPU iPhone OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1"
@@ -175,6 +177,7 @@ internal class ErrorHandlingTest {
                                 .callbackUrl("callback_url")
                                 .codeSize(5L)
                                 .customCode("123456")
+                                .integration(VerificationCreateParams.Options.Integration.AUTH0)
                                 .locale("el-GR")
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
@@ -197,6 +200,7 @@ internal class ErrorHandlingTest {
                                 .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
                                 .ip("192.0.2.1")
                                 .isTrustedUser(false)
+                                .ja4Fingerprint("t13d1516h2_8daaf6152771_e5627efa2ab1")
                                 .osVersion("18.0.1")
                                 .userAgent(
                                     "Mozilla/5.0 (iPhone; CPU iPhone OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1"
@@ -252,6 +256,7 @@ internal class ErrorHandlingTest {
                                 .callbackUrl("callback_url")
                                 .codeSize(5L)
                                 .customCode("123456")
+                                .integration(VerificationCreateParams.Options.Integration.AUTH0)
                                 .locale("el-GR")
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
@@ -274,6 +279,7 @@ internal class ErrorHandlingTest {
                                 .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
                                 .ip("192.0.2.1")
                                 .isTrustedUser(false)
+                                .ja4Fingerprint("t13d1516h2_8daaf6152771_e5627efa2ab1")
                                 .osVersion("18.0.1")
                                 .userAgent(
                                     "Mozilla/5.0 (iPhone; CPU iPhone OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1"
@@ -329,6 +335,7 @@ internal class ErrorHandlingTest {
                                 .callbackUrl("callback_url")
                                 .codeSize(5L)
                                 .customCode("123456")
+                                .integration(VerificationCreateParams.Options.Integration.AUTH0)
                                 .locale("el-GR")
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
@@ -351,6 +358,7 @@ internal class ErrorHandlingTest {
                                 .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
                                 .ip("192.0.2.1")
                                 .isTrustedUser(false)
+                                .ja4Fingerprint("t13d1516h2_8daaf6152771_e5627efa2ab1")
                                 .osVersion("18.0.1")
                                 .userAgent(
                                     "Mozilla/5.0 (iPhone; CPU iPhone OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1"
@@ -406,6 +414,7 @@ internal class ErrorHandlingTest {
                                 .callbackUrl("callback_url")
                                 .codeSize(5L)
                                 .customCode("123456")
+                                .integration(VerificationCreateParams.Options.Integration.AUTH0)
                                 .locale("el-GR")
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
@@ -428,6 +437,7 @@ internal class ErrorHandlingTest {
                                 .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
                                 .ip("192.0.2.1")
                                 .isTrustedUser(false)
+                                .ja4Fingerprint("t13d1516h2_8daaf6152771_e5627efa2ab1")
                                 .osVersion("18.0.1")
                                 .userAgent(
                                     "Mozilla/5.0 (iPhone; CPU iPhone OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1"
@@ -483,6 +493,7 @@ internal class ErrorHandlingTest {
                                 .callbackUrl("callback_url")
                                 .codeSize(5L)
                                 .customCode("123456")
+                                .integration(VerificationCreateParams.Options.Integration.AUTH0)
                                 .locale("el-GR")
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
@@ -505,6 +516,7 @@ internal class ErrorHandlingTest {
                                 .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
                                 .ip("192.0.2.1")
                                 .isTrustedUser(false)
+                                .ja4Fingerprint("t13d1516h2_8daaf6152771_e5627efa2ab1")
                                 .osVersion("18.0.1")
                                 .userAgent(
                                     "Mozilla/5.0 (iPhone; CPU iPhone OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1"
@@ -560,6 +572,7 @@ internal class ErrorHandlingTest {
                                 .callbackUrl("callback_url")
                                 .codeSize(5L)
                                 .customCode("123456")
+                                .integration(VerificationCreateParams.Options.Integration.AUTH0)
                                 .locale("el-GR")
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
@@ -582,6 +595,7 @@ internal class ErrorHandlingTest {
                                 .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
                                 .ip("192.0.2.1")
                                 .isTrustedUser(false)
+                                .ja4Fingerprint("t13d1516h2_8daaf6152771_e5627efa2ab1")
                                 .osVersion("18.0.1")
                                 .userAgent(
                                     "Mozilla/5.0 (iPhone; CPU iPhone OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1"
@@ -637,6 +651,7 @@ internal class ErrorHandlingTest {
                                 .callbackUrl("callback_url")
                                 .codeSize(5L)
                                 .customCode("123456")
+                                .integration(VerificationCreateParams.Options.Integration.AUTH0)
                                 .locale("el-GR")
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
@@ -659,6 +674,7 @@ internal class ErrorHandlingTest {
                                 .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
                                 .ip("192.0.2.1")
                                 .isTrustedUser(false)
+                                .ja4Fingerprint("t13d1516h2_8daaf6152771_e5627efa2ab1")
                                 .osVersion("18.0.1")
                                 .userAgent(
                                     "Mozilla/5.0 (iPhone; CPU iPhone OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1"
@@ -714,6 +730,7 @@ internal class ErrorHandlingTest {
                                 .callbackUrl("callback_url")
                                 .codeSize(5L)
                                 .customCode("123456")
+                                .integration(VerificationCreateParams.Options.Integration.AUTH0)
                                 .locale("el-GR")
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
@@ -736,6 +753,7 @@ internal class ErrorHandlingTest {
                                 .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
                                 .ip("192.0.2.1")
                                 .isTrustedUser(false)
+                                .ja4Fingerprint("t13d1516h2_8daaf6152771_e5627efa2ab1")
                                 .osVersion("18.0.1")
                                 .userAgent(
                                     "Mozilla/5.0 (iPhone; CPU iPhone OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1"
@@ -791,6 +809,7 @@ internal class ErrorHandlingTest {
                                 .callbackUrl("callback_url")
                                 .codeSize(5L)
                                 .customCode("123456")
+                                .integration(VerificationCreateParams.Options.Integration.AUTH0)
                                 .locale("el-GR")
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
@@ -813,6 +832,7 @@ internal class ErrorHandlingTest {
                                 .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
                                 .ip("192.0.2.1")
                                 .isTrustedUser(false)
+                                .ja4Fingerprint("t13d1516h2_8daaf6152771_e5627efa2ab1")
                                 .osVersion("18.0.1")
                                 .userAgent(
                                     "Mozilla/5.0 (iPhone; CPU iPhone OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1"
@@ -868,6 +888,7 @@ internal class ErrorHandlingTest {
                                 .callbackUrl("callback_url")
                                 .codeSize(5L)
                                 .customCode("123456")
+                                .integration(VerificationCreateParams.Options.Integration.AUTH0)
                                 .locale("el-GR")
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
@@ -890,6 +911,7 @@ internal class ErrorHandlingTest {
                                 .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
                                 .ip("192.0.2.1")
                                 .isTrustedUser(false)
+                                .ja4Fingerprint("t13d1516h2_8daaf6152771_e5627efa2ab1")
                                 .osVersion("18.0.1")
                                 .userAgent(
                                     "Mozilla/5.0 (iPhone; CPU iPhone OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1"
@@ -945,6 +967,7 @@ internal class ErrorHandlingTest {
                                 .callbackUrl("callback_url")
                                 .codeSize(5L)
                                 .customCode("123456")
+                                .integration(VerificationCreateParams.Options.Integration.AUTH0)
                                 .locale("el-GR")
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
@@ -967,6 +990,7 @@ internal class ErrorHandlingTest {
                                 .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
                                 .ip("192.0.2.1")
                                 .isTrustedUser(false)
+                                .ja4Fingerprint("t13d1516h2_8daaf6152771_e5627efa2ab1")
                                 .osVersion("18.0.1")
                                 .userAgent(
                                     "Mozilla/5.0 (iPhone; CPU iPhone OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1"
@@ -1022,6 +1046,7 @@ internal class ErrorHandlingTest {
                                 .callbackUrl("callback_url")
                                 .codeSize(5L)
                                 .customCode("123456")
+                                .integration(VerificationCreateParams.Options.Integration.AUTH0)
                                 .locale("el-GR")
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
@@ -1044,6 +1069,7 @@ internal class ErrorHandlingTest {
                                 .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
                                 .ip("192.0.2.1")
                                 .isTrustedUser(false)
+                                .ja4Fingerprint("t13d1516h2_8daaf6152771_e5627efa2ab1")
                                 .osVersion("18.0.1")
                                 .userAgent(
                                     "Mozilla/5.0 (iPhone; CPU iPhone OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1"
@@ -1099,6 +1125,7 @@ internal class ErrorHandlingTest {
                                 .callbackUrl("callback_url")
                                 .codeSize(5L)
                                 .customCode("123456")
+                                .integration(VerificationCreateParams.Options.Integration.AUTH0)
                                 .locale("el-GR")
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
@@ -1121,6 +1148,7 @@ internal class ErrorHandlingTest {
                                 .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
                                 .ip("192.0.2.1")
                                 .isTrustedUser(false)
+                                .ja4Fingerprint("t13d1516h2_8daaf6152771_e5627efa2ab1")
                                 .osVersion("18.0.1")
                                 .userAgent(
                                     "Mozilla/5.0 (iPhone; CPU iPhone OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1"
@@ -1176,6 +1204,7 @@ internal class ErrorHandlingTest {
                                 .callbackUrl("callback_url")
                                 .codeSize(5L)
                                 .customCode("123456")
+                                .integration(VerificationCreateParams.Options.Integration.AUTH0)
                                 .locale("el-GR")
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
@@ -1198,6 +1227,7 @@ internal class ErrorHandlingTest {
                                 .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
                                 .ip("192.0.2.1")
                                 .isTrustedUser(false)
+                                .ja4Fingerprint("t13d1516h2_8daaf6152771_e5627efa2ab1")
                                 .osVersion("18.0.1")
                                 .userAgent(
                                     "Mozilla/5.0 (iPhone; CPU iPhone OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1"
@@ -1253,6 +1283,7 @@ internal class ErrorHandlingTest {
                                 .callbackUrl("callback_url")
                                 .codeSize(5L)
                                 .customCode("123456")
+                                .integration(VerificationCreateParams.Options.Integration.AUTH0)
                                 .locale("el-GR")
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
@@ -1275,6 +1306,7 @@ internal class ErrorHandlingTest {
                                 .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
                                 .ip("192.0.2.1")
                                 .isTrustedUser(false)
+                                .ja4Fingerprint("t13d1516h2_8daaf6152771_e5627efa2ab1")
                                 .osVersion("18.0.1")
                                 .userAgent(
                                     "Mozilla/5.0 (iPhone; CPU iPhone OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1"
@@ -1328,6 +1360,7 @@ internal class ErrorHandlingTest {
                                 .callbackUrl("callback_url")
                                 .codeSize(5L)
                                 .customCode("123456")
+                                .integration(VerificationCreateParams.Options.Integration.AUTH0)
                                 .locale("el-GR")
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
@@ -1350,6 +1383,7 @@ internal class ErrorHandlingTest {
                                 .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
                                 .ip("192.0.2.1")
                                 .isTrustedUser(false)
+                                .ja4Fingerprint("t13d1516h2_8daaf6152771_e5627efa2ab1")
                                 .osVersion("18.0.1")
                                 .userAgent(
                                     "Mozilla/5.0 (iPhone; CPU iPhone OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1"

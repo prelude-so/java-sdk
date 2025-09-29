@@ -373,6 +373,7 @@ private constructor(
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     class Body
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val target: JsonField<Target>,
         private val dispatchId: JsonField<String>,
@@ -697,6 +698,7 @@ private constructor(
      * verification feature contact us to discuss your use case.
      */
     class Target
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val type: JsonField<Type>,
         private val value: JsonField<String>,
@@ -1026,6 +1028,7 @@ private constructor(
      * webhook sent that refers to this verification.
      */
     class Metadata
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val correlationId: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,
@@ -1179,11 +1182,13 @@ private constructor(
 
     /** Verification options */
     class Options
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val appRealm: JsonField<AppRealm>,
         private val callbackUrl: JsonField<String>,
         private val codeSize: JsonField<Long>,
         private val customCode: JsonField<String>,
+        private val integration: JsonField<Integration>,
         private val locale: JsonField<String>,
         private val method: JsonField<Method>,
         private val preferredChannel: JsonField<PreferredChannel>,
@@ -1205,6 +1210,9 @@ private constructor(
             @JsonProperty("custom_code")
             @ExcludeMissing
             customCode: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("integration")
+            @ExcludeMissing
+            integration: JsonField<Integration> = JsonMissing.of(),
             @JsonProperty("locale") @ExcludeMissing locale: JsonField<String> = JsonMissing.of(),
             @JsonProperty("method") @ExcludeMissing method: JsonField<Method> = JsonMissing.of(),
             @JsonProperty("preferred_channel")
@@ -1224,6 +1232,7 @@ private constructor(
             callbackUrl,
             codeSize,
             customCode,
+            integration,
             locale,
             method,
             preferredChannel,
@@ -1270,6 +1279,14 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun customCode(): Optional<String> = customCode.getOptional("custom_code")
+
+        /**
+         * The integration that triggered the verification.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun integration(): Optional<Integration> = integration.getOptional("integration")
 
         /**
          * A BCP-47 formatted locale string with the language the text message will be sent to. If
@@ -1359,6 +1376,15 @@ private constructor(
         fun _customCode(): JsonField<String> = customCode
 
         /**
+         * Returns the raw JSON value of [integration].
+         *
+         * Unlike [integration], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("integration")
+        @ExcludeMissing
+        fun _integration(): JsonField<Integration> = integration
+
+        /**
          * Returns the raw JSON value of [locale].
          *
          * Unlike [locale], this method doesn't throw if the JSON field has an unexpected type.
@@ -1432,6 +1458,7 @@ private constructor(
             private var callbackUrl: JsonField<String> = JsonMissing.of()
             private var codeSize: JsonField<Long> = JsonMissing.of()
             private var customCode: JsonField<String> = JsonMissing.of()
+            private var integration: JsonField<Integration> = JsonMissing.of()
             private var locale: JsonField<String> = JsonMissing.of()
             private var method: JsonField<Method> = JsonMissing.of()
             private var preferredChannel: JsonField<PreferredChannel> = JsonMissing.of()
@@ -1446,6 +1473,7 @@ private constructor(
                 callbackUrl = options.callbackUrl
                 codeSize = options.codeSize
                 customCode = options.customCode
+                integration = options.integration
                 locale = options.locale
                 method = options.method
                 preferredChannel = options.preferredChannel
@@ -1518,6 +1546,20 @@ private constructor(
              * supported value.
              */
             fun customCode(customCode: JsonField<String>) = apply { this.customCode = customCode }
+
+            /** The integration that triggered the verification. */
+            fun integration(integration: Integration) = integration(JsonField.of(integration))
+
+            /**
+             * Sets [Builder.integration] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.integration] with a well-typed [Integration] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun integration(integration: JsonField<Integration>) = apply {
+                this.integration = integration
+            }
 
             /**
              * A BCP-47 formatted locale string with the language the text message will be sent to.
@@ -1638,6 +1680,7 @@ private constructor(
                     callbackUrl,
                     codeSize,
                     customCode,
+                    integration,
                     locale,
                     method,
                     preferredChannel,
@@ -1659,6 +1702,7 @@ private constructor(
             callbackUrl()
             codeSize()
             customCode()
+            integration().ifPresent { it.validate() }
             locale()
             method().ifPresent { it.validate() }
             preferredChannel().ifPresent { it.validate() }
@@ -1688,6 +1732,7 @@ private constructor(
                 (if (callbackUrl.asKnown().isPresent) 1 else 0) +
                 (if (codeSize.asKnown().isPresent) 1 else 0) +
                 (if (customCode.asKnown().isPresent) 1 else 0) +
+                (integration.asKnown().getOrNull()?.validity() ?: 0) +
                 (if (locale.asKnown().isPresent) 1 else 0) +
                 (method.asKnown().getOrNull()?.validity() ?: 0) +
                 (preferredChannel.asKnown().getOrNull()?.validity() ?: 0) +
@@ -1700,6 +1745,7 @@ private constructor(
          * only Android devices are supported.
          */
         class AppRealm
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val platform: JsonField<Platform>,
             private val value: JsonField<String>,
@@ -2034,6 +2080,138 @@ private constructor(
 
             override fun toString() =
                 "AppRealm{platform=$platform, value=$value, additionalProperties=$additionalProperties}"
+        }
+
+        /** The integration that triggered the verification. */
+        class Integration @JsonCreator private constructor(private val value: JsonField<String>) :
+            Enum {
+
+            /**
+             * Returns this class instance's raw value.
+             *
+             * This is usually only useful if this instance was deserialized from data that doesn't
+             * match any known member, and you want to know that value. For example, if the SDK is
+             * on an older version than the API, then the API may respond with new members that the
+             * SDK is unaware of.
+             */
+            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+            companion object {
+
+                @JvmField val AUTH0 = of("auth0")
+
+                @JvmField val SUPABASE = of("supabase")
+
+                @JvmStatic fun of(value: String) = Integration(JsonField.of(value))
+            }
+
+            /** An enum containing [Integration]'s known values. */
+            enum class Known {
+                AUTH0,
+                SUPABASE,
+            }
+
+            /**
+             * An enum containing [Integration]'s known values, as well as an [_UNKNOWN] member.
+             *
+             * An instance of [Integration] can contain an unknown value in a couple of cases:
+             * - It was deserialized from data that doesn't match any known member. For example, if
+             *   the SDK is on an older version than the API, then the API may respond with new
+             *   members that the SDK is unaware of.
+             * - It was constructed with an arbitrary value using the [of] method.
+             */
+            enum class Value {
+                AUTH0,
+                SUPABASE,
+                /**
+                 * An enum member indicating that [Integration] was instantiated with an unknown
+                 * value.
+                 */
+                _UNKNOWN,
+            }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value, or
+             * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+             *
+             * Use the [known] method instead if you're certain the value is always known or if you
+             * want to throw for the unknown case.
+             */
+            fun value(): Value =
+                when (this) {
+                    AUTH0 -> Value.AUTH0
+                    SUPABASE -> Value.SUPABASE
+                    else -> Value._UNKNOWN
+                }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value.
+             *
+             * Use the [value] method instead if you're uncertain the value is always known and
+             * don't want to throw for the unknown case.
+             *
+             * @throws PreludeInvalidDataException if this class instance's value is a not a known
+             *   member.
+             */
+            fun known(): Known =
+                when (this) {
+                    AUTH0 -> Known.AUTH0
+                    SUPABASE -> Known.SUPABASE
+                    else -> throw PreludeInvalidDataException("Unknown Integration: $value")
+                }
+
+            /**
+             * Returns this class instance's primitive wire representation.
+             *
+             * This differs from the [toString] method because that method is primarily for
+             * debugging and generally doesn't throw.
+             *
+             * @throws PreludeInvalidDataException if this class instance's value does not have the
+             *   expected primitive type.
+             */
+            fun asString(): String =
+                _value().asString().orElseThrow {
+                    PreludeInvalidDataException("Value is not a String")
+                }
+
+            private var validated: Boolean = false
+
+            fun validate(): Integration = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                known()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: PreludeInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return other is Integration && value == other.value
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
         }
 
         /**
@@ -2442,6 +2620,7 @@ private constructor(
                 callbackUrl == other.callbackUrl &&
                 codeSize == other.codeSize &&
                 customCode == other.customCode &&
+                integration == other.integration &&
                 locale == other.locale &&
                 method == other.method &&
                 preferredChannel == other.preferredChannel &&
@@ -2457,6 +2636,7 @@ private constructor(
                 callbackUrl,
                 codeSize,
                 customCode,
+                integration,
                 locale,
                 method,
                 preferredChannel,
@@ -2470,7 +2650,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Options{appRealm=$appRealm, callbackUrl=$callbackUrl, codeSize=$codeSize, customCode=$customCode, locale=$locale, method=$method, preferredChannel=$preferredChannel, senderId=$senderId, templateId=$templateId, variables=$variables, additionalProperties=$additionalProperties}"
+            "Options{appRealm=$appRealm, callbackUrl=$callbackUrl, codeSize=$codeSize, customCode=$customCode, integration=$integration, locale=$locale, method=$method, preferredChannel=$preferredChannel, senderId=$senderId, templateId=$templateId, variables=$variables, additionalProperties=$additionalProperties}"
     }
 
     /**
@@ -2478,6 +2658,7 @@ private constructor(
      * [Signals](/verify/v2/documentation/prevent-fraud#signals).
      */
     class Signals
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val appVersion: JsonField<String>,
         private val deviceId: JsonField<String>,
@@ -2485,6 +2666,7 @@ private constructor(
         private val devicePlatform: JsonField<DevicePlatform>,
         private val ip: JsonField<String>,
         private val isTrustedUser: JsonField<Boolean>,
+        private val ja4Fingerprint: JsonField<String>,
         private val osVersion: JsonField<String>,
         private val userAgent: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,
@@ -2508,6 +2690,9 @@ private constructor(
             @JsonProperty("is_trusted_user")
             @ExcludeMissing
             isTrustedUser: JsonField<Boolean> = JsonMissing.of(),
+            @JsonProperty("ja4_fingerprint")
+            @ExcludeMissing
+            ja4Fingerprint: JsonField<String> = JsonMissing.of(),
             @JsonProperty("os_version")
             @ExcludeMissing
             osVersion: JsonField<String> = JsonMissing.of(),
@@ -2521,6 +2706,7 @@ private constructor(
             devicePlatform,
             ip,
             isTrustedUser,
+            ja4Fingerprint,
             osVersion,
             userAgent,
             mutableMapOf(),
@@ -2577,6 +2763,16 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun isTrustedUser(): Optional<Boolean> = isTrustedUser.getOptional("is_trusted_user")
+
+        /**
+         * The JA4 fingerprint observed for the connection. Prelude will infer it automatically when
+         * requests go through our client SDK (which uses Prelude's edge), but you can also provide
+         * it explicitly if you terminate TLS yourself.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun ja4Fingerprint(): Optional<String> = ja4Fingerprint.getOptional("ja4_fingerprint")
 
         /**
          * The version of the user's device operating system.
@@ -2649,6 +2845,16 @@ private constructor(
         fun _isTrustedUser(): JsonField<Boolean> = isTrustedUser
 
         /**
+         * Returns the raw JSON value of [ja4Fingerprint].
+         *
+         * Unlike [ja4Fingerprint], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("ja4_fingerprint")
+        @ExcludeMissing
+        fun _ja4Fingerprint(): JsonField<String> = ja4Fingerprint
+
+        /**
          * Returns the raw JSON value of [osVersion].
          *
          * Unlike [osVersion], this method doesn't throw if the JSON field has an unexpected type.
@@ -2689,6 +2895,7 @@ private constructor(
             private var devicePlatform: JsonField<DevicePlatform> = JsonMissing.of()
             private var ip: JsonField<String> = JsonMissing.of()
             private var isTrustedUser: JsonField<Boolean> = JsonMissing.of()
+            private var ja4Fingerprint: JsonField<String> = JsonMissing.of()
             private var osVersion: JsonField<String> = JsonMissing.of()
             private var userAgent: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -2701,6 +2908,7 @@ private constructor(
                 devicePlatform = signals.devicePlatform
                 ip = signals.ip
                 isTrustedUser = signals.isTrustedUser
+                ja4Fingerprint = signals.ja4Fingerprint
                 osVersion = signals.osVersion
                 userAgent = signals.userAgent
                 additionalProperties = signals.additionalProperties.toMutableMap()
@@ -2792,6 +3000,25 @@ private constructor(
                 this.isTrustedUser = isTrustedUser
             }
 
+            /**
+             * The JA4 fingerprint observed for the connection. Prelude will infer it automatically
+             * when requests go through our client SDK (which uses Prelude's edge), but you can also
+             * provide it explicitly if you terminate TLS yourself.
+             */
+            fun ja4Fingerprint(ja4Fingerprint: String) =
+                ja4Fingerprint(JsonField.of(ja4Fingerprint))
+
+            /**
+             * Sets [Builder.ja4Fingerprint] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.ja4Fingerprint] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun ja4Fingerprint(ja4Fingerprint: JsonField<String>) = apply {
+                this.ja4Fingerprint = ja4Fingerprint
+            }
+
             /** The version of the user's device operating system. */
             fun osVersion(osVersion: String) = osVersion(JsonField.of(osVersion))
 
@@ -2852,6 +3079,7 @@ private constructor(
                     devicePlatform,
                     ip,
                     isTrustedUser,
+                    ja4Fingerprint,
                     osVersion,
                     userAgent,
                     additionalProperties.toMutableMap(),
@@ -2871,6 +3099,7 @@ private constructor(
             devicePlatform().ifPresent { it.validate() }
             ip()
             isTrustedUser()
+            ja4Fingerprint()
             osVersion()
             userAgent()
             validated = true
@@ -2898,6 +3127,7 @@ private constructor(
                 (devicePlatform.asKnown().getOrNull()?.validity() ?: 0) +
                 (if (ip.asKnown().isPresent) 1 else 0) +
                 (if (isTrustedUser.asKnown().isPresent) 1 else 0) +
+                (if (ja4Fingerprint.asKnown().isPresent) 1 else 0) +
                 (if (osVersion.asKnown().isPresent) 1 else 0) +
                 (if (userAgent.asKnown().isPresent) 1 else 0)
 
@@ -3064,6 +3294,7 @@ private constructor(
                 devicePlatform == other.devicePlatform &&
                 ip == other.ip &&
                 isTrustedUser == other.isTrustedUser &&
+                ja4Fingerprint == other.ja4Fingerprint &&
                 osVersion == other.osVersion &&
                 userAgent == other.userAgent &&
                 additionalProperties == other.additionalProperties
@@ -3077,6 +3308,7 @@ private constructor(
                 devicePlatform,
                 ip,
                 isTrustedUser,
+                ja4Fingerprint,
                 osVersion,
                 userAgent,
                 additionalProperties,
@@ -3086,7 +3318,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Signals{appVersion=$appVersion, deviceId=$deviceId, deviceModel=$deviceModel, devicePlatform=$devicePlatform, ip=$ip, isTrustedUser=$isTrustedUser, osVersion=$osVersion, userAgent=$userAgent, additionalProperties=$additionalProperties}"
+            "Signals{appVersion=$appVersion, deviceId=$deviceId, deviceModel=$deviceModel, devicePlatform=$devicePlatform, ip=$ip, isTrustedUser=$isTrustedUser, ja4Fingerprint=$ja4Fingerprint, osVersion=$osVersion, userAgent=$userAgent, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {
