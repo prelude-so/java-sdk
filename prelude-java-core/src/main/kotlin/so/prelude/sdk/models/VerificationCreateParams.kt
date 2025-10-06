@@ -1770,7 +1770,9 @@ private constructor(
             fun platform(): Platform = platform.getRequired("platform")
 
             /**
-             * The Android SMS Retriever API hash code that identifies your app.
+             * The Android SMS Retriever API hash code that identifies your app. For more
+             * information, see
+             * [Google documentation](https://developers.google.com/identity/sms-retriever/verify#computing_your_apps_hash_string).
              *
              * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
              *   unexpectedly missing or null (e.g. if the server responded with an unexpected
@@ -1849,7 +1851,11 @@ private constructor(
                  */
                 fun platform(platform: JsonField<Platform>) = apply { this.platform = platform }
 
-                /** The Android SMS Retriever API hash code that identifies your app. */
+                /**
+                 * The Android SMS Retriever API hash code that identifies your app. For more
+                 * information, see
+                 * [Google documentation](https://developers.google.com/identity/sms-retriever/verify#computing_your_apps_hash_string).
+                 */
                 fun value(value: String) = value(JsonField.of(value))
 
                 /**
