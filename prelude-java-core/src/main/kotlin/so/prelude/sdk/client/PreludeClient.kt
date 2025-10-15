@@ -6,6 +6,7 @@ import java.util.function.Consumer
 import so.prelude.sdk.core.ClientOptions
 import so.prelude.sdk.services.blocking.LookupService
 import so.prelude.sdk.services.blocking.TransactionalService
+import so.prelude.sdk.services.blocking.VerificationManagementService
 import so.prelude.sdk.services.blocking.VerificationService
 import so.prelude.sdk.services.blocking.WatchService
 
@@ -51,6 +52,8 @@ interface PreludeClient {
 
     fun verification(): VerificationService
 
+    fun verificationManagement(): VerificationManagementService
+
     fun watch(): WatchService
 
     /**
@@ -81,6 +84,8 @@ interface PreludeClient {
         fun transactional(): TransactionalService.WithRawResponse
 
         fun verification(): VerificationService.WithRawResponse
+
+        fun verificationManagement(): VerificationManagementService.WithRawResponse
 
         fun watch(): WatchService.WithRawResponse
     }
