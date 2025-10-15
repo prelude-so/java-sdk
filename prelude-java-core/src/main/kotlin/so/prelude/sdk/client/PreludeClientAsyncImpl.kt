@@ -9,6 +9,8 @@ import so.prelude.sdk.services.async.LookupServiceAsync
 import so.prelude.sdk.services.async.LookupServiceAsyncImpl
 import so.prelude.sdk.services.async.TransactionalServiceAsync
 import so.prelude.sdk.services.async.TransactionalServiceAsyncImpl
+import so.prelude.sdk.services.async.VerificationManagementServiceAsync
+import so.prelude.sdk.services.async.VerificationManagementServiceAsyncImpl
 import so.prelude.sdk.services.async.VerificationServiceAsync
 import so.prelude.sdk.services.async.VerificationServiceAsyncImpl
 import so.prelude.sdk.services.async.WatchServiceAsync
@@ -43,6 +45,10 @@ class PreludeClientAsyncImpl(private val clientOptions: ClientOptions) : Prelude
         VerificationServiceAsyncImpl(clientOptionsWithUserAgent)
     }
 
+    private val verificationManagement: VerificationManagementServiceAsync by lazy {
+        VerificationManagementServiceAsyncImpl(clientOptionsWithUserAgent)
+    }
+
     private val watch: WatchServiceAsync by lazy {
         WatchServiceAsyncImpl(clientOptionsWithUserAgent)
     }
@@ -59,6 +65,9 @@ class PreludeClientAsyncImpl(private val clientOptions: ClientOptions) : Prelude
     override fun transactional(): TransactionalServiceAsync = transactional
 
     override fun verification(): VerificationServiceAsync = verification
+
+    override fun verificationManagement(): VerificationManagementServiceAsync =
+        verificationManagement
 
     override fun watch(): WatchServiceAsync = watch
 
@@ -79,6 +88,11 @@ class PreludeClientAsyncImpl(private val clientOptions: ClientOptions) : Prelude
             VerificationServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
 
+        private val verificationManagement:
+            VerificationManagementServiceAsync.WithRawResponse by lazy {
+            VerificationManagementServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
         private val watch: WatchServiceAsync.WithRawResponse by lazy {
             WatchServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
@@ -95,6 +109,9 @@ class PreludeClientAsyncImpl(private val clientOptions: ClientOptions) : Prelude
         override fun transactional(): TransactionalServiceAsync.WithRawResponse = transactional
 
         override fun verification(): VerificationServiceAsync.WithRawResponse = verification
+
+        override fun verificationManagement(): VerificationManagementServiceAsync.WithRawResponse =
+            verificationManagement
 
         override fun watch(): WatchServiceAsync.WithRawResponse = watch
     }
