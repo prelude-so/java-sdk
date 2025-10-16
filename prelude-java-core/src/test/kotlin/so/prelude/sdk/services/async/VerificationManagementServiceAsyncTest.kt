@@ -23,7 +23,7 @@ internal class VerificationManagementServiceAsyncTest {
         val responseFuture = verificationManagementServiceAsync.listSenderIds()
 
         val response = responseFuture.get()
-        response.forEach { it.validate() }
+        response.validate()
     }
 
     @Test

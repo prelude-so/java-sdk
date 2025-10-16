@@ -43,7 +43,7 @@ internal constructor(private val clientOptions: ClientOptions) :
     override fun listSenderIds(
         params: VerificationManagementListSenderIdsParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<List<VerificationManagementListSenderIdsResponse>> =
+    ): CompletableFuture<VerificationManagementListSenderIdsResponse> =
         // get /v2/verification/management/sender-id
         withRawResponse().listSenderIds(params, requestOptions).thenApply { it.parse() }
 
@@ -67,14 +67,13 @@ internal constructor(private val clientOptions: ClientOptions) :
                 clientOptions.toBuilder().apply(modifier::accept).build()
             )
 
-        private val listSenderIdsHandler:
-            Handler<List<VerificationManagementListSenderIdsResponse>> =
-            jsonHandler<List<VerificationManagementListSenderIdsResponse>>(clientOptions.jsonMapper)
+        private val listSenderIdsHandler: Handler<VerificationManagementListSenderIdsResponse> =
+            jsonHandler<VerificationManagementListSenderIdsResponse>(clientOptions.jsonMapper)
 
         override fun listSenderIds(
             params: VerificationManagementListSenderIdsParams,
             requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<List<VerificationManagementListSenderIdsResponse>>> {
+        ): CompletableFuture<HttpResponseFor<VerificationManagementListSenderIdsResponse>> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -91,7 +90,7 @@ internal constructor(private val clientOptions: ClientOptions) :
                             .use { listSenderIdsHandler.handle(it) }
                             .also {
                                 if (requestOptions.responseValidation!!) {
-                                    it.forEach { it.validate() }
+                                    it.validate()
                                 }
                             }
                     }

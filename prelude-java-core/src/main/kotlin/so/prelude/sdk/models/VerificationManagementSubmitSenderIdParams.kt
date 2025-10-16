@@ -19,7 +19,7 @@ import so.prelude.sdk.core.http.QueryParams
 import so.prelude.sdk.errors.PreludeInvalidDataException
 
 /**
- * This endpoint allows you to add a new sender ID for verification purposes.
+ * This endpoint allows you to submit a new sender ID for verification purposes.
  *
  * In order to get access to this endpoint, contact our support team.
  */

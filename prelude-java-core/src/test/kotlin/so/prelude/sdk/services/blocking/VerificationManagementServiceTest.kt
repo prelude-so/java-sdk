@@ -22,7 +22,7 @@ internal class VerificationManagementServiceTest {
 
         val response = verificationManagementService.listSenderIds()
 
-        response.forEach { it.validate() }
+        response.validate()
     }
 
     @Test
