@@ -31,7 +31,7 @@ interface VerificationManagementService {
      *
      * In order to get access to this endpoint, contact our support team.
      */
-    fun listSenderIds(): List<VerificationManagementListSenderIdsResponse> =
+    fun listSenderIds(): VerificationManagementListSenderIdsResponse =
         listSenderIds(VerificationManagementListSenderIdsParams.none())
 
     /** @see listSenderIds */
@@ -39,23 +39,20 @@ interface VerificationManagementService {
         params: VerificationManagementListSenderIdsParams =
             VerificationManagementListSenderIdsParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): List<VerificationManagementListSenderIdsResponse>
+    ): VerificationManagementListSenderIdsResponse
 
     /** @see listSenderIds */
     fun listSenderIds(
         params: VerificationManagementListSenderIdsParams =
             VerificationManagementListSenderIdsParams.none()
-    ): List<VerificationManagementListSenderIdsResponse> =
-        listSenderIds(params, RequestOptions.none())
+    ): VerificationManagementListSenderIdsResponse = listSenderIds(params, RequestOptions.none())
 
     /** @see listSenderIds */
-    fun listSenderIds(
-        requestOptions: RequestOptions
-    ): List<VerificationManagementListSenderIdsResponse> =
+    fun listSenderIds(requestOptions: RequestOptions): VerificationManagementListSenderIdsResponse =
         listSenderIds(VerificationManagementListSenderIdsParams.none(), requestOptions)
 
     /**
-     * This endpoint allows you to add a new sender ID for verification purposes.
+     * This endpoint allows you to submit a new sender ID for verification purposes.
      *
      * In order to get access to this endpoint, contact our support team.
      */
@@ -89,7 +86,7 @@ interface VerificationManagementService {
          * otherwise the same as [VerificationManagementService.listSenderIds].
          */
         @MustBeClosed
-        fun listSenderIds(): HttpResponseFor<List<VerificationManagementListSenderIdsResponse>> =
+        fun listSenderIds(): HttpResponseFor<VerificationManagementListSenderIdsResponse> =
             listSenderIds(VerificationManagementListSenderIdsParams.none())
 
         /** @see listSenderIds */
@@ -98,21 +95,21 @@ interface VerificationManagementService {
             params: VerificationManagementListSenderIdsParams =
                 VerificationManagementListSenderIdsParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<List<VerificationManagementListSenderIdsResponse>>
+        ): HttpResponseFor<VerificationManagementListSenderIdsResponse>
 
         /** @see listSenderIds */
         @MustBeClosed
         fun listSenderIds(
             params: VerificationManagementListSenderIdsParams =
                 VerificationManagementListSenderIdsParams.none()
-        ): HttpResponseFor<List<VerificationManagementListSenderIdsResponse>> =
+        ): HttpResponseFor<VerificationManagementListSenderIdsResponse> =
             listSenderIds(params, RequestOptions.none())
 
         /** @see listSenderIds */
         @MustBeClosed
         fun listSenderIds(
             requestOptions: RequestOptions
-        ): HttpResponseFor<List<VerificationManagementListSenderIdsResponse>> =
+        ): HttpResponseFor<VerificationManagementListSenderIdsResponse> =
             listSenderIds(VerificationManagementListSenderIdsParams.none(), requestOptions)
 
         /**

@@ -31,7 +31,7 @@ interface VerificationManagementServiceAsync {
      *
      * In order to get access to this endpoint, contact our support team.
      */
-    fun listSenderIds(): CompletableFuture<List<VerificationManagementListSenderIdsResponse>> =
+    fun listSenderIds(): CompletableFuture<VerificationManagementListSenderIdsResponse> =
         listSenderIds(VerificationManagementListSenderIdsParams.none())
 
     /** @see listSenderIds */
@@ -39,23 +39,23 @@ interface VerificationManagementServiceAsync {
         params: VerificationManagementListSenderIdsParams =
             VerificationManagementListSenderIdsParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<List<VerificationManagementListSenderIdsResponse>>
+    ): CompletableFuture<VerificationManagementListSenderIdsResponse>
 
     /** @see listSenderIds */
     fun listSenderIds(
         params: VerificationManagementListSenderIdsParams =
             VerificationManagementListSenderIdsParams.none()
-    ): CompletableFuture<List<VerificationManagementListSenderIdsResponse>> =
+    ): CompletableFuture<VerificationManagementListSenderIdsResponse> =
         listSenderIds(params, RequestOptions.none())
 
     /** @see listSenderIds */
     fun listSenderIds(
         requestOptions: RequestOptions
-    ): CompletableFuture<List<VerificationManagementListSenderIdsResponse>> =
+    ): CompletableFuture<VerificationManagementListSenderIdsResponse> =
         listSenderIds(VerificationManagementListSenderIdsParams.none(), requestOptions)
 
     /**
-     * This endpoint allows you to add a new sender ID for verification purposes.
+     * This endpoint allows you to submit a new sender ID for verification purposes.
      *
      * In order to get access to this endpoint, contact our support team.
      */
@@ -90,7 +90,7 @@ interface VerificationManagementServiceAsync {
          * otherwise the same as [VerificationManagementServiceAsync.listSenderIds].
          */
         fun listSenderIds():
-            CompletableFuture<HttpResponseFor<List<VerificationManagementListSenderIdsResponse>>> =
+            CompletableFuture<HttpResponseFor<VerificationManagementListSenderIdsResponse>> =
             listSenderIds(VerificationManagementListSenderIdsParams.none())
 
         /** @see listSenderIds */
@@ -98,19 +98,19 @@ interface VerificationManagementServiceAsync {
             params: VerificationManagementListSenderIdsParams =
                 VerificationManagementListSenderIdsParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<List<VerificationManagementListSenderIdsResponse>>>
+        ): CompletableFuture<HttpResponseFor<VerificationManagementListSenderIdsResponse>>
 
         /** @see listSenderIds */
         fun listSenderIds(
             params: VerificationManagementListSenderIdsParams =
                 VerificationManagementListSenderIdsParams.none()
-        ): CompletableFuture<HttpResponseFor<List<VerificationManagementListSenderIdsResponse>>> =
+        ): CompletableFuture<HttpResponseFor<VerificationManagementListSenderIdsResponse>> =
             listSenderIds(params, RequestOptions.none())
 
         /** @see listSenderIds */
         fun listSenderIds(
             requestOptions: RequestOptions
-        ): CompletableFuture<HttpResponseFor<List<VerificationManagementListSenderIdsResponse>>> =
+        ): CompletableFuture<HttpResponseFor<VerificationManagementListSenderIdsResponse>> =
             listSenderIds(VerificationManagementListSenderIdsParams.none(), requestOptions)
 
         /**
