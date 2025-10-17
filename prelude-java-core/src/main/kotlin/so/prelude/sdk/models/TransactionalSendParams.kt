@@ -10,6 +10,7 @@ import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
+import so.prelude.sdk.core.Enum
 import so.prelude.sdk.core.ExcludeMissing
 import so.prelude.sdk.core.JsonField
 import so.prelude.sdk.core.JsonMissing
@@ -90,6 +91,20 @@ private constructor(
     fun locale(): Optional<String> = body.locale()
 
     /**
+     * The preferred delivery channel for the message. When specified, the system will prioritize
+     * sending via the requested channel if the template is configured for it.
+     *
+     * If not specified and the template is configured for WhatsApp, the message will be sent via
+     * WhatsApp first, with automatic fallback to SMS if WhatsApp delivery is unavailable.
+     *
+     * Supported channels: `sms`, `whatsapp`.
+     *
+     * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun preferredChannel(): Optional<PreferredChannel> = body.preferredChannel()
+
+    /**
      * The variables to be replaced in the template.
      *
      * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -145,6 +160,14 @@ private constructor(
      * Unlike [locale], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _locale(): JsonField<String> = body._locale()
+
+    /**
+     * Returns the raw JSON value of [preferredChannel].
+     *
+     * Unlike [preferredChannel], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
+    fun _preferredChannel(): JsonField<PreferredChannel> = body._preferredChannel()
 
     /**
      * Returns the raw JSON value of [variables].
@@ -295,6 +318,30 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun locale(locale: JsonField<String>) = apply { body.locale(locale) }
+
+        /**
+         * The preferred delivery channel for the message. When specified, the system will
+         * prioritize sending via the requested channel if the template is configured for it.
+         *
+         * If not specified and the template is configured for WhatsApp, the message will be sent
+         * via WhatsApp first, with automatic fallback to SMS if WhatsApp delivery is unavailable.
+         *
+         * Supported channels: `sms`, `whatsapp`.
+         */
+        fun preferredChannel(preferredChannel: PreferredChannel) = apply {
+            body.preferredChannel(preferredChannel)
+        }
+
+        /**
+         * Sets [Builder.preferredChannel] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.preferredChannel] with a well-typed [PreferredChannel]
+         * value instead. This method is primarily for setting the field to an undocumented or not
+         * yet supported value.
+         */
+        fun preferredChannel(preferredChannel: JsonField<PreferredChannel>) = apply {
+            body.preferredChannel(preferredChannel)
+        }
 
         /** The variables to be replaced in the template. */
         fun variables(variables: Variables) = apply { body.variables(variables) }
@@ -462,6 +509,7 @@ private constructor(
         private val expiresAt: JsonField<String>,
         private val from: JsonField<String>,
         private val locale: JsonField<String>,
+        private val preferredChannel: JsonField<PreferredChannel>,
         private val variables: JsonField<Variables>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
@@ -483,6 +531,9 @@ private constructor(
             expiresAt: JsonField<String> = JsonMissing.of(),
             @JsonProperty("from") @ExcludeMissing from: JsonField<String> = JsonMissing.of(),
             @JsonProperty("locale") @ExcludeMissing locale: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("preferred_channel")
+            @ExcludeMissing
+            preferredChannel: JsonField<PreferredChannel> = JsonMissing.of(),
             @JsonProperty("variables")
             @ExcludeMissing
             variables: JsonField<Variables> = JsonMissing.of(),
@@ -494,6 +545,7 @@ private constructor(
             expiresAt,
             from,
             locale,
+            preferredChannel,
             variables,
             mutableMapOf(),
         )
@@ -557,6 +609,21 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun locale(): Optional<String> = locale.getOptional("locale")
+
+        /**
+         * The preferred delivery channel for the message. When specified, the system will
+         * prioritize sending via the requested channel if the template is configured for it.
+         *
+         * If not specified and the template is configured for WhatsApp, the message will be sent
+         * via WhatsApp first, with automatic fallback to SMS if WhatsApp delivery is unavailable.
+         *
+         * Supported channels: `sms`, `whatsapp`.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun preferredChannel(): Optional<PreferredChannel> =
+            preferredChannel.getOptional("preferred_channel")
 
         /**
          * The variables to be replaced in the template.
@@ -623,6 +690,16 @@ private constructor(
         @JsonProperty("locale") @ExcludeMissing fun _locale(): JsonField<String> = locale
 
         /**
+         * Returns the raw JSON value of [preferredChannel].
+         *
+         * Unlike [preferredChannel], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("preferred_channel")
+        @ExcludeMissing
+        fun _preferredChannel(): JsonField<PreferredChannel> = preferredChannel
+
+        /**
          * Returns the raw JSON value of [variables].
          *
          * Unlike [variables], this method doesn't throw if the JSON field has an unexpected type.
@@ -667,6 +744,7 @@ private constructor(
             private var expiresAt: JsonField<String> = JsonMissing.of()
             private var from: JsonField<String> = JsonMissing.of()
             private var locale: JsonField<String> = JsonMissing.of()
+            private var preferredChannel: JsonField<PreferredChannel> = JsonMissing.of()
             private var variables: JsonField<Variables> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -679,6 +757,7 @@ private constructor(
                 expiresAt = body.expiresAt
                 from = body.from
                 locale = body.locale
+                preferredChannel = body.preferredChannel
                 variables = body.variables
                 additionalProperties = body.additionalProperties.toMutableMap()
             }
@@ -780,6 +859,30 @@ private constructor(
              */
             fun locale(locale: JsonField<String>) = apply { this.locale = locale }
 
+            /**
+             * The preferred delivery channel for the message. When specified, the system will
+             * prioritize sending via the requested channel if the template is configured for it.
+             *
+             * If not specified and the template is configured for WhatsApp, the message will be
+             * sent via WhatsApp first, with automatic fallback to SMS if WhatsApp delivery is
+             * unavailable.
+             *
+             * Supported channels: `sms`, `whatsapp`.
+             */
+            fun preferredChannel(preferredChannel: PreferredChannel) =
+                preferredChannel(JsonField.of(preferredChannel))
+
+            /**
+             * Sets [Builder.preferredChannel] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.preferredChannel] with a well-typed
+             * [PreferredChannel] value instead. This method is primarily for setting the field to
+             * an undocumented or not yet supported value.
+             */
+            fun preferredChannel(preferredChannel: JsonField<PreferredChannel>) = apply {
+                this.preferredChannel = preferredChannel
+            }
+
             /** The variables to be replaced in the template. */
             fun variables(variables: Variables) = variables(JsonField.of(variables))
 
@@ -833,6 +936,7 @@ private constructor(
                     expiresAt,
                     from,
                     locale,
+                    preferredChannel,
                     variables,
                     additionalProperties.toMutableMap(),
                 )
@@ -852,6 +956,7 @@ private constructor(
             expiresAt()
             from()
             locale()
+            preferredChannel().ifPresent { it.validate() }
             variables().ifPresent { it.validate() }
             validated = true
         }
@@ -879,6 +984,7 @@ private constructor(
                 (if (expiresAt.asKnown().isPresent) 1 else 0) +
                 (if (from.asKnown().isPresent) 1 else 0) +
                 (if (locale.asKnown().isPresent) 1 else 0) +
+                (preferredChannel.asKnown().getOrNull()?.validity() ?: 0) +
                 (variables.asKnown().getOrNull()?.validity() ?: 0)
 
         override fun equals(other: Any?): Boolean {
@@ -894,6 +1000,7 @@ private constructor(
                 expiresAt == other.expiresAt &&
                 from == other.from &&
                 locale == other.locale &&
+                preferredChannel == other.preferredChannel &&
                 variables == other.variables &&
                 additionalProperties == other.additionalProperties
         }
@@ -907,6 +1014,7 @@ private constructor(
                 expiresAt,
                 from,
                 locale,
+                preferredChannel,
                 variables,
                 additionalProperties,
             )
@@ -915,7 +1023,145 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{templateId=$templateId, to=$to, callbackUrl=$callbackUrl, correlationId=$correlationId, expiresAt=$expiresAt, from=$from, locale=$locale, variables=$variables, additionalProperties=$additionalProperties}"
+            "Body{templateId=$templateId, to=$to, callbackUrl=$callbackUrl, correlationId=$correlationId, expiresAt=$expiresAt, from=$from, locale=$locale, preferredChannel=$preferredChannel, variables=$variables, additionalProperties=$additionalProperties}"
+    }
+
+    /**
+     * The preferred delivery channel for the message. When specified, the system will prioritize
+     * sending via the requested channel if the template is configured for it.
+     *
+     * If not specified and the template is configured for WhatsApp, the message will be sent via
+     * WhatsApp first, with automatic fallback to SMS if WhatsApp delivery is unavailable.
+     *
+     * Supported channels: `sms`, `whatsapp`.
+     */
+    class PreferredChannel @JsonCreator private constructor(private val value: JsonField<String>) :
+        Enum {
+
+        /**
+         * Returns this class instance's raw value.
+         *
+         * This is usually only useful if this instance was deserialized from data that doesn't
+         * match any known member, and you want to know that value. For example, if the SDK is on an
+         * older version than the API, then the API may respond with new members that the SDK is
+         * unaware of.
+         */
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+        companion object {
+
+            @JvmField val SMS = of("sms")
+
+            @JvmField val WHATSAPP = of("whatsapp")
+
+            @JvmStatic fun of(value: String) = PreferredChannel(JsonField.of(value))
+        }
+
+        /** An enum containing [PreferredChannel]'s known values. */
+        enum class Known {
+            SMS,
+            WHATSAPP,
+        }
+
+        /**
+         * An enum containing [PreferredChannel]'s known values, as well as an [_UNKNOWN] member.
+         *
+         * An instance of [PreferredChannel] can contain an unknown value in a couple of cases:
+         * - It was deserialized from data that doesn't match any known member. For example, if the
+         *   SDK is on an older version than the API, then the API may respond with new members that
+         *   the SDK is unaware of.
+         * - It was constructed with an arbitrary value using the [of] method.
+         */
+        enum class Value {
+            SMS,
+            WHATSAPP,
+            /**
+             * An enum member indicating that [PreferredChannel] was instantiated with an unknown
+             * value.
+             */
+            _UNKNOWN,
+        }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
+         * if the class was instantiated with an unknown value.
+         *
+         * Use the [known] method instead if you're certain the value is always known or if you want
+         * to throw for the unknown case.
+         */
+        fun value(): Value =
+            when (this) {
+                SMS -> Value.SMS
+                WHATSAPP -> Value.WHATSAPP
+                else -> Value._UNKNOWN
+            }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value.
+         *
+         * Use the [value] method instead if you're uncertain the value is always known and don't
+         * want to throw for the unknown case.
+         *
+         * @throws PreludeInvalidDataException if this class instance's value is a not a known
+         *   member.
+         */
+        fun known(): Known =
+            when (this) {
+                SMS -> Known.SMS
+                WHATSAPP -> Known.WHATSAPP
+                else -> throw PreludeInvalidDataException("Unknown PreferredChannel: $value")
+            }
+
+        /**
+         * Returns this class instance's primitive wire representation.
+         *
+         * This differs from the [toString] method because that method is primarily for debugging
+         * and generally doesn't throw.
+         *
+         * @throws PreludeInvalidDataException if this class instance's value does not have the
+         *   expected primitive type.
+         */
+        fun asString(): String =
+            _value().asString().orElseThrow { PreludeInvalidDataException("Value is not a String") }
+
+        private var validated: Boolean = false
+
+        fun validate(): PreferredChannel = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: PreludeInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is PreferredChannel && value == other.value
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
     }
 
     /** The variables to be replaced in the template. */

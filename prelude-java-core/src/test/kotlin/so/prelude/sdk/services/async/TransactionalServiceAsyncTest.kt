@@ -33,6 +33,7 @@ internal class TransactionalServiceAsyncTest {
                     .expiresAt("expires_at")
                     .from("from")
                     .locale("el-GR")
+                    .preferredChannel(TransactionalSendParams.PreferredChannel.WHATSAPP)
                     .variables(
                         TransactionalSendParams.Variables.builder()
                             .putAdditionalProperty("foo", JsonValue.from("bar"))

@@ -18,6 +18,7 @@ internal class TransactionalSendParamsTest {
             .expiresAt("expires_at")
             .from("from")
             .locale("el-GR")
+            .preferredChannel(TransactionalSendParams.PreferredChannel.WHATSAPP)
             .variables(
                 TransactionalSendParams.Variables.builder()
                     .putAdditionalProperty("foo", JsonValue.from("bar"))
@@ -37,6 +38,7 @@ internal class TransactionalSendParamsTest {
                 .expiresAt("expires_at")
                 .from("from")
                 .locale("el-GR")
+                .preferredChannel(TransactionalSendParams.PreferredChannel.WHATSAPP)
                 .variables(
                     TransactionalSendParams.Variables.builder()
                         .putAdditionalProperty("foo", JsonValue.from("bar"))
@@ -53,6 +55,8 @@ internal class TransactionalSendParamsTest {
         assertThat(body.expiresAt()).contains("expires_at")
         assertThat(body.from()).contains("from")
         assertThat(body.locale()).contains("el-GR")
+        assertThat(body.preferredChannel())
+            .contains(TransactionalSendParams.PreferredChannel.WHATSAPP)
         assertThat(body.variables())
             .contains(
                 TransactionalSendParams.Variables.builder()
