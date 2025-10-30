@@ -1302,7 +1302,9 @@ private constructor(
          * The method used for verifying this phone number. The 'voice' option provides an
          * accessible alternative for visually impaired users by delivering the verification code
          * through a phone call rather than a text message. It also allows verification of landline
-         * numbers that cannot receive SMS messages.
+         * numbers that cannot receive SMS messages. The 'message' option explicitly requests
+         * message delivery (SMS, WhatsApp ...) and skips silent verification, useful for scenarios
+         * requiring direct user interaction.
          *
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
@@ -1581,7 +1583,9 @@ private constructor(
              * The method used for verifying this phone number. The 'voice' option provides an
              * accessible alternative for visually impaired users by delivering the verification
              * code through a phone call rather than a text message. It also allows verification of
-             * landline numbers that cannot receive SMS messages.
+             * landline numbers that cannot receive SMS messages. The 'message' option explicitly
+             * requests message delivery (SMS, WhatsApp ...) and skips silent verification, useful
+             * for scenarios requiring direct user interaction.
              */
             fun method(method: Method) = method(JsonField.of(method))
 
@@ -2224,7 +2228,9 @@ private constructor(
          * The method used for verifying this phone number. The 'voice' option provides an
          * accessible alternative for visually impaired users by delivering the verification code
          * through a phone call rather than a text message. It also allows verification of landline
-         * numbers that cannot receive SMS messages.
+         * numbers that cannot receive SMS messages. The 'message' option explicitly requests
+         * message delivery (SMS, WhatsApp ...) and skips silent verification, useful for scenarios
+         * requiring direct user interaction.
          */
         class Method @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
@@ -2244,6 +2250,8 @@ private constructor(
 
                 @JvmField val VOICE = of("voice")
 
+                @JvmField val MESSAGE = of("message")
+
                 @JvmStatic fun of(value: String) = Method(JsonField.of(value))
             }
 
@@ -2251,6 +2259,7 @@ private constructor(
             enum class Known {
                 AUTO,
                 VOICE,
+                MESSAGE,
             }
 
             /**
@@ -2265,6 +2274,7 @@ private constructor(
             enum class Value {
                 AUTO,
                 VOICE,
+                MESSAGE,
                 /**
                  * An enum member indicating that [Method] was instantiated with an unknown value.
                  */
@@ -2282,6 +2292,7 @@ private constructor(
                 when (this) {
                     AUTO -> Value.AUTO
                     VOICE -> Value.VOICE
+                    MESSAGE -> Value.MESSAGE
                     else -> Value._UNKNOWN
                 }
 
@@ -2298,6 +2309,7 @@ private constructor(
                 when (this) {
                     AUTO -> Known.AUTO
                     VOICE -> Known.VOICE
+                    MESSAGE -> Known.MESSAGE
                     else -> throw PreludeInvalidDataException("Unknown Method: $value")
                 }
 
