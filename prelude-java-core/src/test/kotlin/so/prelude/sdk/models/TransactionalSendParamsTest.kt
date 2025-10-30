@@ -11,7 +11,7 @@ internal class TransactionalSendParamsTest {
     @Test
     fun create() {
         TransactionalSendParams.builder()
-            .templateId("template_01jd1xq0cffycayqtdkdbv4d61")
+            .templateId("template_01hynf45qvevj844m9az2x2f3c")
             .to("+30123456789")
             .callbackUrl("callback_url")
             .correlationId("correlation_id")
@@ -31,7 +31,7 @@ internal class TransactionalSendParamsTest {
     fun body() {
         val params =
             TransactionalSendParams.builder()
-                .templateId("template_01jd1xq0cffycayqtdkdbv4d61")
+                .templateId("template_01hynf45qvevj844m9az2x2f3c")
                 .to("+30123456789")
                 .callbackUrl("callback_url")
                 .correlationId("correlation_id")
@@ -48,7 +48,7 @@ internal class TransactionalSendParamsTest {
 
         val body = params._body()
 
-        assertThat(body.templateId()).isEqualTo("template_01jd1xq0cffycayqtdkdbv4d61")
+        assertThat(body.templateId()).isEqualTo("template_01hynf45qvevj844m9az2x2f3c")
         assertThat(body.to()).isEqualTo("+30123456789")
         assertThat(body.callbackUrl()).contains("callback_url")
         assertThat(body.correlationId()).contains("correlation_id")
@@ -69,13 +69,13 @@ internal class TransactionalSendParamsTest {
     fun bodyWithoutOptionalFields() {
         val params =
             TransactionalSendParams.builder()
-                .templateId("template_01jd1xq0cffycayqtdkdbv4d61")
+                .templateId("template_01hynf45qvevj844m9az2x2f3c")
                 .to("+30123456789")
                 .build()
 
         val body = params._body()
 
-        assertThat(body.templateId()).isEqualTo("template_01jd1xq0cffycayqtdkdbv4d61")
+        assertThat(body.templateId()).isEqualTo("template_01hynf45qvevj844m9az2x2f3c")
         assertThat(body.to()).isEqualTo("+30123456789")
     }
 }

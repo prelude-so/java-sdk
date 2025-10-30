@@ -97,7 +97,7 @@ private constructor(
      * If not specified and the template is configured for WhatsApp, the message will be sent via
      * WhatsApp first, with automatic fallback to SMS if WhatsApp delivery is unavailable.
      *
-     * Supported channels: `sms`, `whatsapp`.
+     * Supported channels: `sms`, `rcs`, `whatsapp`.
      *
      * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
@@ -326,7 +326,7 @@ private constructor(
          * If not specified and the template is configured for WhatsApp, the message will be sent
          * via WhatsApp first, with automatic fallback to SMS if WhatsApp delivery is unavailable.
          *
-         * Supported channels: `sms`, `whatsapp`.
+         * Supported channels: `sms`, `rcs`, `whatsapp`.
          */
         fun preferredChannel(preferredChannel: PreferredChannel) = apply {
             body.preferredChannel(preferredChannel)
@@ -617,7 +617,7 @@ private constructor(
          * If not specified and the template is configured for WhatsApp, the message will be sent
          * via WhatsApp first, with automatic fallback to SMS if WhatsApp delivery is unavailable.
          *
-         * Supported channels: `sms`, `whatsapp`.
+         * Supported channels: `sms`, `rcs`, `whatsapp`.
          *
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
@@ -867,7 +867,7 @@ private constructor(
              * sent via WhatsApp first, with automatic fallback to SMS if WhatsApp delivery is
              * unavailable.
              *
-             * Supported channels: `sms`, `whatsapp`.
+             * Supported channels: `sms`, `rcs`, `whatsapp`.
              */
             fun preferredChannel(preferredChannel: PreferredChannel) =
                 preferredChannel(JsonField.of(preferredChannel))
@@ -1033,7 +1033,7 @@ private constructor(
      * If not specified and the template is configured for WhatsApp, the message will be sent via
      * WhatsApp first, with automatic fallback to SMS if WhatsApp delivery is unavailable.
      *
-     * Supported channels: `sms`, `whatsapp`.
+     * Supported channels: `sms`, `rcs`, `whatsapp`.
      */
     class PreferredChannel @JsonCreator private constructor(private val value: JsonField<String>) :
         Enum {
@@ -1052,6 +1052,8 @@ private constructor(
 
             @JvmField val SMS = of("sms")
 
+            @JvmField val RCS = of("rcs")
+
             @JvmField val WHATSAPP = of("whatsapp")
 
             @JvmStatic fun of(value: String) = PreferredChannel(JsonField.of(value))
@@ -1060,6 +1062,7 @@ private constructor(
         /** An enum containing [PreferredChannel]'s known values. */
         enum class Known {
             SMS,
+            RCS,
             WHATSAPP,
         }
 
@@ -1074,6 +1077,7 @@ private constructor(
          */
         enum class Value {
             SMS,
+            RCS,
             WHATSAPP,
             /**
              * An enum member indicating that [PreferredChannel] was instantiated with an unknown
@@ -1092,6 +1096,7 @@ private constructor(
         fun value(): Value =
             when (this) {
                 SMS -> Value.SMS
+                RCS -> Value.RCS
                 WHATSAPP -> Value.WHATSAPP
                 else -> Value._UNKNOWN
             }
@@ -1108,6 +1113,7 @@ private constructor(
         fun known(): Known =
             when (this) {
                 SMS -> Known.SMS
+                RCS -> Known.RCS
                 WHATSAPP -> Known.WHATSAPP
                 else -> throw PreludeInvalidDataException("Unknown PreferredChannel: $value")
             }
