@@ -26,7 +26,7 @@ internal class TransactionalServiceAsyncTest {
         val responseFuture =
             transactionalServiceAsync.send(
                 TransactionalSendParams.builder()
-                    .templateId("template_01jd1xq0cffycayqtdkdbv4d61")
+                    .templateId("template_01hynf45qvevj844m9az2x2f3c")
                     .to("+30123456789")
                     .callbackUrl("callback_url")
                     .correlationId("correlation_id")
