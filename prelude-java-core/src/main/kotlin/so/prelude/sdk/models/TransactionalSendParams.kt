@@ -22,7 +22,8 @@ import so.prelude.sdk.core.http.QueryParams
 import so.prelude.sdk.core.toImmutable
 import so.prelude.sdk.errors.PreludeInvalidDataException
 
-/** Send a transactional message to your user. */
+/** Legacy route maintained for backward compatibility. Migrate to `/v2/notify` instead. */
+@Deprecated("deprecated")
 class TransactionalSendParams
 private constructor(
     private val body: Body,

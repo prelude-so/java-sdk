@@ -31,6 +31,7 @@ class TransactionalServiceImpl internal constructor(private val clientOptions: C
     override fun withOptions(modifier: Consumer<ClientOptions.Builder>): TransactionalService =
         TransactionalServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
+    @Deprecated("deprecated")
     override fun send(
         params: TransactionalSendParams,
         requestOptions: RequestOptions,
@@ -54,6 +55,7 @@ class TransactionalServiceImpl internal constructor(private val clientOptions: C
         private val sendHandler: Handler<TransactionalSendResponse> =
             jsonHandler<TransactionalSendResponse>(clientOptions.jsonMapper)
 
+        @Deprecated("deprecated")
         override fun send(
             params: TransactionalSendParams,
             requestOptions: RequestOptions,
