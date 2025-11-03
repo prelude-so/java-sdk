@@ -24,11 +24,13 @@ interface TransactionalServiceAsync {
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): TransactionalServiceAsync
 
-    /** Send a transactional message to your user. */
+    /** Legacy route maintained for backward compatibility. Migrate to `/v2/notify` instead. */
+    @Deprecated("deprecated")
     fun send(params: TransactionalSendParams): CompletableFuture<TransactionalSendResponse> =
         send(params, RequestOptions.none())
 
     /** @see send */
+    @Deprecated("deprecated")
     fun send(
         params: TransactionalSendParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -53,12 +55,14 @@ interface TransactionalServiceAsync {
          * Returns a raw HTTP response for `post /v2/transactional`, but is otherwise the same as
          * [TransactionalServiceAsync.send].
          */
+        @Deprecated("deprecated")
         fun send(
             params: TransactionalSendParams
         ): CompletableFuture<HttpResponseFor<TransactionalSendResponse>> =
             send(params, RequestOptions.none())
 
         /** @see send */
+        @Deprecated("deprecated")
         fun send(
             params: TransactionalSendParams,
             requestOptions: RequestOptions = RequestOptions.none(),
