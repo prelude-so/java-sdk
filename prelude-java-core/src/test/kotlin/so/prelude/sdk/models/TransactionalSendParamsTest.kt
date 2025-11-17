@@ -11,13 +11,14 @@ internal class TransactionalSendParamsTest {
     @Test
     fun create() {
         TransactionalSendParams.builder()
-            .templateId("template_01jd1xq0cffycayqtdkdbv4d61")
+            .templateId("template_01hynf45qvevj844m9az2x2f3c")
             .to("+30123456789")
             .callbackUrl("callback_url")
             .correlationId("correlation_id")
             .expiresAt("expires_at")
             .from("from")
             .locale("el-GR")
+            .preferredChannel(TransactionalSendParams.PreferredChannel.WHATSAPP)
             .variables(
                 TransactionalSendParams.Variables.builder()
                     .putAdditionalProperty("foo", JsonValue.from("bar"))
@@ -30,13 +31,14 @@ internal class TransactionalSendParamsTest {
     fun body() {
         val params =
             TransactionalSendParams.builder()
-                .templateId("template_01jd1xq0cffycayqtdkdbv4d61")
+                .templateId("template_01hynf45qvevj844m9az2x2f3c")
                 .to("+30123456789")
                 .callbackUrl("callback_url")
                 .correlationId("correlation_id")
                 .expiresAt("expires_at")
                 .from("from")
                 .locale("el-GR")
+                .preferredChannel(TransactionalSendParams.PreferredChannel.WHATSAPP)
                 .variables(
                     TransactionalSendParams.Variables.builder()
                         .putAdditionalProperty("foo", JsonValue.from("bar"))
@@ -46,13 +48,15 @@ internal class TransactionalSendParamsTest {
 
         val body = params._body()
 
-        assertThat(body.templateId()).isEqualTo("template_01jd1xq0cffycayqtdkdbv4d61")
+        assertThat(body.templateId()).isEqualTo("template_01hynf45qvevj844m9az2x2f3c")
         assertThat(body.to()).isEqualTo("+30123456789")
         assertThat(body.callbackUrl()).contains("callback_url")
         assertThat(body.correlationId()).contains("correlation_id")
         assertThat(body.expiresAt()).contains("expires_at")
         assertThat(body.from()).contains("from")
         assertThat(body.locale()).contains("el-GR")
+        assertThat(body.preferredChannel())
+            .contains(TransactionalSendParams.PreferredChannel.WHATSAPP)
         assertThat(body.variables())
             .contains(
                 TransactionalSendParams.Variables.builder()
@@ -65,13 +69,13 @@ internal class TransactionalSendParamsTest {
     fun bodyWithoutOptionalFields() {
         val params =
             TransactionalSendParams.builder()
-                .templateId("template_01jd1xq0cffycayqtdkdbv4d61")
+                .templateId("template_01hynf45qvevj844m9az2x2f3c")
                 .to("+30123456789")
                 .build()
 
         val body = params._body()
 
-        assertThat(body.templateId()).isEqualTo("template_01jd1xq0cffycayqtdkdbv4d61")
+        assertThat(body.templateId()).isEqualTo("template_01hynf45qvevj844m9az2x2f3c")
         assertThat(body.to()).isEqualTo("+30123456789")
     }
 }
