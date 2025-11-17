@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.9.0 (2025-11-17)
+
+Full Changelog: [v0.8.0...v0.9.0](https://github.com/prelude-so/java-sdk/compare/v0.8.0...v0.9.0)
+
+### Features
+
+* **api:** api update ([df8f3ff](https://github.com/prelude-so/java-sdk/commit/df8f3ff4cc37d8785c556ffaec480cb6822e93c5))
+* **api:** api update ([b5019a3](https://github.com/prelude-so/java-sdk/commit/b5019a3a1a5256c2a5495d4c7f4e4fd999728d4f))
+* **api:** api update ([c960057](https://github.com/prelude-so/java-sdk/commit/c960057ba21189e896cf586acb6dc89dfd117fbd))
+* **api:** api update ([08e8096](https://github.com/prelude-so/java-sdk/commit/08e8096f599da65c750b2fce1d2e4a187a28d8ec))
+* **api:** api update ([8e41c88](https://github.com/prelude-so/java-sdk/commit/8e41c88272613e22ad2cd027037bef301ea05a21))
+* **api:** api update ([23b9492](https://github.com/prelude-so/java-sdk/commit/23b949237d64de2966074de17e0093357c55b12b))
+* **api:** expose phone numbers management methods ([fa67210](https://github.com/prelude-so/java-sdk/commit/fa67210635bae0ea0fe5e7f20b2e76fcdc578180))
+* **api:** expose verification management methods ([2d6f8ba](https://github.com/prelude-so/java-sdk/commit/2d6f8ba66e8b1051edebefce3509d90bb4a1e2e7))
+
+
+### Bug Fixes
+
+* **client:** multi-value header serialization ([4efcbd3](https://github.com/prelude-so/java-sdk/commit/4efcbd39f367b750830e0aded6367cabdef32867))
+
 ## 0.8.0 (2025-09-25)
 
 Full Changelog: [v0.7.0...v0.8.0](https://github.com/prelude-so/java-sdk/compare/v0.7.0...v0.8.0)
