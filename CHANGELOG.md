@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.10.0 (2025-12-05)
+
+Full Changelog: [v0.9.0...v0.10.0](https://github.com/prelude-so/java-sdk/compare/v0.9.0...v0.10.0)
+
+### Features
+
+* **api:** add Notify API methods ([881b2e0](https://github.com/prelude-so/java-sdk/commit/881b2e098d3627c38de5f9dc0dd60de4fc4563eb))
+
+
+### Bug Fixes
+
+* **client:** cancel okhttp call when future cancelled ([fa48e96](https://github.com/prelude-so/java-sdk/commit/fa48e963a3ae637e9c642d02fc71963a4fb13d33))
+
+
+### Documentation
+
+* remove `$` for better copy-pasteabality ([40c5c28](https://github.com/prelude-so/java-sdk/commit/40c5c280acf8b6885b257ee780b3d9147a07338d))
+
 ## 0.9.0 (2025-11-17)
 
 Full Changelog: [v0.8.0...v0.9.0](https://github.com/prelude-so/java-sdk/compare/v0.8.0...v0.9.0)

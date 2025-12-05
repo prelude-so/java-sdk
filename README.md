@@ -2,8 +2,8 @@
 
 <!-- x-release-please-start-version -->
 
-[![Maven Central](https://img.shields.io/maven-central/v/so.prelude.sdk/prelude-java)](https://central.sonatype.com/artifact/so.prelude.sdk/prelude-java/0.9.0)
-[![javadoc](https://javadoc.io/badge2/so.prelude.sdk/prelude-java/0.9.0/javadoc.svg)](https://javadoc.io/doc/so.prelude.sdk/prelude-java/0.9.0)
+[![Maven Central](https://img.shields.io/maven-central/v/so.prelude.sdk/prelude-java)](https://central.sonatype.com/artifact/so.prelude.sdk/prelude-java/0.10.0)
+[![javadoc](https://javadoc.io/badge2/so.prelude.sdk/prelude-java/0.10.0/javadoc.svg)](https://javadoc.io/doc/so.prelude.sdk/prelude-java/0.10.0)
 
 <!-- x-release-please-end -->
 
@@ -13,7 +13,7 @@ It is generated with [Stainless](https://www.stainless.com/).
 
 <!-- x-release-please-start-version -->
 
-The REST API documentation can be found on [docs.prelude.so](https://docs.prelude.so). Javadocs are available on [javadoc.io](https://javadoc.io/doc/so.prelude.sdk/prelude-java/0.9.0).
+The REST API documentation can be found on [docs.prelude.so](https://docs.prelude.so). Javadocs are available on [javadoc.io](https://javadoc.io/doc/so.prelude.sdk/prelude-java/0.10.0).
 
 <!-- x-release-please-end -->
 
@@ -24,7 +24,7 @@ The REST API documentation can be found on [docs.prelude.so](https://docs.prelud
 ### Gradle
 
 ```kotlin
-implementation("so.prelude.sdk:prelude-java:0.9.0")
+implementation("so.prelude.sdk:prelude-java:0.10.0")
 ```
 
 ### Maven
@@ -33,7 +33,7 @@ implementation("so.prelude.sdk:prelude-java:0.9.0")
 <dependency>
   <groupId>so.prelude.sdk</groupId>
   <artifactId>prelude-java</artifactId>
-  <version>0.9.0</version>
+  <version>0.10.0</version>
 </dependency>
 ```
 
@@ -256,13 +256,13 @@ The SDK uses the standard [OkHttp logging interceptor](https://github.com/square
 Enable logging by setting the `PRELUDE_LOG` environment variable to `info`:
 
 ```sh
-$ export PRELUDE_LOG=info
+export PRELUDE_LOG=info
 ```
 
 Or to `debug` for more verbose logging:
 
 ```sh
-$ export PRELUDE_LOG=debug
+export PRELUDE_LOG=debug
 ```
 
 ## ProGuard and R8
