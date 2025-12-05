@@ -7,6 +7,8 @@ import so.prelude.sdk.core.ClientOptions
 import so.prelude.sdk.core.getPackageVersion
 import so.prelude.sdk.services.blocking.LookupService
 import so.prelude.sdk.services.blocking.LookupServiceImpl
+import so.prelude.sdk.services.blocking.NotifyService
+import so.prelude.sdk.services.blocking.NotifyServiceImpl
 import so.prelude.sdk.services.blocking.TransactionalService
 import so.prelude.sdk.services.blocking.TransactionalServiceImpl
 import so.prelude.sdk.services.blocking.VerificationManagementService
@@ -35,6 +37,8 @@ class PreludeClientImpl(private val clientOptions: ClientOptions) : PreludeClien
 
     private val lookup: LookupService by lazy { LookupServiceImpl(clientOptionsWithUserAgent) }
 
+    private val notify: NotifyService by lazy { NotifyServiceImpl(clientOptionsWithUserAgent) }
+
     private val transactional: TransactionalService by lazy {
         TransactionalServiceImpl(clientOptionsWithUserAgent)
     }
@@ -58,6 +62,8 @@ class PreludeClientImpl(private val clientOptions: ClientOptions) : PreludeClien
 
     override fun lookup(): LookupService = lookup
 
+    override fun notify(): NotifyService = notify
+
     override fun transactional(): TransactionalService = transactional
 
     override fun verification(): VerificationService = verification
@@ -73,6 +79,10 @@ class PreludeClientImpl(private val clientOptions: ClientOptions) : PreludeClien
 
         private val lookup: LookupService.WithRawResponse by lazy {
             LookupServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val notify: NotifyService.WithRawResponse by lazy {
+            NotifyServiceImpl.WithRawResponseImpl(clientOptions)
         }
 
         private val transactional: TransactionalService.WithRawResponse by lazy {
@@ -99,6 +109,8 @@ class PreludeClientImpl(private val clientOptions: ClientOptions) : PreludeClien
             )
 
         override fun lookup(): LookupService.WithRawResponse = lookup
+
+        override fun notify(): NotifyService.WithRawResponse = notify
 
         override fun transactional(): TransactionalService.WithRawResponse = transactional
 

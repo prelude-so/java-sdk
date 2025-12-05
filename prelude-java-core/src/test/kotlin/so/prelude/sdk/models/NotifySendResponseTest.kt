@@ -1,0 +1,87 @@
+// File generated from our OpenAPI spec by Stainless.
+
+package so.prelude.sdk.models
+
+import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
+import java.time.OffsetDateTime
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Test
+import so.prelude.sdk.core.JsonValue
+import so.prelude.sdk.core.jsonMapper
+
+internal class NotifySendResponseTest {
+
+    @Test
+    fun create() {
+        val notifySendResponse =
+            NotifySendResponse.builder()
+                .id("tx_01k8ap1btqf5r9fq2c8ax5fhc9")
+                .createdAt(OffsetDateTime.parse("2025-10-24T12:00:00Z"))
+                .expiresAt(OffsetDateTime.parse("2025-12-25T18:00:00Z"))
+                .templateId("template_01k8ap1btqf5r9fq2c8ax5fhc9")
+                .to("+33612345678")
+                .variables(
+                    NotifySendResponse.Variables.builder()
+                        .putAdditionalProperty("order_id", JsonValue.from("12345"))
+                        .putAdditionalProperty("amount", JsonValue.from("\$49.99"))
+                        .build()
+                )
+                .callbackUrl("https://your-app.com/webhooks/notify")
+                .correlationId("order-12345")
+                .from("YourBrand")
+                .scheduleAt(OffsetDateTime.parse("2025-12-25T08:00:00-05:00"))
+                .build()
+
+        assertThat(notifySendResponse.id()).isEqualTo("tx_01k8ap1btqf5r9fq2c8ax5fhc9")
+        assertThat(notifySendResponse.createdAt())
+            .isEqualTo(OffsetDateTime.parse("2025-10-24T12:00:00Z"))
+        assertThat(notifySendResponse.expiresAt())
+            .isEqualTo(OffsetDateTime.parse("2025-12-25T18:00:00Z"))
+        assertThat(notifySendResponse.templateId()).isEqualTo("template_01k8ap1btqf5r9fq2c8ax5fhc9")
+        assertThat(notifySendResponse.to()).isEqualTo("+33612345678")
+        assertThat(notifySendResponse.variables())
+            .isEqualTo(
+                NotifySendResponse.Variables.builder()
+                    .putAdditionalProperty("order_id", JsonValue.from("12345"))
+                    .putAdditionalProperty("amount", JsonValue.from("\$49.99"))
+                    .build()
+            )
+        assertThat(notifySendResponse.callbackUrl())
+            .contains("https://your-app.com/webhooks/notify")
+        assertThat(notifySendResponse.correlationId()).contains("order-12345")
+        assertThat(notifySendResponse.from()).contains("YourBrand")
+        assertThat(notifySendResponse.scheduleAt())
+            .contains(OffsetDateTime.parse("2025-12-25T08:00:00-05:00"))
+    }
+
+    @Test
+    fun roundtrip() {
+        val jsonMapper = jsonMapper()
+        val notifySendResponse =
+            NotifySendResponse.builder()
+                .id("tx_01k8ap1btqf5r9fq2c8ax5fhc9")
+                .createdAt(OffsetDateTime.parse("2025-10-24T12:00:00Z"))
+                .expiresAt(OffsetDateTime.parse("2025-12-25T18:00:00Z"))
+                .templateId("template_01k8ap1btqf5r9fq2c8ax5fhc9")
+                .to("+33612345678")
+                .variables(
+                    NotifySendResponse.Variables.builder()
+                        .putAdditionalProperty("order_id", JsonValue.from("12345"))
+                        .putAdditionalProperty("amount", JsonValue.from("\$49.99"))
+                        .build()
+                )
+                .callbackUrl("https://your-app.com/webhooks/notify")
+                .correlationId("order-12345")
+                .from("YourBrand")
+                .scheduleAt(OffsetDateTime.parse("2025-12-25T08:00:00-05:00"))
+                .build()
+
+        val roundtrippedNotifySendResponse =
+            jsonMapper.readValue(
+                jsonMapper.writeValueAsString(notifySendResponse),
+                jacksonTypeRef<NotifySendResponse>(),
+            )
+
+        assertThat(roundtrippedNotifySendResponse).isEqualTo(notifySendResponse)
+    }
+}
