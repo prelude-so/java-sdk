@@ -5,6 +5,7 @@ package so.prelude.sdk.client
 import java.util.function.Consumer
 import so.prelude.sdk.core.ClientOptions
 import so.prelude.sdk.services.blocking.LookupService
+import so.prelude.sdk.services.blocking.NotifyService
 import so.prelude.sdk.services.blocking.TransactionalService
 import so.prelude.sdk.services.blocking.VerificationManagementService
 import so.prelude.sdk.services.blocking.VerificationService
@@ -48,6 +49,8 @@ interface PreludeClient {
 
     fun lookup(): LookupService
 
+    fun notify(): NotifyService
+
     fun transactional(): TransactionalService
 
     fun verification(): VerificationService
@@ -80,6 +83,8 @@ interface PreludeClient {
         fun withOptions(modifier: Consumer<ClientOptions.Builder>): PreludeClient.WithRawResponse
 
         fun lookup(): LookupService.WithRawResponse
+
+        fun notify(): NotifyService.WithRawResponse
 
         fun transactional(): TransactionalService.WithRawResponse
 

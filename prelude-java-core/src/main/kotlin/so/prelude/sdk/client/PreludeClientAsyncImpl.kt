@@ -7,6 +7,8 @@ import so.prelude.sdk.core.ClientOptions
 import so.prelude.sdk.core.getPackageVersion
 import so.prelude.sdk.services.async.LookupServiceAsync
 import so.prelude.sdk.services.async.LookupServiceAsyncImpl
+import so.prelude.sdk.services.async.NotifyServiceAsync
+import so.prelude.sdk.services.async.NotifyServiceAsyncImpl
 import so.prelude.sdk.services.async.TransactionalServiceAsync
 import so.prelude.sdk.services.async.TransactionalServiceAsyncImpl
 import so.prelude.sdk.services.async.VerificationManagementServiceAsync
@@ -37,6 +39,10 @@ class PreludeClientAsyncImpl(private val clientOptions: ClientOptions) : Prelude
         LookupServiceAsyncImpl(clientOptionsWithUserAgent)
     }
 
+    private val notify: NotifyServiceAsync by lazy {
+        NotifyServiceAsyncImpl(clientOptionsWithUserAgent)
+    }
+
     private val transactional: TransactionalServiceAsync by lazy {
         TransactionalServiceAsyncImpl(clientOptionsWithUserAgent)
     }
@@ -62,6 +68,8 @@ class PreludeClientAsyncImpl(private val clientOptions: ClientOptions) : Prelude
 
     override fun lookup(): LookupServiceAsync = lookup
 
+    override fun notify(): NotifyServiceAsync = notify
+
     override fun transactional(): TransactionalServiceAsync = transactional
 
     override fun verification(): VerificationServiceAsync = verification
@@ -78,6 +86,10 @@ class PreludeClientAsyncImpl(private val clientOptions: ClientOptions) : Prelude
 
         private val lookup: LookupServiceAsync.WithRawResponse by lazy {
             LookupServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val notify: NotifyServiceAsync.WithRawResponse by lazy {
+            NotifyServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
 
         private val transactional: TransactionalServiceAsync.WithRawResponse by lazy {
@@ -105,6 +117,8 @@ class PreludeClientAsyncImpl(private val clientOptions: ClientOptions) : Prelude
             )
 
         override fun lookup(): LookupServiceAsync.WithRawResponse = lookup
+
+        override fun notify(): NotifyServiceAsync.WithRawResponse = notify
 
         override fun transactional(): TransactionalServiceAsync.WithRawResponse = transactional
 

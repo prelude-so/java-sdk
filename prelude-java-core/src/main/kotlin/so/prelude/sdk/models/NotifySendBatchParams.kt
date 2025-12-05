@@ -1,0 +1,1328 @@
+// File generated from our OpenAPI spec by Stainless.
+
+package so.prelude.sdk.models
+
+import com.fasterxml.jackson.annotation.JsonAnyGetter
+import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.annotation.JsonProperty
+import java.time.OffsetDateTime
+import java.util.Collections
+import java.util.Objects
+import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
+import so.prelude.sdk.core.Enum
+import so.prelude.sdk.core.ExcludeMissing
+import so.prelude.sdk.core.JsonField
+import so.prelude.sdk.core.JsonMissing
+import so.prelude.sdk.core.JsonValue
+import so.prelude.sdk.core.Params
+import so.prelude.sdk.core.checkKnown
+import so.prelude.sdk.core.checkRequired
+import so.prelude.sdk.core.http.Headers
+import so.prelude.sdk.core.http.QueryParams
+import so.prelude.sdk.core.toImmutable
+import so.prelude.sdk.errors.PreludeInvalidDataException
+
+/** Send the same message to multiple recipients in a single request. */
+class NotifySendBatchParams
+private constructor(
+    private val body: Body,
+    private val additionalHeaders: Headers,
+    private val additionalQueryParams: QueryParams,
+) : Params {
+
+    /**
+     * The template identifier configured by your Customer Success team.
+     *
+     * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun templateId(): String = body.templateId()
+
+    /**
+     * The list of recipients' phone numbers in E.164 format.
+     *
+     * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun to(): List<String> = body.to()
+
+    /**
+     * The URL where webhooks will be sent for delivery events.
+     *
+     * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun callbackUrl(): Optional<String> = body.callbackUrl()
+
+    /**
+     * A user-defined identifier to correlate this request with your internal systems.
+     *
+     * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun correlationId(): Optional<String> = body.correlationId()
+
+    /**
+     * The message expiration date in RFC3339 format. Messages will not be sent after this time.
+     *
+     * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun expiresAt(): Optional<OffsetDateTime> = body.expiresAt()
+
+    /**
+     * The Sender ID. Must be approved for your account.
+     *
+     * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun from(): Optional<String> = body.from()
+
+    /**
+     * A BCP-47 formatted locale string.
+     *
+     * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun locale(): Optional<String> = body.locale()
+
+    /**
+     * Preferred channel for delivery. If unavailable, automatic fallback applies.
+     *
+     * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun preferredChannel(): Optional<PreferredChannel> = body.preferredChannel()
+
+    /**
+     * Schedule delivery in RFC3339 format. Marketing sends may be adjusted to comply with local
+     * time windows.
+     *
+     * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun scheduleAt(): Optional<OffsetDateTime> = body.scheduleAt()
+
+    /**
+     * The variables to be replaced in the template.
+     *
+     * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun variables(): Optional<Variables> = body.variables()
+
+    /**
+     * Returns the raw JSON value of [templateId].
+     *
+     * Unlike [templateId], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _templateId(): JsonField<String> = body._templateId()
+
+    /**
+     * Returns the raw JSON value of [to].
+     *
+     * Unlike [to], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _to(): JsonField<List<String>> = body._to()
+
+    /**
+     * Returns the raw JSON value of [callbackUrl].
+     *
+     * Unlike [callbackUrl], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _callbackUrl(): JsonField<String> = body._callbackUrl()
+
+    /**
+     * Returns the raw JSON value of [correlationId].
+     *
+     * Unlike [correlationId], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _correlationId(): JsonField<String> = body._correlationId()
+
+    /**
+     * Returns the raw JSON value of [expiresAt].
+     *
+     * Unlike [expiresAt], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _expiresAt(): JsonField<OffsetDateTime> = body._expiresAt()
+
+    /**
+     * Returns the raw JSON value of [from].
+     *
+     * Unlike [from], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _from(): JsonField<String> = body._from()
+
+    /**
+     * Returns the raw JSON value of [locale].
+     *
+     * Unlike [locale], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _locale(): JsonField<String> = body._locale()
+
+    /**
+     * Returns the raw JSON value of [preferredChannel].
+     *
+     * Unlike [preferredChannel], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
+    fun _preferredChannel(): JsonField<PreferredChannel> = body._preferredChannel()
+
+    /**
+     * Returns the raw JSON value of [scheduleAt].
+     *
+     * Unlike [scheduleAt], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _scheduleAt(): JsonField<OffsetDateTime> = body._scheduleAt()
+
+    /**
+     * Returns the raw JSON value of [variables].
+     *
+     * Unlike [variables], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _variables(): JsonField<Variables> = body._variables()
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
+
+    /** Additional headers to send with the request. */
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    /** Additional query param to send with the request. */
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun toBuilder() = Builder().from(this)
+
+    companion object {
+
+        /**
+         * Returns a mutable builder for constructing an instance of [NotifySendBatchParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .templateId()
+         * .to()
+         * ```
+         */
+        @JvmStatic fun builder() = Builder()
+    }
+
+    /** A builder for [NotifySendBatchParams]. */
+    class Builder internal constructor() {
+
+        private var body: Body.Builder = Body.builder()
+        private var additionalHeaders: Headers.Builder = Headers.builder()
+        private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
+
+        @JvmSynthetic
+        internal fun from(notifySendBatchParams: NotifySendBatchParams) = apply {
+            body = notifySendBatchParams.body.toBuilder()
+            additionalHeaders = notifySendBatchParams.additionalHeaders.toBuilder()
+            additionalQueryParams = notifySendBatchParams.additionalQueryParams.toBuilder()
+        }
+
+        /**
+         * Sets the entire request body.
+         *
+         * This is generally only useful if you are already constructing the body separately.
+         * Otherwise, it's more convenient to use the top-level setters instead:
+         * - [templateId]
+         * - [to]
+         * - [callbackUrl]
+         * - [correlationId]
+         * - [expiresAt]
+         * - etc.
+         */
+        fun body(body: Body) = apply { this.body = body.toBuilder() }
+
+        /** The template identifier configured by your Customer Success team. */
+        fun templateId(templateId: String) = apply { body.templateId(templateId) }
+
+        /**
+         * Sets [Builder.templateId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.templateId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun templateId(templateId: JsonField<String>) = apply { body.templateId(templateId) }
+
+        /** The list of recipients' phone numbers in E.164 format. */
+        fun to(to: List<String>) = apply { body.to(to) }
+
+        /**
+         * Sets [Builder.to] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.to] with a well-typed `List<String>` value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun to(to: JsonField<List<String>>) = apply { body.to(to) }
+
+        /**
+         * Adds a single [String] to [Builder.to].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
+        fun addTo(to: String) = apply { body.addTo(to) }
+
+        /** The URL where webhooks will be sent for delivery events. */
+        fun callbackUrl(callbackUrl: String) = apply { body.callbackUrl(callbackUrl) }
+
+        /**
+         * Sets [Builder.callbackUrl] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.callbackUrl] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun callbackUrl(callbackUrl: JsonField<String>) = apply { body.callbackUrl(callbackUrl) }
+
+        /** A user-defined identifier to correlate this request with your internal systems. */
+        fun correlationId(correlationId: String) = apply { body.correlationId(correlationId) }
+
+        /**
+         * Sets [Builder.correlationId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.correlationId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun correlationId(correlationId: JsonField<String>) = apply {
+            body.correlationId(correlationId)
+        }
+
+        /**
+         * The message expiration date in RFC3339 format. Messages will not be sent after this time.
+         */
+        fun expiresAt(expiresAt: OffsetDateTime) = apply { body.expiresAt(expiresAt) }
+
+        /**
+         * Sets [Builder.expiresAt] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.expiresAt] with a well-typed [OffsetDateTime] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun expiresAt(expiresAt: JsonField<OffsetDateTime>) = apply { body.expiresAt(expiresAt) }
+
+        /** The Sender ID. Must be approved for your account. */
+        fun from(from: String) = apply { body.from(from) }
+
+        /**
+         * Sets [Builder.from] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.from] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun from(from: JsonField<String>) = apply { body.from(from) }
+
+        /** A BCP-47 formatted locale string. */
+        fun locale(locale: String) = apply { body.locale(locale) }
+
+        /**
+         * Sets [Builder.locale] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.locale] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun locale(locale: JsonField<String>) = apply { body.locale(locale) }
+
+        /** Preferred channel for delivery. If unavailable, automatic fallback applies. */
+        fun preferredChannel(preferredChannel: PreferredChannel) = apply {
+            body.preferredChannel(preferredChannel)
+        }
+
+        /**
+         * Sets [Builder.preferredChannel] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.preferredChannel] with a well-typed [PreferredChannel]
+         * value instead. This method is primarily for setting the field to an undocumented or not
+         * yet supported value.
+         */
+        fun preferredChannel(preferredChannel: JsonField<PreferredChannel>) = apply {
+            body.preferredChannel(preferredChannel)
+        }
+
+        /**
+         * Schedule delivery in RFC3339 format. Marketing sends may be adjusted to comply with local
+         * time windows.
+         */
+        fun scheduleAt(scheduleAt: OffsetDateTime) = apply { body.scheduleAt(scheduleAt) }
+
+        /**
+         * Sets [Builder.scheduleAt] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.scheduleAt] with a well-typed [OffsetDateTime] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun scheduleAt(scheduleAt: JsonField<OffsetDateTime>) = apply {
+            body.scheduleAt(scheduleAt)
+        }
+
+        /** The variables to be replaced in the template. */
+        fun variables(variables: Variables) = apply { body.variables(variables) }
+
+        /**
+         * Sets [Builder.variables] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.variables] with a well-typed [Variables] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun variables(variables: JsonField<Variables>) = apply { body.variables(variables) }
+
+        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
+            body.additionalProperties(additionalBodyProperties)
+        }
+
+        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
+            body.putAdditionalProperty(key, value)
+        }
+
+        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
+            apply {
+                body.putAllAdditionalProperties(additionalBodyProperties)
+            }
+
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
+
+        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
+            body.removeAllAdditionalProperties(keys)
+        }
+
+        fun additionalHeaders(additionalHeaders: Headers) = apply {
+            this.additionalHeaders.clear()
+            putAllAdditionalHeaders(additionalHeaders)
+        }
+
+        fun additionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
+            this.additionalHeaders.clear()
+            putAllAdditionalHeaders(additionalHeaders)
+        }
+
+        fun putAdditionalHeader(name: String, value: String) = apply {
+            additionalHeaders.put(name, value)
+        }
+
+        fun putAdditionalHeaders(name: String, values: Iterable<String>) = apply {
+            additionalHeaders.put(name, values)
+        }
+
+        fun putAllAdditionalHeaders(additionalHeaders: Headers) = apply {
+            this.additionalHeaders.putAll(additionalHeaders)
+        }
+
+        fun putAllAdditionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
+            this.additionalHeaders.putAll(additionalHeaders)
+        }
+
+        fun replaceAdditionalHeaders(name: String, value: String) = apply {
+            additionalHeaders.replace(name, value)
+        }
+
+        fun replaceAdditionalHeaders(name: String, values: Iterable<String>) = apply {
+            additionalHeaders.replace(name, values)
+        }
+
+        fun replaceAllAdditionalHeaders(additionalHeaders: Headers) = apply {
+            this.additionalHeaders.replaceAll(additionalHeaders)
+        }
+
+        fun replaceAllAdditionalHeaders(additionalHeaders: Map<String, Iterable<String>>) = apply {
+            this.additionalHeaders.replaceAll(additionalHeaders)
+        }
+
+        fun removeAdditionalHeaders(name: String) = apply { additionalHeaders.remove(name) }
+
+        fun removeAllAdditionalHeaders(names: Set<String>) = apply {
+            additionalHeaders.removeAll(names)
+        }
+
+        fun additionalQueryParams(additionalQueryParams: QueryParams) = apply {
+            this.additionalQueryParams.clear()
+            putAllAdditionalQueryParams(additionalQueryParams)
+        }
+
+        fun additionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) = apply {
+            this.additionalQueryParams.clear()
+            putAllAdditionalQueryParams(additionalQueryParams)
+        }
+
+        fun putAdditionalQueryParam(key: String, value: String) = apply {
+            additionalQueryParams.put(key, value)
+        }
+
+        fun putAdditionalQueryParams(key: String, values: Iterable<String>) = apply {
+            additionalQueryParams.put(key, values)
+        }
+
+        fun putAllAdditionalQueryParams(additionalQueryParams: QueryParams) = apply {
+            this.additionalQueryParams.putAll(additionalQueryParams)
+        }
+
+        fun putAllAdditionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) =
+            apply {
+                this.additionalQueryParams.putAll(additionalQueryParams)
+            }
+
+        fun replaceAdditionalQueryParams(key: String, value: String) = apply {
+            additionalQueryParams.replace(key, value)
+        }
+
+        fun replaceAdditionalQueryParams(key: String, values: Iterable<String>) = apply {
+            additionalQueryParams.replace(key, values)
+        }
+
+        fun replaceAllAdditionalQueryParams(additionalQueryParams: QueryParams) = apply {
+            this.additionalQueryParams.replaceAll(additionalQueryParams)
+        }
+
+        fun replaceAllAdditionalQueryParams(additionalQueryParams: Map<String, Iterable<String>>) =
+            apply {
+                this.additionalQueryParams.replaceAll(additionalQueryParams)
+            }
+
+        fun removeAdditionalQueryParams(key: String) = apply { additionalQueryParams.remove(key) }
+
+        fun removeAllAdditionalQueryParams(keys: Set<String>) = apply {
+            additionalQueryParams.removeAll(keys)
+        }
+
+        /**
+         * Returns an immutable instance of [NotifySendBatchParams].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .templateId()
+         * .to()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
+        fun build(): NotifySendBatchParams =
+            NotifySendBatchParams(
+                body.build(),
+                additionalHeaders.build(),
+                additionalQueryParams.build(),
+            )
+    }
+
+    fun _body(): Body = body
+
+    override fun _headers(): Headers = additionalHeaders
+
+    override fun _queryParams(): QueryParams = additionalQueryParams
+
+    class Body
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+    private constructor(
+        private val templateId: JsonField<String>,
+        private val to: JsonField<List<String>>,
+        private val callbackUrl: JsonField<String>,
+        private val correlationId: JsonField<String>,
+        private val expiresAt: JsonField<OffsetDateTime>,
+        private val from: JsonField<String>,
+        private val locale: JsonField<String>,
+        private val preferredChannel: JsonField<PreferredChannel>,
+        private val scheduleAt: JsonField<OffsetDateTime>,
+        private val variables: JsonField<Variables>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
+    ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("template_id")
+            @ExcludeMissing
+            templateId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("to") @ExcludeMissing to: JsonField<List<String>> = JsonMissing.of(),
+            @JsonProperty("callback_url")
+            @ExcludeMissing
+            callbackUrl: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("correlation_id")
+            @ExcludeMissing
+            correlationId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("expires_at")
+            @ExcludeMissing
+            expiresAt: JsonField<OffsetDateTime> = JsonMissing.of(),
+            @JsonProperty("from") @ExcludeMissing from: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("locale") @ExcludeMissing locale: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("preferred_channel")
+            @ExcludeMissing
+            preferredChannel: JsonField<PreferredChannel> = JsonMissing.of(),
+            @JsonProperty("schedule_at")
+            @ExcludeMissing
+            scheduleAt: JsonField<OffsetDateTime> = JsonMissing.of(),
+            @JsonProperty("variables")
+            @ExcludeMissing
+            variables: JsonField<Variables> = JsonMissing.of(),
+        ) : this(
+            templateId,
+            to,
+            callbackUrl,
+            correlationId,
+            expiresAt,
+            from,
+            locale,
+            preferredChannel,
+            scheduleAt,
+            variables,
+            mutableMapOf(),
+        )
+
+        /**
+         * The template identifier configured by your Customer Success team.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun templateId(): String = templateId.getRequired("template_id")
+
+        /**
+         * The list of recipients' phone numbers in E.164 format.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun to(): List<String> = to.getRequired("to")
+
+        /**
+         * The URL where webhooks will be sent for delivery events.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun callbackUrl(): Optional<String> = callbackUrl.getOptional("callback_url")
+
+        /**
+         * A user-defined identifier to correlate this request with your internal systems.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun correlationId(): Optional<String> = correlationId.getOptional("correlation_id")
+
+        /**
+         * The message expiration date in RFC3339 format. Messages will not be sent after this time.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun expiresAt(): Optional<OffsetDateTime> = expiresAt.getOptional("expires_at")
+
+        /**
+         * The Sender ID. Must be approved for your account.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun from(): Optional<String> = from.getOptional("from")
+
+        /**
+         * A BCP-47 formatted locale string.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun locale(): Optional<String> = locale.getOptional("locale")
+
+        /**
+         * Preferred channel for delivery. If unavailable, automatic fallback applies.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun preferredChannel(): Optional<PreferredChannel> =
+            preferredChannel.getOptional("preferred_channel")
+
+        /**
+         * Schedule delivery in RFC3339 format. Marketing sends may be adjusted to comply with local
+         * time windows.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun scheduleAt(): Optional<OffsetDateTime> = scheduleAt.getOptional("schedule_at")
+
+        /**
+         * The variables to be replaced in the template.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun variables(): Optional<Variables> = variables.getOptional("variables")
+
+        /**
+         * Returns the raw JSON value of [templateId].
+         *
+         * Unlike [templateId], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("template_id")
+        @ExcludeMissing
+        fun _templateId(): JsonField<String> = templateId
+
+        /**
+         * Returns the raw JSON value of [to].
+         *
+         * Unlike [to], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("to") @ExcludeMissing fun _to(): JsonField<List<String>> = to
+
+        /**
+         * Returns the raw JSON value of [callbackUrl].
+         *
+         * Unlike [callbackUrl], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("callback_url")
+        @ExcludeMissing
+        fun _callbackUrl(): JsonField<String> = callbackUrl
+
+        /**
+         * Returns the raw JSON value of [correlationId].
+         *
+         * Unlike [correlationId], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("correlation_id")
+        @ExcludeMissing
+        fun _correlationId(): JsonField<String> = correlationId
+
+        /**
+         * Returns the raw JSON value of [expiresAt].
+         *
+         * Unlike [expiresAt], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("expires_at")
+        @ExcludeMissing
+        fun _expiresAt(): JsonField<OffsetDateTime> = expiresAt
+
+        /**
+         * Returns the raw JSON value of [from].
+         *
+         * Unlike [from], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("from") @ExcludeMissing fun _from(): JsonField<String> = from
+
+        /**
+         * Returns the raw JSON value of [locale].
+         *
+         * Unlike [locale], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("locale") @ExcludeMissing fun _locale(): JsonField<String> = locale
+
+        /**
+         * Returns the raw JSON value of [preferredChannel].
+         *
+         * Unlike [preferredChannel], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("preferred_channel")
+        @ExcludeMissing
+        fun _preferredChannel(): JsonField<PreferredChannel> = preferredChannel
+
+        /**
+         * Returns the raw JSON value of [scheduleAt].
+         *
+         * Unlike [scheduleAt], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("schedule_at")
+        @ExcludeMissing
+        fun _scheduleAt(): JsonField<OffsetDateTime> = scheduleAt
+
+        /**
+         * Returns the raw JSON value of [variables].
+         *
+         * Unlike [variables], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("variables")
+        @ExcludeMissing
+        fun _variables(): JsonField<Variables> = variables
+
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
+
+        fun toBuilder() = Builder().from(this)
+
+        companion object {
+
+            /**
+             * Returns a mutable builder for constructing an instance of [Body].
+             *
+             * The following fields are required:
+             * ```java
+             * .templateId()
+             * .to()
+             * ```
+             */
+            @JvmStatic fun builder() = Builder()
+        }
+
+        /** A builder for [Body]. */
+        class Builder internal constructor() {
+
+            private var templateId: JsonField<String>? = null
+            private var to: JsonField<MutableList<String>>? = null
+            private var callbackUrl: JsonField<String> = JsonMissing.of()
+            private var correlationId: JsonField<String> = JsonMissing.of()
+            private var expiresAt: JsonField<OffsetDateTime> = JsonMissing.of()
+            private var from: JsonField<String> = JsonMissing.of()
+            private var locale: JsonField<String> = JsonMissing.of()
+            private var preferredChannel: JsonField<PreferredChannel> = JsonMissing.of()
+            private var scheduleAt: JsonField<OffsetDateTime> = JsonMissing.of()
+            private var variables: JsonField<Variables> = JsonMissing.of()
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            @JvmSynthetic
+            internal fun from(body: Body) = apply {
+                templateId = body.templateId
+                to = body.to.map { it.toMutableList() }
+                callbackUrl = body.callbackUrl
+                correlationId = body.correlationId
+                expiresAt = body.expiresAt
+                from = body.from
+                locale = body.locale
+                preferredChannel = body.preferredChannel
+                scheduleAt = body.scheduleAt
+                variables = body.variables
+                additionalProperties = body.additionalProperties.toMutableMap()
+            }
+
+            /** The template identifier configured by your Customer Success team. */
+            fun templateId(templateId: String) = templateId(JsonField.of(templateId))
+
+            /**
+             * Sets [Builder.templateId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.templateId] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun templateId(templateId: JsonField<String>) = apply { this.templateId = templateId }
+
+            /** The list of recipients' phone numbers in E.164 format. */
+            fun to(to: List<String>) = to(JsonField.of(to))
+
+            /**
+             * Sets [Builder.to] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.to] with a well-typed `List<String>` value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun to(to: JsonField<List<String>>) = apply { this.to = to.map { it.toMutableList() } }
+
+            /**
+             * Adds a single [String] to [Builder.to].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
+            fun addTo(to: String) = apply {
+                this.to =
+                    (this.to ?: JsonField.of(mutableListOf())).also { checkKnown("to", it).add(to) }
+            }
+
+            /** The URL where webhooks will be sent for delivery events. */
+            fun callbackUrl(callbackUrl: String) = callbackUrl(JsonField.of(callbackUrl))
+
+            /**
+             * Sets [Builder.callbackUrl] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.callbackUrl] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun callbackUrl(callbackUrl: JsonField<String>) = apply {
+                this.callbackUrl = callbackUrl
+            }
+
+            /** A user-defined identifier to correlate this request with your internal systems. */
+            fun correlationId(correlationId: String) = correlationId(JsonField.of(correlationId))
+
+            /**
+             * Sets [Builder.correlationId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.correlationId] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun correlationId(correlationId: JsonField<String>) = apply {
+                this.correlationId = correlationId
+            }
+
+            /**
+             * The message expiration date in RFC3339 format. Messages will not be sent after this
+             * time.
+             */
+            fun expiresAt(expiresAt: OffsetDateTime) = expiresAt(JsonField.of(expiresAt))
+
+            /**
+             * Sets [Builder.expiresAt] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.expiresAt] with a well-typed [OffsetDateTime] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun expiresAt(expiresAt: JsonField<OffsetDateTime>) = apply {
+                this.expiresAt = expiresAt
+            }
+
+            /** The Sender ID. Must be approved for your account. */
+            fun from(from: String) = from(JsonField.of(from))
+
+            /**
+             * Sets [Builder.from] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.from] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
+            fun from(from: JsonField<String>) = apply { this.from = from }
+
+            /** A BCP-47 formatted locale string. */
+            fun locale(locale: String) = locale(JsonField.of(locale))
+
+            /**
+             * Sets [Builder.locale] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.locale] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun locale(locale: JsonField<String>) = apply { this.locale = locale }
+
+            /** Preferred channel for delivery. If unavailable, automatic fallback applies. */
+            fun preferredChannel(preferredChannel: PreferredChannel) =
+                preferredChannel(JsonField.of(preferredChannel))
+
+            /**
+             * Sets [Builder.preferredChannel] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.preferredChannel] with a well-typed
+             * [PreferredChannel] value instead. This method is primarily for setting the field to
+             * an undocumented or not yet supported value.
+             */
+            fun preferredChannel(preferredChannel: JsonField<PreferredChannel>) = apply {
+                this.preferredChannel = preferredChannel
+            }
+
+            /**
+             * Schedule delivery in RFC3339 format. Marketing sends may be adjusted to comply with
+             * local time windows.
+             */
+            fun scheduleAt(scheduleAt: OffsetDateTime) = scheduleAt(JsonField.of(scheduleAt))
+
+            /**
+             * Sets [Builder.scheduleAt] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.scheduleAt] with a well-typed [OffsetDateTime] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun scheduleAt(scheduleAt: JsonField<OffsetDateTime>) = apply {
+                this.scheduleAt = scheduleAt
+            }
+
+            /** The variables to be replaced in the template. */
+            fun variables(variables: Variables) = variables(JsonField.of(variables))
+
+            /**
+             * Sets [Builder.variables] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.variables] with a well-typed [Variables] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun variables(variables: JsonField<Variables>) = apply { this.variables = variables }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
+
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
+            /**
+             * Returns an immutable instance of [Body].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```java
+             * .templateId()
+             * .to()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
+             */
+            fun build(): Body =
+                Body(
+                    checkRequired("templateId", templateId),
+                    checkRequired("to", to).map { it.toImmutable() },
+                    callbackUrl,
+                    correlationId,
+                    expiresAt,
+                    from,
+                    locale,
+                    preferredChannel,
+                    scheduleAt,
+                    variables,
+                    additionalProperties.toMutableMap(),
+                )
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Body = apply {
+            if (validated) {
+                return@apply
+            }
+
+            templateId()
+            to()
+            callbackUrl()
+            correlationId()
+            expiresAt()
+            from()
+            locale()
+            preferredChannel().ifPresent { it.validate() }
+            scheduleAt()
+            variables().ifPresent { it.validate() }
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: PreludeInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (if (templateId.asKnown().isPresent) 1 else 0) +
+                (to.asKnown().getOrNull()?.size ?: 0) +
+                (if (callbackUrl.asKnown().isPresent) 1 else 0) +
+                (if (correlationId.asKnown().isPresent) 1 else 0) +
+                (if (expiresAt.asKnown().isPresent) 1 else 0) +
+                (if (from.asKnown().isPresent) 1 else 0) +
+                (if (locale.asKnown().isPresent) 1 else 0) +
+                (preferredChannel.asKnown().getOrNull()?.validity() ?: 0) +
+                (if (scheduleAt.asKnown().isPresent) 1 else 0) +
+                (variables.asKnown().getOrNull()?.validity() ?: 0)
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is Body &&
+                templateId == other.templateId &&
+                to == other.to &&
+                callbackUrl == other.callbackUrl &&
+                correlationId == other.correlationId &&
+                expiresAt == other.expiresAt &&
+                from == other.from &&
+                locale == other.locale &&
+                preferredChannel == other.preferredChannel &&
+                scheduleAt == other.scheduleAt &&
+                variables == other.variables &&
+                additionalProperties == other.additionalProperties
+        }
+
+        private val hashCode: Int by lazy {
+            Objects.hash(
+                templateId,
+                to,
+                callbackUrl,
+                correlationId,
+                expiresAt,
+                from,
+                locale,
+                preferredChannel,
+                scheduleAt,
+                variables,
+                additionalProperties,
+            )
+        }
+
+        override fun hashCode(): Int = hashCode
+
+        override fun toString() =
+            "Body{templateId=$templateId, to=$to, callbackUrl=$callbackUrl, correlationId=$correlationId, expiresAt=$expiresAt, from=$from, locale=$locale, preferredChannel=$preferredChannel, scheduleAt=$scheduleAt, variables=$variables, additionalProperties=$additionalProperties}"
+    }
+
+    /** Preferred channel for delivery. If unavailable, automatic fallback applies. */
+    class PreferredChannel @JsonCreator private constructor(private val value: JsonField<String>) :
+        Enum {
+
+        /**
+         * Returns this class instance's raw value.
+         *
+         * This is usually only useful if this instance was deserialized from data that doesn't
+         * match any known member, and you want to know that value. For example, if the SDK is on an
+         * older version than the API, then the API may respond with new members that the SDK is
+         * unaware of.
+         */
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+        companion object {
+
+            @JvmField val SMS = of("sms")
+
+            @JvmField val WHATSAPP = of("whatsapp")
+
+            @JvmStatic fun of(value: String) = PreferredChannel(JsonField.of(value))
+        }
+
+        /** An enum containing [PreferredChannel]'s known values. */
+        enum class Known {
+            SMS,
+            WHATSAPP,
+        }
+
+        /**
+         * An enum containing [PreferredChannel]'s known values, as well as an [_UNKNOWN] member.
+         *
+         * An instance of [PreferredChannel] can contain an unknown value in a couple of cases:
+         * - It was deserialized from data that doesn't match any known member. For example, if the
+         *   SDK is on an older version than the API, then the API may respond with new members that
+         *   the SDK is unaware of.
+         * - It was constructed with an arbitrary value using the [of] method.
+         */
+        enum class Value {
+            SMS,
+            WHATSAPP,
+            /**
+             * An enum member indicating that [PreferredChannel] was instantiated with an unknown
+             * value.
+             */
+            _UNKNOWN,
+        }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
+         * if the class was instantiated with an unknown value.
+         *
+         * Use the [known] method instead if you're certain the value is always known or if you want
+         * to throw for the unknown case.
+         */
+        fun value(): Value =
+            when (this) {
+                SMS -> Value.SMS
+                WHATSAPP -> Value.WHATSAPP
+                else -> Value._UNKNOWN
+            }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value.
+         *
+         * Use the [value] method instead if you're uncertain the value is always known and don't
+         * want to throw for the unknown case.
+         *
+         * @throws PreludeInvalidDataException if this class instance's value is a not a known
+         *   member.
+         */
+        fun known(): Known =
+            when (this) {
+                SMS -> Known.SMS
+                WHATSAPP -> Known.WHATSAPP
+                else -> throw PreludeInvalidDataException("Unknown PreferredChannel: $value")
+            }
+
+        /**
+         * Returns this class instance's primitive wire representation.
+         *
+         * This differs from the [toString] method because that method is primarily for debugging
+         * and generally doesn't throw.
+         *
+         * @throws PreludeInvalidDataException if this class instance's value does not have the
+         *   expected primitive type.
+         */
+        fun asString(): String =
+            _value().asString().orElseThrow { PreludeInvalidDataException("Value is not a String") }
+
+        private var validated: Boolean = false
+
+        fun validate(): PreferredChannel = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: PreludeInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is PreferredChannel && value == other.value
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
+    }
+
+    /** The variables to be replaced in the template. */
+    class Variables
+    @JsonCreator
+    private constructor(
+        @com.fasterxml.jackson.annotation.JsonValue
+        private val additionalProperties: Map<String, JsonValue>
+    ) {
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        fun toBuilder() = Builder().from(this)
+
+        companion object {
+
+            /** Returns a mutable builder for constructing an instance of [Variables]. */
+            @JvmStatic fun builder() = Builder()
+        }
+
+        /** A builder for [Variables]. */
+        class Builder internal constructor() {
+
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            @JvmSynthetic
+            internal fun from(variables: Variables) = apply {
+                additionalProperties = variables.additionalProperties.toMutableMap()
+            }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
+
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
+            /**
+             * Returns an immutable instance of [Variables].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
+            fun build(): Variables = Variables(additionalProperties.toImmutable())
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Variables = apply {
+            if (validated) {
+                return@apply
+            }
+
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: PreludeInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            additionalProperties.count { (_, value) -> !value.isNull() && !value.isMissing() }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is Variables && additionalProperties == other.additionalProperties
+        }
+
+        private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
+
+        override fun hashCode(): Int = hashCode
+
+        override fun toString() = "Variables{additionalProperties=$additionalProperties}"
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return other is NotifySendBatchParams &&
+            body == other.body &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
+    }
+
+    override fun hashCode(): Int = Objects.hash(body, additionalHeaders, additionalQueryParams)
+
+    override fun toString() =
+        "NotifySendBatchParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+}
