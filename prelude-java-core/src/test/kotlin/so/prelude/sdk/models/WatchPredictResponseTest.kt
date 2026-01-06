@@ -3,6 +3,7 @@
 package so.prelude.sdk.models
 
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
+import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import so.prelude.sdk.core.jsonMapper
@@ -16,6 +17,8 @@ internal class WatchPredictResponseTest {
                 .id("prd_01jc0t6fwwfgfsq1md24mhyztj")
                 .prediction(WatchPredictResponse.Prediction.LEGITIMATE)
                 .requestId("3d19215e-2991-4a05-a41a-527314e6ff6a")
+                .addRiskFactor(WatchPredictResponse.RiskFactor.SUSPICIOUS_IP_ADDRESS)
+                .addRiskFactor(WatchPredictResponse.RiskFactor.FRAUD_DATABASE)
                 .build()
 
         assertThat(watchPredictResponse.id()).isEqualTo("prd_01jc0t6fwwfgfsq1md24mhyztj")
@@ -23,6 +26,11 @@ internal class WatchPredictResponseTest {
             .isEqualTo(WatchPredictResponse.Prediction.LEGITIMATE)
         assertThat(watchPredictResponse.requestId())
             .isEqualTo("3d19215e-2991-4a05-a41a-527314e6ff6a")
+        assertThat(watchPredictResponse.riskFactors().getOrNull())
+            .containsExactly(
+                WatchPredictResponse.RiskFactor.SUSPICIOUS_IP_ADDRESS,
+                WatchPredictResponse.RiskFactor.FRAUD_DATABASE,
+            )
     }
 
     @Test
@@ -33,6 +41,8 @@ internal class WatchPredictResponseTest {
                 .id("prd_01jc0t6fwwfgfsq1md24mhyztj")
                 .prediction(WatchPredictResponse.Prediction.LEGITIMATE)
                 .requestId("3d19215e-2991-4a05-a41a-527314e6ff6a")
+                .addRiskFactor(WatchPredictResponse.RiskFactor.SUSPICIOUS_IP_ADDRESS)
+                .addRiskFactor(WatchPredictResponse.RiskFactor.FRAUD_DATABASE)
                 .build()
 
         val roundtrippedWatchPredictResponse =
