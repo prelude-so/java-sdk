@@ -1243,8 +1243,8 @@ private constructor(
         )
 
         /**
-         * This allows you to automatically retrieve and fill the OTP code on mobile apps. Currently
-         * only Android devices are supported.
+         * This allows automatic OTP retrieval on mobile apps and web browsers. Supported platforms
+         * are Android (SMS Retriever API) and Web (WebOTP API).
          *
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
@@ -1486,8 +1486,8 @@ private constructor(
             }
 
             /**
-             * This allows you to automatically retrieve and fill the OTP code on mobile apps.
-             * Currently only Android devices are supported.
+             * This allows automatic OTP retrieval on mobile apps and web browsers. Supported
+             * platforms are Android (SMS Retriever API) and Web (WebOTP API).
              */
             fun appRealm(appRealm: AppRealm) = appRealm(JsonField.of(appRealm))
 
@@ -1745,8 +1745,8 @@ private constructor(
                 (variables.asKnown().getOrNull()?.validity() ?: 0)
 
         /**
-         * This allows you to automatically retrieve and fill the OTP code on mobile apps. Currently
-         * only Android devices are supported.
+         * This allows automatic OTP retrieval on mobile apps and web browsers. Supported platforms
+         * are Android (SMS Retriever API) and Web (WebOTP API).
          */
         class AppRealm
         @JsonCreator(mode = JsonCreator.Mode.DISABLED)
@@ -1765,7 +1765,8 @@ private constructor(
             ) : this(platform, value, mutableMapOf())
 
             /**
-             * The platform the SMS will be sent to. We are currently only supporting "android".
+             * The platform for automatic OTP retrieval. Use "android" for the SMS Retriever API or
+             * "web" for the WebOTP API.
              *
              * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
              *   unexpectedly missing or null (e.g. if the server responded with an unexpected
@@ -1774,9 +1775,11 @@ private constructor(
             fun platform(): Platform = platform.getRequired("platform")
 
             /**
-             * The Android SMS Retriever API hash code that identifies your app. For more
-             * information, see
-             * [Google documentation](https://developers.google.com/identity/sms-retriever/verify#computing_your_apps_hash_string).
+             * The value depends on the platform:
+             * - For Android: The SMS Retriever API hash code (11 characters). See
+             *   [Google documentation](https://developers.google.com/identity/sms-retriever/verify#computing_your_apps_hash_string).
+             * - For Web: The origin domain (e.g., "example.com" or "www.example.com"). See
+             *   [WebOTP API documentation](https://developer.mozilla.org/en-US/docs/Web/API/WebOTP_API).
              *
              * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
              *   unexpectedly missing or null (e.g. if the server responded with an unexpected
@@ -1842,7 +1845,8 @@ private constructor(
                 }
 
                 /**
-                 * The platform the SMS will be sent to. We are currently only supporting "android".
+                 * The platform for automatic OTP retrieval. Use "android" for the SMS Retriever API
+                 * or "web" for the WebOTP API.
                  */
                 fun platform(platform: Platform) = platform(JsonField.of(platform))
 
@@ -1856,9 +1860,11 @@ private constructor(
                 fun platform(platform: JsonField<Platform>) = apply { this.platform = platform }
 
                 /**
-                 * The Android SMS Retriever API hash code that identifies your app. For more
-                 * information, see
-                 * [Google documentation](https://developers.google.com/identity/sms-retriever/verify#computing_your_apps_hash_string).
+                 * The value depends on the platform:
+                 * - For Android: The SMS Retriever API hash code (11 characters). See
+                 *   [Google documentation](https://developers.google.com/identity/sms-retriever/verify#computing_your_apps_hash_string).
+                 * - For Web: The origin domain (e.g., "example.com" or "www.example.com"). See
+                 *   [WebOTP API documentation](https://developer.mozilla.org/en-US/docs/Web/API/WebOTP_API).
                  */
                 fun value(value: String) = value(JsonField.of(value))
 
@@ -1945,7 +1951,10 @@ private constructor(
                 (platform.asKnown().getOrNull()?.validity() ?: 0) +
                     (if (value.asKnown().isPresent) 1 else 0)
 
-            /** The platform the SMS will be sent to. We are currently only supporting "android". */
+            /**
+             * The platform for automatic OTP retrieval. Use "android" for the SMS Retriever API or
+             * "web" for the WebOTP API.
+             */
             class Platform @JsonCreator private constructor(private val value: JsonField<String>) :
                 Enum {
 
@@ -1963,12 +1972,15 @@ private constructor(
 
                     @JvmField val ANDROID = of("android")
 
+                    @JvmField val WEB = of("web")
+
                     @JvmStatic fun of(value: String) = Platform(JsonField.of(value))
                 }
 
                 /** An enum containing [Platform]'s known values. */
                 enum class Known {
-                    ANDROID
+                    ANDROID,
+                    WEB,
                 }
 
                 /**
@@ -1982,6 +1994,7 @@ private constructor(
                  */
                 enum class Value {
                     ANDROID,
+                    WEB,
                     /**
                      * An enum member indicating that [Platform] was instantiated with an unknown
                      * value.
@@ -1999,6 +2012,7 @@ private constructor(
                 fun value(): Value =
                     when (this) {
                         ANDROID -> Value.ANDROID
+                        WEB -> Value.WEB
                         else -> Value._UNKNOWN
                     }
 
@@ -2014,6 +2028,7 @@ private constructor(
                 fun known(): Known =
                     when (this) {
                         ANDROID -> Known.ANDROID
+                        WEB -> Known.WEB
                         else -> throw PreludeInvalidDataException("Unknown Platform: $value")
                     }
 
