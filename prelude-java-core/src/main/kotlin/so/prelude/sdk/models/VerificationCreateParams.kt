@@ -2754,8 +2754,9 @@ private constructor(
         fun appVersion(): Optional<String> = appVersion.getOptional("app_version")
 
         /**
-         * The unique identifier for the user's device. For Android, this corresponds to the
-         * `ANDROID_ID` and for iOS, this corresponds to the `identifierForVendor`.
+         * A unique ID for the user's device. You should ensure that each user device has a unique
+         * `device_id` value. Ideally, for Android, this corresponds to the `ANDROID_ID` and for
+         * iOS, this corresponds to the `identifierForVendor`.
          *
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
@@ -2780,7 +2781,10 @@ private constructor(
             devicePlatform.getOptional("device_platform")
 
         /**
-         * The IP address of the user's device.
+         * The public IP v4 or v6 address of the end-user's device. You should collect this from
+         * your backend. If your backend is behind a proxy, use the `X-Forwarded-For`, `Forwarded`,
+         * `True-Client-IP`, `CF-Connecting-IP` or an equivalent header to get the actual public IP
+         * of the end-user's device.
          *
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
@@ -2788,8 +2792,8 @@ private constructor(
         fun ip(): Optional<String> = ip.getOptional("ip")
 
         /**
-         * This signal should provide a higher level of trust, indicating that the user is genuine.
-         * Contact us to discuss your use case. For more details, refer to
+         * This signal should indicate a higher level of trust, explicitly stating that the user is
+         * genuine. Contact us to discuss your use case. For more details, refer to
          * [Signals](/verify/v2/documentation/prevent-fraud#signals).
          *
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -2798,9 +2802,9 @@ private constructor(
         fun isTrustedUser(): Optional<Boolean> = isTrustedUser.getOptional("is_trusted_user")
 
         /**
-         * The JA4 fingerprint observed for the connection. Prelude will infer it automatically when
-         * requests go through our client SDK (which uses Prelude's edge), but you can also provide
-         * it explicitly if you terminate TLS yourself.
+         * The JA4 fingerprint observed for the end-user's connection. Prelude will infer it
+         * automatically when you use our Frontend SDKs (which use Prelude's edge network), but you
+         * can also forward the value if you terminate TLS yourself.
          *
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
@@ -2960,8 +2964,9 @@ private constructor(
             fun appVersion(appVersion: JsonField<String>) = apply { this.appVersion = appVersion }
 
             /**
-             * The unique identifier for the user's device. For Android, this corresponds to the
-             * `ANDROID_ID` and for iOS, this corresponds to the `identifierForVendor`.
+             * A unique ID for the user's device. You should ensure that each user device has a
+             * unique `device_id` value. Ideally, for Android, this corresponds to the `ANDROID_ID`
+             * and for iOS, this corresponds to the `identifierForVendor`.
              */
             fun deviceId(deviceId: String) = deviceId(JsonField.of(deviceId))
 
@@ -3003,7 +3008,12 @@ private constructor(
                 this.devicePlatform = devicePlatform
             }
 
-            /** The IP address of the user's device. */
+            /**
+             * The public IP v4 or v6 address of the end-user's device. You should collect this from
+             * your backend. If your backend is behind a proxy, use the `X-Forwarded-For`,
+             * `Forwarded`, `True-Client-IP`, `CF-Connecting-IP` or an equivalent header to get the
+             * actual public IP of the end-user's device.
+             */
             fun ip(ip: String) = ip(JsonField.of(ip))
 
             /**
@@ -3016,8 +3026,8 @@ private constructor(
             fun ip(ip: JsonField<String>) = apply { this.ip = ip }
 
             /**
-             * This signal should provide a higher level of trust, indicating that the user is
-             * genuine. Contact us to discuss your use case. For more details, refer to
+             * This signal should indicate a higher level of trust, explicitly stating that the user
+             * is genuine. Contact us to discuss your use case. For more details, refer to
              * [Signals](/verify/v2/documentation/prevent-fraud#signals).
              */
             fun isTrustedUser(isTrustedUser: Boolean) = isTrustedUser(JsonField.of(isTrustedUser))
@@ -3034,9 +3044,9 @@ private constructor(
             }
 
             /**
-             * The JA4 fingerprint observed for the connection. Prelude will infer it automatically
-             * when requests go through our client SDK (which uses Prelude's edge), but you can also
-             * provide it explicitly if you terminate TLS yourself.
+             * The JA4 fingerprint observed for the end-user's connection. Prelude will infer it
+             * automatically when you use our Frontend SDKs (which use Prelude's edge network), but
+             * you can also forward the value if you terminate TLS yourself.
              */
             fun ja4Fingerprint(ja4Fingerprint: String) =
                 ja4Fingerprint(JsonField.of(ja4Fingerprint))

@@ -33,7 +33,7 @@ internal class WatchSendFeedbacksParamsTest {
                             .devicePlatform(
                                 WatchSendFeedbacksParams.Feedback.Signals.DevicePlatform.IOS
                             )
-                            .ip("192.0.2.1")
+                            .ip("203.0.113.123")
                             .isTrustedUser(false)
                             .ja4Fingerprint("t13d1516h2_8daaf6152771_e5627efa2ab1")
                             .osVersion("18.0.1")
@@ -74,7 +74,7 @@ internal class WatchSendFeedbacksParamsTest {
                                 .devicePlatform(
                                     WatchSendFeedbacksParams.Feedback.Signals.DevicePlatform.IOS
                                 )
-                                .ip("192.0.2.1")
+                                .ip("203.0.113.123")
                                 .isTrustedUser(false)
                                 .ja4Fingerprint("t13d1516h2_8daaf6152771_e5627efa2ab1")
                                 .osVersion("18.0.1")
@@ -113,7 +113,7 @@ internal class WatchSendFeedbacksParamsTest {
                             .devicePlatform(
                                 WatchSendFeedbacksParams.Feedback.Signals.DevicePlatform.IOS
                             )
-                            .ip("192.0.2.1")
+                            .ip("203.0.113.123")
                             .isTrustedUser(false)
                             .ja4Fingerprint("t13d1516h2_8daaf6152771_e5627efa2ab1")
                             .osVersion("18.0.1")

@@ -43,7 +43,7 @@ internal class WatchServiceAsyncTest {
                             .deviceId("8F0B8FDD-C2CB-4387-B20A-56E9B2E5A0D2")
                             .deviceModel("iPhone17,2")
                             .devicePlatform(WatchPredictParams.Signals.DevicePlatform.IOS)
-                            .ip("192.0.2.1")
+                            .ip("203.0.113.123")
                             .isTrustedUser(false)
                             .ja4Fingerprint("t13d1516h2_8daaf6152771_e5627efa2ab1")
                             .osVersion("18.0.1")
@@ -127,7 +127,7 @@ internal class WatchServiceAsyncTest {
                                     .devicePlatform(
                                         WatchSendFeedbacksParams.Feedback.Signals.DevicePlatform.IOS
                                     )
-                                    .ip("192.0.2.1")
+                                    .ip("203.0.113.123")
                                     .isTrustedUser(false)
                                     .ja4Fingerprint("t13d1516h2_8daaf6152771_e5627efa2ab1")
                                     .osVersion("18.0.1")
