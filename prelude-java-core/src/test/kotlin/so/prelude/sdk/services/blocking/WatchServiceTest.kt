@@ -111,27 +111,9 @@ internal class WatchServiceTest {
                                     .build()
                             )
                             .type(WatchSendFeedbacksParams.Feedback.Type.VERIFICATION_STARTED)
-                            .dispatchId("123e4567-e89b-12d3-a456-426614174000")
                             .metadata(
                                 WatchSendFeedbacksParams.Feedback.Metadata.builder()
                                     .correlationId("correlation_id")
-                                    .build()
-                            )
-                            .signals(
-                                WatchSendFeedbacksParams.Feedback.Signals.builder()
-                                    .appVersion("1.2.34")
-                                    .deviceId("8F0B8FDD-C2CB-4387-B20A-56E9B2E5A0D2")
-                                    .deviceModel("iPhone17,2")
-                                    .devicePlatform(
-                                        WatchSendFeedbacksParams.Feedback.Signals.DevicePlatform.IOS
-                                    )
-                                    .ip("203.0.113.123")
-                                    .isTrustedUser(false)
-                                    .ja4Fingerprint("t13d1516h2_8daaf6152771_e5627efa2ab1")
-                                    .osVersion("18.0.1")
-                                    .userAgent(
-                                        "Mozilla/5.0 (iPhone; CPU iPhone OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1"
-                                    )
                                     .build()
                             )
                             .build()
