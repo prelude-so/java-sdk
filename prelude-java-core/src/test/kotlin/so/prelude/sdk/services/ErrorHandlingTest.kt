@@ -98,7 +98,6 @@ internal class ErrorHandlingTest {
                                 .callbackUrl("callback_url")
                                 .codeSize(5L)
                                 .customCode("123456")
-                                .integration(VerificationCreateParams.Options.Integration.AUTH0)
                                 .locale("el-GR")
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
@@ -177,7 +176,6 @@ internal class ErrorHandlingTest {
                                 .callbackUrl("callback_url")
                                 .codeSize(5L)
                                 .customCode("123456")
-                                .integration(VerificationCreateParams.Options.Integration.AUTH0)
                                 .locale("el-GR")
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
@@ -256,7 +254,6 @@ internal class ErrorHandlingTest {
                                 .callbackUrl("callback_url")
                                 .codeSize(5L)
                                 .customCode("123456")
-                                .integration(VerificationCreateParams.Options.Integration.AUTH0)
                                 .locale("el-GR")
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
@@ -335,7 +332,6 @@ internal class ErrorHandlingTest {
                                 .callbackUrl("callback_url")
                                 .codeSize(5L)
                                 .customCode("123456")
-                                .integration(VerificationCreateParams.Options.Integration.AUTH0)
                                 .locale("el-GR")
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
@@ -414,7 +410,6 @@ internal class ErrorHandlingTest {
                                 .callbackUrl("callback_url")
                                 .codeSize(5L)
                                 .customCode("123456")
-                                .integration(VerificationCreateParams.Options.Integration.AUTH0)
                                 .locale("el-GR")
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
@@ -493,7 +488,6 @@ internal class ErrorHandlingTest {
                                 .callbackUrl("callback_url")
                                 .codeSize(5L)
                                 .customCode("123456")
-                                .integration(VerificationCreateParams.Options.Integration.AUTH0)
                                 .locale("el-GR")
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
@@ -572,7 +566,6 @@ internal class ErrorHandlingTest {
                                 .callbackUrl("callback_url")
                                 .codeSize(5L)
                                 .customCode("123456")
-                                .integration(VerificationCreateParams.Options.Integration.AUTH0)
                                 .locale("el-GR")
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
@@ -651,7 +644,6 @@ internal class ErrorHandlingTest {
                                 .callbackUrl("callback_url")
                                 .codeSize(5L)
                                 .customCode("123456")
-                                .integration(VerificationCreateParams.Options.Integration.AUTH0)
                                 .locale("el-GR")
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
@@ -730,7 +722,6 @@ internal class ErrorHandlingTest {
                                 .callbackUrl("callback_url")
                                 .codeSize(5L)
                                 .customCode("123456")
-                                .integration(VerificationCreateParams.Options.Integration.AUTH0)
                                 .locale("el-GR")
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
@@ -809,7 +800,6 @@ internal class ErrorHandlingTest {
                                 .callbackUrl("callback_url")
                                 .codeSize(5L)
                                 .customCode("123456")
-                                .integration(VerificationCreateParams.Options.Integration.AUTH0)
                                 .locale("el-GR")
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
@@ -888,7 +878,6 @@ internal class ErrorHandlingTest {
                                 .callbackUrl("callback_url")
                                 .codeSize(5L)
                                 .customCode("123456")
-                                .integration(VerificationCreateParams.Options.Integration.AUTH0)
                                 .locale("el-GR")
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
@@ -967,7 +956,6 @@ internal class ErrorHandlingTest {
                                 .callbackUrl("callback_url")
                                 .codeSize(5L)
                                 .customCode("123456")
-                                .integration(VerificationCreateParams.Options.Integration.AUTH0)
                                 .locale("el-GR")
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
@@ -1046,7 +1034,6 @@ internal class ErrorHandlingTest {
                                 .callbackUrl("callback_url")
                                 .codeSize(5L)
                                 .customCode("123456")
-                                .integration(VerificationCreateParams.Options.Integration.AUTH0)
                                 .locale("el-GR")
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
@@ -1125,7 +1112,6 @@ internal class ErrorHandlingTest {
                                 .callbackUrl("callback_url")
                                 .codeSize(5L)
                                 .customCode("123456")
-                                .integration(VerificationCreateParams.Options.Integration.AUTH0)
                                 .locale("el-GR")
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
@@ -1204,7 +1190,6 @@ internal class ErrorHandlingTest {
                                 .callbackUrl("callback_url")
                                 .codeSize(5L)
                                 .customCode("123456")
-                                .integration(VerificationCreateParams.Options.Integration.AUTH0)
                                 .locale("el-GR")
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
@@ -1283,7 +1268,6 @@ internal class ErrorHandlingTest {
                                 .callbackUrl("callback_url")
                                 .codeSize(5L)
                                 .customCode("123456")
-                                .integration(VerificationCreateParams.Options.Integration.AUTH0)
                                 .locale("el-GR")
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
@@ -1360,7 +1344,6 @@ internal class ErrorHandlingTest {
                                 .callbackUrl("callback_url")
                                 .codeSize(5L)
                                 .customCode("123456")
-                                .integration(VerificationCreateParams.Options.Integration.AUTH0)
                                 .locale("el-GR")
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
