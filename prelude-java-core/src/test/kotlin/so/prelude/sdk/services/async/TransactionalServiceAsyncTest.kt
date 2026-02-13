@@ -30,6 +30,12 @@ internal class TransactionalServiceAsyncTest {
                     .to("+30123456789")
                     .callbackUrl("callback_url")
                     .correlationId("correlation_id")
+                    .document(
+                        TransactionalSendParams.Document.builder()
+                            .filename("invoice.pdf")
+                            .url("https://example.com/invoice.pdf")
+                            .build()
+                    )
                     .expiresAt("expires_at")
                     .from("from")
                     .locale("el-GR")
