@@ -359,6 +359,25 @@ PreludeClient client = PreludeOkHttpClient.builder()
     .build();
 ```
 
+### Connection pooling
+
+To customize the underlying OkHttp connection pool, configure the client using the `maxIdleConnections` and `keepAliveDuration` methods:
+
+```java
+import java.time.Duration;
+import so.prelude.sdk.client.PreludeClient;
+import so.prelude.sdk.client.okhttp.PreludeOkHttpClient;
+
+PreludeClient client = PreludeOkHttpClient.builder()
+    .fromEnv()
+    // If `maxIdleConnections` is set, then `keepAliveDuration` must be set, and vice versa.
+    .maxIdleConnections(10)
+    .keepAliveDuration(Duration.ofMinutes(2))
+    .build();
+```
+
+If both options are unset, OkHttp's default connection pool settings are used.
+
 ### HTTPS
 
 > [!NOTE]
