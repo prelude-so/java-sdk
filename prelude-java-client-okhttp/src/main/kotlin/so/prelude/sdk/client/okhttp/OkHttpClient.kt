@@ -33,7 +33,7 @@ import so.prelude.sdk.core.http.HttpResponse
 import so.prelude.sdk.errors.PreludeIoException
 
 class OkHttpClient
-private constructor(@JvmSynthetic internal val okHttpClient: okhttp3.OkHttpClient) : HttpClient {
+internal constructor(@JvmSynthetic internal val okHttpClient: okhttp3.OkHttpClient) : HttpClient {
 
     override fun execute(request: HttpRequest, requestOptions: RequestOptions): HttpResponse {
         val call = newCall(request, requestOptions)
