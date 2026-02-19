@@ -114,7 +114,7 @@ internal class NotifyServiceTest {
         response.validate()
     }
 
-    @Disabled("Prism doesn't support callbacks yet")
+    @Disabled("Mock server doesn't support callbacks yet")
     @Test
     fun send() {
         val client =

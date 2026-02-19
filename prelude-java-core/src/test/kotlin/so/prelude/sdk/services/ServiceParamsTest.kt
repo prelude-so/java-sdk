@@ -36,7 +36,7 @@ internal class ServiceParamsTest {
                 .build()
     }
 
-    @Disabled("Prism doesn't support callbacks yet")
+    @Disabled("Mock server doesn't support callbacks yet")
     @Test
     fun create() {
         val verificationService = client.verification()
