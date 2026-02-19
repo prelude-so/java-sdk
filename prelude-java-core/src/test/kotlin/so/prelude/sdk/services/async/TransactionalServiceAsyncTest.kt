@@ -13,7 +13,7 @@ import so.prelude.sdk.models.TransactionalSendParams
 @ExtendWith(TestServerExtension::class)
 internal class TransactionalServiceAsyncTest {
 
-    @Disabled("Prism doesn't support callbacks yet")
+    @Disabled("Mock server doesn't support callbacks yet")
     @Test
     fun send() {
         val client =

@@ -14,7 +14,7 @@ import so.prelude.sdk.models.VerificationCreateParams
 @ExtendWith(TestServerExtension::class)
 internal class VerificationServiceAsyncTest {
 
-    @Disabled("Prism doesn't support callbacks yet")
+    @Disabled("Mock server doesn't support callbacks yet")
     @Test
     fun create() {
         val client =
