@@ -23,6 +23,7 @@ import so.prelude.sdk.models.WatchSendEventsResponse
 import so.prelude.sdk.models.WatchSendFeedbacksParams
 import so.prelude.sdk.models.WatchSendFeedbacksResponse
 
+/** Evaluate email addresses and phone numbers for trustworthiness. */
 class WatchServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     WatchService {
 

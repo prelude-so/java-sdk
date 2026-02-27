@@ -66,17 +66,26 @@ class PreludeClientAsyncImpl(private val clientOptions: ClientOptions) : Prelude
     override fun withOptions(modifier: Consumer<ClientOptions.Builder>): PreludeClientAsync =
         PreludeClientAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
+    /**
+     * Retrieve detailed information about a phone number including carrier data, line type, and
+     * portability status.
+     */
     override fun lookup(): LookupServiceAsync = lookup
 
+    /** Send transactional and marketing messages with compliance enforcement. */
     override fun notify(): NotifyServiceAsync = notify
 
+    /** Send transactional messages (deprecated - use Notify API instead). */
     override fun transactional(): TransactionalServiceAsync = transactional
 
+    /** Verify phone numbers. */
     override fun verification(): VerificationServiceAsync = verification
 
+    /** Verify phone numbers. */
     override fun verificationManagement(): VerificationManagementServiceAsync =
         verificationManagement
 
+    /** Evaluate email addresses and phone numbers for trustworthiness. */
     override fun watch(): WatchServiceAsync = watch
 
     override fun close() = clientOptions.close()
@@ -116,17 +125,26 @@ class PreludeClientAsyncImpl(private val clientOptions: ClientOptions) : Prelude
                 clientOptions.toBuilder().apply(modifier::accept).build()
             )
 
+        /**
+         * Retrieve detailed information about a phone number including carrier data, line type, and
+         * portability status.
+         */
         override fun lookup(): LookupServiceAsync.WithRawResponse = lookup
 
+        /** Send transactional and marketing messages with compliance enforcement. */
         override fun notify(): NotifyServiceAsync.WithRawResponse = notify
 
+        /** Send transactional messages (deprecated - use Notify API instead). */
         override fun transactional(): TransactionalServiceAsync.WithRawResponse = transactional
 
+        /** Verify phone numbers. */
         override fun verification(): VerificationServiceAsync.WithRawResponse = verification
 
+        /** Verify phone numbers. */
         override fun verificationManagement(): VerificationManagementServiceAsync.WithRawResponse =
             verificationManagement
 
+        /** Evaluate email addresses and phone numbers for trustworthiness. */
         override fun watch(): WatchServiceAsync.WithRawResponse = watch
     }
 }

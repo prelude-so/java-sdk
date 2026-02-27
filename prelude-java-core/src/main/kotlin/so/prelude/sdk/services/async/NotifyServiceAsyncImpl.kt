@@ -34,6 +34,7 @@ import so.prelude.sdk.models.NotifySendBatchResponse
 import so.prelude.sdk.models.NotifySendParams
 import so.prelude.sdk.models.NotifySendResponse
 
+/** Send transactional and marketing messages with compliance enforcement. */
 class NotifyServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     NotifyServiceAsync {
 

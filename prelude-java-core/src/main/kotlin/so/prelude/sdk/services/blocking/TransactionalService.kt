@@ -10,6 +10,7 @@ import so.prelude.sdk.core.http.HttpResponseFor
 import so.prelude.sdk.models.TransactionalSendParams
 import so.prelude.sdk.models.TransactionalSendResponse
 
+/** Send transactional messages (deprecated - use Notify API instead). */
 interface TransactionalService {
 
     /**

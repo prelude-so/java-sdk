@@ -60,16 +60,25 @@ class PreludeClientImpl(private val clientOptions: ClientOptions) : PreludeClien
     override fun withOptions(modifier: Consumer<ClientOptions.Builder>): PreludeClient =
         PreludeClientImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
+    /**
+     * Retrieve detailed information about a phone number including carrier data, line type, and
+     * portability status.
+     */
     override fun lookup(): LookupService = lookup
 
+    /** Send transactional and marketing messages with compliance enforcement. */
     override fun notify(): NotifyService = notify
 
+    /** Send transactional messages (deprecated - use Notify API instead). */
     override fun transactional(): TransactionalService = transactional
 
+    /** Verify phone numbers. */
     override fun verification(): VerificationService = verification
 
+    /** Verify phone numbers. */
     override fun verificationManagement(): VerificationManagementService = verificationManagement
 
+    /** Evaluate email addresses and phone numbers for trustworthiness. */
     override fun watch(): WatchService = watch
 
     override fun close() = clientOptions.close()
@@ -108,17 +117,26 @@ class PreludeClientImpl(private val clientOptions: ClientOptions) : PreludeClien
                 clientOptions.toBuilder().apply(modifier::accept).build()
             )
 
+        /**
+         * Retrieve detailed information about a phone number including carrier data, line type, and
+         * portability status.
+         */
         override fun lookup(): LookupService.WithRawResponse = lookup
 
+        /** Send transactional and marketing messages with compliance enforcement. */
         override fun notify(): NotifyService.WithRawResponse = notify
 
+        /** Send transactional messages (deprecated - use Notify API instead). */
         override fun transactional(): TransactionalService.WithRawResponse = transactional
 
+        /** Verify phone numbers. */
         override fun verification(): VerificationService.WithRawResponse = verification
 
+        /** Verify phone numbers. */
         override fun verificationManagement(): VerificationManagementService.WithRawResponse =
             verificationManagement
 
+        /** Evaluate email addresses and phone numbers for trustworthiness. */
         override fun watch(): WatchService.WithRawResponse = watch
     }
 }

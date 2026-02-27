@@ -18,6 +18,7 @@ import so.prelude.sdk.models.VerificationManagementSetPhoneNumberResponse
 import so.prelude.sdk.models.VerificationManagementSubmitSenderIdParams
 import so.prelude.sdk.models.VerificationManagementSubmitSenderIdResponse
 
+/** Verify phone numbers. */
 interface VerificationManagementServiceAsync {
 
     /**

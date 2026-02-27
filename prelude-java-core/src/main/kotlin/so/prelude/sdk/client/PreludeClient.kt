@@ -47,16 +47,25 @@ interface PreludeClient {
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): PreludeClient
 
+    /**
+     * Retrieve detailed information about a phone number including carrier data, line type, and
+     * portability status.
+     */
     fun lookup(): LookupService
 
+    /** Send transactional and marketing messages with compliance enforcement. */
     fun notify(): NotifyService
 
+    /** Send transactional messages (deprecated - use Notify API instead). */
     fun transactional(): TransactionalService
 
+    /** Verify phone numbers. */
     fun verification(): VerificationService
 
+    /** Verify phone numbers. */
     fun verificationManagement(): VerificationManagementService
 
+    /** Evaluate email addresses and phone numbers for trustworthiness. */
     fun watch(): WatchService
 
     /**
@@ -82,16 +91,25 @@ interface PreludeClient {
          */
         fun withOptions(modifier: Consumer<ClientOptions.Builder>): PreludeClient.WithRawResponse
 
+        /**
+         * Retrieve detailed information about a phone number including carrier data, line type, and
+         * portability status.
+         */
         fun lookup(): LookupService.WithRawResponse
 
+        /** Send transactional and marketing messages with compliance enforcement. */
         fun notify(): NotifyService.WithRawResponse
 
+        /** Send transactional messages (deprecated - use Notify API instead). */
         fun transactional(): TransactionalService.WithRawResponse
 
+        /** Verify phone numbers. */
         fun verification(): VerificationService.WithRawResponse
 
+        /** Verify phone numbers. */
         fun verificationManagement(): VerificationManagementService.WithRawResponse
 
+        /** Evaluate email addresses and phone numbers for trustworthiness. */
         fun watch(): WatchService.WithRawResponse
     }
 }

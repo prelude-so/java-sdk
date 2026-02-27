@@ -22,6 +22,7 @@ import so.prelude.sdk.models.NotifySendBatchResponse
 import so.prelude.sdk.models.NotifySendParams
 import so.prelude.sdk.models.NotifySendResponse
 
+/** Send transactional and marketing messages with compliance enforcement. */
 interface NotifyServiceAsync {
 
     /**
