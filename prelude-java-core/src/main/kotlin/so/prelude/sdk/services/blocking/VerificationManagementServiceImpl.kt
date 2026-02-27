@@ -29,6 +29,7 @@ import so.prelude.sdk.models.VerificationManagementSetPhoneNumberResponse
 import so.prelude.sdk.models.VerificationManagementSubmitSenderIdParams
 import so.prelude.sdk.models.VerificationManagementSubmitSenderIdResponse
 
+/** Verify phone numbers. */
 class VerificationManagementServiceImpl
 internal constructor(private val clientOptions: ClientOptions) : VerificationManagementService {
 

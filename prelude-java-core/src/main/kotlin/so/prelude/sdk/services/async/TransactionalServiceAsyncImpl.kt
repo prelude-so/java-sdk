@@ -20,6 +20,7 @@ import so.prelude.sdk.core.prepareAsync
 import so.prelude.sdk.models.TransactionalSendParams
 import so.prelude.sdk.models.TransactionalSendResponse
 
+/** Send transactional messages (deprecated - use Notify API instead). */
 class TransactionalServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     TransactionalServiceAsync {
 
