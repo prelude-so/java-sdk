@@ -66,6 +66,11 @@ private constructor(
 
     /**
      * The status of the verification.
+     * * `success` - A new verification window was created.
+     * * `retry` - A new attempt was created for an existing verification window.
+     * * `challenged` - The verification is suspicious and is restricted to non-SMS and non-voice
+     *   channels only. This mode must be enabled for your customer account by Prelude support.
+     * * `blocked` - The verification was blocked.
      *
      * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
@@ -250,7 +255,15 @@ private constructor(
          */
         fun method(method: JsonField<Method>) = apply { this.method = method }
 
-        /** The status of the verification. */
+        /**
+         * The status of the verification.
+         * * `success` - A new verification window was created.
+         * * `retry` - A new attempt was created for an existing verification window.
+         * * `challenged` - The verification is suspicious and is restricted to non-SMS and
+         *   non-voice channels only. This mode must be enabled for your customer account by Prelude
+         *   support.
+         * * `blocked` - The verification was blocked.
+         */
         fun status(status: Status) = status(JsonField.of(status))
 
         /**
@@ -570,7 +583,14 @@ private constructor(
         override fun toString() = value.toString()
     }
 
-    /** The status of the verification. */
+    /**
+     * The status of the verification.
+     * * `success` - A new verification window was created.
+     * * `retry` - A new attempt was created for an existing verification window.
+     * * `challenged` - The verification is suspicious and is restricted to non-SMS and non-voice
+     *   channels only. This mode must be enabled for your customer account by Prelude support.
+     * * `blocked` - The verification was blocked.
+     */
     class Status @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**
@@ -589,6 +609,8 @@ private constructor(
 
             @JvmField val RETRY = of("retry")
 
+            @JvmField val CHALLENGED = of("challenged")
+
             @JvmField val BLOCKED = of("blocked")
 
             @JvmStatic fun of(value: String) = Status(JsonField.of(value))
@@ -598,6 +620,7 @@ private constructor(
         enum class Known {
             SUCCESS,
             RETRY,
+            CHALLENGED,
             BLOCKED,
         }
 
@@ -613,6 +636,7 @@ private constructor(
         enum class Value {
             SUCCESS,
             RETRY,
+            CHALLENGED,
             BLOCKED,
             /** An enum member indicating that [Status] was instantiated with an unknown value. */
             _UNKNOWN,
@@ -629,6 +653,7 @@ private constructor(
             when (this) {
                 SUCCESS -> Value.SUCCESS
                 RETRY -> Value.RETRY
+                CHALLENGED -> Value.CHALLENGED
                 BLOCKED -> Value.BLOCKED
                 else -> Value._UNKNOWN
             }
@@ -646,6 +671,7 @@ private constructor(
             when (this) {
                 SUCCESS -> Known.SUCCESS
                 RETRY -> Known.RETRY
+                CHALLENGED -> Known.CHALLENGED
                 BLOCKED -> Known.BLOCKED
                 else -> throw PreludeInvalidDataException("Unknown Status: $value")
             }
