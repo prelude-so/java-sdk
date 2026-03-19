@@ -13,7 +13,6 @@ import com.github.tomakehurst.wiremock.client.WireMock.verify
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo
 import com.github.tomakehurst.wiremock.junit5.WireMockTest
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.parallel.ResourceLock
 import so.prelude.sdk.client.PreludeClient
@@ -36,7 +35,6 @@ internal class ServiceParamsTest {
                 .build()
     }
 
-    @Disabled("Mock server doesn't support callbacks yet")
     @Test
     fun create() {
         val verificationService = client.verification()

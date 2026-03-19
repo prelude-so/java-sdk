@@ -2,7 +2,6 @@
 
 package so.prelude.sdk.services.blocking
 
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import so.prelude.sdk.TestServerExtension
@@ -13,7 +12,6 @@ import so.prelude.sdk.models.TransactionalSendParams
 @ExtendWith(TestServerExtension::class)
 internal class TransactionalServiceTest {
 
-    @Disabled("Mock server doesn't support callbacks yet")
     @Test
     fun send() {
         val client =
