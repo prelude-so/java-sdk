@@ -2,7 +2,6 @@
 
 package so.prelude.sdk.services.async
 
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import so.prelude.sdk.TestServerExtension
@@ -14,7 +13,6 @@ import so.prelude.sdk.models.VerificationCreateParams
 @ExtendWith(TestServerExtension::class)
 internal class VerificationServiceAsyncTest {
 
-    @Disabled("Mock server doesn't support callbacks yet")
     @Test
     fun create() {
         val client =

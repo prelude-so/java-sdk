@@ -3,7 +3,6 @@
 package so.prelude.sdk.services.blocking
 
 import java.time.OffsetDateTime
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import so.prelude.sdk.TestServerExtension
@@ -114,7 +113,6 @@ internal class NotifyServiceTest {
         response.validate()
     }
 
-    @Disabled("Mock server doesn't support callbacks yet")
     @Test
     fun send() {
         val client =
