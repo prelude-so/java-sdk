@@ -1,5 +1,72 @@
 # Changelog
 
+## 0.11.0 (2026-03-23)
+
+Full Changelog: [v0.10.0...v0.11.0](https://github.com/prelude-so/java-sdk/compare/v0.10.0...v0.11.0)
+
+### Features
+
+* **api:** api update ([ca9ee11](https://github.com/prelude-so/java-sdk/commit/ca9ee118f3800cfde6765103742c06a015f47111))
+* **api:** api update ([d683d44](https://github.com/prelude-so/java-sdk/commit/d683d441c3d8d89015ee9ab971ad883fc8f81b32))
+* **api:** api update ([01e0e53](https://github.com/prelude-so/java-sdk/commit/01e0e5369605017ae1ef44d473d593584ef07a71))
+* **api:** api update ([53cbdac](https://github.com/prelude-so/java-sdk/commit/53cbdac9a2e4b4cffaab963be9edeb77f4a07cf3))
+* **api:** api update ([7b287a1](https://github.com/prelude-so/java-sdk/commit/7b287a1a1f2bae3f1185bb8650a49169947bbeb0))
+* **api:** api update ([aabe63c](https://github.com/prelude-so/java-sdk/commit/aabe63c8899e9177d6d053cdd998806302c9c111))
+* **api:** api update ([74b758c](https://github.com/prelude-so/java-sdk/commit/74b758c2e80672f942000e1201edd081d67b0d18))
+* **api:** api update ([dc0fc24](https://github.com/prelude-so/java-sdk/commit/dc0fc245ce976922680aaa766216f76b039f3d46))
+* **client:** add `HttpRequest#url()` method ([6b5a7b3](https://github.com/prelude-so/java-sdk/commit/6b5a7b3018b374bfc0c8337b82d9ae2cc8ca20ac))
+* **client:** add connection pooling option ([dabf164](https://github.com/prelude-so/java-sdk/commit/dabf164c493a424cd9542d1355af0113cc16c6be))
+* **client:** allow configuring dispatcher executor service ([960cc19](https://github.com/prelude-so/java-sdk/commit/960cc193330b9e3b9fb29d48283430029846c3aa))
+* **client:** send `X-Stainless-Kotlin-Version` header ([32f4d72](https://github.com/prelude-so/java-sdk/commit/32f4d72f068581e4257c5934d3c58b75128f0289))
+
+
+### Bug Fixes
+
+* **client:** allow updating header/query affecting fields in `toBuilder()` ([903da67](https://github.com/prelude-so/java-sdk/commit/903da674a34dcead8c0889ae611204d599caf99b))
+* **client:** disallow coercion from float to int ([a498a2f](https://github.com/prelude-so/java-sdk/commit/a498a2f53afeaef5b2dc34b4ade246af2fec6167))
+* **client:** fully respect max retries ([db20e56](https://github.com/prelude-so/java-sdk/commit/db20e56fa9a8b373305bff3ae10afea7bbd0ff53))
+* **client:** incorrect `Retry-After` parsing ([8ee79ed](https://github.com/prelude-so/java-sdk/commit/8ee79ed1d5739676b1796ee4a5dfea12b5552d0e))
+* **client:** preserve time zone in lenient date-time parsing ([62d4ba4](https://github.com/prelude-so/java-sdk/commit/62d4ba43268ead94f6f1ab811138bea8053a906e))
+* **client:** send retry count header for max retries 0 ([db20e56](https://github.com/prelude-so/java-sdk/commit/db20e56fa9a8b373305bff3ae10afea7bbd0ff53))
+* date time deserialization leniency ([b53df43](https://github.com/prelude-so/java-sdk/commit/b53df4388bfd39591bc9952d8039ea5e76bc6a99))
+* fix request delays for retrying to be more respectful of high requested delays ([249bfd4](https://github.com/prelude-so/java-sdk/commit/249bfd4b8dc6f64ff54c9cab37a66ab27ca258b5))
+
+
+### Chores
+
+* **ci:** skip uploading artifacts on stainless-internal branches ([2737021](https://github.com/prelude-so/java-sdk/commit/27370217d777fa1ebf591100e2be408388575241))
+* **ci:** upgrade `actions/github-script` ([47e61f7](https://github.com/prelude-so/java-sdk/commit/47e61f7b26522ad8336e16e76149d6aeb34ad4e5))
+* **ci:** upgrade `actions/setup-java` ([e3a09ff](https://github.com/prelude-so/java-sdk/commit/e3a09ffbe9d651ef627986ab8665898ddbdaf089))
+* **docs:** add missing descriptions ([edc87cc](https://github.com/prelude-so/java-sdk/commit/edc87cc96ccd7f8788b4394d4d6f8274f501ad91))
+* drop apache dependency ([ea51709](https://github.com/prelude-so/java-sdk/commit/ea517099a868cfbc5692b303c02f3f26078442b3))
+* **internal:** allow passing args to `./scripts/test` ([68d4da0](https://github.com/prelude-so/java-sdk/commit/68d4da01ab6ef8c673849405051b98d5d876841c))
+* **internal:** bump palantir-java-format ([4460207](https://github.com/prelude-so/java-sdk/commit/4460207c304c03b09598c8a2b1cfa7c86a4a6190))
+* **internal:** clean up maven repo artifact script and add html documentation to repo root ([88364fc](https://github.com/prelude-so/java-sdk/commit/88364fca4159730830a8d2a41b93d7684c04c01f))
+* **internal:** correct cache invalidation for `SKIP_MOCK_TESTS` ([27772a9](https://github.com/prelude-so/java-sdk/commit/27772a95464ad4ca072493d67655fb09cfb0ab14))
+* **internal:** depend on packages directly in example ([db20e56](https://github.com/prelude-so/java-sdk/commit/db20e56fa9a8b373305bff3ae10afea7bbd0ff53))
+* **internal:** expand imports ([ee924bd](https://github.com/prelude-so/java-sdk/commit/ee924bd9b90bfd9454c4622c6ba891fb21a0fd5c))
+* **internal:** improve maven repo docs ([d891959](https://github.com/prelude-so/java-sdk/commit/d8919592a63c3c766cc07a682294c0918a896aea))
+* **internal:** make `OkHttp` constructor internal ([4d0d7a8](https://github.com/prelude-so/java-sdk/commit/4d0d7a8469d9a062be145775327227919a816340))
+* **internal:** support uploading Maven repo artifacts to stainless package server ([141a5d6](https://github.com/prelude-so/java-sdk/commit/141a5d618305ea5cb1d17eb2da4f3b578727fd02))
+* **internal:** tweak CI branches ([e599cbd](https://github.com/prelude-so/java-sdk/commit/e599cbdd3574f850310bd1534bcb35a19d95369b))
+* **internal:** update `actions/checkout` version ([bcb84ae](https://github.com/prelude-so/java-sdk/commit/bcb84ae66e0256dc8509d802e905bb73610f85cb))
+* **internal:** update `TestServerExtension` comment ([2f1209d](https://github.com/prelude-so/java-sdk/commit/2f1209d3d5703a3565f11f4d3b08b09da524335b))
+* **internal:** update gitignore ([60b2469](https://github.com/prelude-so/java-sdk/commit/60b2469a9eaabaa78e13be5fd33063b26ac5c4cd))
+* **internal:** update maven repo doc to include authentication ([95ce4a8](https://github.com/prelude-so/java-sdk/commit/95ce4a8a1c321fe80673d83ce10289ece6dc1895))
+* **internal:** update retry delay tests ([1c675ac](https://github.com/prelude-so/java-sdk/commit/1c675acbcc417480966a3c371ba29374c48269ca))
+* **internal:** upgrade AssertJ ([626ff7d](https://github.com/prelude-so/java-sdk/commit/626ff7d2113f7346c428e92a824ec50c38aec643))
+* make `Properties` more resilient to `null` ([7e517d6](https://github.com/prelude-so/java-sdk/commit/7e517d6ca2f9ed57d2263b98cd0c7ac8cd1b60b9))
+* test on Jackson 2.14.0 to avoid encountering FasterXML/jackson-databind[#3240](https://github.com/prelude-so/java-sdk/issues/3240) in tests ([b53df43](https://github.com/prelude-so/java-sdk/commit/b53df4388bfd39591bc9952d8039ea5e76bc6a99))
+* **test:** do not count install time for mock server timeout ([d631a4b](https://github.com/prelude-so/java-sdk/commit/d631a4b7a630579d45fa2330c9c2a87c22d34b2c))
+* **tests:** bump steady to v0.19.4 ([cf4ff3e](https://github.com/prelude-so/java-sdk/commit/cf4ff3e2ea60ba1bba3d5343ca6803dde4e02a76))
+* **tests:** bump steady to v0.19.5 ([758dbbe](https://github.com/prelude-so/java-sdk/commit/758dbbe77686dccdc0b4b16f20460c697d998ee3))
+* update mock server docs ([9ab611b](https://github.com/prelude-so/java-sdk/commit/9ab611b92520a6f17ad9c8ad4017bfe34ddf1c5e))
+
+
+### Refactors
+
+* **tests:** switch from prism to steady ([33adec4](https://github.com/prelude-so/java-sdk/commit/33adec4b26941cf8f3ecfefb1f9f566eb5b98b87))
+
 ## 0.10.0 (2025-12-05)
 
 Full Changelog: [v0.9.0...v0.10.0](https://github.com/prelude-so/java-sdk/compare/v0.9.0...v0.10.0)
