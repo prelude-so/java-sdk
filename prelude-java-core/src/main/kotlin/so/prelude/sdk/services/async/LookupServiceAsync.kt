@@ -10,6 +10,10 @@ import so.prelude.sdk.core.http.HttpResponseFor
 import so.prelude.sdk.models.LookupLookupParams
 import so.prelude.sdk.models.LookupLookupResponse
 
+/**
+ * Retrieve detailed information about a phone number including carrier data, line type, and
+ * portability status.
+ */
 interface LookupServiceAsync {
 
     /**

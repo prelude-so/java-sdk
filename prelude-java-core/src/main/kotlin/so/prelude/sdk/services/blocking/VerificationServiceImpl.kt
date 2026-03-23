@@ -21,6 +21,7 @@ import so.prelude.sdk.models.VerificationCheckResponse
 import so.prelude.sdk.models.VerificationCreateParams
 import so.prelude.sdk.models.VerificationCreateResponse
 
+/** Verify phone numbers. */
 class VerificationServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     VerificationService {
 

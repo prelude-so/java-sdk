@@ -1188,7 +1188,6 @@ private constructor(
         private val callbackUrl: JsonField<String>,
         private val codeSize: JsonField<Long>,
         private val customCode: JsonField<String>,
-        private val integration: JsonField<Integration>,
         private val locale: JsonField<String>,
         private val method: JsonField<Method>,
         private val preferredChannel: JsonField<PreferredChannel>,
@@ -1210,9 +1209,6 @@ private constructor(
             @JsonProperty("custom_code")
             @ExcludeMissing
             customCode: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("integration")
-            @ExcludeMissing
-            integration: JsonField<Integration> = JsonMissing.of(),
             @JsonProperty("locale") @ExcludeMissing locale: JsonField<String> = JsonMissing.of(),
             @JsonProperty("method") @ExcludeMissing method: JsonField<Method> = JsonMissing.of(),
             @JsonProperty("preferred_channel")
@@ -1232,7 +1228,6 @@ private constructor(
             callbackUrl,
             codeSize,
             customCode,
-            integration,
             locale,
             method,
             preferredChannel,
@@ -1243,8 +1238,8 @@ private constructor(
         )
 
         /**
-         * This allows you to automatically retrieve and fill the OTP code on mobile apps. Currently
-         * only Android devices are supported.
+         * This allows automatic OTP retrieval on mobile apps and web browsers. Supported platforms
+         * are Android (SMS Retriever API) and Web (WebOTP API).
          *
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
@@ -1279,14 +1274,6 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun customCode(): Optional<String> = customCode.getOptional("custom_code")
-
-        /**
-         * The integration that triggered the verification.
-         *
-         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun integration(): Optional<Integration> = integration.getOptional("integration")
 
         /**
          * A BCP-47 formatted locale string with the language the text message will be sent to. If
@@ -1378,15 +1365,6 @@ private constructor(
         fun _customCode(): JsonField<String> = customCode
 
         /**
-         * Returns the raw JSON value of [integration].
-         *
-         * Unlike [integration], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("integration")
-        @ExcludeMissing
-        fun _integration(): JsonField<Integration> = integration
-
-        /**
          * Returns the raw JSON value of [locale].
          *
          * Unlike [locale], this method doesn't throw if the JSON field has an unexpected type.
@@ -1460,7 +1438,6 @@ private constructor(
             private var callbackUrl: JsonField<String> = JsonMissing.of()
             private var codeSize: JsonField<Long> = JsonMissing.of()
             private var customCode: JsonField<String> = JsonMissing.of()
-            private var integration: JsonField<Integration> = JsonMissing.of()
             private var locale: JsonField<String> = JsonMissing.of()
             private var method: JsonField<Method> = JsonMissing.of()
             private var preferredChannel: JsonField<PreferredChannel> = JsonMissing.of()
@@ -1475,7 +1452,6 @@ private constructor(
                 callbackUrl = options.callbackUrl
                 codeSize = options.codeSize
                 customCode = options.customCode
-                integration = options.integration
                 locale = options.locale
                 method = options.method
                 preferredChannel = options.preferredChannel
@@ -1486,8 +1462,8 @@ private constructor(
             }
 
             /**
-             * This allows you to automatically retrieve and fill the OTP code on mobile apps.
-             * Currently only Android devices are supported.
+             * This allows automatic OTP retrieval on mobile apps and web browsers. Supported
+             * platforms are Android (SMS Retriever API) and Web (WebOTP API).
              */
             fun appRealm(appRealm: AppRealm) = appRealm(JsonField.of(appRealm))
 
@@ -1548,20 +1524,6 @@ private constructor(
              * supported value.
              */
             fun customCode(customCode: JsonField<String>) = apply { this.customCode = customCode }
-
-            /** The integration that triggered the verification. */
-            fun integration(integration: Integration) = integration(JsonField.of(integration))
-
-            /**
-             * Sets [Builder.integration] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.integration] with a well-typed [Integration] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun integration(integration: JsonField<Integration>) = apply {
-                this.integration = integration
-            }
 
             /**
              * A BCP-47 formatted locale string with the language the text message will be sent to.
@@ -1684,7 +1646,6 @@ private constructor(
                     callbackUrl,
                     codeSize,
                     customCode,
-                    integration,
                     locale,
                     method,
                     preferredChannel,
@@ -1706,7 +1667,6 @@ private constructor(
             callbackUrl()
             codeSize()
             customCode()
-            integration().ifPresent { it.validate() }
             locale()
             method().ifPresent { it.validate() }
             preferredChannel().ifPresent { it.validate() }
@@ -1736,7 +1696,6 @@ private constructor(
                 (if (callbackUrl.asKnown().isPresent) 1 else 0) +
                 (if (codeSize.asKnown().isPresent) 1 else 0) +
                 (if (customCode.asKnown().isPresent) 1 else 0) +
-                (integration.asKnown().getOrNull()?.validity() ?: 0) +
                 (if (locale.asKnown().isPresent) 1 else 0) +
                 (method.asKnown().getOrNull()?.validity() ?: 0) +
                 (preferredChannel.asKnown().getOrNull()?.validity() ?: 0) +
@@ -1745,8 +1704,8 @@ private constructor(
                 (variables.asKnown().getOrNull()?.validity() ?: 0)
 
         /**
-         * This allows you to automatically retrieve and fill the OTP code on mobile apps. Currently
-         * only Android devices are supported.
+         * This allows automatic OTP retrieval on mobile apps and web browsers. Supported platforms
+         * are Android (SMS Retriever API) and Web (WebOTP API).
          */
         class AppRealm
         @JsonCreator(mode = JsonCreator.Mode.DISABLED)
@@ -1765,7 +1724,8 @@ private constructor(
             ) : this(platform, value, mutableMapOf())
 
             /**
-             * The platform the SMS will be sent to. We are currently only supporting "android".
+             * The platform for automatic OTP retrieval. Use "android" for the SMS Retriever API or
+             * "web" for the WebOTP API.
              *
              * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
              *   unexpectedly missing or null (e.g. if the server responded with an unexpected
@@ -1774,9 +1734,11 @@ private constructor(
             fun platform(): Platform = platform.getRequired("platform")
 
             /**
-             * The Android SMS Retriever API hash code that identifies your app. For more
-             * information, see
-             * [Google documentation](https://developers.google.com/identity/sms-retriever/verify#computing_your_apps_hash_string).
+             * The value depends on the platform:
+             * - For Android: The SMS Retriever API hash code (11 characters). See
+             *   [Google documentation](https://developers.google.com/identity/sms-retriever/verify#computing_your_apps_hash_string).
+             * - For Web: The origin domain (e.g., "example.com" or "www.example.com"). See
+             *   [WebOTP API documentation](https://developer.mozilla.org/en-US/docs/Web/API/WebOTP_API).
              *
              * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
              *   unexpectedly missing or null (e.g. if the server responded with an unexpected
@@ -1842,7 +1804,8 @@ private constructor(
                 }
 
                 /**
-                 * The platform the SMS will be sent to. We are currently only supporting "android".
+                 * The platform for automatic OTP retrieval. Use "android" for the SMS Retriever API
+                 * or "web" for the WebOTP API.
                  */
                 fun platform(platform: Platform) = platform(JsonField.of(platform))
 
@@ -1856,9 +1819,11 @@ private constructor(
                 fun platform(platform: JsonField<Platform>) = apply { this.platform = platform }
 
                 /**
-                 * The Android SMS Retriever API hash code that identifies your app. For more
-                 * information, see
-                 * [Google documentation](https://developers.google.com/identity/sms-retriever/verify#computing_your_apps_hash_string).
+                 * The value depends on the platform:
+                 * - For Android: The SMS Retriever API hash code (11 characters). See
+                 *   [Google documentation](https://developers.google.com/identity/sms-retriever/verify#computing_your_apps_hash_string).
+                 * - For Web: The origin domain (e.g., "example.com" or "www.example.com"). See
+                 *   [WebOTP API documentation](https://developer.mozilla.org/en-US/docs/Web/API/WebOTP_API).
                  */
                 fun value(value: String) = value(JsonField.of(value))
 
@@ -1945,7 +1910,10 @@ private constructor(
                 (platform.asKnown().getOrNull()?.validity() ?: 0) +
                     (if (value.asKnown().isPresent) 1 else 0)
 
-            /** The platform the SMS will be sent to. We are currently only supporting "android". */
+            /**
+             * The platform for automatic OTP retrieval. Use "android" for the SMS Retriever API or
+             * "web" for the WebOTP API.
+             */
             class Platform @JsonCreator private constructor(private val value: JsonField<String>) :
                 Enum {
 
@@ -1963,12 +1931,15 @@ private constructor(
 
                     @JvmField val ANDROID = of("android")
 
+                    @JvmField val WEB = of("web")
+
                     @JvmStatic fun of(value: String) = Platform(JsonField.of(value))
                 }
 
                 /** An enum containing [Platform]'s known values. */
                 enum class Known {
-                    ANDROID
+                    ANDROID,
+                    WEB,
                 }
 
                 /**
@@ -1982,6 +1953,7 @@ private constructor(
                  */
                 enum class Value {
                     ANDROID,
+                    WEB,
                     /**
                      * An enum member indicating that [Platform] was instantiated with an unknown
                      * value.
@@ -1999,6 +1971,7 @@ private constructor(
                 fun value(): Value =
                     when (this) {
                         ANDROID -> Value.ANDROID
+                        WEB -> Value.WEB
                         else -> Value._UNKNOWN
                     }
 
@@ -2014,6 +1987,7 @@ private constructor(
                 fun known(): Known =
                     when (this) {
                         ANDROID -> Known.ANDROID
+                        WEB -> Known.WEB
                         else -> throw PreludeInvalidDataException("Unknown Platform: $value")
                     }
 
@@ -2090,138 +2064,6 @@ private constructor(
 
             override fun toString() =
                 "AppRealm{platform=$platform, value=$value, additionalProperties=$additionalProperties}"
-        }
-
-        /** The integration that triggered the verification. */
-        class Integration @JsonCreator private constructor(private val value: JsonField<String>) :
-            Enum {
-
-            /**
-             * Returns this class instance's raw value.
-             *
-             * This is usually only useful if this instance was deserialized from data that doesn't
-             * match any known member, and you want to know that value. For example, if the SDK is
-             * on an older version than the API, then the API may respond with new members that the
-             * SDK is unaware of.
-             */
-            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
-
-            companion object {
-
-                @JvmField val AUTH0 = of("auth0")
-
-                @JvmField val SUPABASE = of("supabase")
-
-                @JvmStatic fun of(value: String) = Integration(JsonField.of(value))
-            }
-
-            /** An enum containing [Integration]'s known values. */
-            enum class Known {
-                AUTH0,
-                SUPABASE,
-            }
-
-            /**
-             * An enum containing [Integration]'s known values, as well as an [_UNKNOWN] member.
-             *
-             * An instance of [Integration] can contain an unknown value in a couple of cases:
-             * - It was deserialized from data that doesn't match any known member. For example, if
-             *   the SDK is on an older version than the API, then the API may respond with new
-             *   members that the SDK is unaware of.
-             * - It was constructed with an arbitrary value using the [of] method.
-             */
-            enum class Value {
-                AUTH0,
-                SUPABASE,
-                /**
-                 * An enum member indicating that [Integration] was instantiated with an unknown
-                 * value.
-                 */
-                _UNKNOWN,
-            }
-
-            /**
-             * Returns an enum member corresponding to this class instance's value, or
-             * [Value._UNKNOWN] if the class was instantiated with an unknown value.
-             *
-             * Use the [known] method instead if you're certain the value is always known or if you
-             * want to throw for the unknown case.
-             */
-            fun value(): Value =
-                when (this) {
-                    AUTH0 -> Value.AUTH0
-                    SUPABASE -> Value.SUPABASE
-                    else -> Value._UNKNOWN
-                }
-
-            /**
-             * Returns an enum member corresponding to this class instance's value.
-             *
-             * Use the [value] method instead if you're uncertain the value is always known and
-             * don't want to throw for the unknown case.
-             *
-             * @throws PreludeInvalidDataException if this class instance's value is a not a known
-             *   member.
-             */
-            fun known(): Known =
-                when (this) {
-                    AUTH0 -> Known.AUTH0
-                    SUPABASE -> Known.SUPABASE
-                    else -> throw PreludeInvalidDataException("Unknown Integration: $value")
-                }
-
-            /**
-             * Returns this class instance's primitive wire representation.
-             *
-             * This differs from the [toString] method because that method is primarily for
-             * debugging and generally doesn't throw.
-             *
-             * @throws PreludeInvalidDataException if this class instance's value does not have the
-             *   expected primitive type.
-             */
-            fun asString(): String =
-                _value().asString().orElseThrow {
-                    PreludeInvalidDataException("Value is not a String")
-                }
-
-            private var validated: Boolean = false
-
-            fun validate(): Integration = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                known()
-                validated = true
-            }
-
-            fun isValid(): Boolean =
-                try {
-                    validate()
-                    true
-                } catch (e: PreludeInvalidDataException) {
-                    false
-                }
-
-            /**
-             * Returns a score indicating how many valid values are contained in this object
-             * recursively.
-             *
-             * Used for best match union deserialization.
-             */
-            @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is Integration && value == other.value
-            }
-
-            override fun hashCode() = value.hashCode()
-
-            override fun toString() = value.toString()
         }
 
         /**
@@ -2638,7 +2480,6 @@ private constructor(
                 callbackUrl == other.callbackUrl &&
                 codeSize == other.codeSize &&
                 customCode == other.customCode &&
-                integration == other.integration &&
                 locale == other.locale &&
                 method == other.method &&
                 preferredChannel == other.preferredChannel &&
@@ -2654,7 +2495,6 @@ private constructor(
                 callbackUrl,
                 codeSize,
                 customCode,
-                integration,
                 locale,
                 method,
                 preferredChannel,
@@ -2668,7 +2508,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Options{appRealm=$appRealm, callbackUrl=$callbackUrl, codeSize=$codeSize, customCode=$customCode, integration=$integration, locale=$locale, method=$method, preferredChannel=$preferredChannel, senderId=$senderId, templateId=$templateId, variables=$variables, additionalProperties=$additionalProperties}"
+            "Options{appRealm=$appRealm, callbackUrl=$callbackUrl, codeSize=$codeSize, customCode=$customCode, locale=$locale, method=$method, preferredChannel=$preferredChannel, senderId=$senderId, templateId=$templateId, variables=$variables, additionalProperties=$additionalProperties}"
     }
 
     /**
@@ -2739,8 +2579,9 @@ private constructor(
         fun appVersion(): Optional<String> = appVersion.getOptional("app_version")
 
         /**
-         * The unique identifier for the user's device. For Android, this corresponds to the
-         * `ANDROID_ID` and for iOS, this corresponds to the `identifierForVendor`.
+         * A unique ID for the user's device. You should ensure that each user device has a unique
+         * `device_id` value. Ideally, for Android, this corresponds to the `ANDROID_ID` and for
+         * iOS, this corresponds to the `identifierForVendor`.
          *
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
@@ -2765,7 +2606,10 @@ private constructor(
             devicePlatform.getOptional("device_platform")
 
         /**
-         * The IP address of the user's device.
+         * The public IP v4 or v6 address of the end-user's device. You should collect this from
+         * your backend. If your backend is behind a proxy, use the `X-Forwarded-For`, `Forwarded`,
+         * `True-Client-IP`, `CF-Connecting-IP` or an equivalent header to get the actual public IP
+         * of the end-user's device.
          *
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
@@ -2773,8 +2617,8 @@ private constructor(
         fun ip(): Optional<String> = ip.getOptional("ip")
 
         /**
-         * This signal should provide a higher level of trust, indicating that the user is genuine.
-         * Contact us to discuss your use case. For more details, refer to
+         * This signal should indicate a higher level of trust, explicitly stating that the user is
+         * genuine. Contact us to discuss your use case. For more details, refer to
          * [Signals](/verify/v2/documentation/prevent-fraud#signals).
          *
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -2783,9 +2627,9 @@ private constructor(
         fun isTrustedUser(): Optional<Boolean> = isTrustedUser.getOptional("is_trusted_user")
 
         /**
-         * The JA4 fingerprint observed for the connection. Prelude will infer it automatically when
-         * requests go through our client SDK (which uses Prelude's edge), but you can also provide
-         * it explicitly if you terminate TLS yourself.
+         * The JA4 fingerprint observed for the end-user's connection. Prelude will infer it
+         * automatically when you use our Frontend SDKs (which use Prelude's edge network), but you
+         * can also forward the value if you terminate TLS yourself.
          *
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
@@ -2945,8 +2789,9 @@ private constructor(
             fun appVersion(appVersion: JsonField<String>) = apply { this.appVersion = appVersion }
 
             /**
-             * The unique identifier for the user's device. For Android, this corresponds to the
-             * `ANDROID_ID` and for iOS, this corresponds to the `identifierForVendor`.
+             * A unique ID for the user's device. You should ensure that each user device has a
+             * unique `device_id` value. Ideally, for Android, this corresponds to the `ANDROID_ID`
+             * and for iOS, this corresponds to the `identifierForVendor`.
              */
             fun deviceId(deviceId: String) = deviceId(JsonField.of(deviceId))
 
@@ -2988,7 +2833,12 @@ private constructor(
                 this.devicePlatform = devicePlatform
             }
 
-            /** The IP address of the user's device. */
+            /**
+             * The public IP v4 or v6 address of the end-user's device. You should collect this from
+             * your backend. If your backend is behind a proxy, use the `X-Forwarded-For`,
+             * `Forwarded`, `True-Client-IP`, `CF-Connecting-IP` or an equivalent header to get the
+             * actual public IP of the end-user's device.
+             */
             fun ip(ip: String) = ip(JsonField.of(ip))
 
             /**
@@ -3001,8 +2851,8 @@ private constructor(
             fun ip(ip: JsonField<String>) = apply { this.ip = ip }
 
             /**
-             * This signal should provide a higher level of trust, indicating that the user is
-             * genuine. Contact us to discuss your use case. For more details, refer to
+             * This signal should indicate a higher level of trust, explicitly stating that the user
+             * is genuine. Contact us to discuss your use case. For more details, refer to
              * [Signals](/verify/v2/documentation/prevent-fraud#signals).
              */
             fun isTrustedUser(isTrustedUser: Boolean) = isTrustedUser(JsonField.of(isTrustedUser))
@@ -3019,9 +2869,9 @@ private constructor(
             }
 
             /**
-             * The JA4 fingerprint observed for the connection. Prelude will infer it automatically
-             * when requests go through our client SDK (which uses Prelude's edge), but you can also
-             * provide it explicitly if you terminate TLS yourself.
+             * The JA4 fingerprint observed for the end-user's connection. Prelude will infer it
+             * automatically when you use our Frontend SDKs (which use Prelude's edge network), but
+             * you can also forward the value if you terminate TLS yourself.
              */
             fun ja4Fingerprint(ja4Fingerprint: String) =
                 ja4Fingerprint(JsonField.of(ja4Fingerprint))

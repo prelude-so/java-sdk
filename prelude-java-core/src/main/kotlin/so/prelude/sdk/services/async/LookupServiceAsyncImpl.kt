@@ -21,6 +21,10 @@ import so.prelude.sdk.core.prepareAsync
 import so.prelude.sdk.models.LookupLookupParams
 import so.prelude.sdk.models.LookupLookupResponse
 
+/**
+ * Retrieve detailed information about a phone number including carrier data, line type, and
+ * portability status.
+ */
 class LookupServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     LookupServiceAsync {
 

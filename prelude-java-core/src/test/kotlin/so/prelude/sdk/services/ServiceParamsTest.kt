@@ -13,7 +13,6 @@ import com.github.tomakehurst.wiremock.client.WireMock.verify
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo
 import com.github.tomakehurst.wiremock.junit5.WireMockTest
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.parallel.ResourceLock
 import so.prelude.sdk.client.PreludeClient
@@ -36,7 +35,6 @@ internal class ServiceParamsTest {
                 .build()
     }
 
-    @Disabled("Prism doesn't support callbacks yet")
     @Test
     fun create() {
         val verificationService = client.verification()
@@ -69,7 +67,6 @@ internal class ServiceParamsTest {
                         .callbackUrl("callback_url")
                         .codeSize(5L)
                         .customCode("123456")
-                        .integration(VerificationCreateParams.Options.Integration.AUTH0)
                         .locale("el-GR")
                         .method(VerificationCreateParams.Options.Method.AUTO)
                         .preferredChannel(VerificationCreateParams.Options.PreferredChannel.SMS)
@@ -88,7 +85,7 @@ internal class ServiceParamsTest {
                         .deviceId("8F0B8FDD-C2CB-4387-B20A-56E9B2E5A0D2")
                         .deviceModel("iPhone17,2")
                         .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
-                        .ip("192.0.2.1")
+                        .ip("203.0.113.123")
                         .isTrustedUser(false)
                         .ja4Fingerprint("t13d1516h2_8daaf6152771_e5627efa2ab1")
                         .osVersion("18.0.1")

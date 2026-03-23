@@ -14,6 +14,7 @@ import so.prelude.sdk.models.WatchSendEventsResponse
 import so.prelude.sdk.models.WatchSendFeedbacksParams
 import so.prelude.sdk.models.WatchSendFeedbacksResponse
 
+/** Evaluate email addresses and phone numbers for trustworthiness. */
 interface WatchServiceAsync {
 
     /**

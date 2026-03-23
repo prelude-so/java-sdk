@@ -2,8 +2,8 @@
 
 <!-- x-release-please-start-version -->
 
-[![Maven Central](https://img.shields.io/maven-central/v/so.prelude.sdk/prelude-java)](https://central.sonatype.com/artifact/so.prelude.sdk/prelude-java/0.10.0)
-[![javadoc](https://javadoc.io/badge2/so.prelude.sdk/prelude-java/0.10.0/javadoc.svg)](https://javadoc.io/doc/so.prelude.sdk/prelude-java/0.10.0)
+[![Maven Central](https://img.shields.io/maven-central/v/so.prelude.sdk/prelude-java)](https://central.sonatype.com/artifact/so.prelude.sdk/prelude-java/0.11.0)
+[![javadoc](https://javadoc.io/badge2/so.prelude.sdk/prelude-java/0.11.0/javadoc.svg)](https://javadoc.io/doc/so.prelude.sdk/prelude-java/0.11.0)
 
 <!-- x-release-please-end -->
 
@@ -13,7 +13,7 @@ It is generated with [Stainless](https://www.stainless.com/).
 
 <!-- x-release-please-start-version -->
 
-The REST API documentation can be found on [docs.prelude.so](https://docs.prelude.so). Javadocs are available on [javadoc.io](https://javadoc.io/doc/so.prelude.sdk/prelude-java/0.10.0).
+The REST API documentation can be found on [docs.prelude.so](https://docs.prelude.so). Javadocs are available on [javadoc.io](https://javadoc.io/doc/so.prelude.sdk/prelude-java/0.11.0).
 
 <!-- x-release-please-end -->
 
@@ -24,7 +24,7 @@ The REST API documentation can be found on [docs.prelude.so](https://docs.prelud
 ### Gradle
 
 ```kotlin
-implementation("so.prelude.sdk:prelude-java:0.10.0")
+implementation("so.prelude.sdk:prelude-java:0.11.0")
 ```
 
 ### Maven
@@ -33,7 +33,7 @@ implementation("so.prelude.sdk:prelude-java:0.10.0")
 <dependency>
   <groupId>so.prelude.sdk</groupId>
   <artifactId>prelude-java</artifactId>
-  <version>0.10.0</version>
+  <version>0.11.0</version>
 </dependency>
 ```
 
@@ -282,6 +282,8 @@ If the SDK threw an exception, but you're _certain_ the version is compatible, t
 > [!CAUTION]
 > We make no guarantee that the SDK works correctly when the Jackson version check is disabled.
 
+Also note that there are bugs in older Jackson versions that can affect the SDK. We don't work around all Jackson bugs ([example](https://github.com/FasterXML/jackson-databind/issues/3240)) and expect users to upgrade Jackson for those instead.
+
 ## Network options
 
 ### Retries
@@ -356,6 +358,25 @@ PreludeClient client = PreludeOkHttpClient.builder()
     ))
     .build();
 ```
+
+### Connection pooling
+
+To customize the underlying OkHttp connection pool, configure the client using the `maxIdleConnections` and `keepAliveDuration` methods:
+
+```java
+import java.time.Duration;
+import so.prelude.sdk.client.PreludeClient;
+import so.prelude.sdk.client.okhttp.PreludeOkHttpClient;
+
+PreludeClient client = PreludeOkHttpClient.builder()
+    .fromEnv()
+    // If `maxIdleConnections` is set, then `keepAliveDuration` must be set, and vice versa.
+    .maxIdleConnections(10)
+    .keepAliveDuration(Duration.ofMinutes(2))
+    .build();
+```
+
+If both options are unset, OkHttp's default connection pool settings are used.
 
 ### HTTPS
 

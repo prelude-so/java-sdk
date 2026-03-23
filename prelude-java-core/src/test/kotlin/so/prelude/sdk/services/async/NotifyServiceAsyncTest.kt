@@ -3,7 +3,6 @@
 package so.prelude.sdk.services.async
 
 import java.time.OffsetDateTime
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import so.prelude.sdk.TestServerExtension
@@ -119,7 +118,6 @@ internal class NotifyServiceAsyncTest {
         response.validate()
     }
 
-    @Disabled("Prism doesn't support callbacks yet")
     @Test
     fun send() {
         val client =
@@ -136,6 +134,12 @@ internal class NotifyServiceAsyncTest {
                     .to("+33612345678")
                     .callbackUrl("https://your-app.com/webhooks/notify")
                     .correlationId("order-12345")
+                    .document(
+                        NotifySendParams.Document.builder()
+                            .filename("invoice.pdf")
+                            .url("https://example.com/invoice.pdf")
+                            .build()
+                    )
                     .expiresAt(OffsetDateTime.parse("2025-12-25T18:00:00Z"))
                     .from("from")
                     .locale("el-GR")
@@ -171,6 +175,12 @@ internal class NotifyServiceAsyncTest {
                     .addTo("+15551234567")
                     .callbackUrl("https://your-app.com/webhooks/notify")
                     .correlationId("campaign-12345")
+                    .document(
+                        NotifySendBatchParams.Document.builder()
+                            .filename("invoice.pdf")
+                            .url("https://example.com/invoice.pdf")
+                            .build()
+                    )
                     .expiresAt(OffsetDateTime.parse("2025-12-25T18:00:00Z"))
                     .from("from")
                     .locale("el-GR")

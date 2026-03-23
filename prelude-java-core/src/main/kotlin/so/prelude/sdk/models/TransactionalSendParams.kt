@@ -65,6 +65,15 @@ private constructor(
     fun correlationId(): Optional<String> = body.correlationId()
 
     /**
+     * A document to attach to the message. Only supported on WhatsApp templates that have a
+     * document header.
+     *
+     * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun document(): Optional<Document> = body.document()
+
+    /**
      * The message expiration date.
      *
      * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -140,6 +149,13 @@ private constructor(
      * Unlike [correlationId], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _correlationId(): JsonField<String> = body._correlationId()
+
+    /**
+     * Returns the raw JSON value of [document].
+     *
+     * Unlike [document], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _document(): JsonField<Document> = body._document()
 
     /**
      * Returns the raw JSON value of [expiresAt].
@@ -224,7 +240,7 @@ private constructor(
          * - [to]
          * - [callbackUrl]
          * - [correlationId]
-         * - [expiresAt]
+         * - [document]
          * - etc.
          */
         fun body(body: Body) = apply { this.body = body.toBuilder() }
@@ -280,6 +296,21 @@ private constructor(
         fun correlationId(correlationId: JsonField<String>) = apply {
             body.correlationId(correlationId)
         }
+
+        /**
+         * A document to attach to the message. Only supported on WhatsApp templates that have a
+         * document header.
+         */
+        fun document(document: Document) = apply { body.document(document) }
+
+        /**
+         * Sets [Builder.document] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.document] with a well-typed [Document] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun document(document: JsonField<Document>) = apply { body.document(document) }
 
         /** The message expiration date. */
         fun expiresAt(expiresAt: String) = apply { body.expiresAt(expiresAt) }
@@ -507,6 +538,7 @@ private constructor(
         private val to: JsonField<String>,
         private val callbackUrl: JsonField<String>,
         private val correlationId: JsonField<String>,
+        private val document: JsonField<Document>,
         private val expiresAt: JsonField<String>,
         private val from: JsonField<String>,
         private val locale: JsonField<String>,
@@ -527,6 +559,9 @@ private constructor(
             @JsonProperty("correlation_id")
             @ExcludeMissing
             correlationId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("document")
+            @ExcludeMissing
+            document: JsonField<Document> = JsonMissing.of(),
             @JsonProperty("expires_at")
             @ExcludeMissing
             expiresAt: JsonField<String> = JsonMissing.of(),
@@ -543,6 +578,7 @@ private constructor(
             to,
             callbackUrl,
             correlationId,
+            document,
             expiresAt,
             from,
             locale,
@@ -583,6 +619,15 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun correlationId(): Optional<String> = correlationId.getOptional("correlation_id")
+
+        /**
+         * A document to attach to the message. Only supported on WhatsApp templates that have a
+         * document header.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun document(): Optional<Document> = document.getOptional("document")
 
         /**
          * The message expiration date.
@@ -670,6 +715,13 @@ private constructor(
         fun _correlationId(): JsonField<String> = correlationId
 
         /**
+         * Returns the raw JSON value of [document].
+         *
+         * Unlike [document], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("document") @ExcludeMissing fun _document(): JsonField<Document> = document
+
+        /**
          * Returns the raw JSON value of [expiresAt].
          *
          * Unlike [expiresAt], this method doesn't throw if the JSON field has an unexpected type.
@@ -742,6 +794,7 @@ private constructor(
             private var to: JsonField<String>? = null
             private var callbackUrl: JsonField<String> = JsonMissing.of()
             private var correlationId: JsonField<String> = JsonMissing.of()
+            private var document: JsonField<Document> = JsonMissing.of()
             private var expiresAt: JsonField<String> = JsonMissing.of()
             private var from: JsonField<String> = JsonMissing.of()
             private var locale: JsonField<String> = JsonMissing.of()
@@ -755,6 +808,7 @@ private constructor(
                 to = body.to
                 callbackUrl = body.callbackUrl
                 correlationId = body.correlationId
+                document = body.document
                 expiresAt = body.expiresAt
                 from = body.from
                 locale = body.locale
@@ -818,6 +872,21 @@ private constructor(
             fun correlationId(correlationId: JsonField<String>) = apply {
                 this.correlationId = correlationId
             }
+
+            /**
+             * A document to attach to the message. Only supported on WhatsApp templates that have a
+             * document header.
+             */
+            fun document(document: Document) = document(JsonField.of(document))
+
+            /**
+             * Sets [Builder.document] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.document] with a well-typed [Document] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun document(document: JsonField<Document>) = apply { this.document = document }
 
             /** The message expiration date. */
             fun expiresAt(expiresAt: String) = expiresAt(JsonField.of(expiresAt))
@@ -934,6 +1003,7 @@ private constructor(
                     checkRequired("to", to),
                     callbackUrl,
                     correlationId,
+                    document,
                     expiresAt,
                     from,
                     locale,
@@ -954,6 +1024,7 @@ private constructor(
             to()
             callbackUrl()
             correlationId()
+            document().ifPresent { it.validate() }
             expiresAt()
             from()
             locale()
@@ -982,6 +1053,7 @@ private constructor(
                 (if (to.asKnown().isPresent) 1 else 0) +
                 (if (callbackUrl.asKnown().isPresent) 1 else 0) +
                 (if (correlationId.asKnown().isPresent) 1 else 0) +
+                (document.asKnown().getOrNull()?.validity() ?: 0) +
                 (if (expiresAt.asKnown().isPresent) 1 else 0) +
                 (if (from.asKnown().isPresent) 1 else 0) +
                 (if (locale.asKnown().isPresent) 1 else 0) +
@@ -998,6 +1070,7 @@ private constructor(
                 to == other.to &&
                 callbackUrl == other.callbackUrl &&
                 correlationId == other.correlationId &&
+                document == other.document &&
                 expiresAt == other.expiresAt &&
                 from == other.from &&
                 locale == other.locale &&
@@ -1012,6 +1085,7 @@ private constructor(
                 to,
                 callbackUrl,
                 correlationId,
+                document,
                 expiresAt,
                 from,
                 locale,
@@ -1024,7 +1098,210 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{templateId=$templateId, to=$to, callbackUrl=$callbackUrl, correlationId=$correlationId, expiresAt=$expiresAt, from=$from, locale=$locale, preferredChannel=$preferredChannel, variables=$variables, additionalProperties=$additionalProperties}"
+            "Body{templateId=$templateId, to=$to, callbackUrl=$callbackUrl, correlationId=$correlationId, document=$document, expiresAt=$expiresAt, from=$from, locale=$locale, preferredChannel=$preferredChannel, variables=$variables, additionalProperties=$additionalProperties}"
+    }
+
+    /**
+     * A document to attach to the message. Only supported on WhatsApp templates that have a
+     * document header.
+     */
+    class Document
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+    private constructor(
+        private val filename: JsonField<String>,
+        private val url: JsonField<String>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
+    ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("filename")
+            @ExcludeMissing
+            filename: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("url") @ExcludeMissing url: JsonField<String> = JsonMissing.of(),
+        ) : this(filename, url, mutableMapOf())
+
+        /**
+         * The filename to display for the document.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun filename(): String = filename.getRequired("filename")
+
+        /**
+         * The URL of the document to attach. Must be a valid HTTP or HTTPS URL.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun url(): String = url.getRequired("url")
+
+        /**
+         * Returns the raw JSON value of [filename].
+         *
+         * Unlike [filename], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("filename") @ExcludeMissing fun _filename(): JsonField<String> = filename
+
+        /**
+         * Returns the raw JSON value of [url].
+         *
+         * Unlike [url], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("url") @ExcludeMissing fun _url(): JsonField<String> = url
+
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
+
+        fun toBuilder() = Builder().from(this)
+
+        companion object {
+
+            /**
+             * Returns a mutable builder for constructing an instance of [Document].
+             *
+             * The following fields are required:
+             * ```java
+             * .filename()
+             * .url()
+             * ```
+             */
+            @JvmStatic fun builder() = Builder()
+        }
+
+        /** A builder for [Document]. */
+        class Builder internal constructor() {
+
+            private var filename: JsonField<String>? = null
+            private var url: JsonField<String>? = null
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            @JvmSynthetic
+            internal fun from(document: Document) = apply {
+                filename = document.filename
+                url = document.url
+                additionalProperties = document.additionalProperties.toMutableMap()
+            }
+
+            /** The filename to display for the document. */
+            fun filename(filename: String) = filename(JsonField.of(filename))
+
+            /**
+             * Sets [Builder.filename] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.filename] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun filename(filename: JsonField<String>) = apply { this.filename = filename }
+
+            /** The URL of the document to attach. Must be a valid HTTP or HTTPS URL. */
+            fun url(url: String) = url(JsonField.of(url))
+
+            /**
+             * Sets [Builder.url] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.url] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
+            fun url(url: JsonField<String>) = apply { this.url = url }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
+
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
+            /**
+             * Returns an immutable instance of [Document].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```java
+             * .filename()
+             * .url()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
+             */
+            fun build(): Document =
+                Document(
+                    checkRequired("filename", filename),
+                    checkRequired("url", url),
+                    additionalProperties.toMutableMap(),
+                )
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Document = apply {
+            if (validated) {
+                return@apply
+            }
+
+            filename()
+            url()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: PreludeInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (if (filename.asKnown().isPresent) 1 else 0) + (if (url.asKnown().isPresent) 1 else 0)
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is Document &&
+                filename == other.filename &&
+                url == other.url &&
+                additionalProperties == other.additionalProperties
+        }
+
+        private val hashCode: Int by lazy { Objects.hash(filename, url, additionalProperties) }
+
+        override fun hashCode(): Int = hashCode
+
+        override fun toString() =
+            "Document{filename=$filename, url=$url, additionalProperties=$additionalProperties}"
     }
 
     /**
