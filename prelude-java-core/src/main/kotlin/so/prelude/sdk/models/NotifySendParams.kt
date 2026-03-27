@@ -24,7 +24,7 @@ import so.prelude.sdk.core.toImmutable
 import so.prelude.sdk.errors.PreludeInvalidDataException
 
 /**
- * Send transactional and marketing messages to your users via SMS and WhatsApp with automatic
+ * Send transactional and marketing messages to your users via SMS, RCS and WhatsApp with automatic
  * compliance enforcement.
  */
 class NotifySendParams
@@ -1398,6 +1398,8 @@ private constructor(
 
             @JvmField val SMS = of("sms")
 
+            @JvmField val RCS = of("rcs")
+
             @JvmField val WHATSAPP = of("whatsapp")
 
             @JvmStatic fun of(value: String) = PreferredChannel(JsonField.of(value))
@@ -1406,6 +1408,7 @@ private constructor(
         /** An enum containing [PreferredChannel]'s known values. */
         enum class Known {
             SMS,
+            RCS,
             WHATSAPP,
         }
 
@@ -1420,6 +1423,7 @@ private constructor(
          */
         enum class Value {
             SMS,
+            RCS,
             WHATSAPP,
             /**
              * An enum member indicating that [PreferredChannel] was instantiated with an unknown
@@ -1438,6 +1442,7 @@ private constructor(
         fun value(): Value =
             when (this) {
                 SMS -> Value.SMS
+                RCS -> Value.RCS
                 WHATSAPP -> Value.WHATSAPP
                 else -> Value._UNKNOWN
             }
@@ -1454,6 +1459,7 @@ private constructor(
         fun known(): Known =
             when (this) {
                 SMS -> Known.SMS
+                RCS -> Known.RCS
                 WHATSAPP -> Known.WHATSAPP
                 else -> throw PreludeInvalidDataException("Unknown PreferredChannel: $value")
             }

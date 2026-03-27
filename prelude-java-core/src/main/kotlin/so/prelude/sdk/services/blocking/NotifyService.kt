@@ -219,8 +219,8 @@ interface NotifyService {
         )
 
     /**
-     * Send transactional and marketing messages to your users via SMS and WhatsApp with automatic
-     * compliance enforcement.
+     * Send transactional and marketing messages to your users via SMS, RCS and WhatsApp with
+     * automatic compliance enforcement.
      */
     fun send(params: NotifySendParams): NotifySendResponse = send(params, RequestOptions.none())
 
