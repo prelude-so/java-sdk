@@ -128,6 +128,11 @@ internal class NotifyServiceTest {
                     .templateId("template_01k8ap1btqf5r9fq2c8ax5fhc9")
                     .to("+33612345678")
                     .callbackUrl("https://your-app.com/webhooks/notify")
+                    .context(
+                        NotifySendParams.Context.builder()
+                            .replyTo("im_01k8aq2zggeyssvt53zgvpx63a")
+                            .build()
+                    )
                     .correlationId("order-12345")
                     .document(
                         NotifySendParams.Document.builder()
@@ -140,6 +145,7 @@ internal class NotifyServiceTest {
                     .locale("el-GR")
                     .preferredChannel(NotifySendParams.PreferredChannel.WHATSAPP)
                     .scheduleAt(OffsetDateTime.parse("2025-12-25T10:00:00Z"))
+                    .text("Thanks for reaching out! We'll look into your request.")
                     .variables(
                         NotifySendParams.Variables.builder()
                             .putAdditionalProperty("order_id", JsonValue.from("12345"))
