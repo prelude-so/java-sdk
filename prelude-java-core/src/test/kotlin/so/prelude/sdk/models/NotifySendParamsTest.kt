@@ -15,6 +15,9 @@ internal class NotifySendParamsTest {
             .templateId("template_01k8ap1btqf5r9fq2c8ax5fhc9")
             .to("+33612345678")
             .callbackUrl("https://your-app.com/webhooks/notify")
+            .context(
+                NotifySendParams.Context.builder().replyTo("im_01k8aq2zggeyssvt53zgvpx63a").build()
+            )
             .correlationId("order-12345")
             .document(
                 NotifySendParams.Document.builder()
@@ -27,6 +30,7 @@ internal class NotifySendParamsTest {
             .locale("el-GR")
             .preferredChannel(NotifySendParams.PreferredChannel.WHATSAPP)
             .scheduleAt(OffsetDateTime.parse("2025-12-25T10:00:00Z"))
+            .text("Thanks for reaching out! We'll look into your request.")
             .variables(
                 NotifySendParams.Variables.builder()
                     .putAdditionalProperty("order_id", JsonValue.from("12345"))
@@ -43,6 +47,11 @@ internal class NotifySendParamsTest {
                 .templateId("template_01k8ap1btqf5r9fq2c8ax5fhc9")
                 .to("+33612345678")
                 .callbackUrl("https://your-app.com/webhooks/notify")
+                .context(
+                    NotifySendParams.Context.builder()
+                        .replyTo("im_01k8aq2zggeyssvt53zgvpx63a")
+                        .build()
+                )
                 .correlationId("order-12345")
                 .document(
                     NotifySendParams.Document.builder()
@@ -55,6 +64,7 @@ internal class NotifySendParamsTest {
                 .locale("el-GR")
                 .preferredChannel(NotifySendParams.PreferredChannel.WHATSAPP)
                 .scheduleAt(OffsetDateTime.parse("2025-12-25T10:00:00Z"))
+                .text("Thanks for reaching out! We'll look into your request.")
                 .variables(
                     NotifySendParams.Variables.builder()
                         .putAdditionalProperty("order_id", JsonValue.from("12345"))
@@ -68,6 +78,10 @@ internal class NotifySendParamsTest {
         assertThat(body.templateId()).isEqualTo("template_01k8ap1btqf5r9fq2c8ax5fhc9")
         assertThat(body.to()).isEqualTo("+33612345678")
         assertThat(body.callbackUrl()).contains("https://your-app.com/webhooks/notify")
+        assertThat(body.context())
+            .contains(
+                NotifySendParams.Context.builder().replyTo("im_01k8aq2zggeyssvt53zgvpx63a").build()
+            )
         assertThat(body.correlationId()).contains("order-12345")
         assertThat(body.document())
             .contains(
@@ -81,6 +95,7 @@ internal class NotifySendParamsTest {
         assertThat(body.locale()).contains("el-GR")
         assertThat(body.preferredChannel()).contains(NotifySendParams.PreferredChannel.WHATSAPP)
         assertThat(body.scheduleAt()).contains(OffsetDateTime.parse("2025-12-25T10:00:00Z"))
+        assertThat(body.text()).contains("Thanks for reaching out! We'll look into your request.")
         assertThat(body.variables())
             .contains(
                 NotifySendParams.Variables.builder()
