@@ -35,7 +35,7 @@ private constructor(
 ) : Params {
 
     /**
-     * A list of feedbacks to send.
+     * A list of feedbacks to send. A maximum of 100 feedbacks can be sent in a single request.
      *
      * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
@@ -95,7 +95,9 @@ private constructor(
          */
         fun body(body: Body) = apply { this.body = body.toBuilder() }
 
-        /** A list of feedbacks to send. */
+        /**
+         * A list of feedbacks to send. A maximum of 100 feedbacks can be sent in a single request.
+         */
         fun feedbacks(feedbacks: List<Feedback>) = apply { body.feedbacks(feedbacks) }
 
         /**
@@ -272,7 +274,7 @@ private constructor(
         ) : this(feedbacks, mutableMapOf())
 
         /**
-         * A list of feedbacks to send.
+         * A list of feedbacks to send. A maximum of 100 feedbacks can be sent in a single request.
          *
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
@@ -325,7 +327,10 @@ private constructor(
                 additionalProperties = body.additionalProperties.toMutableMap()
             }
 
-            /** A list of feedbacks to send. */
+            /**
+             * A list of feedbacks to send. A maximum of 100 feedbacks can be sent in a single
+             * request.
+             */
             fun feedbacks(feedbacks: List<Feedback>) = feedbacks(JsonField.of(feedbacks))
 
             /**
