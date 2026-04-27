@@ -34,7 +34,7 @@ private constructor(
 ) : Params {
 
     /**
-     * A list of events to dispatch.
+     * A list of events to dispatch. A maximum of 100 events can be sent in a single request.
      *
      * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
@@ -94,7 +94,9 @@ private constructor(
          */
         fun body(body: Body) = apply { this.body = body.toBuilder() }
 
-        /** A list of events to dispatch. */
+        /**
+         * A list of events to dispatch. A maximum of 100 events can be sent in a single request.
+         */
         fun events(events: List<Event>) = apply { body.events(events) }
 
         /**
@@ -271,7 +273,7 @@ private constructor(
         ) : this(events, mutableMapOf())
 
         /**
-         * A list of events to dispatch.
+         * A list of events to dispatch. A maximum of 100 events can be sent in a single request.
          *
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
@@ -322,7 +324,10 @@ private constructor(
                 additionalProperties = body.additionalProperties.toMutableMap()
             }
 
-            /** A list of events to dispatch. */
+            /**
+             * A list of events to dispatch. A maximum of 100 events can be sent in a single
+             * request.
+             */
             fun events(events: List<Event>) = events(JsonField.of(events))
 
             /**
