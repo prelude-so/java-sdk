@@ -141,8 +141,8 @@ internal class NotifyServiceAsyncTest {
                     .correlationId("order-12345")
                     .document(
                         NotifySendParams.Document.builder()
-                            .filename("invoice.pdf")
                             .url("https://example.com/invoice.pdf")
+                            .filename("invoice.pdf")
                             .build()
                     )
                     .expiresAt(OffsetDateTime.parse("2025-12-25T18:00:00Z"))
@@ -183,8 +183,8 @@ internal class NotifyServiceAsyncTest {
                     .correlationId("campaign-12345")
                     .document(
                         NotifySendBatchParams.Document.builder()
-                            .filename("invoice.pdf")
                             .url("https://example.com/invoice.pdf")
+                            .filename("invoice.pdf")
                             .build()
                     )
                     .expiresAt(OffsetDateTime.parse("2025-12-25T18:00:00Z"))
