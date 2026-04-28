@@ -77,8 +77,13 @@ private constructor(
     fun correlationId(): Optional<String> = body.correlationId()
 
     /**
-     * A document to attach to the message. Only supported on WhatsApp templates that have a
-     * document header.
+     * A media attachment to include in the message header. Supported on WhatsApp templates
+     * registered with a `DOCUMENT`, `IMAGE`, or `VIDEO` header. The media type is determined by the
+     * template's registered header format; send the matching file type for each.
+     * - `DOCUMENT` headers accept PDF and other document formats; `filename` is required and
+     *   displayed to the recipient.
+     * - `IMAGE` headers accept `.png`, `.jpg`, `.jpeg`, and `.webp` URLs; `filename` is ignored.
+     * - `VIDEO` headers accept `.mp4` and `.3gp` URLs; `filename` is ignored.
      *
      * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
@@ -360,8 +365,14 @@ private constructor(
         }
 
         /**
-         * A document to attach to the message. Only supported on WhatsApp templates that have a
-         * document header.
+         * A media attachment to include in the message header. Supported on WhatsApp templates
+         * registered with a `DOCUMENT`, `IMAGE`, or `VIDEO` header. The media type is determined by
+         * the template's registered header format; send the matching file type for each.
+         * - `DOCUMENT` headers accept PDF and other document formats; `filename` is required and
+         *   displayed to the recipient.
+         * - `IMAGE` headers accept `.png`, `.jpg`, `.jpeg`, and `.webp` URLs; `filename` is
+         *   ignored.
+         * - `VIDEO` headers accept `.mp4` and `.3gp` URLs; `filename` is ignored.
          */
         fun document(document: Document) = apply { body.document(document) }
 
@@ -729,8 +740,14 @@ private constructor(
         fun correlationId(): Optional<String> = correlationId.getOptional("correlation_id")
 
         /**
-         * A document to attach to the message. Only supported on WhatsApp templates that have a
-         * document header.
+         * A media attachment to include in the message header. Supported on WhatsApp templates
+         * registered with a `DOCUMENT`, `IMAGE`, or `VIDEO` header. The media type is determined by
+         * the template's registered header format; send the matching file type for each.
+         * - `DOCUMENT` headers accept PDF and other document formats; `filename` is required and
+         *   displayed to the recipient.
+         * - `IMAGE` headers accept `.png`, `.jpg`, `.jpeg`, and `.webp` URLs; `filename` is
+         *   ignored.
+         * - `VIDEO` headers accept `.mp4` and `.3gp` URLs; `filename` is ignored.
          *
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
@@ -1042,8 +1059,15 @@ private constructor(
             }
 
             /**
-             * A document to attach to the message. Only supported on WhatsApp templates that have a
-             * document header.
+             * A media attachment to include in the message header. Supported on WhatsApp templates
+             * registered with a `DOCUMENT`, `IMAGE`, or `VIDEO` header. The media type is
+             * determined by the template's registered header format; send the matching file type
+             * for each.
+             * - `DOCUMENT` headers accept PDF and other document formats; `filename` is required
+             *   and displayed to the recipient.
+             * - `IMAGE` headers accept `.png`, `.jpg`, `.jpeg`, and `.webp` URLs; `filename` is
+             *   ignored.
+             * - `VIDEO` headers accept `.mp4` and `.3gp` URLs; `filename` is ignored.
              */
             fun document(document: Document) = document(JsonField.of(document))
 
@@ -1481,35 +1505,31 @@ private constructor(
     }
 
     /**
-     * A document to attach to the message. Only supported on WhatsApp templates that have a
-     * document header.
+     * A media attachment to include in the message header. Supported on WhatsApp templates
+     * registered with a `DOCUMENT`, `IMAGE`, or `VIDEO` header. The media type is determined by the
+     * template's registered header format; send the matching file type for each.
+     * - `DOCUMENT` headers accept PDF and other document formats; `filename` is required and
+     *   displayed to the recipient.
+     * - `IMAGE` headers accept `.png`, `.jpg`, `.jpeg`, and `.webp` URLs; `filename` is ignored.
+     * - `VIDEO` headers accept `.mp4` and `.3gp` URLs; `filename` is ignored.
      */
     class Document
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
-        private val filename: JsonField<String>,
         private val url: JsonField<String>,
+        private val filename: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
         @JsonCreator
         private constructor(
-            @JsonProperty("filename")
-            @ExcludeMissing
-            filename: JsonField<String> = JsonMissing.of(),
             @JsonProperty("url") @ExcludeMissing url: JsonField<String> = JsonMissing.of(),
-        ) : this(filename, url, mutableMapOf())
+            @JsonProperty("filename") @ExcludeMissing filename: JsonField<String> = JsonMissing.of(),
+        ) : this(url, filename, mutableMapOf())
 
         /**
-         * The filename to display for the document.
-         *
-         * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun filename(): String = filename.getRequired("filename")
-
-        /**
-         * The URL of the document to attach. Must be a valid HTTP or HTTPS URL.
+         * HTTPS URL of the media file. The file extension must match the template's registered
+         * header format (PDF for DOCUMENT; PNG/JPG/JPEG/WEBP for IMAGE; MP4/3GP for VIDEO).
          *
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
@@ -1517,11 +1537,13 @@ private constructor(
         fun url(): String = url.getRequired("url")
 
         /**
-         * Returns the raw JSON value of [filename].
+         * Filename displayed to the recipient. Required for templates with a `DOCUMENT` header;
+         * ignored for `IMAGE` and `VIDEO` headers.
          *
-         * Unlike [filename], this method doesn't throw if the JSON field has an unexpected type.
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
          */
-        @JsonProperty("filename") @ExcludeMissing fun _filename(): JsonField<String> = filename
+        fun filename(): Optional<String> = filename.getOptional("filename")
 
         /**
          * Returns the raw JSON value of [url].
@@ -1529,6 +1551,13 @@ private constructor(
          * Unlike [url], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("url") @ExcludeMissing fun _url(): JsonField<String> = url
+
+        /**
+         * Returns the raw JSON value of [filename].
+         *
+         * Unlike [filename], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("filename") @ExcludeMissing fun _filename(): JsonField<String> = filename
 
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -1549,7 +1578,6 @@ private constructor(
              *
              * The following fields are required:
              * ```java
-             * .filename()
              * .url()
              * ```
              */
@@ -1559,30 +1587,21 @@ private constructor(
         /** A builder for [Document]. */
         class Builder internal constructor() {
 
-            private var filename: JsonField<String>? = null
             private var url: JsonField<String>? = null
+            private var filename: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(document: Document) = apply {
-                filename = document.filename
                 url = document.url
+                filename = document.filename
                 additionalProperties = document.additionalProperties.toMutableMap()
             }
 
-            /** The filename to display for the document. */
-            fun filename(filename: String) = filename(JsonField.of(filename))
-
             /**
-             * Sets [Builder.filename] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.filename] with a well-typed [String] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
+             * HTTPS URL of the media file. The file extension must match the template's registered
+             * header format (PDF for DOCUMENT; PNG/JPG/JPEG/WEBP for IMAGE; MP4/3GP for VIDEO).
              */
-            fun filename(filename: JsonField<String>) = apply { this.filename = filename }
-
-            /** The URL of the document to attach. Must be a valid HTTP or HTTPS URL. */
             fun url(url: String) = url(JsonField.of(url))
 
             /**
@@ -1593,6 +1612,21 @@ private constructor(
              * value.
              */
             fun url(url: JsonField<String>) = apply { this.url = url }
+
+            /**
+             * Filename displayed to the recipient. Required for templates with a `DOCUMENT` header;
+             * ignored for `IMAGE` and `VIDEO` headers.
+             */
+            fun filename(filename: String) = filename(JsonField.of(filename))
+
+            /**
+             * Sets [Builder.filename] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.filename] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun filename(filename: JsonField<String>) = apply { this.filename = filename }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -1620,18 +1654,13 @@ private constructor(
              *
              * The following fields are required:
              * ```java
-             * .filename()
              * .url()
              * ```
              *
              * @throws IllegalStateException if any required field is unset.
              */
             fun build(): Document =
-                Document(
-                    checkRequired("filename", filename),
-                    checkRequired("url", url),
-                    additionalProperties.toMutableMap(),
-                )
+                Document(checkRequired("url", url), filename, additionalProperties.toMutableMap())
         }
 
         private var validated: Boolean = false
@@ -1641,8 +1670,8 @@ private constructor(
                 return@apply
             }
 
-            filename()
             url()
+            filename()
             validated = true
         }
 
@@ -1662,7 +1691,7 @@ private constructor(
          */
         @JvmSynthetic
         internal fun validity(): Int =
-            (if (filename.asKnown().isPresent) 1 else 0) + (if (url.asKnown().isPresent) 1 else 0)
+            (if (url.asKnown().isPresent) 1 else 0) + (if (filename.asKnown().isPresent) 1 else 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -1670,17 +1699,17 @@ private constructor(
             }
 
             return other is Document &&
-                filename == other.filename &&
                 url == other.url &&
+                filename == other.filename &&
                 additionalProperties == other.additionalProperties
         }
 
-        private val hashCode: Int by lazy { Objects.hash(filename, url, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(url, filename, additionalProperties) }
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Document{filename=$filename, url=$url, additionalProperties=$additionalProperties}"
+            "Document{url=$url, filename=$filename, additionalProperties=$additionalProperties}"
     }
 
     /**

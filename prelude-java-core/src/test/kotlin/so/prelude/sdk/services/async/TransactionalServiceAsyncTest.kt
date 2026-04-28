@@ -30,8 +30,8 @@ internal class TransactionalServiceAsyncTest {
                     .correlationId("correlation_id")
                     .document(
                         TransactionalSendParams.Document.builder()
-                            .filename("invoice.pdf")
                             .url("https://example.com/invoice.pdf")
+                            .filename("invoice.pdf")
                             .build()
                     )
                     .expiresAt("expires_at")
