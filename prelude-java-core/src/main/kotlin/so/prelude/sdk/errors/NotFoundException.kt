@@ -7,10 +7,14 @@ import kotlin.jvm.optionals.getOrNull
 import so.prelude.sdk.core.JsonValue
 import so.prelude.sdk.core.checkRequired
 import so.prelude.sdk.core.http.Headers
+import so.prelude.sdk.core.jsonMapper
 
 class NotFoundException
 private constructor(private val headers: Headers, private val body: JsonValue, cause: Throwable?) :
-    PreludeServiceException("404: $body", cause) {
+    PreludeServiceException(
+        "404: ${if (body.isMissing()) "Unknown" else jsonMapper().writeValueAsString(body)}",
+        cause,
+    ) {
 
     override fun statusCode(): Int = 404
 
