@@ -634,6 +634,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws PreludeInvalidDataException if any value type in this object doesn't match its
+         *   expected type.
+         */
         fun validate(): Body = apply {
             if (validated) {
                 return@apply
@@ -847,6 +856,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws PreludeInvalidDataException if any value type in this object doesn't match its
+         *   expected type.
+         */
         fun validate(): Target = apply {
             if (validated) {
                 return@apply
@@ -966,6 +984,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws PreludeInvalidDataException if any value type in this object doesn't match
+             *   its expected type.
+             */
             fun validate(): Type = apply {
                 if (validated) {
                     return@apply
@@ -1136,6 +1164,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws PreludeInvalidDataException if any value type in this object doesn't match its
+         *   expected type.
+         */
         fun validate(): Metadata = apply {
             if (validated) {
                 return@apply
@@ -1658,6 +1695,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws PreludeInvalidDataException if any value type in this object doesn't match its
+         *   expected type.
+         */
         fun validate(): Options = apply {
             if (validated) {
                 return@apply
@@ -1881,6 +1927,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws PreludeInvalidDataException if any value type in this object doesn't match
+             *   its expected type.
+             */
             fun validate(): AppRealm = apply {
                 if (validated) {
                     return@apply
@@ -2007,6 +2063,16 @@ private constructor(
 
                 private var validated: Boolean = false
 
+                /**
+                 * Validates that the types of all values in this object match their expected types
+                 * recursively.
+                 *
+                 * This method is _not_ forwards compatible with new types from the API for existing
+                 * fields.
+                 *
+                 * @throws PreludeInvalidDataException if any value type in this object doesn't
+                 *   match its expected type.
+                 */
                 fun validate(): Platform = apply {
                     if (validated) {
                         return@apply
@@ -2171,6 +2237,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws PreludeInvalidDataException if any value type in this object doesn't match
+             *   its expected type.
+             */
             fun validate(): Method = apply {
                 if (validated) {
                     return@apply
@@ -2329,6 +2405,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws PreludeInvalidDataException if any value type in this object doesn't match
+             *   its expected type.
+             */
             fun validate(): PreferredChannel = apply {
                 if (validated) {
                     return@apply
@@ -2429,6 +2515,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws PreludeInvalidDataException if any value type in this object doesn't match
+             *   its expected type.
+             */
             fun validate(): Variables = apply {
                 if (validated) {
                     return@apply
@@ -2956,6 +3052,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws PreludeInvalidDataException if any value type in this object doesn't match its
+         *   expected type.
+         */
         fun validate(): Signals = apply {
             if (validated) {
                 return@apply
@@ -3112,6 +3217,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws PreludeInvalidDataException if any value type in this object doesn't match
+             *   its expected type.
+             */
             fun validate(): DevicePlatform = apply {
                 if (validated) {
                     return@apply
