@@ -359,6 +359,21 @@ PreludeClient client = PreludeOkHttpClient.builder()
     .build();
 ```
 
+If the proxy responds with `407 Proxy Authentication Required`, supply credentials by also configuring `proxyAuthenticator`:
+
+```java
+import so.prelude.sdk.client.PreludeClient;
+import so.prelude.sdk.client.okhttp.PreludeOkHttpClient;
+import so.prelude.sdk.core.http.ProxyAuthenticator;
+
+PreludeClient client = PreludeOkHttpClient.builder()
+    .fromEnv()
+    .proxy(...)
+    // Or a custom implementation of `ProxyAuthenticator`.
+    .proxyAuthenticator(ProxyAuthenticator.basic("username", "password"))
+    .build();
+```
+
 ### Connection pooling
 
 To customize the underlying OkHttp connection pool, configure the client using the `maxIdleConnections` and `keepAliveDuration` methods:
