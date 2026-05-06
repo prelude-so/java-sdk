@@ -59,15 +59,6 @@ private constructor(
     fun callbackUrl(): Optional<String> = body.callbackUrl()
 
     /**
-     * Context for replying to an inbound message. When provided, the message is sent as a WhatsApp
-     * reply within the 24-hour conversation window.
-     *
-     * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
-    fun context(): Optional<Context> = body.context()
-
-    /**
      * A user-defined identifier to correlate this message with your internal systems. It is
      * returned in the response and any webhook events that refer to this message.
      *
@@ -138,15 +129,6 @@ private constructor(
     fun scheduleAt(): Optional<OffsetDateTime> = body.scheduleAt()
 
     /**
-     * The reply message body. Required when `context.reply_to` is provided. Used for 2-way WhatsApp
-     * messaging to send free-form text replies within a conversation window.
-     *
-     * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
-    fun text(): Optional<String> = body.text()
-
-    /**
      * The variables to be replaced in the template.
      *
      * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -174,13 +156,6 @@ private constructor(
      * Unlike [callbackUrl], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _callbackUrl(): JsonField<String> = body._callbackUrl()
-
-    /**
-     * Returns the raw JSON value of [context].
-     *
-     * Unlike [context], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    fun _context(): JsonField<Context> = body._context()
 
     /**
      * Returns the raw JSON value of [correlationId].
@@ -231,13 +206,6 @@ private constructor(
      * Unlike [scheduleAt], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _scheduleAt(): JsonField<OffsetDateTime> = body._scheduleAt()
-
-    /**
-     * Returns the raw JSON value of [text].
-     *
-     * Unlike [text], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    fun _text(): JsonField<String> = body._text()
 
     /**
      * Returns the raw JSON value of [variables].
@@ -292,8 +260,8 @@ private constructor(
          * - [templateId]
          * - [to]
          * - [callbackUrl]
-         * - [context]
          * - [correlationId]
+         * - [document]
          * - etc.
          */
         fun body(body: Body) = apply { this.body = body.toBuilder() }
@@ -332,20 +300,6 @@ private constructor(
          * value.
          */
         fun callbackUrl(callbackUrl: JsonField<String>) = apply { body.callbackUrl(callbackUrl) }
-
-        /**
-         * Context for replying to an inbound message. When provided, the message is sent as a
-         * WhatsApp reply within the 24-hour conversation window.
-         */
-        fun context(context: Context) = apply { body.context(context) }
-
-        /**
-         * Sets [Builder.context] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.context] with a well-typed [Context] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun context(context: JsonField<Context>) = apply { body.context(context) }
 
         /**
          * A user-defined identifier to correlate this message with your internal systems. It is
@@ -463,20 +417,6 @@ private constructor(
         fun scheduleAt(scheduleAt: JsonField<OffsetDateTime>) = apply {
             body.scheduleAt(scheduleAt)
         }
-
-        /**
-         * The reply message body. Required when `context.reply_to` is provided. Used for 2-way
-         * WhatsApp messaging to send free-form text replies within a conversation window.
-         */
-        fun text(text: String) = apply { body.text(text) }
-
-        /**
-         * Sets [Builder.text] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.text] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
-         */
-        fun text(text: JsonField<String>) = apply { body.text(text) }
 
         /** The variables to be replaced in the template. */
         fun variables(variables: Variables) = apply { body.variables(variables) }
@@ -636,7 +576,6 @@ private constructor(
         private val templateId: JsonField<String>,
         private val to: JsonField<String>,
         private val callbackUrl: JsonField<String>,
-        private val context: JsonField<Context>,
         private val correlationId: JsonField<String>,
         private val document: JsonField<Document>,
         private val expiresAt: JsonField<OffsetDateTime>,
@@ -644,7 +583,6 @@ private constructor(
         private val locale: JsonField<String>,
         private val preferredChannel: JsonField<PreferredChannel>,
         private val scheduleAt: JsonField<OffsetDateTime>,
-        private val text: JsonField<String>,
         private val variables: JsonField<Variables>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
@@ -658,7 +596,6 @@ private constructor(
             @JsonProperty("callback_url")
             @ExcludeMissing
             callbackUrl: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("context") @ExcludeMissing context: JsonField<Context> = JsonMissing.of(),
             @JsonProperty("correlation_id")
             @ExcludeMissing
             correlationId: JsonField<String> = JsonMissing.of(),
@@ -676,7 +613,6 @@ private constructor(
             @JsonProperty("schedule_at")
             @ExcludeMissing
             scheduleAt: JsonField<OffsetDateTime> = JsonMissing.of(),
-            @JsonProperty("text") @ExcludeMissing text: JsonField<String> = JsonMissing.of(),
             @JsonProperty("variables")
             @ExcludeMissing
             variables: JsonField<Variables> = JsonMissing.of(),
@@ -684,7 +620,6 @@ private constructor(
             templateId,
             to,
             callbackUrl,
-            context,
             correlationId,
             document,
             expiresAt,
@@ -692,7 +627,6 @@ private constructor(
             locale,
             preferredChannel,
             scheduleAt,
-            text,
             variables,
             mutableMapOf(),
         )
@@ -720,15 +654,6 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun callbackUrl(): Optional<String> = callbackUrl.getOptional("callback_url")
-
-        /**
-         * Context for replying to an inbound message. When provided, the message is sent as a
-         * WhatsApp reply within the 24-hour conversation window.
-         *
-         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun context(): Optional<Context> = context.getOptional("context")
 
         /**
          * A user-defined identifier to correlate this message with your internal systems. It is
@@ -803,15 +728,6 @@ private constructor(
         fun scheduleAt(): Optional<OffsetDateTime> = scheduleAt.getOptional("schedule_at")
 
         /**
-         * The reply message body. Required when `context.reply_to` is provided. Used for 2-way
-         * WhatsApp messaging to send free-form text replies within a conversation window.
-         *
-         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
-         *   server responded with an unexpected value).
-         */
-        fun text(): Optional<String> = text.getOptional("text")
-
-        /**
          * The variables to be replaced in the template.
          *
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -843,13 +759,6 @@ private constructor(
         @JsonProperty("callback_url")
         @ExcludeMissing
         fun _callbackUrl(): JsonField<String> = callbackUrl
-
-        /**
-         * Returns the raw JSON value of [context].
-         *
-         * Unlike [context], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("context") @ExcludeMissing fun _context(): JsonField<Context> = context
 
         /**
          * Returns the raw JSON value of [correlationId].
@@ -911,13 +820,6 @@ private constructor(
         fun _scheduleAt(): JsonField<OffsetDateTime> = scheduleAt
 
         /**
-         * Returns the raw JSON value of [text].
-         *
-         * Unlike [text], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("text") @ExcludeMissing fun _text(): JsonField<String> = text
-
-        /**
          * Returns the raw JSON value of [variables].
          *
          * Unlike [variables], this method doesn't throw if the JSON field has an unexpected type.
@@ -958,7 +860,6 @@ private constructor(
             private var templateId: JsonField<String>? = null
             private var to: JsonField<String>? = null
             private var callbackUrl: JsonField<String> = JsonMissing.of()
-            private var context: JsonField<Context> = JsonMissing.of()
             private var correlationId: JsonField<String> = JsonMissing.of()
             private var document: JsonField<Document> = JsonMissing.of()
             private var expiresAt: JsonField<OffsetDateTime> = JsonMissing.of()
@@ -966,7 +867,6 @@ private constructor(
             private var locale: JsonField<String> = JsonMissing.of()
             private var preferredChannel: JsonField<PreferredChannel> = JsonMissing.of()
             private var scheduleAt: JsonField<OffsetDateTime> = JsonMissing.of()
-            private var text: JsonField<String> = JsonMissing.of()
             private var variables: JsonField<Variables> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -975,7 +875,6 @@ private constructor(
                 templateId = body.templateId
                 to = body.to
                 callbackUrl = body.callbackUrl
-                context = body.context
                 correlationId = body.correlationId
                 document = body.document
                 expiresAt = body.expiresAt
@@ -983,7 +882,6 @@ private constructor(
                 locale = body.locale
                 preferredChannel = body.preferredChannel
                 scheduleAt = body.scheduleAt
-                text = body.text
                 variables = body.variables
                 additionalProperties = body.additionalProperties.toMutableMap()
             }
@@ -1025,21 +923,6 @@ private constructor(
             fun callbackUrl(callbackUrl: JsonField<String>) = apply {
                 this.callbackUrl = callbackUrl
             }
-
-            /**
-             * Context for replying to an inbound message. When provided, the message is sent as a
-             * WhatsApp reply within the 24-hour conversation window.
-             */
-            fun context(context: Context) = context(JsonField.of(context))
-
-            /**
-             * Sets [Builder.context] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.context] with a well-typed [Context] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun context(context: JsonField<Context>) = apply { this.context = context }
 
             /**
              * A user-defined identifier to correlate this message with your internal systems. It is
@@ -1162,21 +1045,6 @@ private constructor(
                 this.scheduleAt = scheduleAt
             }
 
-            /**
-             * The reply message body. Required when `context.reply_to` is provided. Used for 2-way
-             * WhatsApp messaging to send free-form text replies within a conversation window.
-             */
-            fun text(text: String) = text(JsonField.of(text))
-
-            /**
-             * Sets [Builder.text] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.text] with a well-typed [String] value instead. This
-             * method is primarily for setting the field to an undocumented or not yet supported
-             * value.
-             */
-            fun text(text: JsonField<String>) = apply { this.text = text }
-
             /** The variables to be replaced in the template. */
             fun variables(variables: Variables) = variables(JsonField.of(variables))
 
@@ -1226,7 +1094,6 @@ private constructor(
                     checkRequired("templateId", templateId),
                     checkRequired("to", to),
                     callbackUrl,
-                    context,
                     correlationId,
                     document,
                     expiresAt,
@@ -1234,7 +1101,6 @@ private constructor(
                     locale,
                     preferredChannel,
                     scheduleAt,
-                    text,
                     variables,
                     additionalProperties.toMutableMap(),
                 )
@@ -1259,7 +1125,6 @@ private constructor(
             templateId()
             to()
             callbackUrl()
-            context().ifPresent { it.validate() }
             correlationId()
             document().ifPresent { it.validate() }
             expiresAt()
@@ -1267,7 +1132,6 @@ private constructor(
             locale()
             preferredChannel().ifPresent { it.validate() }
             scheduleAt()
-            text()
             variables().ifPresent { it.validate() }
             validated = true
         }
@@ -1291,7 +1155,6 @@ private constructor(
             (if (templateId.asKnown().isPresent) 1 else 0) +
                 (if (to.asKnown().isPresent) 1 else 0) +
                 (if (callbackUrl.asKnown().isPresent) 1 else 0) +
-                (context.asKnown().getOrNull()?.validity() ?: 0) +
                 (if (correlationId.asKnown().isPresent) 1 else 0) +
                 (document.asKnown().getOrNull()?.validity() ?: 0) +
                 (if (expiresAt.asKnown().isPresent) 1 else 0) +
@@ -1299,7 +1162,6 @@ private constructor(
                 (if (locale.asKnown().isPresent) 1 else 0) +
                 (preferredChannel.asKnown().getOrNull()?.validity() ?: 0) +
                 (if (scheduleAt.asKnown().isPresent) 1 else 0) +
-                (if (text.asKnown().isPresent) 1 else 0) +
                 (variables.asKnown().getOrNull()?.validity() ?: 0)
 
         override fun equals(other: Any?): Boolean {
@@ -1311,7 +1173,6 @@ private constructor(
                 templateId == other.templateId &&
                 to == other.to &&
                 callbackUrl == other.callbackUrl &&
-                context == other.context &&
                 correlationId == other.correlationId &&
                 document == other.document &&
                 expiresAt == other.expiresAt &&
@@ -1319,7 +1180,6 @@ private constructor(
                 locale == other.locale &&
                 preferredChannel == other.preferredChannel &&
                 scheduleAt == other.scheduleAt &&
-                text == other.text &&
                 variables == other.variables &&
                 additionalProperties == other.additionalProperties
         }
@@ -1329,7 +1189,6 @@ private constructor(
                 templateId,
                 to,
                 callbackUrl,
-                context,
                 correlationId,
                 document,
                 expiresAt,
@@ -1337,7 +1196,6 @@ private constructor(
                 locale,
                 preferredChannel,
                 scheduleAt,
-                text,
                 variables,
                 additionalProperties,
             )
@@ -1346,180 +1204,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{templateId=$templateId, to=$to, callbackUrl=$callbackUrl, context=$context, correlationId=$correlationId, document=$document, expiresAt=$expiresAt, from=$from, locale=$locale, preferredChannel=$preferredChannel, scheduleAt=$scheduleAt, text=$text, variables=$variables, additionalProperties=$additionalProperties}"
-    }
-
-    /**
-     * Context for replying to an inbound message. When provided, the message is sent as a WhatsApp
-     * reply within the 24-hour conversation window.
-     */
-    class Context
-    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
-    private constructor(
-        private val replyTo: JsonField<String>,
-        private val additionalProperties: MutableMap<String, JsonValue>,
-    ) {
-
-        @JsonCreator
-        private constructor(
-            @JsonProperty("reply_to") @ExcludeMissing replyTo: JsonField<String> = JsonMissing.of()
-        ) : this(replyTo, mutableMapOf())
-
-        /**
-         * The inbound message ID (prefixed with `im_`) to reply to. This ID is provided in the
-         * `inbound.message.received` webhook event.
-         *
-         * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun replyTo(): String = replyTo.getRequired("reply_to")
-
-        /**
-         * Returns the raw JSON value of [replyTo].
-         *
-         * Unlike [replyTo], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("reply_to") @ExcludeMissing fun _replyTo(): JsonField<String> = replyTo
-
-        @JsonAnySetter
-        private fun putAdditionalProperty(key: String, value: JsonValue) {
-            additionalProperties.put(key, value)
-        }
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> =
-            Collections.unmodifiableMap(additionalProperties)
-
-        fun toBuilder() = Builder().from(this)
-
-        companion object {
-
-            /**
-             * Returns a mutable builder for constructing an instance of [Context].
-             *
-             * The following fields are required:
-             * ```java
-             * .replyTo()
-             * ```
-             */
-            @JvmStatic fun builder() = Builder()
-        }
-
-        /** A builder for [Context]. */
-        class Builder internal constructor() {
-
-            private var replyTo: JsonField<String>? = null
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(context: Context) = apply {
-                replyTo = context.replyTo
-                additionalProperties = context.additionalProperties.toMutableMap()
-            }
-
-            /**
-             * The inbound message ID (prefixed with `im_`) to reply to. This ID is provided in the
-             * `inbound.message.received` webhook event.
-             */
-            fun replyTo(replyTo: String) = replyTo(JsonField.of(replyTo))
-
-            /**
-             * Sets [Builder.replyTo] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.replyTo] with a well-typed [String] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun replyTo(replyTo: JsonField<String>) = apply { this.replyTo = replyTo }
-
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
-
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
-
-            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
-
-            /**
-             * Returns an immutable instance of [Context].
-             *
-             * Further updates to this [Builder] will not mutate the returned instance.
-             *
-             * The following fields are required:
-             * ```java
-             * .replyTo()
-             * ```
-             *
-             * @throws IllegalStateException if any required field is unset.
-             */
-            fun build(): Context =
-                Context(checkRequired("replyTo", replyTo), additionalProperties.toMutableMap())
-        }
-
-        private var validated: Boolean = false
-
-        /**
-         * Validates that the types of all values in this object match their expected types
-         * recursively.
-         *
-         * This method is _not_ forwards compatible with new types from the API for existing fields.
-         *
-         * @throws PreludeInvalidDataException if any value type in this object doesn't match its
-         *   expected type.
-         */
-        fun validate(): Context = apply {
-            if (validated) {
-                return@apply
-            }
-
-            replyTo()
-            validated = true
-        }
-
-        fun isValid(): Boolean =
-            try {
-                validate()
-                true
-            } catch (e: PreludeInvalidDataException) {
-                false
-            }
-
-        /**
-         * Returns a score indicating how many valid values are contained in this object
-         * recursively.
-         *
-         * Used for best match union deserialization.
-         */
-        @JvmSynthetic internal fun validity(): Int = (if (replyTo.asKnown().isPresent) 1 else 0)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Context &&
-                replyTo == other.replyTo &&
-                additionalProperties == other.additionalProperties
-        }
-
-        private val hashCode: Int by lazy { Objects.hash(replyTo, additionalProperties) }
-
-        override fun hashCode(): Int = hashCode
-
-        override fun toString() =
-            "Context{replyTo=$replyTo, additionalProperties=$additionalProperties}"
+            "Body{templateId=$templateId, to=$to, callbackUrl=$callbackUrl, correlationId=$correlationId, document=$document, expiresAt=$expiresAt, from=$from, locale=$locale, preferredChannel=$preferredChannel, scheduleAt=$scheduleAt, variables=$variables, additionalProperties=$additionalProperties}"
     }
 
     /**
