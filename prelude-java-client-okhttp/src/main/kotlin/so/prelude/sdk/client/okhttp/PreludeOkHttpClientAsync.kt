@@ -15,6 +15,7 @@ import kotlin.jvm.optionals.getOrNull
 import so.prelude.sdk.client.PreludeClientAsync
 import so.prelude.sdk.client.PreludeClientAsyncImpl
 import so.prelude.sdk.core.ClientOptions
+import so.prelude.sdk.core.LogLevel
 import so.prelude.sdk.core.Sleeper
 import so.prelude.sdk.core.Timeout
 import so.prelude.sdk.core.http.Headers
@@ -276,6 +277,15 @@ class PreludeOkHttpClientAsync private constructor() {
          * Defaults to 2.
          */
         fun maxRetries(maxRetries: Int) = apply { clientOptions.maxRetries(maxRetries) }
+
+        /**
+         * The level at which to log request and response information.
+         *
+         * [fromEnv] will set the level from environment variables. See [LogLevel.fromEnv].
+         *
+         * Defaults to [LogLevel.fromEnv].
+         */
+        fun logLevel(logLevel: LogLevel) = apply { clientOptions.logLevel(logLevel) }
 
         /** Bearer token for authorizing API requests. */
         fun apiToken(apiToken: String) = apply { clientOptions.apiToken(apiToken) }
