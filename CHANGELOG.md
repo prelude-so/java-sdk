@@ -1,5 +1,45 @@
 # Changelog
 
+## 0.12.0 (2026-05-07)
+
+Full Changelog: [v0.11.0...v0.12.0](https://github.com/prelude-so/java-sdk/compare/v0.11.0...v0.12.0)
+
+### Features
+
+* **api:** api update ([6d3b44c](https://github.com/prelude-so/java-sdk/commit/6d3b44c8aae52ab42f9f937560e8e72a1d94e927))
+* **api:** api update ([458db60](https://github.com/prelude-so/java-sdk/commit/458db60b6226e871b2e721e6541dfca337b4d30e))
+* **api:** api update ([8d52b12](https://github.com/prelude-so/java-sdk/commit/8d52b124c3f2560b3df08219dbfa561ea5195112))
+* **api:** api update ([7d996be](https://github.com/prelude-so/java-sdk/commit/7d996bea8db944c4f7c44c3b78943f6406515846))
+* **api:** api update ([f8df499](https://github.com/prelude-so/java-sdk/commit/f8df49907af7eddb7a242d432115c8ff34a46610))
+* **api:** api update ([31dce61](https://github.com/prelude-so/java-sdk/commit/31dce6143e9fedcf50d4038df4ae3ff62749dc38))
+* **api:** api update ([ba82714](https://github.com/prelude-so/java-sdk/commit/ba827142487d1329ab00008d023c90edfe213589))
+* **client:** improve logging ([4c66db1](https://github.com/prelude-so/java-sdk/commit/4c66db1cadaeb4a2288084d23ae809c9f6fc4955))
+* **client:** more robust error parsing ([27e3ab3](https://github.com/prelude-so/java-sdk/commit/27e3ab300e96f0ac90a95d1891ca5aa74a528eda))
+* **client:** support proxy authentication ([4e82b57](https://github.com/prelude-so/java-sdk/commit/4e82b57cbd2d093d4b69d975bef8523252ceb839))
+* support setting headers via env ([c8fea95](https://github.com/prelude-so/java-sdk/commit/c8fea9505ff277f11030156bea4da47eb6d7266a))
+
+
+### Performance Improvements
+
+* **client:** create one json mapper ([68db5ad](https://github.com/prelude-so/java-sdk/commit/68db5adb20b69461162c789776321ea480885cf1))
+
+
+### Chores
+
+* **ci:** skip lint on metadata-only changes ([976cb9b](https://github.com/prelude-so/java-sdk/commit/976cb9ba89fa5bc9c37659e9bc3c0df68b847b55))
+* **internal:** update multipart form array serialization ([c7a04e9](https://github.com/prelude-so/java-sdk/commit/c7a04e917d298c04fa2dac1c41214cccf296d3f5))
+* remove duplicated dokka setup ([15be966](https://github.com/prelude-so/java-sdk/commit/15be96622e9f40541cbfa040979f82a19fc10e2a))
+* **tests:** bump steady to v0.19.6 ([c3f4e99](https://github.com/prelude-so/java-sdk/commit/c3f4e99bc4bc159c7ef4d9a328003f091d3a6dbb))
+* **tests:** bump steady to v0.19.7 ([ea16160](https://github.com/prelude-so/java-sdk/commit/ea16160f3c12edacc15b7f87ac492fd919763630))
+* **tests:** bump steady to v0.20.1 ([e9e58e0](https://github.com/prelude-so/java-sdk/commit/e9e58e0ad4af35daf3dd45f1a39d3d0fe11b09d4))
+* **tests:** bump steady to v0.20.2 ([62eae43](https://github.com/prelude-so/java-sdk/commit/62eae43810e1b9917f8266856d9fe6a62ee5b22b))
+* **tests:** bump steady to v0.22.1 ([1ad99fd](https://github.com/prelude-so/java-sdk/commit/1ad99fd4685e9fd3e5e9d7b7e5bfb2b2c9a7fe43))
+
+
+### Documentation
+
+* clarify forwards compat behavior ([4fc748b](https://github.com/prelude-so/java-sdk/commit/4fc748b114f84bceed94c9c5424e5b389a366c9c))
+
 ## 0.11.0 (2026-03-23)
 
 Full Changelog: [v0.10.0...v0.11.0](https://github.com/prelude-so/java-sdk/compare/v0.10.0...v0.11.0)
