@@ -86,6 +86,9 @@ private constructor(
      * * `challenged` - The verification is suspicious and is restricted to non-SMS and non-voice
      *   channels only. This mode must be enabled for your customer account by Prelude support.
      * * `blocked` - The verification was blocked.
+     * * `shadow_blocked` - The verification triggered a block rule but the decision was not
+     *   enforced; this is used to dry-run anti-fraud configuration. This mode must be enabled for
+     *   your customer account by Prelude support.
      *
      * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
@@ -109,7 +112,8 @@ private constructor(
     fun metadata(): Optional<Metadata> = metadata.getOptional("metadata")
 
     /**
-     * The reason why the verification was blocked. Only present when status is "blocked".
+     * The reason why the verification was blocked. Only present when status is "blocked" or
+     * "shadow_blocked".
      * * `expired_signature` - The signature of the SDK signals is expired. They should be sent
      *   within the hour following their collection.
      * * `in_block_list` - The phone number is part of the configured block list.
@@ -133,7 +137,7 @@ private constructor(
 
     /**
      * The risk factors that contributed to the verification being blocked. Only present when status
-     * is "blocked" and the anti-fraud system detected specific risk signals.
+     * is "blocked" or "shadow_blocked" and the anti-fraud system detected specific risk signals.
      * * `behavioral_pattern` - The phone number past behavior during verification flows exhibits
      *   suspicious patterns.
      * * `device_attribute` - The device exhibits characteristics associated with suspicious
@@ -318,6 +322,9 @@ private constructor(
          *   non-voice channels only. This mode must be enabled for your customer account by Prelude
          *   support.
          * * `blocked` - The verification was blocked.
+         * * `shadow_blocked` - The verification triggered a block rule but the decision was not
+         *   enforced; this is used to dry-run anti-fraud configuration. This mode must be enabled
+         *   for your customer account by Prelude support.
          */
         fun status(status: Status) = status(JsonField.of(status))
 
@@ -368,7 +375,8 @@ private constructor(
         fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
 
         /**
-         * The reason why the verification was blocked. Only present when status is "blocked".
+         * The reason why the verification was blocked. Only present when status is "blocked" or
+         * "shadow_blocked".
          * * `expired_signature` - The signature of the SDK signals is expired. They should be sent
          *   within the hour following their collection.
          * * `in_block_list` - The phone number is part of the configured block list.
@@ -402,7 +410,8 @@ private constructor(
 
         /**
          * The risk factors that contributed to the verification being blocked. Only present when
-         * status is "blocked" and the anti-fraud system detected specific risk signals.
+         * status is "blocked" or "shadow_blocked" and the anti-fraud system detected specific risk
+         * signals.
          * * `behavioral_pattern` - The phone number past behavior during verification flows
          *   exhibits suspicious patterns.
          * * `device_attribute` - The device exhibits characteristics associated with suspicious
@@ -714,6 +723,9 @@ private constructor(
      * * `challenged` - The verification is suspicious and is restricted to non-SMS and non-voice
      *   channels only. This mode must be enabled for your customer account by Prelude support.
      * * `blocked` - The verification was blocked.
+     * * `shadow_blocked` - The verification triggered a block rule but the decision was not
+     *   enforced; this is used to dry-run anti-fraud configuration. This mode must be enabled for
+     *   your customer account by Prelude support.
      */
     class Status @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
@@ -737,6 +749,8 @@ private constructor(
 
             @JvmField val BLOCKED = of("blocked")
 
+            @JvmField val SHADOW_BLOCKED = of("shadow_blocked")
+
             @JvmStatic fun of(value: String) = Status(JsonField.of(value))
         }
 
@@ -746,6 +760,7 @@ private constructor(
             RETRY,
             CHALLENGED,
             BLOCKED,
+            SHADOW_BLOCKED,
         }
 
         /**
@@ -762,6 +777,7 @@ private constructor(
             RETRY,
             CHALLENGED,
             BLOCKED,
+            SHADOW_BLOCKED,
             /** An enum member indicating that [Status] was instantiated with an unknown value. */
             _UNKNOWN,
         }
@@ -779,6 +795,7 @@ private constructor(
                 RETRY -> Value.RETRY
                 CHALLENGED -> Value.CHALLENGED
                 BLOCKED -> Value.BLOCKED
+                SHADOW_BLOCKED -> Value.SHADOW_BLOCKED
                 else -> Value._UNKNOWN
             }
 
@@ -797,6 +814,7 @@ private constructor(
                 RETRY -> Known.RETRY
                 CHALLENGED -> Known.CHALLENGED
                 BLOCKED -> Known.BLOCKED
+                SHADOW_BLOCKED -> Known.SHADOW_BLOCKED
                 else -> throw PreludeInvalidDataException("Unknown Status: $value")
             }
 
@@ -1195,7 +1213,8 @@ private constructor(
     }
 
     /**
-     * The reason why the verification was blocked. Only present when status is "blocked".
+     * The reason why the verification was blocked. Only present when status is "blocked" or
+     * "shadow_blocked".
      * * `expired_signature` - The signature of the SDK signals is expired. They should be sent
      *   within the hour following their collection.
      * * `in_block_list` - The phone number is part of the configured block list.
