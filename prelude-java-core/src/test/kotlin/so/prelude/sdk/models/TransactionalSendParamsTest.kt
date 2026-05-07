@@ -17,8 +17,8 @@ internal class TransactionalSendParamsTest {
             .correlationId("correlation_id")
             .document(
                 TransactionalSendParams.Document.builder()
-                    .filename("invoice.pdf")
                     .url("https://example.com/invoice.pdf")
+                    .filename("invoice.pdf")
                     .build()
             )
             .expiresAt("expires_at")
@@ -43,8 +43,8 @@ internal class TransactionalSendParamsTest {
                 .correlationId("correlation_id")
                 .document(
                     TransactionalSendParams.Document.builder()
-                        .filename("invoice.pdf")
                         .url("https://example.com/invoice.pdf")
+                        .filename("invoice.pdf")
                         .build()
                 )
                 .expiresAt("expires_at")
@@ -67,8 +67,8 @@ internal class TransactionalSendParamsTest {
         assertThat(body.document())
             .contains(
                 TransactionalSendParams.Document.builder()
-                    .filename("invoice.pdf")
                     .url("https://example.com/invoice.pdf")
+                    .filename("invoice.pdf")
                     .build()
             )
         assertThat(body.expiresAt()).contains("expires_at")

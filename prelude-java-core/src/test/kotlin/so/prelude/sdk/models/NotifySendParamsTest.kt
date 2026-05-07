@@ -18,8 +18,8 @@ internal class NotifySendParamsTest {
             .correlationId("order-12345")
             .document(
                 NotifySendParams.Document.builder()
-                    .filename("invoice.pdf")
                     .url("https://example.com/invoice.pdf")
+                    .filename("invoice.pdf")
                     .build()
             )
             .expiresAt(OffsetDateTime.parse("2025-12-25T18:00:00Z"))
@@ -46,8 +46,8 @@ internal class NotifySendParamsTest {
                 .correlationId("order-12345")
                 .document(
                     NotifySendParams.Document.builder()
-                        .filename("invoice.pdf")
                         .url("https://example.com/invoice.pdf")
+                        .filename("invoice.pdf")
                         .build()
                 )
                 .expiresAt(OffsetDateTime.parse("2025-12-25T18:00:00Z"))
@@ -72,8 +72,8 @@ internal class NotifySendParamsTest {
         assertThat(body.document())
             .contains(
                 NotifySendParams.Document.builder()
-                    .filename("invoice.pdf")
                     .url("https://example.com/invoice.pdf")
+                    .filename("invoice.pdf")
                     .build()
             )
         assertThat(body.expiresAt()).contains(OffsetDateTime.parse("2025-12-25T18:00:00Z"))

@@ -19,8 +19,8 @@ internal class NotifySendBatchParamsTest {
             .correlationId("campaign-12345")
             .document(
                 NotifySendBatchParams.Document.builder()
-                    .filename("invoice.pdf")
                     .url("https://example.com/invoice.pdf")
+                    .filename("invoice.pdf")
                     .build()
             )
             .expiresAt(OffsetDateTime.parse("2025-12-25T18:00:00Z"))
@@ -48,8 +48,8 @@ internal class NotifySendBatchParamsTest {
                 .correlationId("campaign-12345")
                 .document(
                     NotifySendBatchParams.Document.builder()
-                        .filename("invoice.pdf")
                         .url("https://example.com/invoice.pdf")
+                        .filename("invoice.pdf")
                         .build()
                 )
                 .expiresAt(OffsetDateTime.parse("2025-12-25T18:00:00Z"))
@@ -74,8 +74,8 @@ internal class NotifySendBatchParamsTest {
         assertThat(body.document())
             .contains(
                 NotifySendBatchParams.Document.builder()
-                    .filename("invoice.pdf")
                     .url("https://example.com/invoice.pdf")
+                    .filename("invoice.pdf")
                     .build()
             )
         assertThat(body.expiresAt()).contains(OffsetDateTime.parse("2025-12-25T18:00:00Z"))

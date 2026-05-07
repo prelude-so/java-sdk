@@ -30,6 +30,7 @@ private constructor(
     private val metadata: JsonField<Metadata>,
     private val reason: JsonField<Reason>,
     private val requestId: JsonField<String>,
+    private val riskFactors: JsonField<List<RiskFactor>>,
     private val silent: JsonField<Silent>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
@@ -45,8 +46,22 @@ private constructor(
         @JsonProperty("metadata") @ExcludeMissing metadata: JsonField<Metadata> = JsonMissing.of(),
         @JsonProperty("reason") @ExcludeMissing reason: JsonField<Reason> = JsonMissing.of(),
         @JsonProperty("request_id") @ExcludeMissing requestId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("risk_factors")
+        @ExcludeMissing
+        riskFactors: JsonField<List<RiskFactor>> = JsonMissing.of(),
         @JsonProperty("silent") @ExcludeMissing silent: JsonField<Silent> = JsonMissing.of(),
-    ) : this(id, method, status, channels, metadata, reason, requestId, silent, mutableMapOf())
+    ) : this(
+        id,
+        method,
+        status,
+        channels,
+        metadata,
+        reason,
+        requestId,
+        riskFactors,
+        silent,
+        mutableMapOf(),
+    )
 
     /**
      * The verification identifier.
@@ -71,6 +86,9 @@ private constructor(
      * * `challenged` - The verification is suspicious and is restricted to non-SMS and non-voice
      *   channels only. This mode must be enabled for your customer account by Prelude support.
      * * `blocked` - The verification was blocked.
+     * * `shadow_blocked` - The verification triggered a block rule but the decision was not
+     *   enforced; this is used to dry-run anti-fraud configuration. This mode must be enabled for
+     *   your customer account by Prelude support.
      *
      * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
@@ -94,7 +112,8 @@ private constructor(
     fun metadata(): Optional<Metadata> = metadata.getOptional("metadata")
 
     /**
-     * The reason why the verification was blocked. Only present when status is "blocked".
+     * The reason why the verification was blocked. Only present when status is "blocked" or
+     * "shadow_blocked".
      * * `expired_signature` - The signature of the SDK signals is expired. They should be sent
      *   within the hour following their collection.
      * * `in_block_list` - The phone number is part of the configured block list.
@@ -115,6 +134,35 @@ private constructor(
      *   server responded with an unexpected value).
      */
     fun requestId(): Optional<String> = requestId.getOptional("request_id")
+
+    /**
+     * The risk factors that contributed to the verification being blocked. Only present when status
+     * is "blocked" or "shadow_blocked" and the anti-fraud system detected specific risk signals.
+     * * `behavioral_pattern` - The phone number past behavior during verification flows exhibits
+     *   suspicious patterns.
+     * * `device_attribute` - The device exhibits characteristics associated with suspicious
+     *   activity patterns.
+     * * `fraud_database` - The phone number has been flagged as suspicious in one or more of our
+     *   fraud databases.
+     * * `location_discrepancy` - The phone number prefix and IP address discrepancy indicates
+     *   potential fraud.
+     * * `network_fingerprint` - The network connection exhibits characteristics associated with
+     *   suspicious activity patterns.
+     * * `poor_conversion_history` - The phone number has a history of poorly converting to a
+     *   verified phone number.
+     * * `prefix_concentration` - The phone number is part of a range known to be associated with
+     *   suspicious activity patterns.
+     * * `suspected_request_tampering` - The SDK signature is invalid and the request is considered
+     *   to be tampered with.
+     * * `suspicious_ip_address` - The IP address is deemed to be associated with suspicious
+     *   activity patterns.
+     * * `temporary_phone_number` - The phone number is known to be a temporary or disposable
+     *   number.
+     *
+     * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun riskFactors(): Optional<List<RiskFactor>> = riskFactors.getOptional("risk_factors")
 
     /**
      * The silent verification specific properties.
@@ -174,6 +222,15 @@ private constructor(
     @JsonProperty("request_id") @ExcludeMissing fun _requestId(): JsonField<String> = requestId
 
     /**
+     * Returns the raw JSON value of [riskFactors].
+     *
+     * Unlike [riskFactors], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("risk_factors")
+    @ExcludeMissing
+    fun _riskFactors(): JsonField<List<RiskFactor>> = riskFactors
+
+    /**
      * Returns the raw JSON value of [silent].
      *
      * Unlike [silent], this method doesn't throw if the JSON field has an unexpected type.
@@ -217,6 +274,7 @@ private constructor(
         private var metadata: JsonField<Metadata> = JsonMissing.of()
         private var reason: JsonField<Reason> = JsonMissing.of()
         private var requestId: JsonField<String> = JsonMissing.of()
+        private var riskFactors: JsonField<MutableList<RiskFactor>>? = null
         private var silent: JsonField<Silent> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -229,6 +287,7 @@ private constructor(
             metadata = verificationCreateResponse.metadata
             reason = verificationCreateResponse.reason
             requestId = verificationCreateResponse.requestId
+            riskFactors = verificationCreateResponse.riskFactors.map { it.toMutableList() }
             silent = verificationCreateResponse.silent
             additionalProperties = verificationCreateResponse.additionalProperties.toMutableMap()
         }
@@ -263,6 +322,9 @@ private constructor(
          *   non-voice channels only. This mode must be enabled for your customer account by Prelude
          *   support.
          * * `blocked` - The verification was blocked.
+         * * `shadow_blocked` - The verification triggered a block rule but the decision was not
+         *   enforced; this is used to dry-run anti-fraud configuration. This mode must be enabled
+         *   for your customer account by Prelude support.
          */
         fun status(status: Status) = status(JsonField.of(status))
 
@@ -313,7 +375,8 @@ private constructor(
         fun metadata(metadata: JsonField<Metadata>) = apply { this.metadata = metadata }
 
         /**
-         * The reason why the verification was blocked. Only present when status is "blocked".
+         * The reason why the verification was blocked. Only present when status is "blocked" or
+         * "shadow_blocked".
          * * `expired_signature` - The signature of the SDK signals is expired. They should be sent
          *   within the hour following their collection.
          * * `in_block_list` - The phone number is part of the configured block list.
@@ -344,6 +407,56 @@ private constructor(
          * value.
          */
         fun requestId(requestId: JsonField<String>) = apply { this.requestId = requestId }
+
+        /**
+         * The risk factors that contributed to the verification being blocked. Only present when
+         * status is "blocked" or "shadow_blocked" and the anti-fraud system detected specific risk
+         * signals.
+         * * `behavioral_pattern` - The phone number past behavior during verification flows
+         *   exhibits suspicious patterns.
+         * * `device_attribute` - The device exhibits characteristics associated with suspicious
+         *   activity patterns.
+         * * `fraud_database` - The phone number has been flagged as suspicious in one or more of
+         *   our fraud databases.
+         * * `location_discrepancy` - The phone number prefix and IP address discrepancy indicates
+         *   potential fraud.
+         * * `network_fingerprint` - The network connection exhibits characteristics associated with
+         *   suspicious activity patterns.
+         * * `poor_conversion_history` - The phone number has a history of poorly converting to a
+         *   verified phone number.
+         * * `prefix_concentration` - The phone number is part of a range known to be associated
+         *   with suspicious activity patterns.
+         * * `suspected_request_tampering` - The SDK signature is invalid and the request is
+         *   considered to be tampered with.
+         * * `suspicious_ip_address` - The IP address is deemed to be associated with suspicious
+         *   activity patterns.
+         * * `temporary_phone_number` - The phone number is known to be a temporary or disposable
+         *   number.
+         */
+        fun riskFactors(riskFactors: List<RiskFactor>) = riskFactors(JsonField.of(riskFactors))
+
+        /**
+         * Sets [Builder.riskFactors] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.riskFactors] with a well-typed `List<RiskFactor>` value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun riskFactors(riskFactors: JsonField<List<RiskFactor>>) = apply {
+            this.riskFactors = riskFactors.map { it.toMutableList() }
+        }
+
+        /**
+         * Adds a single [RiskFactor] to [riskFactors].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
+        fun addRiskFactor(riskFactor: RiskFactor) = apply {
+            riskFactors =
+                (riskFactors ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("riskFactors", it).add(riskFactor)
+                }
+        }
 
         /** The silent verification specific properties. */
         fun silent(silent: Silent) = silent(JsonField.of(silent))
@@ -398,6 +511,7 @@ private constructor(
                 metadata,
                 reason,
                 requestId,
+                (riskFactors ?: JsonMissing.of()).map { it.toImmutable() },
                 silent,
                 additionalProperties.toMutableMap(),
             )
@@ -405,6 +519,14 @@ private constructor(
 
     private var validated: Boolean = false
 
+    /**
+     * Validates that the types of all values in this object match their expected types recursively.
+     *
+     * This method is _not_ forwards compatible with new types from the API for existing fields.
+     *
+     * @throws PreludeInvalidDataException if any value type in this object doesn't match its
+     *   expected type.
+     */
     fun validate(): VerificationCreateResponse = apply {
         if (validated) {
             return@apply
@@ -417,6 +539,7 @@ private constructor(
         metadata().ifPresent { it.validate() }
         reason().ifPresent { it.validate() }
         requestId()
+        riskFactors().ifPresent { it.forEach { it.validate() } }
         silent().ifPresent { it.validate() }
         validated = true
     }
@@ -443,6 +566,7 @@ private constructor(
             (metadata.asKnown().getOrNull()?.validity() ?: 0) +
             (reason.asKnown().getOrNull()?.validity() ?: 0) +
             (if (requestId.asKnown().isPresent) 1 else 0) +
+            (riskFactors.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
             (silent.asKnown().getOrNull()?.validity() ?: 0)
 
     /** The method used for verifying this phone number. */
@@ -545,6 +669,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws PreludeInvalidDataException if any value type in this object doesn't match its
+         *   expected type.
+         */
         fun validate(): Method = apply {
             if (validated) {
                 return@apply
@@ -590,6 +723,9 @@ private constructor(
      * * `challenged` - The verification is suspicious and is restricted to non-SMS and non-voice
      *   channels only. This mode must be enabled for your customer account by Prelude support.
      * * `blocked` - The verification was blocked.
+     * * `shadow_blocked` - The verification triggered a block rule but the decision was not
+     *   enforced; this is used to dry-run anti-fraud configuration. This mode must be enabled for
+     *   your customer account by Prelude support.
      */
     class Status @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
@@ -613,6 +749,8 @@ private constructor(
 
             @JvmField val BLOCKED = of("blocked")
 
+            @JvmField val SHADOW_BLOCKED = of("shadow_blocked")
+
             @JvmStatic fun of(value: String) = Status(JsonField.of(value))
         }
 
@@ -622,6 +760,7 @@ private constructor(
             RETRY,
             CHALLENGED,
             BLOCKED,
+            SHADOW_BLOCKED,
         }
 
         /**
@@ -638,6 +777,7 @@ private constructor(
             RETRY,
             CHALLENGED,
             BLOCKED,
+            SHADOW_BLOCKED,
             /** An enum member indicating that [Status] was instantiated with an unknown value. */
             _UNKNOWN,
         }
@@ -655,6 +795,7 @@ private constructor(
                 RETRY -> Value.RETRY
                 CHALLENGED -> Value.CHALLENGED
                 BLOCKED -> Value.BLOCKED
+                SHADOW_BLOCKED -> Value.SHADOW_BLOCKED
                 else -> Value._UNKNOWN
             }
 
@@ -673,6 +814,7 @@ private constructor(
                 RETRY -> Known.RETRY
                 CHALLENGED -> Known.CHALLENGED
                 BLOCKED -> Known.BLOCKED
+                SHADOW_BLOCKED -> Known.SHADOW_BLOCKED
                 else -> throw PreludeInvalidDataException("Unknown Status: $value")
             }
 
@@ -690,6 +832,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws PreludeInvalidDataException if any value type in this object doesn't match its
+         *   expected type.
+         */
         fun validate(): Status = apply {
             if (validated) {
                 return@apply
@@ -851,6 +1002,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws PreludeInvalidDataException if any value type in this object doesn't match its
+         *   expected type.
+         */
         fun validate(): Channel = apply {
             if (validated) {
                 return@apply
@@ -999,6 +1159,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws PreludeInvalidDataException if any value type in this object doesn't match its
+         *   expected type.
+         */
         fun validate(): Metadata = apply {
             if (validated) {
                 return@apply
@@ -1044,7 +1213,8 @@ private constructor(
     }
 
     /**
-     * The reason why the verification was blocked. Only present when status is "blocked".
+     * The reason why the verification was blocked. Only present when status is "blocked" or
+     * "shadow_blocked".
      * * `expired_signature` - The signature of the SDK signals is expired. They should be sent
      *   within the hour following their collection.
      * * `in_block_list` - The phone number is part of the configured block list.
@@ -1172,6 +1342,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws PreludeInvalidDataException if any value type in this object doesn't match its
+         *   expected type.
+         */
         fun validate(): Reason = apply {
             if (validated) {
                 return@apply
@@ -1203,6 +1382,190 @@ private constructor(
             }
 
             return other is Reason && value == other.value
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
+    }
+
+    class RiskFactor @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
+
+        /**
+         * Returns this class instance's raw value.
+         *
+         * This is usually only useful if this instance was deserialized from data that doesn't
+         * match any known member, and you want to know that value. For example, if the SDK is on an
+         * older version than the API, then the API may respond with new members that the SDK is
+         * unaware of.
+         */
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+        companion object {
+
+            @JvmField val BEHAVIORAL_PATTERN = of("behavioral_pattern")
+
+            @JvmField val DEVICE_ATTRIBUTE = of("device_attribute")
+
+            @JvmField val FRAUD_DATABASE = of("fraud_database")
+
+            @JvmField val LOCATION_DISCREPANCY = of("location_discrepancy")
+
+            @JvmField val NETWORK_FINGERPRINT = of("network_fingerprint")
+
+            @JvmField val POOR_CONVERSION_HISTORY = of("poor_conversion_history")
+
+            @JvmField val PREFIX_CONCENTRATION = of("prefix_concentration")
+
+            @JvmField val SUSPECTED_REQUEST_TAMPERING = of("suspected_request_tampering")
+
+            @JvmField val SUSPICIOUS_IP_ADDRESS = of("suspicious_ip_address")
+
+            @JvmField val TEMPORARY_PHONE_NUMBER = of("temporary_phone_number")
+
+            @JvmStatic fun of(value: String) = RiskFactor(JsonField.of(value))
+        }
+
+        /** An enum containing [RiskFactor]'s known values. */
+        enum class Known {
+            BEHAVIORAL_PATTERN,
+            DEVICE_ATTRIBUTE,
+            FRAUD_DATABASE,
+            LOCATION_DISCREPANCY,
+            NETWORK_FINGERPRINT,
+            POOR_CONVERSION_HISTORY,
+            PREFIX_CONCENTRATION,
+            SUSPECTED_REQUEST_TAMPERING,
+            SUSPICIOUS_IP_ADDRESS,
+            TEMPORARY_PHONE_NUMBER,
+        }
+
+        /**
+         * An enum containing [RiskFactor]'s known values, as well as an [_UNKNOWN] member.
+         *
+         * An instance of [RiskFactor] can contain an unknown value in a couple of cases:
+         * - It was deserialized from data that doesn't match any known member. For example, if the
+         *   SDK is on an older version than the API, then the API may respond with new members that
+         *   the SDK is unaware of.
+         * - It was constructed with an arbitrary value using the [of] method.
+         */
+        enum class Value {
+            BEHAVIORAL_PATTERN,
+            DEVICE_ATTRIBUTE,
+            FRAUD_DATABASE,
+            LOCATION_DISCREPANCY,
+            NETWORK_FINGERPRINT,
+            POOR_CONVERSION_HISTORY,
+            PREFIX_CONCENTRATION,
+            SUSPECTED_REQUEST_TAMPERING,
+            SUSPICIOUS_IP_ADDRESS,
+            TEMPORARY_PHONE_NUMBER,
+            /**
+             * An enum member indicating that [RiskFactor] was instantiated with an unknown value.
+             */
+            _UNKNOWN,
+        }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
+         * if the class was instantiated with an unknown value.
+         *
+         * Use the [known] method instead if you're certain the value is always known or if you want
+         * to throw for the unknown case.
+         */
+        fun value(): Value =
+            when (this) {
+                BEHAVIORAL_PATTERN -> Value.BEHAVIORAL_PATTERN
+                DEVICE_ATTRIBUTE -> Value.DEVICE_ATTRIBUTE
+                FRAUD_DATABASE -> Value.FRAUD_DATABASE
+                LOCATION_DISCREPANCY -> Value.LOCATION_DISCREPANCY
+                NETWORK_FINGERPRINT -> Value.NETWORK_FINGERPRINT
+                POOR_CONVERSION_HISTORY -> Value.POOR_CONVERSION_HISTORY
+                PREFIX_CONCENTRATION -> Value.PREFIX_CONCENTRATION
+                SUSPECTED_REQUEST_TAMPERING -> Value.SUSPECTED_REQUEST_TAMPERING
+                SUSPICIOUS_IP_ADDRESS -> Value.SUSPICIOUS_IP_ADDRESS
+                TEMPORARY_PHONE_NUMBER -> Value.TEMPORARY_PHONE_NUMBER
+                else -> Value._UNKNOWN
+            }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value.
+         *
+         * Use the [value] method instead if you're uncertain the value is always known and don't
+         * want to throw for the unknown case.
+         *
+         * @throws PreludeInvalidDataException if this class instance's value is a not a known
+         *   member.
+         */
+        fun known(): Known =
+            when (this) {
+                BEHAVIORAL_PATTERN -> Known.BEHAVIORAL_PATTERN
+                DEVICE_ATTRIBUTE -> Known.DEVICE_ATTRIBUTE
+                FRAUD_DATABASE -> Known.FRAUD_DATABASE
+                LOCATION_DISCREPANCY -> Known.LOCATION_DISCREPANCY
+                NETWORK_FINGERPRINT -> Known.NETWORK_FINGERPRINT
+                POOR_CONVERSION_HISTORY -> Known.POOR_CONVERSION_HISTORY
+                PREFIX_CONCENTRATION -> Known.PREFIX_CONCENTRATION
+                SUSPECTED_REQUEST_TAMPERING -> Known.SUSPECTED_REQUEST_TAMPERING
+                SUSPICIOUS_IP_ADDRESS -> Known.SUSPICIOUS_IP_ADDRESS
+                TEMPORARY_PHONE_NUMBER -> Known.TEMPORARY_PHONE_NUMBER
+                else -> throw PreludeInvalidDataException("Unknown RiskFactor: $value")
+            }
+
+        /**
+         * Returns this class instance's primitive wire representation.
+         *
+         * This differs from the [toString] method because that method is primarily for debugging
+         * and generally doesn't throw.
+         *
+         * @throws PreludeInvalidDataException if this class instance's value does not have the
+         *   expected primitive type.
+         */
+        fun asString(): String =
+            _value().asString().orElseThrow { PreludeInvalidDataException("Value is not a String") }
+
+        private var validated: Boolean = false
+
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws PreludeInvalidDataException if any value type in this object doesn't match its
+         *   expected type.
+         */
+        fun validate(): RiskFactor = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: PreludeInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is RiskFactor && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -1328,6 +1691,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws PreludeInvalidDataException if any value type in this object doesn't match its
+         *   expected type.
+         */
         fun validate(): Silent = apply {
             if (validated) {
                 return@apply
@@ -1384,6 +1756,7 @@ private constructor(
             metadata == other.metadata &&
             reason == other.reason &&
             requestId == other.requestId &&
+            riskFactors == other.riskFactors &&
             silent == other.silent &&
             additionalProperties == other.additionalProperties
     }
@@ -1397,6 +1770,7 @@ private constructor(
             metadata,
             reason,
             requestId,
+            riskFactors,
             silent,
             additionalProperties,
         )
@@ -1405,5 +1779,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "VerificationCreateResponse{id=$id, method=$method, status=$status, channels=$channels, metadata=$metadata, reason=$reason, requestId=$requestId, silent=$silent, additionalProperties=$additionalProperties}"
+        "VerificationCreateResponse{id=$id, method=$method, status=$status, channels=$channels, metadata=$metadata, reason=$reason, requestId=$requestId, riskFactors=$riskFactors, silent=$silent, additionalProperties=$additionalProperties}"
 }

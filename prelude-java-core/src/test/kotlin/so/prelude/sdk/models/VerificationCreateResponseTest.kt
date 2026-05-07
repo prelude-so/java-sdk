@@ -25,6 +25,8 @@ internal class VerificationCreateResponseTest {
                 )
                 .reason(VerificationCreateResponse.Reason.INVALID_PHONE_NUMBER)
                 .requestId("request_id")
+                .addRiskFactor(VerificationCreateResponse.RiskFactor.SUSPICIOUS_IP_ADDRESS)
+                .addRiskFactor(VerificationCreateResponse.RiskFactor.FRAUD_DATABASE)
                 .silent(
                     VerificationCreateResponse.Silent.builder().requestUrl("request_url").build()
                 )
@@ -46,6 +48,11 @@ internal class VerificationCreateResponseTest {
         assertThat(verificationCreateResponse.reason())
             .contains(VerificationCreateResponse.Reason.INVALID_PHONE_NUMBER)
         assertThat(verificationCreateResponse.requestId()).contains("request_id")
+        assertThat(verificationCreateResponse.riskFactors().getOrNull())
+            .containsExactly(
+                VerificationCreateResponse.RiskFactor.SUSPICIOUS_IP_ADDRESS,
+                VerificationCreateResponse.RiskFactor.FRAUD_DATABASE,
+            )
         assertThat(verificationCreateResponse.silent())
             .contains(VerificationCreateResponse.Silent.builder().requestUrl("request_url").build())
     }
@@ -66,6 +73,8 @@ internal class VerificationCreateResponseTest {
                 )
                 .reason(VerificationCreateResponse.Reason.INVALID_PHONE_NUMBER)
                 .requestId("request_id")
+                .addRiskFactor(VerificationCreateResponse.RiskFactor.SUSPICIOUS_IP_ADDRESS)
+                .addRiskFactor(VerificationCreateResponse.RiskFactor.FRAUD_DATABASE)
                 .silent(
                     VerificationCreateResponse.Silent.builder().requestUrl("request_url").build()
                 )

@@ -35,7 +35,7 @@ private constructor(
 ) : Params {
 
     /**
-     * A list of feedbacks to send.
+     * A list of feedbacks to send. A maximum of 100 feedbacks can be sent in a single request.
      *
      * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
@@ -95,7 +95,9 @@ private constructor(
          */
         fun body(body: Body) = apply { this.body = body.toBuilder() }
 
-        /** A list of feedbacks to send. */
+        /**
+         * A list of feedbacks to send. A maximum of 100 feedbacks can be sent in a single request.
+         */
         fun feedbacks(feedbacks: List<Feedback>) = apply { body.feedbacks(feedbacks) }
 
         /**
@@ -272,7 +274,7 @@ private constructor(
         ) : this(feedbacks, mutableMapOf())
 
         /**
-         * A list of feedbacks to send.
+         * A list of feedbacks to send. A maximum of 100 feedbacks can be sent in a single request.
          *
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
@@ -325,7 +327,10 @@ private constructor(
                 additionalProperties = body.additionalProperties.toMutableMap()
             }
 
-            /** A list of feedbacks to send. */
+            /**
+             * A list of feedbacks to send. A maximum of 100 feedbacks can be sent in a single
+             * request.
+             */
             fun feedbacks(feedbacks: List<Feedback>) = feedbacks(JsonField.of(feedbacks))
 
             /**
@@ -391,6 +396,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws PreludeInvalidDataException if any value type in this object doesn't match its
+         *   expected type.
+         */
         fun validate(): Body = apply {
             if (validated) {
                 return@apply
@@ -620,6 +634,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws PreludeInvalidDataException if any value type in this object doesn't match its
+         *   expected type.
+         */
         fun validate(): Feedback = apply {
             if (validated) {
                 return@apply
@@ -807,6 +830,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws PreludeInvalidDataException if any value type in this object doesn't match
+             *   its expected type.
+             */
             fun validate(): Target = apply {
                 if (validated) {
                     return@apply
@@ -929,6 +962,16 @@ private constructor(
 
                 private var validated: Boolean = false
 
+                /**
+                 * Validates that the types of all values in this object match their expected types
+                 * recursively.
+                 *
+                 * This method is _not_ forwards compatible with new types from the API for existing
+                 * fields.
+                 *
+                 * @throws PreludeInvalidDataException if any value type in this object doesn't
+                 *   match its expected type.
+                 */
                 fun validate(): Type = apply {
                     if (validated) {
                         return@apply
@@ -1076,6 +1119,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws PreludeInvalidDataException if any value type in this object doesn't match
+             *   its expected type.
+             */
             fun validate(): Type = apply {
                 if (validated) {
                     return@apply
@@ -1228,6 +1281,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws PreludeInvalidDataException if any value type in this object doesn't match
+             *   its expected type.
+             */
             fun validate(): Metadata = apply {
                 if (validated) {
                     return@apply
