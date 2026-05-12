@@ -1225,6 +1225,7 @@ private constructor(
         private val callbackUrl: JsonField<String>,
         private val codeSize: JsonField<Long>,
         private val customCode: JsonField<String>,
+        private val forceChallenge: JsonField<Boolean>,
         private val locale: JsonField<String>,
         private val method: JsonField<Method>,
         private val preferredChannel: JsonField<PreferredChannel>,
@@ -1246,6 +1247,9 @@ private constructor(
             @JsonProperty("custom_code")
             @ExcludeMissing
             customCode: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("force_challenge")
+            @ExcludeMissing
+            forceChallenge: JsonField<Boolean> = JsonMissing.of(),
             @JsonProperty("locale") @ExcludeMissing locale: JsonField<String> = JsonMissing.of(),
             @JsonProperty("method") @ExcludeMissing method: JsonField<Method> = JsonMissing.of(),
             @JsonProperty("preferred_channel")
@@ -1265,6 +1269,7 @@ private constructor(
             callbackUrl,
             codeSize,
             customCode,
+            forceChallenge,
             locale,
             method,
             preferredChannel,
@@ -1311,6 +1316,19 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun customCode(): Optional<String> = customCode.getOptional("custom_code")
+
+        /**
+         * When `true`, the verification is routed through challenge-safe channels (non-SMS/Voice)
+         * regardless of country eligibility or any antispam outcome. The resulting verification has
+         * `status: "challenged"`. Use this when you have your own signal that the request is
+         * suspicious and want stricter routing — the verification is **not** classified as fraud
+         * and does not contribute to anti-fraud counters or risk factors. This feature is disabled
+         * by default — contact Prelude support to enable it on your account.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun forceChallenge(): Optional<Boolean> = forceChallenge.getOptional("force_challenge")
 
         /**
          * A BCP-47 formatted locale string with the language the text message will be sent to. If
@@ -1402,6 +1420,16 @@ private constructor(
         fun _customCode(): JsonField<String> = customCode
 
         /**
+         * Returns the raw JSON value of [forceChallenge].
+         *
+         * Unlike [forceChallenge], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("force_challenge")
+        @ExcludeMissing
+        fun _forceChallenge(): JsonField<Boolean> = forceChallenge
+
+        /**
          * Returns the raw JSON value of [locale].
          *
          * Unlike [locale], this method doesn't throw if the JSON field has an unexpected type.
@@ -1475,6 +1503,7 @@ private constructor(
             private var callbackUrl: JsonField<String> = JsonMissing.of()
             private var codeSize: JsonField<Long> = JsonMissing.of()
             private var customCode: JsonField<String> = JsonMissing.of()
+            private var forceChallenge: JsonField<Boolean> = JsonMissing.of()
             private var locale: JsonField<String> = JsonMissing.of()
             private var method: JsonField<Method> = JsonMissing.of()
             private var preferredChannel: JsonField<PreferredChannel> = JsonMissing.of()
@@ -1489,6 +1518,7 @@ private constructor(
                 callbackUrl = options.callbackUrl
                 codeSize = options.codeSize
                 customCode = options.customCode
+                forceChallenge = options.forceChallenge
                 locale = options.locale
                 method = options.method
                 preferredChannel = options.preferredChannel
@@ -1561,6 +1591,29 @@ private constructor(
              * supported value.
              */
             fun customCode(customCode: JsonField<String>) = apply { this.customCode = customCode }
+
+            /**
+             * When `true`, the verification is routed through challenge-safe channels
+             * (non-SMS/Voice) regardless of country eligibility or any antispam outcome. The
+             * resulting verification has `status: "challenged"`. Use this when you have your own
+             * signal that the request is suspicious and want stricter routing — the verification is
+             * **not** classified as fraud and does not contribute to anti-fraud counters or risk
+             * factors. This feature is disabled by default — contact Prelude support to enable it
+             * on your account.
+             */
+            fun forceChallenge(forceChallenge: Boolean) =
+                forceChallenge(JsonField.of(forceChallenge))
+
+            /**
+             * Sets [Builder.forceChallenge] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.forceChallenge] with a well-typed [Boolean] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun forceChallenge(forceChallenge: JsonField<Boolean>) = apply {
+                this.forceChallenge = forceChallenge
+            }
 
             /**
              * A BCP-47 formatted locale string with the language the text message will be sent to.
@@ -1683,6 +1736,7 @@ private constructor(
                     callbackUrl,
                     codeSize,
                     customCode,
+                    forceChallenge,
                     locale,
                     method,
                     preferredChannel,
@@ -1713,6 +1767,7 @@ private constructor(
             callbackUrl()
             codeSize()
             customCode()
+            forceChallenge()
             locale()
             method().ifPresent { it.validate() }
             preferredChannel().ifPresent { it.validate() }
@@ -1742,6 +1797,7 @@ private constructor(
                 (if (callbackUrl.asKnown().isPresent) 1 else 0) +
                 (if (codeSize.asKnown().isPresent) 1 else 0) +
                 (if (customCode.asKnown().isPresent) 1 else 0) +
+                (if (forceChallenge.asKnown().isPresent) 1 else 0) +
                 (if (locale.asKnown().isPresent) 1 else 0) +
                 (method.asKnown().getOrNull()?.validity() ?: 0) +
                 (preferredChannel.asKnown().getOrNull()?.validity() ?: 0) +
@@ -2576,6 +2632,7 @@ private constructor(
                 callbackUrl == other.callbackUrl &&
                 codeSize == other.codeSize &&
                 customCode == other.customCode &&
+                forceChallenge == other.forceChallenge &&
                 locale == other.locale &&
                 method == other.method &&
                 preferredChannel == other.preferredChannel &&
@@ -2591,6 +2648,7 @@ private constructor(
                 callbackUrl,
                 codeSize,
                 customCode,
+                forceChallenge,
                 locale,
                 method,
                 preferredChannel,
@@ -2604,7 +2662,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Options{appRealm=$appRealm, callbackUrl=$callbackUrl, codeSize=$codeSize, customCode=$customCode, locale=$locale, method=$method, preferredChannel=$preferredChannel, senderId=$senderId, templateId=$templateId, variables=$variables, additionalProperties=$additionalProperties}"
+            "Options{appRealm=$appRealm, callbackUrl=$callbackUrl, codeSize=$codeSize, customCode=$customCode, forceChallenge=$forceChallenge, locale=$locale, method=$method, preferredChannel=$preferredChannel, senderId=$senderId, templateId=$templateId, variables=$variables, additionalProperties=$additionalProperties}"
     }
 
     /**

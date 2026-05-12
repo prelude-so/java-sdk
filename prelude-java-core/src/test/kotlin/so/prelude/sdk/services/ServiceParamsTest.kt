@@ -67,6 +67,7 @@ internal class ServiceParamsTest {
                         .callbackUrl("callback_url")
                         .codeSize(5L)
                         .customCode("123456")
+                        .forceChallenge(true)
                         .locale("el-GR")
                         .method(VerificationCreateParams.Options.Method.AUTO)
                         .preferredChannel(VerificationCreateParams.Options.PreferredChannel.SMS)
