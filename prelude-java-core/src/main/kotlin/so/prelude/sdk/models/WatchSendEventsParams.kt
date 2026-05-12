@@ -465,7 +465,10 @@ private constructor(
         ) : this(confidence, label, target, mutableMapOf())
 
         /**
-         * A confidence level you want to assign to the event.
+         * The level of trust you place in this event, in increasing order of trust: `minimum`,
+         * `low`, `neutral`, `high`, `maximum`. Prelude uses this value to weight your signals when
+         * scoring traffic — events flagged with `minimum` confidence indicate end-users you trust
+         * the least to be legitimate, and the pipeline will use these signals to filter them out.
          *
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
@@ -554,7 +557,13 @@ private constructor(
                 additionalProperties = event.additionalProperties.toMutableMap()
             }
 
-            /** A confidence level you want to assign to the event. */
+            /**
+             * The level of trust you place in this event, in increasing order of trust: `minimum`,
+             * `low`, `neutral`, `high`, `maximum`. Prelude uses this value to weight your signals
+             * when scoring traffic — events flagged with `minimum` confidence indicate end-users
+             * you trust the least to be legitimate, and the pipeline will use these signals to
+             * filter them out.
+             */
             fun confidence(confidence: Confidence) = confidence(JsonField.of(confidence))
 
             /**
@@ -676,7 +685,12 @@ private constructor(
                 (if (label.asKnown().isPresent) 1 else 0) +
                 (target.asKnown().getOrNull()?.validity() ?: 0)
 
-        /** A confidence level you want to assign to the event. */
+        /**
+         * The level of trust you place in this event, in increasing order of trust: `minimum`,
+         * `low`, `neutral`, `high`, `maximum`. Prelude uses this value to weight your signals when
+         * scoring traffic — events flagged with `minimum` confidence indicate end-users you trust
+         * the least to be legitimate, and the pipeline will use these signals to filter them out.
+         */
         class Confidence @JsonCreator private constructor(private val value: JsonField<String>) :
             Enum {
 
