@@ -24,8 +24,12 @@ import so.prelude.sdk.core.toImmutable
 import so.prelude.sdk.errors.PreludeInvalidDataException
 
 /**
- * Send feedback regarding your end-users verification funnel. Events will be analyzed for proactive
- * fraud prevention and risk scoring.
+ * Optional. Report verification-funnel steps (verification.started, verification.completed) when
+ * you run phone verification outside Prelude Verify. Feeds Watch abuse-rate counters for your own
+ * flow. Call Predict on the same target before verification.started and reuse
+ * metadata.correlation_id so auth-start counters receive predict signals; without a linked predict,
+ * only attempt-rate counters update on started. Not required if you only use Events and/or Predict,
+ * or if Verify already handles verification for that traffic.
  */
 class WatchSendFeedbacksParams
 private constructor(

@@ -13,7 +13,7 @@ internal class WatchSendEventsParamsTest {
             .addEvent(
                 WatchSendEventsParams.Event.builder()
                     .confidence(WatchSendEventsParams.Event.Confidence.MAXIMUM)
-                    .label("onboarding.start")
+                    .label("account.banned")
                     .target(
                         WatchSendEventsParams.Event.Target.builder()
                             .type(WatchSendEventsParams.Event.Target.Type.PHONE_NUMBER)
@@ -32,7 +32,7 @@ internal class WatchSendEventsParamsTest {
                 .addEvent(
                     WatchSendEventsParams.Event.builder()
                         .confidence(WatchSendEventsParams.Event.Confidence.MAXIMUM)
-                        .label("onboarding.start")
+                        .label("account.banned")
                         .target(
                             WatchSendEventsParams.Event.Target.builder()
                                 .type(WatchSendEventsParams.Event.Target.Type.PHONE_NUMBER)
@@ -49,7 +49,7 @@ internal class WatchSendEventsParamsTest {
             .containsExactly(
                 WatchSendEventsParams.Event.builder()
                     .confidence(WatchSendEventsParams.Event.Confidence.MAXIMUM)
-                    .label("onboarding.start")
+                    .label("account.banned")
                     .target(
                         WatchSendEventsParams.Event.Target.builder()
                             .type(WatchSendEventsParams.Event.Target.Type.PHONE_NUMBER)
