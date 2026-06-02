@@ -103,6 +103,13 @@ internal class VerificationServiceTest {
                             .value("+30123456789")
                             .build()
                     )
+                    .psd2(
+                        VerificationCheckParams.Psd2.builder()
+                            .amount("99999.99")
+                            .currency("EUR")
+                            .recipient("Rainbow LLC")
+                            .build()
+                    )
                     .build()
             )
 
