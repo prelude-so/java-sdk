@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.util.Collections
 import java.util.Objects
+import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 import so.prelude.sdk.core.Enum
 import so.prelude.sdk.core.ExcludeMissing
@@ -46,6 +47,16 @@ private constructor(
     fun target(): Target = body.target()
 
     /**
+     * Required when checking a code issued under the `prelude:psd2` template. The submitted
+     * variables must match those provided at issuance; any mismatch invalidates the code (PSD2 SCA
+     * RTS Article 5 dynamic linking). Ignored on non-PSD2 verifications.
+     *
+     * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun psd2(): Optional<Psd2> = body.psd2()
+
+    /**
      * Returns the raw JSON value of [code].
      *
      * Unlike [code], this method doesn't throw if the JSON field has an unexpected type.
@@ -58,6 +69,13 @@ private constructor(
      * Unlike [target], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _target(): JsonField<Target> = body._target()
+
+    /**
+     * Returns the raw JSON value of [psd2].
+     *
+     * Unlike [psd2], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _psd2(): JsonField<Psd2> = body._psd2()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
@@ -104,6 +122,7 @@ private constructor(
          * Otherwise, it's more convenient to use the top-level setters instead:
          * - [code]
          * - [target]
+         * - [psd2]
          */
         fun body(body: Body) = apply { this.body = body.toBuilder() }
 
@@ -131,6 +150,21 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun target(target: JsonField<Target>) = apply { body.target(target) }
+
+        /**
+         * Required when checking a code issued under the `prelude:psd2` template. The submitted
+         * variables must match those provided at issuance; any mismatch invalidates the code (PSD2
+         * SCA RTS Article 5 dynamic linking). Ignored on non-PSD2 verifications.
+         */
+        fun psd2(psd2: Psd2) = apply { body.psd2(psd2) }
+
+        /**
+         * Sets [Builder.psd2] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.psd2] with a well-typed [Psd2] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun psd2(psd2: JsonField<Psd2>) = apply { body.psd2(psd2) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             body.additionalProperties(additionalBodyProperties)
@@ -281,6 +315,7 @@ private constructor(
     private constructor(
         private val code: JsonField<String>,
         private val target: JsonField<Target>,
+        private val psd2: JsonField<Psd2>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
@@ -288,7 +323,8 @@ private constructor(
         private constructor(
             @JsonProperty("code") @ExcludeMissing code: JsonField<String> = JsonMissing.of(),
             @JsonProperty("target") @ExcludeMissing target: JsonField<Target> = JsonMissing.of(),
-        ) : this(code, target, mutableMapOf())
+            @JsonProperty("psd2") @ExcludeMissing psd2: JsonField<Psd2> = JsonMissing.of(),
+        ) : this(code, target, psd2, mutableMapOf())
 
         /**
          * The OTP code to validate.
@@ -308,6 +344,16 @@ private constructor(
         fun target(): Target = target.getRequired("target")
 
         /**
+         * Required when checking a code issued under the `prelude:psd2` template. The submitted
+         * variables must match those provided at issuance; any mismatch invalidates the code (PSD2
+         * SCA RTS Article 5 dynamic linking). Ignored on non-PSD2 verifications.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun psd2(): Optional<Psd2> = psd2.getOptional("psd2")
+
+        /**
          * Returns the raw JSON value of [code].
          *
          * Unlike [code], this method doesn't throw if the JSON field has an unexpected type.
@@ -320,6 +366,13 @@ private constructor(
          * Unlike [target], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("target") @ExcludeMissing fun _target(): JsonField<Target> = target
+
+        /**
+         * Returns the raw JSON value of [psd2].
+         *
+         * Unlike [psd2], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("psd2") @ExcludeMissing fun _psd2(): JsonField<Psd2> = psd2
 
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -352,12 +405,14 @@ private constructor(
 
             private var code: JsonField<String>? = null
             private var target: JsonField<Target>? = null
+            private var psd2: JsonField<Psd2> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(body: Body) = apply {
                 code = body.code
                 target = body.target
+                psd2 = body.psd2
                 additionalProperties = body.additionalProperties.toMutableMap()
             }
 
@@ -387,6 +442,22 @@ private constructor(
              * supported value.
              */
             fun target(target: JsonField<Target>) = apply { this.target = target }
+
+            /**
+             * Required when checking a code issued under the `prelude:psd2` template. The submitted
+             * variables must match those provided at issuance; any mismatch invalidates the code
+             * (PSD2 SCA RTS Article 5 dynamic linking). Ignored on non-PSD2 verifications.
+             */
+            fun psd2(psd2: Psd2) = psd2(JsonField.of(psd2))
+
+            /**
+             * Sets [Builder.psd2] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.psd2] with a well-typed [Psd2] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
+            fun psd2(psd2: JsonField<Psd2>) = apply { this.psd2 = psd2 }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -424,6 +495,7 @@ private constructor(
                 Body(
                     checkRequired("code", code),
                     checkRequired("target", target),
+                    psd2,
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -446,6 +518,7 @@ private constructor(
 
             code()
             target().validate()
+            psd2().ifPresent { it.validate() }
             validated = true
         }
 
@@ -466,7 +539,8 @@ private constructor(
         @JvmSynthetic
         internal fun validity(): Int =
             (if (code.asKnown().isPresent) 1 else 0) +
-                (target.asKnown().getOrNull()?.validity() ?: 0)
+                (target.asKnown().getOrNull()?.validity() ?: 0) +
+                (psd2.asKnown().getOrNull()?.validity() ?: 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -476,15 +550,16 @@ private constructor(
             return other is Body &&
                 code == other.code &&
                 target == other.target &&
+                psd2 == other.psd2 &&
                 additionalProperties == other.additionalProperties
         }
 
-        private val hashCode: Int by lazy { Objects.hash(code, target, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(code, target, psd2, additionalProperties) }
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{code=$code, target=$target, additionalProperties=$additionalProperties}"
+            "Body{code=$code, target=$target, psd2=$psd2, additionalProperties=$additionalProperties}"
     }
 
     /**
@@ -834,6 +909,261 @@ private constructor(
 
         override fun toString() =
             "Target{type=$type, value=$value, additionalProperties=$additionalProperties}"
+    }
+
+    /**
+     * Required when checking a code issued under the `prelude:psd2` template. The submitted
+     * variables must match those provided at issuance; any mismatch invalidates the code (PSD2 SCA
+     * RTS Article 5 dynamic linking). Ignored on non-PSD2 verifications.
+     */
+    class Psd2
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+    private constructor(
+        private val amount: JsonField<String>,
+        private val currency: JsonField<String>,
+        private val recipient: JsonField<String>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
+    ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("amount") @ExcludeMissing amount: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("currency")
+            @ExcludeMissing
+            currency: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("recipient")
+            @ExcludeMissing
+            recipient: JsonField<String> = JsonMissing.of(),
+        ) : this(amount, currency, recipient, mutableMapOf())
+
+        /**
+         * Decimal amount of the transaction.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun amount(): String = amount.getRequired("amount")
+
+        /**
+         * ISO 4217 currency code.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun currency(): String = currency.getRequired("currency")
+
+        /**
+         * Payee name displayed to the payer.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun recipient(): String = recipient.getRequired("recipient")
+
+        /**
+         * Returns the raw JSON value of [amount].
+         *
+         * Unlike [amount], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("amount") @ExcludeMissing fun _amount(): JsonField<String> = amount
+
+        /**
+         * Returns the raw JSON value of [currency].
+         *
+         * Unlike [currency], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("currency") @ExcludeMissing fun _currency(): JsonField<String> = currency
+
+        /**
+         * Returns the raw JSON value of [recipient].
+         *
+         * Unlike [recipient], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("recipient") @ExcludeMissing fun _recipient(): JsonField<String> = recipient
+
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
+
+        fun toBuilder() = Builder().from(this)
+
+        companion object {
+
+            /**
+             * Returns a mutable builder for constructing an instance of [Psd2].
+             *
+             * The following fields are required:
+             * ```java
+             * .amount()
+             * .currency()
+             * .recipient()
+             * ```
+             */
+            @JvmStatic fun builder() = Builder()
+        }
+
+        /** A builder for [Psd2]. */
+        class Builder internal constructor() {
+
+            private var amount: JsonField<String>? = null
+            private var currency: JsonField<String>? = null
+            private var recipient: JsonField<String>? = null
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            @JvmSynthetic
+            internal fun from(psd2: Psd2) = apply {
+                amount = psd2.amount
+                currency = psd2.currency
+                recipient = psd2.recipient
+                additionalProperties = psd2.additionalProperties.toMutableMap()
+            }
+
+            /** Decimal amount of the transaction. */
+            fun amount(amount: String) = amount(JsonField.of(amount))
+
+            /**
+             * Sets [Builder.amount] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.amount] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun amount(amount: JsonField<String>) = apply { this.amount = amount }
+
+            /** ISO 4217 currency code. */
+            fun currency(currency: String) = currency(JsonField.of(currency))
+
+            /**
+             * Sets [Builder.currency] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.currency] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun currency(currency: JsonField<String>) = apply { this.currency = currency }
+
+            /** Payee name displayed to the payer. */
+            fun recipient(recipient: String) = recipient(JsonField.of(recipient))
+
+            /**
+             * Sets [Builder.recipient] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.recipient] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun recipient(recipient: JsonField<String>) = apply { this.recipient = recipient }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
+
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
+            /**
+             * Returns an immutable instance of [Psd2].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```java
+             * .amount()
+             * .currency()
+             * .recipient()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
+             */
+            fun build(): Psd2 =
+                Psd2(
+                    checkRequired("amount", amount),
+                    checkRequired("currency", currency),
+                    checkRequired("recipient", recipient),
+                    additionalProperties.toMutableMap(),
+                )
+        }
+
+        private var validated: Boolean = false
+
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws PreludeInvalidDataException if any value type in this object doesn't match its
+         *   expected type.
+         */
+        fun validate(): Psd2 = apply {
+            if (validated) {
+                return@apply
+            }
+
+            amount()
+            currency()
+            recipient()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: PreludeInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (if (amount.asKnown().isPresent) 1 else 0) +
+                (if (currency.asKnown().isPresent) 1 else 0) +
+                (if (recipient.asKnown().isPresent) 1 else 0)
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is Psd2 &&
+                amount == other.amount &&
+                currency == other.currency &&
+                recipient == other.recipient &&
+                additionalProperties == other.additionalProperties
+        }
+
+        private val hashCode: Int by lazy {
+            Objects.hash(amount, currency, recipient, additionalProperties)
+        }
+
+        override fun hashCode(): Int = hashCode
+
+        override fun toString() =
+            "Psd2{amount=$amount, currency=$currency, recipient=$recipient, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {
