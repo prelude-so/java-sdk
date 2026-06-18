@@ -37,6 +37,7 @@ internal class TransactionalServiceTest {
                     .expiresAt("expires_at")
                     .from("from")
                     .locale("el-GR")
+                    .maxAutoRetries(2L)
                     .preferredChannel(TransactionalSendParams.PreferredChannel.WHATSAPP)
                     .variables(
                         TransactionalSendParams.Variables.builder()

@@ -25,6 +25,7 @@ internal class NotifySendParamsTest {
             .expiresAt(OffsetDateTime.parse("2025-12-25T18:00:00Z"))
             .from("from")
             .locale("el-GR")
+            .maxAutoRetries(2L)
             .preferredChannel(NotifySendParams.PreferredChannel.WHATSAPP)
             .scheduleAt(OffsetDateTime.parse("2025-12-25T10:00:00Z"))
             .variables(
@@ -53,6 +54,7 @@ internal class NotifySendParamsTest {
                 .expiresAt(OffsetDateTime.parse("2025-12-25T18:00:00Z"))
                 .from("from")
                 .locale("el-GR")
+                .maxAutoRetries(2L)
                 .preferredChannel(NotifySendParams.PreferredChannel.WHATSAPP)
                 .scheduleAt(OffsetDateTime.parse("2025-12-25T10:00:00Z"))
                 .variables(
@@ -79,6 +81,7 @@ internal class NotifySendParamsTest {
         assertThat(body.expiresAt()).contains(OffsetDateTime.parse("2025-12-25T18:00:00Z"))
         assertThat(body.from()).contains("from")
         assertThat(body.locale()).contains("el-GR")
+        assertThat(body.maxAutoRetries()).contains(2L)
         assertThat(body.preferredChannel()).contains(NotifySendParams.PreferredChannel.WHATSAPP)
         assertThat(body.scheduleAt()).contains(OffsetDateTime.parse("2025-12-25T10:00:00Z"))
         assertThat(body.variables())
