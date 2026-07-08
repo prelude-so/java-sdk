@@ -1354,7 +1354,11 @@ private constructor(
         fun method(): Optional<Method> = method.getOptional("method")
 
         /**
-         * The preferred channel to be used in priority for verification.
+         * The channel to prioritize when delivering the verification. Prelude prioritizes this
+         * channel on the first attempt and continues to prefer it on retries while an untried route
+         * on that channel remains; once those are exhausted, retries fall back to the next best
+         * available route. If the channel is unavailable (for example, when a verification is
+         * challenged), Prelude uses the best available route instead.
          *
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
@@ -1650,7 +1654,13 @@ private constructor(
              */
             fun method(method: JsonField<Method>) = apply { this.method = method }
 
-            /** The preferred channel to be used in priority for verification. */
+            /**
+             * The channel to prioritize when delivering the verification. Prelude prioritizes this
+             * channel on the first attempt and continues to prefer it on retries while an untried
+             * route on that channel remains; once those are exhausted, retries fall back to the
+             * next best available route. If the channel is unavailable (for example, when a
+             * verification is challenged), Prelude uses the best available route instead.
+             */
             fun preferredChannel(preferredChannel: PreferredChannel) =
                 preferredChannel(JsonField.of(preferredChannel))
 
@@ -2341,7 +2351,13 @@ private constructor(
             override fun toString() = value.toString()
         }
 
-        /** The preferred channel to be used in priority for verification. */
+        /**
+         * The channel to prioritize when delivering the verification. Prelude prioritizes this
+         * channel on the first attempt and continues to prefer it on retries while an untried route
+         * on that channel remains; once those are exhausted, retries fall back to the next best
+         * available route. If the channel is unavailable (for example, when a verification is
+         * challenged), Prelude uses the best available route instead.
+         */
         class PreferredChannel
         @JsonCreator
         private constructor(private val value: JsonField<String>) : Enum {
