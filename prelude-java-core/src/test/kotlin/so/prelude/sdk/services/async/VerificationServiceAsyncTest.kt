@@ -48,6 +48,8 @@ internal class VerificationServiceAsyncTest {
                                     .build()
                             )
                             .callbackUrl("callback_url")
+                            .addChannel(VerificationCreateParams.Options.Channel.WHATSAPP)
+                            .addChannel(VerificationCreateParams.Options.Channel.SMS)
                             .codeSize(5L)
                             .customCode("123456")
                             .forceChallenge(true)
