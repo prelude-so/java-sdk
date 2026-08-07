@@ -102,6 +102,7 @@ internal class ErrorHandlingTest {
                                 .customCode("123456")
                                 .forceChallenge(true)
                                 .locale("el-GR")
+                                .maxAutoFallbacks(0L)
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
                                     VerificationCreateParams.Options.PreferredChannel.SMS
@@ -183,6 +184,7 @@ internal class ErrorHandlingTest {
                                 .customCode("123456")
                                 .forceChallenge(true)
                                 .locale("el-GR")
+                                .maxAutoFallbacks(0L)
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
                                     VerificationCreateParams.Options.PreferredChannel.SMS
@@ -264,6 +266,7 @@ internal class ErrorHandlingTest {
                                 .customCode("123456")
                                 .forceChallenge(true)
                                 .locale("el-GR")
+                                .maxAutoFallbacks(0L)
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
                                     VerificationCreateParams.Options.PreferredChannel.SMS
@@ -345,6 +348,7 @@ internal class ErrorHandlingTest {
                                 .customCode("123456")
                                 .forceChallenge(true)
                                 .locale("el-GR")
+                                .maxAutoFallbacks(0L)
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
                                     VerificationCreateParams.Options.PreferredChannel.SMS
@@ -426,6 +430,7 @@ internal class ErrorHandlingTest {
                                 .customCode("123456")
                                 .forceChallenge(true)
                                 .locale("el-GR")
+                                .maxAutoFallbacks(0L)
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
                                     VerificationCreateParams.Options.PreferredChannel.SMS
@@ -507,6 +512,7 @@ internal class ErrorHandlingTest {
                                 .customCode("123456")
                                 .forceChallenge(true)
                                 .locale("el-GR")
+                                .maxAutoFallbacks(0L)
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
                                     VerificationCreateParams.Options.PreferredChannel.SMS
@@ -588,6 +594,7 @@ internal class ErrorHandlingTest {
                                 .customCode("123456")
                                 .forceChallenge(true)
                                 .locale("el-GR")
+                                .maxAutoFallbacks(0L)
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
                                     VerificationCreateParams.Options.PreferredChannel.SMS
@@ -669,6 +676,7 @@ internal class ErrorHandlingTest {
                                 .customCode("123456")
                                 .forceChallenge(true)
                                 .locale("el-GR")
+                                .maxAutoFallbacks(0L)
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
                                     VerificationCreateParams.Options.PreferredChannel.SMS
@@ -750,6 +758,7 @@ internal class ErrorHandlingTest {
                                 .customCode("123456")
                                 .forceChallenge(true)
                                 .locale("el-GR")
+                                .maxAutoFallbacks(0L)
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
                                     VerificationCreateParams.Options.PreferredChannel.SMS
@@ -831,6 +840,7 @@ internal class ErrorHandlingTest {
                                 .customCode("123456")
                                 .forceChallenge(true)
                                 .locale("el-GR")
+                                .maxAutoFallbacks(0L)
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
                                     VerificationCreateParams.Options.PreferredChannel.SMS
@@ -912,6 +922,7 @@ internal class ErrorHandlingTest {
                                 .customCode("123456")
                                 .forceChallenge(true)
                                 .locale("el-GR")
+                                .maxAutoFallbacks(0L)
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
                                     VerificationCreateParams.Options.PreferredChannel.SMS
@@ -993,6 +1004,7 @@ internal class ErrorHandlingTest {
                                 .customCode("123456")
                                 .forceChallenge(true)
                                 .locale("el-GR")
+                                .maxAutoFallbacks(0L)
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
                                     VerificationCreateParams.Options.PreferredChannel.SMS
@@ -1074,6 +1086,7 @@ internal class ErrorHandlingTest {
                                 .customCode("123456")
                                 .forceChallenge(true)
                                 .locale("el-GR")
+                                .maxAutoFallbacks(0L)
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
                                     VerificationCreateParams.Options.PreferredChannel.SMS
@@ -1155,6 +1168,7 @@ internal class ErrorHandlingTest {
                                 .customCode("123456")
                                 .forceChallenge(true)
                                 .locale("el-GR")
+                                .maxAutoFallbacks(0L)
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
                                     VerificationCreateParams.Options.PreferredChannel.SMS
@@ -1236,6 +1250,7 @@ internal class ErrorHandlingTest {
                                 .customCode("123456")
                                 .forceChallenge(true)
                                 .locale("el-GR")
+                                .maxAutoFallbacks(0L)
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
                                     VerificationCreateParams.Options.PreferredChannel.SMS
@@ -1317,6 +1332,7 @@ internal class ErrorHandlingTest {
                                 .customCode("123456")
                                 .forceChallenge(true)
                                 .locale("el-GR")
+                                .maxAutoFallbacks(0L)
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
                                     VerificationCreateParams.Options.PreferredChannel.SMS
@@ -1396,6 +1412,7 @@ internal class ErrorHandlingTest {
                                 .customCode("123456")
                                 .forceChallenge(true)
                                 .locale("el-GR")
+                                .maxAutoFallbacks(0L)
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
                                     VerificationCreateParams.Options.PreferredChannel.SMS
