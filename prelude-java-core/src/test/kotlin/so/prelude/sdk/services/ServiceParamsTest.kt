@@ -71,6 +71,7 @@ internal class ServiceParamsTest {
                         .customCode("123456")
                         .forceChallenge(true)
                         .locale("el-GR")
+                        .maxAutoFallbacks(0L)
                         .method(VerificationCreateParams.Options.Method.AUTO)
                         .preferredChannel(VerificationCreateParams.Options.PreferredChannel.SMS)
                         .senderId("sender_id")
