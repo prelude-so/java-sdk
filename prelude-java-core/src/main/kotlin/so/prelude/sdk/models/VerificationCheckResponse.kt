@@ -37,7 +37,9 @@ private constructor(
     ) : this(status, id, metadata, requestId, mutableMapOf())
 
     /**
-     * The status of the check.
+     * The status of the check. For `prelude:psd2` codes, `transaction_missing` is returned when the
+     * `psd2` block is omitted, and `transaction_mismatch` when the submitted variables differ from
+     * those provided at issuance.
      *
      * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
@@ -137,7 +139,11 @@ private constructor(
             additionalProperties = verificationCheckResponse.additionalProperties.toMutableMap()
         }
 
-        /** The status of the check. */
+        /**
+         * The status of the check. For `prelude:psd2` codes, `transaction_missing` is returned when
+         * the `psd2` block is omitted, and `transaction_mismatch` when the submitted variables
+         * differ from those provided at issuance.
+         */
         fun status(status: Status) = status(JsonField.of(status))
 
         /**
@@ -265,7 +271,11 @@ private constructor(
             (metadata.asKnown().getOrNull()?.validity() ?: 0) +
             (if (requestId.asKnown().isPresent) 1 else 0)
 
-    /** The status of the check. */
+    /**
+     * The status of the check. For `prelude:psd2` codes, `transaction_missing` is returned when the
+     * `psd2` block is omitted, and `transaction_mismatch` when the submitted variables differ from
+     * those provided at issuance.
+     */
     class Status @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**
@@ -286,6 +296,10 @@ private constructor(
 
             @JvmField val EXPIRED_OR_NOT_FOUND = of("expired_or_not_found")
 
+            @JvmField val TRANSACTION_MISSING = of("transaction_missing")
+
+            @JvmField val TRANSACTION_MISMATCH = of("transaction_mismatch")
+
             @JvmStatic fun of(value: String) = Status(JsonField.of(value))
         }
 
@@ -294,6 +308,8 @@ private constructor(
             SUCCESS,
             FAILURE,
             EXPIRED_OR_NOT_FOUND,
+            TRANSACTION_MISSING,
+            TRANSACTION_MISMATCH,
         }
 
         /**
@@ -309,6 +325,8 @@ private constructor(
             SUCCESS,
             FAILURE,
             EXPIRED_OR_NOT_FOUND,
+            TRANSACTION_MISSING,
+            TRANSACTION_MISMATCH,
             /** An enum member indicating that [Status] was instantiated with an unknown value. */
             _UNKNOWN,
         }
@@ -325,6 +343,8 @@ private constructor(
                 SUCCESS -> Value.SUCCESS
                 FAILURE -> Value.FAILURE
                 EXPIRED_OR_NOT_FOUND -> Value.EXPIRED_OR_NOT_FOUND
+                TRANSACTION_MISSING -> Value.TRANSACTION_MISSING
+                TRANSACTION_MISMATCH -> Value.TRANSACTION_MISMATCH
                 else -> Value._UNKNOWN
             }
 
@@ -342,6 +362,8 @@ private constructor(
                 SUCCESS -> Known.SUCCESS
                 FAILURE -> Known.FAILURE
                 EXPIRED_OR_NOT_FOUND -> Known.EXPIRED_OR_NOT_FOUND
+                TRANSACTION_MISSING -> Known.TRANSACTION_MISSING
+                TRANSACTION_MISMATCH -> Known.TRANSACTION_MISMATCH
                 else -> throw PreludeInvalidDataException("Unknown Status: $value")
             }
 

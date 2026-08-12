@@ -143,6 +143,7 @@ internal class NotifyServiceAsyncTest {
                     .expiresAt(OffsetDateTime.parse("2025-12-25T18:00:00Z"))
                     .from("from")
                     .locale("el-GR")
+                    .maxAutoRetries(2L)
                     .preferredChannel(NotifySendParams.PreferredChannel.WHATSAPP)
                     .scheduleAt(OffsetDateTime.parse("2025-12-25T10:00:00Z"))
                     .variables(
@@ -184,6 +185,7 @@ internal class NotifyServiceAsyncTest {
                     .expiresAt(OffsetDateTime.parse("2025-12-25T18:00:00Z"))
                     .from("from")
                     .locale("el-GR")
+                    .maxAutoRetries(2L)
                     .preferredChannel(NotifySendBatchParams.PreferredChannel.WHATSAPP)
                     .scheduleAt(OffsetDateTime.parse("2025-12-25T10:00:00Z"))
                     .variables(

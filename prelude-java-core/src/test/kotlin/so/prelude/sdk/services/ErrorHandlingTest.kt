@@ -96,9 +96,13 @@ internal class ErrorHandlingTest {
                                         .build()
                                 )
                                 .callbackUrl("callback_url")
+                                .addChannel(VerificationCreateParams.Options.Channel.WHATSAPP)
+                                .addChannel(VerificationCreateParams.Options.Channel.SMS)
                                 .codeSize(5L)
                                 .customCode("123456")
+                                .forceChallenge(true)
                                 .locale("el-GR")
+                                .maxAutoFallbacks(0L)
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
                                     VerificationCreateParams.Options.PreferredChannel.SMS
@@ -174,9 +178,13 @@ internal class ErrorHandlingTest {
                                         .build()
                                 )
                                 .callbackUrl("callback_url")
+                                .addChannel(VerificationCreateParams.Options.Channel.WHATSAPP)
+                                .addChannel(VerificationCreateParams.Options.Channel.SMS)
                                 .codeSize(5L)
                                 .customCode("123456")
+                                .forceChallenge(true)
                                 .locale("el-GR")
+                                .maxAutoFallbacks(0L)
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
                                     VerificationCreateParams.Options.PreferredChannel.SMS
@@ -252,9 +260,13 @@ internal class ErrorHandlingTest {
                                         .build()
                                 )
                                 .callbackUrl("callback_url")
+                                .addChannel(VerificationCreateParams.Options.Channel.WHATSAPP)
+                                .addChannel(VerificationCreateParams.Options.Channel.SMS)
                                 .codeSize(5L)
                                 .customCode("123456")
+                                .forceChallenge(true)
                                 .locale("el-GR")
+                                .maxAutoFallbacks(0L)
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
                                     VerificationCreateParams.Options.PreferredChannel.SMS
@@ -330,9 +342,13 @@ internal class ErrorHandlingTest {
                                         .build()
                                 )
                                 .callbackUrl("callback_url")
+                                .addChannel(VerificationCreateParams.Options.Channel.WHATSAPP)
+                                .addChannel(VerificationCreateParams.Options.Channel.SMS)
                                 .codeSize(5L)
                                 .customCode("123456")
+                                .forceChallenge(true)
                                 .locale("el-GR")
+                                .maxAutoFallbacks(0L)
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
                                     VerificationCreateParams.Options.PreferredChannel.SMS
@@ -408,9 +424,13 @@ internal class ErrorHandlingTest {
                                         .build()
                                 )
                                 .callbackUrl("callback_url")
+                                .addChannel(VerificationCreateParams.Options.Channel.WHATSAPP)
+                                .addChannel(VerificationCreateParams.Options.Channel.SMS)
                                 .codeSize(5L)
                                 .customCode("123456")
+                                .forceChallenge(true)
                                 .locale("el-GR")
+                                .maxAutoFallbacks(0L)
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
                                     VerificationCreateParams.Options.PreferredChannel.SMS
@@ -486,9 +506,13 @@ internal class ErrorHandlingTest {
                                         .build()
                                 )
                                 .callbackUrl("callback_url")
+                                .addChannel(VerificationCreateParams.Options.Channel.WHATSAPP)
+                                .addChannel(VerificationCreateParams.Options.Channel.SMS)
                                 .codeSize(5L)
                                 .customCode("123456")
+                                .forceChallenge(true)
                                 .locale("el-GR")
+                                .maxAutoFallbacks(0L)
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
                                     VerificationCreateParams.Options.PreferredChannel.SMS
@@ -564,9 +588,13 @@ internal class ErrorHandlingTest {
                                         .build()
                                 )
                                 .callbackUrl("callback_url")
+                                .addChannel(VerificationCreateParams.Options.Channel.WHATSAPP)
+                                .addChannel(VerificationCreateParams.Options.Channel.SMS)
                                 .codeSize(5L)
                                 .customCode("123456")
+                                .forceChallenge(true)
                                 .locale("el-GR")
+                                .maxAutoFallbacks(0L)
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
                                     VerificationCreateParams.Options.PreferredChannel.SMS
@@ -642,9 +670,13 @@ internal class ErrorHandlingTest {
                                         .build()
                                 )
                                 .callbackUrl("callback_url")
+                                .addChannel(VerificationCreateParams.Options.Channel.WHATSAPP)
+                                .addChannel(VerificationCreateParams.Options.Channel.SMS)
                                 .codeSize(5L)
                                 .customCode("123456")
+                                .forceChallenge(true)
                                 .locale("el-GR")
+                                .maxAutoFallbacks(0L)
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
                                     VerificationCreateParams.Options.PreferredChannel.SMS
@@ -720,9 +752,13 @@ internal class ErrorHandlingTest {
                                         .build()
                                 )
                                 .callbackUrl("callback_url")
+                                .addChannel(VerificationCreateParams.Options.Channel.WHATSAPP)
+                                .addChannel(VerificationCreateParams.Options.Channel.SMS)
                                 .codeSize(5L)
                                 .customCode("123456")
+                                .forceChallenge(true)
                                 .locale("el-GR")
+                                .maxAutoFallbacks(0L)
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
                                     VerificationCreateParams.Options.PreferredChannel.SMS
@@ -798,9 +834,13 @@ internal class ErrorHandlingTest {
                                         .build()
                                 )
                                 .callbackUrl("callback_url")
+                                .addChannel(VerificationCreateParams.Options.Channel.WHATSAPP)
+                                .addChannel(VerificationCreateParams.Options.Channel.SMS)
                                 .codeSize(5L)
                                 .customCode("123456")
+                                .forceChallenge(true)
                                 .locale("el-GR")
+                                .maxAutoFallbacks(0L)
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
                                     VerificationCreateParams.Options.PreferredChannel.SMS
@@ -876,9 +916,13 @@ internal class ErrorHandlingTest {
                                         .build()
                                 )
                                 .callbackUrl("callback_url")
+                                .addChannel(VerificationCreateParams.Options.Channel.WHATSAPP)
+                                .addChannel(VerificationCreateParams.Options.Channel.SMS)
                                 .codeSize(5L)
                                 .customCode("123456")
+                                .forceChallenge(true)
                                 .locale("el-GR")
+                                .maxAutoFallbacks(0L)
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
                                     VerificationCreateParams.Options.PreferredChannel.SMS
@@ -954,9 +998,13 @@ internal class ErrorHandlingTest {
                                         .build()
                                 )
                                 .callbackUrl("callback_url")
+                                .addChannel(VerificationCreateParams.Options.Channel.WHATSAPP)
+                                .addChannel(VerificationCreateParams.Options.Channel.SMS)
                                 .codeSize(5L)
                                 .customCode("123456")
+                                .forceChallenge(true)
                                 .locale("el-GR")
+                                .maxAutoFallbacks(0L)
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
                                     VerificationCreateParams.Options.PreferredChannel.SMS
@@ -1032,9 +1080,13 @@ internal class ErrorHandlingTest {
                                         .build()
                                 )
                                 .callbackUrl("callback_url")
+                                .addChannel(VerificationCreateParams.Options.Channel.WHATSAPP)
+                                .addChannel(VerificationCreateParams.Options.Channel.SMS)
                                 .codeSize(5L)
                                 .customCode("123456")
+                                .forceChallenge(true)
                                 .locale("el-GR")
+                                .maxAutoFallbacks(0L)
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
                                     VerificationCreateParams.Options.PreferredChannel.SMS
@@ -1110,9 +1162,13 @@ internal class ErrorHandlingTest {
                                         .build()
                                 )
                                 .callbackUrl("callback_url")
+                                .addChannel(VerificationCreateParams.Options.Channel.WHATSAPP)
+                                .addChannel(VerificationCreateParams.Options.Channel.SMS)
                                 .codeSize(5L)
                                 .customCode("123456")
+                                .forceChallenge(true)
                                 .locale("el-GR")
+                                .maxAutoFallbacks(0L)
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
                                     VerificationCreateParams.Options.PreferredChannel.SMS
@@ -1188,9 +1244,13 @@ internal class ErrorHandlingTest {
                                         .build()
                                 )
                                 .callbackUrl("callback_url")
+                                .addChannel(VerificationCreateParams.Options.Channel.WHATSAPP)
+                                .addChannel(VerificationCreateParams.Options.Channel.SMS)
                                 .codeSize(5L)
                                 .customCode("123456")
+                                .forceChallenge(true)
                                 .locale("el-GR")
+                                .maxAutoFallbacks(0L)
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
                                     VerificationCreateParams.Options.PreferredChannel.SMS
@@ -1266,9 +1326,13 @@ internal class ErrorHandlingTest {
                                         .build()
                                 )
                                 .callbackUrl("callback_url")
+                                .addChannel(VerificationCreateParams.Options.Channel.WHATSAPP)
+                                .addChannel(VerificationCreateParams.Options.Channel.SMS)
                                 .codeSize(5L)
                                 .customCode("123456")
+                                .forceChallenge(true)
                                 .locale("el-GR")
+                                .maxAutoFallbacks(0L)
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
                                     VerificationCreateParams.Options.PreferredChannel.SMS
@@ -1342,9 +1406,13 @@ internal class ErrorHandlingTest {
                                         .build()
                                 )
                                 .callbackUrl("callback_url")
+                                .addChannel(VerificationCreateParams.Options.Channel.WHATSAPP)
+                                .addChannel(VerificationCreateParams.Options.Channel.SMS)
                                 .codeSize(5L)
                                 .customCode("123456")
+                                .forceChallenge(true)
                                 .locale("el-GR")
+                                .maxAutoFallbacks(0L)
                                 .method(VerificationCreateParams.Options.Method.AUTO)
                                 .preferredChannel(
                                     VerificationCreateParams.Options.PreferredChannel.SMS

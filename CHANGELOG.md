@@ -1,5 +1,28 @@
 # Changelog
 
+## 0.13.0 (2026-08-07)
+
+Full Changelog: [v0.12.0...v0.13.0](https://github.com/prelude-so/java-sdk/compare/v0.12.0...v0.13.0)
+
+### Features
+
+* **api:** api update ([3b2c377](https://github.com/prelude-so/java-sdk/commit/3b2c377efeff9179060f60ead276e8ad17659a1a))
+* **api:** api update ([08c11f9](https://github.com/prelude-so/java-sdk/commit/08c11f9dc52e16ce1868d7d1cace78b05a320bb4))
+* **api:** api update ([4099a76](https://github.com/prelude-so/java-sdk/commit/4099a76621071fbbc00beb34adca25f9280e1103))
+* **api:** api update ([2925a57](https://github.com/prelude-so/java-sdk/commit/2925a570b28dec225b29ee12371ff0d45b9d007f))
+* **api:** api update ([1ae8d18](https://github.com/prelude-so/java-sdk/commit/1ae8d18046799f10d9479e599b7999ec8eafeafc))
+* **api:** api update ([7f7846a](https://github.com/prelude-so/java-sdk/commit/7f7846a676b14ae8a2bfb88a3e413c685074dd0e))
+* **api:** api update ([071338f](https://github.com/prelude-so/java-sdk/commit/071338fb7389994f72be3c9e079cde72dcf313cc))
+* **api:** api update ([c645975](https://github.com/prelude-so/java-sdk/commit/c645975d2571162b9ac5bfc01e7ce5a2a7d0a2d6))
+* **api:** api update ([a9cb6cf](https://github.com/prelude-so/java-sdk/commit/a9cb6cf31d0e557e90b2a28cfd08c18fb52cd0f1))
+* **stlc:** configurable CI runner and private-production-repo support in workflow templates ([b817e64](https://github.com/prelude-so/java-sdk/commit/b817e64c1cd560d6220dcd28ffcaa31a7cd10618))
+
+
+### Chores
+
+* **internal:** codegen related update ([1a274a7](https://github.com/prelude-so/java-sdk/commit/1a274a7b3112a53536e209ab4d8d5474254c26ae))
+* redact api-key headers in debug logs ([7ccb84c](https://github.com/prelude-so/java-sdk/commit/7ccb84cd7523468aa311c72c6671b9c035be9a50))
+
 ## 0.12.0 (2026-05-07)
 
 Full Changelog: [v0.11.0...v0.12.0](https://github.com/prelude-so/java-sdk/compare/v0.11.0...v0.12.0)

@@ -16,6 +16,7 @@ import so.prelude.sdk.core.JsonField
 import so.prelude.sdk.core.JsonMissing
 import so.prelude.sdk.core.JsonValue
 import so.prelude.sdk.core.Params
+import so.prelude.sdk.core.checkKnown
 import so.prelude.sdk.core.checkRequired
 import so.prelude.sdk.core.http.Headers
 import so.prelude.sdk.core.http.QueryParams
@@ -1223,9 +1224,12 @@ private constructor(
     private constructor(
         private val appRealm: JsonField<AppRealm>,
         private val callbackUrl: JsonField<String>,
+        private val channels: JsonField<List<Channel>>,
         private val codeSize: JsonField<Long>,
         private val customCode: JsonField<String>,
+        private val forceChallenge: JsonField<Boolean>,
         private val locale: JsonField<String>,
+        private val maxAutoFallbacks: JsonField<Long>,
         private val method: JsonField<Method>,
         private val preferredChannel: JsonField<PreferredChannel>,
         private val senderId: JsonField<String>,
@@ -1242,11 +1246,20 @@ private constructor(
             @JsonProperty("callback_url")
             @ExcludeMissing
             callbackUrl: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("channels")
+            @ExcludeMissing
+            channels: JsonField<List<Channel>> = JsonMissing.of(),
             @JsonProperty("code_size") @ExcludeMissing codeSize: JsonField<Long> = JsonMissing.of(),
             @JsonProperty("custom_code")
             @ExcludeMissing
             customCode: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("force_challenge")
+            @ExcludeMissing
+            forceChallenge: JsonField<Boolean> = JsonMissing.of(),
             @JsonProperty("locale") @ExcludeMissing locale: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("max_auto_fallbacks")
+            @ExcludeMissing
+            maxAutoFallbacks: JsonField<Long> = JsonMissing.of(),
             @JsonProperty("method") @ExcludeMissing method: JsonField<Method> = JsonMissing.of(),
             @JsonProperty("preferred_channel")
             @ExcludeMissing
@@ -1263,9 +1276,12 @@ private constructor(
         ) : this(
             appRealm,
             callbackUrl,
+            channels,
             codeSize,
             customCode,
+            forceChallenge,
             locale,
+            maxAutoFallbacks,
             method,
             preferredChannel,
             senderId,
@@ -1294,6 +1310,22 @@ private constructor(
         fun callbackUrl(): Optional<String> = callbackUrl.getOptional("callback_url")
 
         /**
+         * The channels this verification may use, in the order they are tried. Channels you omit
+         * are never used, including on retries. This option can only be set when the verification
+         * is created. The list is recorded on the verification and applies for its whole lifecycle,
+         * so `channels` sent while retrying an existing verification is ignored — unlike
+         * `preferred_channel`, which is honored on every retry. Every channel you list must be
+         * enabled on your account and active in the destination country, otherwise the request
+         * fails with `channel_not_enabled_in_region`. Prelude still picks the best provider within
+         * each channel. Cannot be combined with `preferred_channel`. Voice is requested through
+         * `method` instead. Disabled by default — contact support to enable it.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun channels(): Optional<List<Channel>> = channels.getOptional("channels")
+
+        /**
          * The size of the code generated. It should be between 4 and 8. Defaults to the code size
          * specified from the Dashboard.
          *
@@ -1313,6 +1345,19 @@ private constructor(
         fun customCode(): Optional<String> = customCode.getOptional("custom_code")
 
         /**
+         * When `true`, the verification is routed through challenge-safe channels (non-SMS/Voice)
+         * regardless of country eligibility or any antispam outcome. The resulting verification has
+         * `status: "challenged"`. Use this when you have your own signal that the request is
+         * suspicious and want stricter routing — the verification is **not** classified as fraud
+         * and does not contribute to anti-fraud counters or risk factors. This feature is disabled
+         * by default — contact Prelude support to enable it on your account.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun forceChallenge(): Optional<Boolean> = forceChallenge.getOptional("force_challenge")
+
+        /**
          * A BCP-47 formatted locale string with the language the text message will be sent to. If
          * there's no locale set, the language will be determined by the country code of the phone
          * number. If the language specified doesn't exist, it defaults to US English.
@@ -1321,6 +1366,26 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun locale(): Optional<String> = locale.getOptional("locale")
+
+        /**
+         * Maximum number of delivery attempts Prelude may add on its own after the one you
+         * requested. `0` means a single attempt: if it cannot be delivered, Prelude neither tries
+         * another provider nor another channel, and does not retry automatically. `1` allows one
+         * additional attempt, and so on — a value larger than the number of routes available for
+         * the destination simply behaves like the default. When omitted, Prelude retries as your
+         * account is configured, across as many channels as the route offers.
+         *
+         * This option can only be set when the verification is created. The value is recorded on
+         * the verification and applies for its whole lifecycle, so a `max_auto_fallbacks` sent
+         * while retrying an existing verification is ignored — the limit cannot be raised or
+         * lowered after the fact. A retry you ask for is not an automatic attempt, so it gets a
+         * fresh allowance of the same limit. This option is disabled by default — contact Prelude
+         * support to enable it on your account.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun maxAutoFallbacks(): Optional<Long> = maxAutoFallbacks.getOptional("max_auto_fallbacks")
 
         /**
          * The method used for verifying this phone number. The 'voice' option provides an
@@ -1336,7 +1401,12 @@ private constructor(
         fun method(): Optional<Method> = method.getOptional("method")
 
         /**
-         * The preferred channel to be used in priority for verification.
+         * The channel to prioritize when delivering the verification. Prelude prioritizes this
+         * channel on the first attempt and continues to prefer it on retries while an untried route
+         * on that channel remains; once those are exhausted, retries fall back to the next best
+         * available route. If the channel is unavailable (for example, when a verification is
+         * challenged), Prelude uses the best available route instead. Cannot be combined with
+         * `channels`.
          *
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
          *   server responded with an unexpected value).
@@ -1386,6 +1456,15 @@ private constructor(
         fun _callbackUrl(): JsonField<String> = callbackUrl
 
         /**
+         * Returns the raw JSON value of [channels].
+         *
+         * Unlike [channels], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("channels")
+        @ExcludeMissing
+        fun _channels(): JsonField<List<Channel>> = channels
+
+        /**
          * Returns the raw JSON value of [codeSize].
          *
          * Unlike [codeSize], this method doesn't throw if the JSON field has an unexpected type.
@@ -1402,11 +1481,31 @@ private constructor(
         fun _customCode(): JsonField<String> = customCode
 
         /**
+         * Returns the raw JSON value of [forceChallenge].
+         *
+         * Unlike [forceChallenge], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("force_challenge")
+        @ExcludeMissing
+        fun _forceChallenge(): JsonField<Boolean> = forceChallenge
+
+        /**
          * Returns the raw JSON value of [locale].
          *
          * Unlike [locale], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("locale") @ExcludeMissing fun _locale(): JsonField<String> = locale
+
+        /**
+         * Returns the raw JSON value of [maxAutoFallbacks].
+         *
+         * Unlike [maxAutoFallbacks], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("max_auto_fallbacks")
+        @ExcludeMissing
+        fun _maxAutoFallbacks(): JsonField<Long> = maxAutoFallbacks
 
         /**
          * Returns the raw JSON value of [method].
@@ -1473,9 +1572,12 @@ private constructor(
 
             private var appRealm: JsonField<AppRealm> = JsonMissing.of()
             private var callbackUrl: JsonField<String> = JsonMissing.of()
+            private var channels: JsonField<MutableList<Channel>>? = null
             private var codeSize: JsonField<Long> = JsonMissing.of()
             private var customCode: JsonField<String> = JsonMissing.of()
+            private var forceChallenge: JsonField<Boolean> = JsonMissing.of()
             private var locale: JsonField<String> = JsonMissing.of()
+            private var maxAutoFallbacks: JsonField<Long> = JsonMissing.of()
             private var method: JsonField<Method> = JsonMissing.of()
             private var preferredChannel: JsonField<PreferredChannel> = JsonMissing.of()
             private var senderId: JsonField<String> = JsonMissing.of()
@@ -1487,9 +1589,12 @@ private constructor(
             internal fun from(options: Options) = apply {
                 appRealm = options.appRealm
                 callbackUrl = options.callbackUrl
+                channels = options.channels.map { it.toMutableList() }
                 codeSize = options.codeSize
                 customCode = options.customCode
+                forceChallenge = options.forceChallenge
                 locale = options.locale
+                maxAutoFallbacks = options.maxAutoFallbacks
                 method = options.method
                 preferredChannel = options.preferredChannel
                 senderId = options.senderId
@@ -1532,6 +1637,43 @@ private constructor(
             }
 
             /**
+             * The channels this verification may use, in the order they are tried. Channels you
+             * omit are never used, including on retries. This option can only be set when the
+             * verification is created. The list is recorded on the verification and applies for its
+             * whole lifecycle, so `channels` sent while retrying an existing verification is
+             * ignored — unlike `preferred_channel`, which is honored on every retry. Every channel
+             * you list must be enabled on your account and active in the destination country,
+             * otherwise the request fails with `channel_not_enabled_in_region`. Prelude still picks
+             * the best provider within each channel. Cannot be combined with `preferred_channel`.
+             * Voice is requested through `method` instead. Disabled by default — contact support to
+             * enable it.
+             */
+            fun channels(channels: List<Channel>) = channels(JsonField.of(channels))
+
+            /**
+             * Sets [Builder.channels] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.channels] with a well-typed `List<Channel>` value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun channels(channels: JsonField<List<Channel>>) = apply {
+                this.channels = channels.map { it.toMutableList() }
+            }
+
+            /**
+             * Adds a single [Channel] to [channels].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
+            fun addChannel(channel: Channel) = apply {
+                channels =
+                    (channels ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("channels", it).add(channel)
+                    }
+            }
+
+            /**
              * The size of the code generated. It should be between 4 and 8. Defaults to the code
              * size specified from the Dashboard.
              */
@@ -1563,6 +1705,29 @@ private constructor(
             fun customCode(customCode: JsonField<String>) = apply { this.customCode = customCode }
 
             /**
+             * When `true`, the verification is routed through challenge-safe channels
+             * (non-SMS/Voice) regardless of country eligibility or any antispam outcome. The
+             * resulting verification has `status: "challenged"`. Use this when you have your own
+             * signal that the request is suspicious and want stricter routing — the verification is
+             * **not** classified as fraud and does not contribute to anti-fraud counters or risk
+             * factors. This feature is disabled by default — contact Prelude support to enable it
+             * on your account.
+             */
+            fun forceChallenge(forceChallenge: Boolean) =
+                forceChallenge(JsonField.of(forceChallenge))
+
+            /**
+             * Sets [Builder.forceChallenge] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.forceChallenge] with a well-typed [Boolean] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun forceChallenge(forceChallenge: JsonField<Boolean>) = apply {
+                this.forceChallenge = forceChallenge
+            }
+
+            /**
              * A BCP-47 formatted locale string with the language the text message will be sent to.
              * If there's no locale set, the language will be determined by the country code of the
              * phone number. If the language specified doesn't exist, it defaults to US English.
@@ -1577,6 +1742,35 @@ private constructor(
              * supported value.
              */
             fun locale(locale: JsonField<String>) = apply { this.locale = locale }
+
+            /**
+             * Maximum number of delivery attempts Prelude may add on its own after the one you
+             * requested. `0` means a single attempt: if it cannot be delivered, Prelude neither
+             * tries another provider nor another channel, and does not retry automatically. `1`
+             * allows one additional attempt, and so on — a value larger than the number of routes
+             * available for the destination simply behaves like the default. When omitted, Prelude
+             * retries as your account is configured, across as many channels as the route offers.
+             *
+             * This option can only be set when the verification is created. The value is recorded
+             * on the verification and applies for its whole lifecycle, so a `max_auto_fallbacks`
+             * sent while retrying an existing verification is ignored — the limit cannot be raised
+             * or lowered after the fact. A retry you ask for is not an automatic attempt, so it
+             * gets a fresh allowance of the same limit. This option is disabled by default —
+             * contact Prelude support to enable it on your account.
+             */
+            fun maxAutoFallbacks(maxAutoFallbacks: Long) =
+                maxAutoFallbacks(JsonField.of(maxAutoFallbacks))
+
+            /**
+             * Sets [Builder.maxAutoFallbacks] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.maxAutoFallbacks] with a well-typed [Long] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun maxAutoFallbacks(maxAutoFallbacks: JsonField<Long>) = apply {
+                this.maxAutoFallbacks = maxAutoFallbacks
+            }
 
             /**
              * The method used for verifying this phone number. The 'voice' option provides an
@@ -1597,7 +1791,14 @@ private constructor(
              */
             fun method(method: JsonField<Method>) = apply { this.method = method }
 
-            /** The preferred channel to be used in priority for verification. */
+            /**
+             * The channel to prioritize when delivering the verification. Prelude prioritizes this
+             * channel on the first attempt and continues to prefer it on retries while an untried
+             * route on that channel remains; once those are exhausted, retries fall back to the
+             * next best available route. If the channel is unavailable (for example, when a
+             * verification is challenged), Prelude uses the best available route instead. Cannot be
+             * combined with `channels`.
+             */
             fun preferredChannel(preferredChannel: PreferredChannel) =
                 preferredChannel(JsonField.of(preferredChannel))
 
@@ -1681,9 +1882,12 @@ private constructor(
                 Options(
                     appRealm,
                     callbackUrl,
+                    (channels ?: JsonMissing.of()).map { it.toImmutable() },
                     codeSize,
                     customCode,
+                    forceChallenge,
                     locale,
+                    maxAutoFallbacks,
                     method,
                     preferredChannel,
                     senderId,
@@ -1711,9 +1915,12 @@ private constructor(
 
             appRealm().ifPresent { it.validate() }
             callbackUrl()
+            channels().ifPresent { it.forEach { it.validate() } }
             codeSize()
             customCode()
+            forceChallenge()
             locale()
+            maxAutoFallbacks()
             method().ifPresent { it.validate() }
             preferredChannel().ifPresent { it.validate() }
             senderId()
@@ -1740,9 +1947,12 @@ private constructor(
         internal fun validity(): Int =
             (appRealm.asKnown().getOrNull()?.validity() ?: 0) +
                 (if (callbackUrl.asKnown().isPresent) 1 else 0) +
+                (channels.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
                 (if (codeSize.asKnown().isPresent) 1 else 0) +
                 (if (customCode.asKnown().isPresent) 1 else 0) +
+                (if (forceChallenge.asKnown().isPresent) 1 else 0) +
                 (if (locale.asKnown().isPresent) 1 else 0) +
+                (if (maxAutoFallbacks.asKnown().isPresent) 1 else 0) +
                 (method.asKnown().getOrNull()?.validity() ?: 0) +
                 (preferredChannel.asKnown().getOrNull()?.validity() ?: 0) +
                 (if (senderId.asKnown().isPresent) 1 else 0) +
@@ -2132,6 +2342,170 @@ private constructor(
                 "AppRealm{platform=$platform, value=$value, additionalProperties=$additionalProperties}"
         }
 
+        class Channel @JsonCreator private constructor(private val value: JsonField<String>) :
+            Enum {
+
+            /**
+             * Returns this class instance's raw value.
+             *
+             * This is usually only useful if this instance was deserialized from data that doesn't
+             * match any known member, and you want to know that value. For example, if the SDK is
+             * on an older version than the API, then the API may respond with new members that the
+             * SDK is unaware of.
+             */
+            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+            companion object {
+
+                @JvmField val SMS = of("sms")
+
+                @JvmField val RCS = of("rcs")
+
+                @JvmField val WHATSAPP = of("whatsapp")
+
+                @JvmField val VIBER = of("viber")
+
+                @JvmField val ZALO = of("zalo")
+
+                @JvmField val TELEGRAM = of("telegram")
+
+                @JvmStatic fun of(value: String) = Channel(JsonField.of(value))
+            }
+
+            /** An enum containing [Channel]'s known values. */
+            enum class Known {
+                SMS,
+                RCS,
+                WHATSAPP,
+                VIBER,
+                ZALO,
+                TELEGRAM,
+            }
+
+            /**
+             * An enum containing [Channel]'s known values, as well as an [_UNKNOWN] member.
+             *
+             * An instance of [Channel] can contain an unknown value in a couple of cases:
+             * - It was deserialized from data that doesn't match any known member. For example, if
+             *   the SDK is on an older version than the API, then the API may respond with new
+             *   members that the SDK is unaware of.
+             * - It was constructed with an arbitrary value using the [of] method.
+             */
+            enum class Value {
+                SMS,
+                RCS,
+                WHATSAPP,
+                VIBER,
+                ZALO,
+                TELEGRAM,
+                /**
+                 * An enum member indicating that [Channel] was instantiated with an unknown value.
+                 */
+                _UNKNOWN,
+            }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value, or
+             * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+             *
+             * Use the [known] method instead if you're certain the value is always known or if you
+             * want to throw for the unknown case.
+             */
+            fun value(): Value =
+                when (this) {
+                    SMS -> Value.SMS
+                    RCS -> Value.RCS
+                    WHATSAPP -> Value.WHATSAPP
+                    VIBER -> Value.VIBER
+                    ZALO -> Value.ZALO
+                    TELEGRAM -> Value.TELEGRAM
+                    else -> Value._UNKNOWN
+                }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value.
+             *
+             * Use the [value] method instead if you're uncertain the value is always known and
+             * don't want to throw for the unknown case.
+             *
+             * @throws PreludeInvalidDataException if this class instance's value is a not a known
+             *   member.
+             */
+            fun known(): Known =
+                when (this) {
+                    SMS -> Known.SMS
+                    RCS -> Known.RCS
+                    WHATSAPP -> Known.WHATSAPP
+                    VIBER -> Known.VIBER
+                    ZALO -> Known.ZALO
+                    TELEGRAM -> Known.TELEGRAM
+                    else -> throw PreludeInvalidDataException("Unknown Channel: $value")
+                }
+
+            /**
+             * Returns this class instance's primitive wire representation.
+             *
+             * This differs from the [toString] method because that method is primarily for
+             * debugging and generally doesn't throw.
+             *
+             * @throws PreludeInvalidDataException if this class instance's value does not have the
+             *   expected primitive type.
+             */
+            fun asString(): String =
+                _value().asString().orElseThrow {
+                    PreludeInvalidDataException("Value is not a String")
+                }
+
+            private var validated: Boolean = false
+
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws PreludeInvalidDataException if any value type in this object doesn't match
+             *   its expected type.
+             */
+            fun validate(): Channel = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                known()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: PreludeInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return other is Channel && value == other.value
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
+        }
+
         /**
          * The method used for verifying this phone number. The 'voice' option provides an
          * accessible alternative for visually impaired users by delivering the verification code
@@ -2285,7 +2659,14 @@ private constructor(
             override fun toString() = value.toString()
         }
 
-        /** The preferred channel to be used in priority for verification. */
+        /**
+         * The channel to prioritize when delivering the verification. Prelude prioritizes this
+         * channel on the first attempt and continues to prefer it on retries while an untried route
+         * on that channel remains; once those are exhausted, retries fall back to the next best
+         * available route. If the channel is unavailable (for example, when a verification is
+         * challenged), Prelude uses the best available route instead. Cannot be combined with
+         * `channels`.
+         */
         class PreferredChannel
         @JsonCreator
         private constructor(private val value: JsonField<String>) : Enum {
@@ -2574,9 +2955,12 @@ private constructor(
             return other is Options &&
                 appRealm == other.appRealm &&
                 callbackUrl == other.callbackUrl &&
+                channels == other.channels &&
                 codeSize == other.codeSize &&
                 customCode == other.customCode &&
+                forceChallenge == other.forceChallenge &&
                 locale == other.locale &&
+                maxAutoFallbacks == other.maxAutoFallbacks &&
                 method == other.method &&
                 preferredChannel == other.preferredChannel &&
                 senderId == other.senderId &&
@@ -2589,9 +2973,12 @@ private constructor(
             Objects.hash(
                 appRealm,
                 callbackUrl,
+                channels,
                 codeSize,
                 customCode,
+                forceChallenge,
                 locale,
+                maxAutoFallbacks,
                 method,
                 preferredChannel,
                 senderId,
@@ -2604,7 +2991,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Options{appRealm=$appRealm, callbackUrl=$callbackUrl, codeSize=$codeSize, customCode=$customCode, locale=$locale, method=$method, preferredChannel=$preferredChannel, senderId=$senderId, templateId=$templateId, variables=$variables, additionalProperties=$additionalProperties}"
+            "Options{appRealm=$appRealm, callbackUrl=$callbackUrl, channels=$channels, codeSize=$codeSize, customCode=$customCode, forceChallenge=$forceChallenge, locale=$locale, maxAutoFallbacks=$maxAutoFallbacks, method=$method, preferredChannel=$preferredChannel, senderId=$senderId, templateId=$templateId, variables=$variables, additionalProperties=$additionalProperties}"
     }
 
     /**

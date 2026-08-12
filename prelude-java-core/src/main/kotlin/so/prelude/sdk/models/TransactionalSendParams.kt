@@ -106,6 +106,16 @@ private constructor(
     fun locale(): Optional<String> = body.locale()
 
     /**
+     * Maximum number of automatic retry attempts across channels for this send, in addition to the
+     * first attempt. For example, `2` allows up to 3 total delivery attempts. When omitted, your
+     * account's configured default applies.
+     *
+     * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun maxAutoRetries(): Optional<Long> = body.maxAutoRetries()
+
+    /**
      * The preferred delivery channel for the message. When specified, the system will prioritize
      * sending via the requested channel if the template is configured for it.
      *
@@ -182,6 +192,13 @@ private constructor(
      * Unlike [locale], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _locale(): JsonField<String> = body._locale()
+
+    /**
+     * Returns the raw JSON value of [maxAutoRetries].
+     *
+     * Unlike [maxAutoRetries], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _maxAutoRetries(): JsonField<Long> = body._maxAutoRetries()
 
     /**
      * Returns the raw JSON value of [preferredChannel].
@@ -361,6 +378,24 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun locale(locale: JsonField<String>) = apply { body.locale(locale) }
+
+        /**
+         * Maximum number of automatic retry attempts across channels for this send, in addition to
+         * the first attempt. For example, `2` allows up to 3 total delivery attempts. When omitted,
+         * your account's configured default applies.
+         */
+        fun maxAutoRetries(maxAutoRetries: Long) = apply { body.maxAutoRetries(maxAutoRetries) }
+
+        /**
+         * Sets [Builder.maxAutoRetries] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.maxAutoRetries] with a well-typed [Long] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun maxAutoRetries(maxAutoRetries: JsonField<Long>) = apply {
+            body.maxAutoRetries(maxAutoRetries)
+        }
 
         /**
          * The preferred delivery channel for the message. When specified, the system will
@@ -553,6 +588,7 @@ private constructor(
         private val expiresAt: JsonField<String>,
         private val from: JsonField<String>,
         private val locale: JsonField<String>,
+        private val maxAutoRetries: JsonField<Long>,
         private val preferredChannel: JsonField<PreferredChannel>,
         private val variables: JsonField<Variables>,
         private val additionalProperties: MutableMap<String, JsonValue>,
@@ -578,6 +614,9 @@ private constructor(
             expiresAt: JsonField<String> = JsonMissing.of(),
             @JsonProperty("from") @ExcludeMissing from: JsonField<String> = JsonMissing.of(),
             @JsonProperty("locale") @ExcludeMissing locale: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("max_auto_retries")
+            @ExcludeMissing
+            maxAutoRetries: JsonField<Long> = JsonMissing.of(),
             @JsonProperty("preferred_channel")
             @ExcludeMissing
             preferredChannel: JsonField<PreferredChannel> = JsonMissing.of(),
@@ -593,6 +632,7 @@ private constructor(
             expiresAt,
             from,
             locale,
+            maxAutoRetries,
             preferredChannel,
             variables,
             mutableMapOf(),
@@ -672,6 +712,16 @@ private constructor(
          *   server responded with an unexpected value).
          */
         fun locale(): Optional<String> = locale.getOptional("locale")
+
+        /**
+         * Maximum number of automatic retry attempts across channels for this send, in addition to
+         * the first attempt. For example, `2` allows up to 3 total delivery attempts. When omitted,
+         * your account's configured default applies.
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun maxAutoRetries(): Optional<Long> = maxAutoRetries.getOptional("max_auto_retries")
 
         /**
          * The preferred delivery channel for the message. When specified, the system will
@@ -760,6 +810,16 @@ private constructor(
         @JsonProperty("locale") @ExcludeMissing fun _locale(): JsonField<String> = locale
 
         /**
+         * Returns the raw JSON value of [maxAutoRetries].
+         *
+         * Unlike [maxAutoRetries], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("max_auto_retries")
+        @ExcludeMissing
+        fun _maxAutoRetries(): JsonField<Long> = maxAutoRetries
+
+        /**
          * Returns the raw JSON value of [preferredChannel].
          *
          * Unlike [preferredChannel], this method doesn't throw if the JSON field has an unexpected
@@ -815,6 +875,7 @@ private constructor(
             private var expiresAt: JsonField<String> = JsonMissing.of()
             private var from: JsonField<String> = JsonMissing.of()
             private var locale: JsonField<String> = JsonMissing.of()
+            private var maxAutoRetries: JsonField<Long> = JsonMissing.of()
             private var preferredChannel: JsonField<PreferredChannel> = JsonMissing.of()
             private var variables: JsonField<Variables> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -829,6 +890,7 @@ private constructor(
                 expiresAt = body.expiresAt
                 from = body.from
                 locale = body.locale
+                maxAutoRetries = body.maxAutoRetries
                 preferredChannel = body.preferredChannel
                 variables = body.variables
                 additionalProperties = body.additionalProperties.toMutableMap()
@@ -954,6 +1016,24 @@ private constructor(
             fun locale(locale: JsonField<String>) = apply { this.locale = locale }
 
             /**
+             * Maximum number of automatic retry attempts across channels for this send, in addition
+             * to the first attempt. For example, `2` allows up to 3 total delivery attempts. When
+             * omitted, your account's configured default applies.
+             */
+            fun maxAutoRetries(maxAutoRetries: Long) = maxAutoRetries(JsonField.of(maxAutoRetries))
+
+            /**
+             * Sets [Builder.maxAutoRetries] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.maxAutoRetries] with a well-typed [Long] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun maxAutoRetries(maxAutoRetries: JsonField<Long>) = apply {
+                this.maxAutoRetries = maxAutoRetries
+            }
+
+            /**
              * The preferred delivery channel for the message. When specified, the system will
              * prioritize sending via the requested channel if the template is configured for it.
              *
@@ -1031,6 +1111,7 @@ private constructor(
                     expiresAt,
                     from,
                     locale,
+                    maxAutoRetries,
                     preferredChannel,
                     variables,
                     additionalProperties.toMutableMap(),
@@ -1061,6 +1142,7 @@ private constructor(
             expiresAt()
             from()
             locale()
+            maxAutoRetries()
             preferredChannel().ifPresent { it.validate() }
             variables().ifPresent { it.validate() }
             validated = true
@@ -1090,6 +1172,7 @@ private constructor(
                 (if (expiresAt.asKnown().isPresent) 1 else 0) +
                 (if (from.asKnown().isPresent) 1 else 0) +
                 (if (locale.asKnown().isPresent) 1 else 0) +
+                (if (maxAutoRetries.asKnown().isPresent) 1 else 0) +
                 (preferredChannel.asKnown().getOrNull()?.validity() ?: 0) +
                 (variables.asKnown().getOrNull()?.validity() ?: 0)
 
@@ -1107,6 +1190,7 @@ private constructor(
                 expiresAt == other.expiresAt &&
                 from == other.from &&
                 locale == other.locale &&
+                maxAutoRetries == other.maxAutoRetries &&
                 preferredChannel == other.preferredChannel &&
                 variables == other.variables &&
                 additionalProperties == other.additionalProperties
@@ -1122,6 +1206,7 @@ private constructor(
                 expiresAt,
                 from,
                 locale,
+                maxAutoRetries,
                 preferredChannel,
                 variables,
                 additionalProperties,
@@ -1131,7 +1216,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{templateId=$templateId, to=$to, callbackUrl=$callbackUrl, correlationId=$correlationId, document=$document, expiresAt=$expiresAt, from=$from, locale=$locale, preferredChannel=$preferredChannel, variables=$variables, additionalProperties=$additionalProperties}"
+            "Body{templateId=$templateId, to=$to, callbackUrl=$callbackUrl, correlationId=$correlationId, document=$document, expiresAt=$expiresAt, from=$from, locale=$locale, maxAutoRetries=$maxAutoRetries, preferredChannel=$preferredChannel, variables=$variables, additionalProperties=$additionalProperties}"
     }
 
     /**

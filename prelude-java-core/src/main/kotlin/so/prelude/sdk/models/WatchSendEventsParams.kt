@@ -23,8 +23,10 @@ import so.prelude.sdk.core.toImmutable
 import so.prelude.sdk.errors.PreludeInvalidDataException
 
 /**
- * Send real-time event data from end-user interactions within your application. Events will be
- * analyzed for proactive fraud prevention and risk scoring.
+ * Send custom fraud signals from your application (labels and confidence levels). Events capture
+ * product-specific risk patterns and are weighted when scoring traffic. Use without Predict or
+ * Feedback if you only need to report product-side abuse (for example account.banned). Feedback is
+ * a separate, optional endpoint for self-hosted phone verification funnels.
  */
 class WatchSendEventsParams
 private constructor(
@@ -465,7 +467,15 @@ private constructor(
         ) : this(confidence, label, target, mutableMapOf())
 
         /**
-         * A confidence level you want to assign to the event.
+         * How much this event tells us to trust the end-user's legitimacy — not how certain you are
+         * that the event occurred. In increasing order of trust: `minimum`, `low`, `neutral`,
+         * `high`, `maximum`.
+         *
+         * Use `minimum` for an event tied to a user you trust the least to be legitimate (e.g. a
+         * `payment.chargeback`), and `maximum` for an event tied to a highly trustworthy user (e.g.
+         * a confirmed 3DS payment). Prelude weights these signals when scoring traffic: it filters
+         * out users tied to low-confidence events while preserving the experience for users tied to
+         * high-confidence ones.
          *
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
@@ -554,7 +564,17 @@ private constructor(
                 additionalProperties = event.additionalProperties.toMutableMap()
             }
 
-            /** A confidence level you want to assign to the event. */
+            /**
+             * How much this event tells us to trust the end-user's legitimacy — not how certain you
+             * are that the event occurred. In increasing order of trust: `minimum`, `low`,
+             * `neutral`, `high`, `maximum`.
+             *
+             * Use `minimum` for an event tied to a user you trust the least to be legitimate (e.g.
+             * a `payment.chargeback`), and `maximum` for an event tied to a highly trustworthy user
+             * (e.g. a confirmed 3DS payment). Prelude weights these signals when scoring traffic:
+             * it filters out users tied to low-confidence events while preserving the experience
+             * for users tied to high-confidence ones.
+             */
             fun confidence(confidence: Confidence) = confidence(JsonField.of(confidence))
 
             /**
@@ -676,7 +696,17 @@ private constructor(
                 (if (label.asKnown().isPresent) 1 else 0) +
                 (target.asKnown().getOrNull()?.validity() ?: 0)
 
-        /** A confidence level you want to assign to the event. */
+        /**
+         * How much this event tells us to trust the end-user's legitimacy — not how certain you are
+         * that the event occurred. In increasing order of trust: `minimum`, `low`, `neutral`,
+         * `high`, `maximum`.
+         *
+         * Use `minimum` for an event tied to a user you trust the least to be legitimate (e.g. a
+         * `payment.chargeback`), and `maximum` for an event tied to a highly trustworthy user (e.g.
+         * a confirmed 3DS payment). Prelude weights these signals when scoring traffic: it filters
+         * out users tied to low-confidence events while preserving the experience for users tied to
+         * high-confidence ones.
+         */
         class Confidence @JsonCreator private constructor(private val value: JsonField<String>) :
             Enum {
 

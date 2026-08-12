@@ -17,11 +17,58 @@ internal class VerificationCheckParamsTest {
                     .value("+30123456789")
                     .build()
             )
+            .psd2(
+                VerificationCheckParams.Psd2.builder()
+                    .amount("99999.99")
+                    .currency("EUR")
+                    .recipient("Rainbow LLC")
+                    .build()
+            )
             .build()
     }
 
     @Test
     fun body() {
+        val params =
+            VerificationCheckParams.builder()
+                .code("12345")
+                .target(
+                    VerificationCheckParams.Target.builder()
+                        .type(VerificationCheckParams.Target.Type.PHONE_NUMBER)
+                        .value("+30123456789")
+                        .build()
+                )
+                .psd2(
+                    VerificationCheckParams.Psd2.builder()
+                        .amount("99999.99")
+                        .currency("EUR")
+                        .recipient("Rainbow LLC")
+                        .build()
+                )
+                .build()
+
+        val body = params._body()
+
+        assertThat(body.code()).isEqualTo("12345")
+        assertThat(body.target())
+            .isEqualTo(
+                VerificationCheckParams.Target.builder()
+                    .type(VerificationCheckParams.Target.Type.PHONE_NUMBER)
+                    .value("+30123456789")
+                    .build()
+            )
+        assertThat(body.psd2())
+            .contains(
+                VerificationCheckParams.Psd2.builder()
+                    .amount("99999.99")
+                    .currency("EUR")
+                    .recipient("Rainbow LLC")
+                    .build()
+            )
+    }
+
+    @Test
+    fun bodyWithoutOptionalFields() {
         val params =
             VerificationCheckParams.builder()
                 .code("12345")

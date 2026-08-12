@@ -24,6 +24,7 @@ internal class TransactionalSendParamsTest {
             .expiresAt("expires_at")
             .from("from")
             .locale("el-GR")
+            .maxAutoRetries(2L)
             .preferredChannel(TransactionalSendParams.PreferredChannel.WHATSAPP)
             .variables(
                 TransactionalSendParams.Variables.builder()
@@ -50,6 +51,7 @@ internal class TransactionalSendParamsTest {
                 .expiresAt("expires_at")
                 .from("from")
                 .locale("el-GR")
+                .maxAutoRetries(2L)
                 .preferredChannel(TransactionalSendParams.PreferredChannel.WHATSAPP)
                 .variables(
                     TransactionalSendParams.Variables.builder()
@@ -74,6 +76,7 @@ internal class TransactionalSendParamsTest {
         assertThat(body.expiresAt()).contains("expires_at")
         assertThat(body.from()).contains("from")
         assertThat(body.locale()).contains("el-GR")
+        assertThat(body.maxAutoRetries()).contains(2L)
         assertThat(body.preferredChannel())
             .contains(TransactionalSendParams.PreferredChannel.WHATSAPP)
         assertThat(body.variables())

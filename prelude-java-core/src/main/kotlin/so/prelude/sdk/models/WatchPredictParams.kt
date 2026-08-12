@@ -21,7 +21,13 @@ import so.prelude.sdk.core.http.Headers
 import so.prelude.sdk.core.http.QueryParams
 import so.prelude.sdk.errors.PreludeInvalidDataException
 
-/** Predict the outcome of a verification based on Prelude’s anti-fraud system. */
+/**
+ * At signup, score the user's phone number or email address (target) as legitimate or suspicious.
+ * Scoring-only — does not update counters by itself. When using Feedback, call predict before
+ * verification.started on the same target (and correlation_id when used) so feedback can warm Watch
+ * auth-start counters. Use Events for product fraud labels; use Feedback only if you run your own
+ * phone verification funnel outside Prelude Verify.
+ */
 class WatchPredictParams
 private constructor(
     private val body: Body,
@@ -30,7 +36,7 @@ private constructor(
 ) : Params {
 
     /**
-     * The prediction target. Only supports phone numbers for now.
+     * The signup identifier to score — a phone number or email address.
      *
      * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
@@ -139,7 +145,7 @@ private constructor(
          */
         fun body(body: Body) = apply { this.body = body.toBuilder() }
 
-        /** The prediction target. Only supports phone numbers for now. */
+        /** The signup identifier to score — a phone number or email address. */
         fun target(target: Target) = apply { body.target(target) }
 
         /**
@@ -354,7 +360,7 @@ private constructor(
         ) : this(target, dispatchId, metadata, signals, mutableMapOf())
 
         /**
-         * The prediction target. Only supports phone numbers for now.
+         * The signup identifier to score — a phone number or email address.
          *
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
@@ -459,7 +465,7 @@ private constructor(
                 additionalProperties = body.additionalProperties.toMutableMap()
             }
 
-            /** The prediction target. Only supports phone numbers for now. */
+            /** The signup identifier to score — a phone number or email address. */
             fun target(target: Target) = target(JsonField.of(target))
 
             /**
@@ -618,7 +624,7 @@ private constructor(
             "Body{target=$target, dispatchId=$dispatchId, metadata=$metadata, signals=$signals, additionalProperties=$additionalProperties}"
     }
 
-    /** The prediction target. Only supports phone numbers for now. */
+    /** The signup identifier to score — a phone number or email address. */
     class Target
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
