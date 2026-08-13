@@ -3,7 +3,7 @@
 <!-- x-release-please-start-version -->
 
 [![Maven Central](https://img.shields.io/maven-central/v/so.prelude.sdk/prelude-java)](https://central.sonatype.com/artifact/so.prelude.sdk/prelude-java/0.13.0)
-[![javadoc](https://javadoc.io/badge2/so.prelude.sdk/prelude-java/0.13.0/javadoc.svg)](https://javadoc.io/doc/so.prelude.sdk/prelude-java/0.13.0)
+[![javadoc](https://javadoc.io/badge2/so.prelude.sdk/prelude-java/javadoc.svg)](https://javadoc.io/doc/so.prelude.sdk/prelude-java/0.13.0)
 
 <!-- x-release-please-end -->
 
