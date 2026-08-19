@@ -70,6 +70,8 @@ private constructor(
     /**
      * The risk factors that contributed to the suspicious prediction. Only present when prediction
      * is "suspicious" and the anti-fraud system detected specific risk signals.
+     * * `account_risk_profile` - The target matches a risk profile derived from the outcomes
+     *   reported on your own account, rather than from a signal shared across accounts.
      * * `behavioral_pattern` - The phone number past behavior during verification flows exhibits
      *   suspicious patterns.
      * * `device_attribute` - The device exhibits characteristics associated with suspicious
@@ -214,6 +216,8 @@ private constructor(
         /**
          * The risk factors that contributed to the suspicious prediction. Only present when
          * prediction is "suspicious" and the anti-fraud system detected specific risk signals.
+         * * `account_risk_profile` - The target matches a risk profile derived from the outcomes
+         *   reported on your own account, rather than from a signal shared across accounts.
          * * `behavioral_pattern` - The phone number past behavior during verification flows
          *   exhibits suspicious patterns.
          * * `device_attribute` - The device exhibits characteristics associated with suspicious
@@ -496,6 +500,8 @@ private constructor(
 
         companion object {
 
+            @JvmField val ACCOUNT_RISK_PROFILE = of("account_risk_profile")
+
             @JvmField val BEHAVIORAL_PATTERN = of("behavioral_pattern")
 
             @JvmField val DEVICE_ATTRIBUTE = of("device_attribute")
@@ -521,6 +527,7 @@ private constructor(
 
         /** An enum containing [RiskFactor]'s known values. */
         enum class Known {
+            ACCOUNT_RISK_PROFILE,
             BEHAVIORAL_PATTERN,
             DEVICE_ATTRIBUTE,
             FRAUD_DATABASE,
@@ -543,6 +550,7 @@ private constructor(
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {
+            ACCOUNT_RISK_PROFILE,
             BEHAVIORAL_PATTERN,
             DEVICE_ATTRIBUTE,
             FRAUD_DATABASE,
@@ -568,6 +576,7 @@ private constructor(
          */
         fun value(): Value =
             when (this) {
+                ACCOUNT_RISK_PROFILE -> Value.ACCOUNT_RISK_PROFILE
                 BEHAVIORAL_PATTERN -> Value.BEHAVIORAL_PATTERN
                 DEVICE_ATTRIBUTE -> Value.DEVICE_ATTRIBUTE
                 FRAUD_DATABASE -> Value.FRAUD_DATABASE
@@ -592,6 +601,7 @@ private constructor(
          */
         fun known(): Known =
             when (this) {
+                ACCOUNT_RISK_PROFILE -> Known.ACCOUNT_RISK_PROFILE
                 BEHAVIORAL_PATTERN -> Known.BEHAVIORAL_PATTERN
                 DEVICE_ATTRIBUTE -> Known.DEVICE_ATTRIBUTE
                 FRAUD_DATABASE -> Known.FRAUD_DATABASE
