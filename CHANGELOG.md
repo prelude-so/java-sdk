@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.14.0 (2026-08-26)
+
+Full Changelog: [v0.13.0...v0.14.0](https://github.com/prelude-so/java-sdk/compare/v0.13.0...v0.14.0)
+
+### Features
+
+* **api:** api update ([3b9b34c](https://github.com/prelude-so/java-sdk/commit/3b9b34cde0cbf3efa398cab5aedecd961cff745b))
+* **api:** api update ([cfa0c6f](https://github.com/prelude-so/java-sdk/commit/cfa0c6fb36fa1194af2434a1e28113e8dde2221f))
+
+
+### Bug Fixes
+
+* **docs:** link the javadoc badge so the version stays current after release ([fff8c05](https://github.com/prelude-so/java-sdk/commit/fff8c05b581f12c847f83dd2edea16c6adaebe77))
+
+
+### Chores
+
+* **internal:** allow the mock server port to be set with STAINLESS_MOCK_PORT ([8181844](https://github.com/prelude-so/java-sdk/commit/8181844928f29fe11414bff4423db2c6eabfb6b7))
+* **internal:** codegen related update ([775f43b](https://github.com/prelude-so/java-sdk/commit/775f43b7f440b730a8e71e913963eec408fac8a1))
+
 ## 0.13.0 (2026-08-07)
 
 Full Changelog: [v0.12.0...v0.13.0](https://github.com/prelude-so/java-sdk/compare/v0.12.0...v0.13.0)
