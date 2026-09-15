@@ -18,6 +18,8 @@ import so.prelude.sdk.errors.PreludeInvalidDataException
  * subscription configuration.
  *
  * You can optionally filter by subscription state (SUB or UNSUB).
+ *
+ * In order to get access to this endpoint, contact our support team.
  */
 class NotifyListSubscriptionPhoneNumbersParams
 private constructor(

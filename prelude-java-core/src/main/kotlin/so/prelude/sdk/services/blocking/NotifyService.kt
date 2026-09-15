@@ -37,7 +37,11 @@ interface NotifyService {
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): NotifyService
 
-    /** Retrieve a specific subscription management configuration by its ID. */
+    /**
+     * Retrieve a specific subscription management configuration by its ID.
+     *
+     * In order to get access to this endpoint, contact our support team.
+     */
     fun getSubscriptionConfig(configId: String): NotifyGetSubscriptionConfigResponse =
         getSubscriptionConfig(configId, NotifyGetSubscriptionConfigParams.none())
 
@@ -77,6 +81,8 @@ interface NotifyService {
     /**
      * Retrieve the current subscription status for a specific phone number within a subscription
      * configuration.
+     *
+     * In order to get access to this endpoint, contact our support team.
      */
     fun getSubscriptionPhoneNumber(
         phoneNumber: String,
@@ -112,6 +118,8 @@ interface NotifyService {
      *
      * Each configuration represents a subscription management setup with phone numbers for
      * receiving opt-out/opt-in requests and a callback URL for webhook events.
+     *
+     * In order to get access to this endpoint, contact our support team.
      */
     fun listSubscriptionConfigs(): NotifyListSubscriptionConfigsResponse =
         listSubscriptionConfigs(NotifyListSubscriptionConfigsParams.none())
@@ -139,6 +147,8 @@ interface NotifyService {
      * within a subscription configuration.
      *
      * Events are ordered by timestamp in descending order (most recent first).
+     *
+     * In order to get access to this endpoint, contact our support team.
      */
     fun listSubscriptionPhoneNumberEvents(
         phoneNumber: String,
@@ -174,6 +184,8 @@ interface NotifyService {
      * subscription configuration.
      *
      * You can optionally filter by subscription state (SUB or UNSUB).
+     *
+     * In order to get access to this endpoint, contact our support team.
      */
     fun listSubscriptionPhoneNumbers(configId: String): NotifyListSubscriptionPhoneNumbersResponse =
         listSubscriptionPhoneNumbers(configId, NotifyListSubscriptionPhoneNumbersParams.none())
