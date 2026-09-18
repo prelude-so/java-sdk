@@ -13,6 +13,8 @@ import so.prelude.sdk.core.http.QueryParams
 /**
  * Retrieve the current subscription status for a specific phone number within a subscription
  * configuration.
+ *
+ * In order to get access to this endpoint, contact our support team.
  */
 class NotifyGetSubscriptionPhoneNumberParams
 private constructor(

@@ -9,7 +9,11 @@ import so.prelude.sdk.core.Params
 import so.prelude.sdk.core.http.Headers
 import so.prelude.sdk.core.http.QueryParams
 
-/** Retrieve a specific subscription management configuration by its ID. */
+/**
+ * Retrieve a specific subscription management configuration by its ID.
+ *
+ * In order to get access to this endpoint, contact our support team.
+ */
 class NotifyGetSubscriptionConfigParams
 private constructor(
     private val configId: String?,

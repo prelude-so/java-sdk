@@ -1144,6 +1144,7 @@ private constructor(
         private val deviceId: JsonField<String>,
         private val deviceModel: JsonField<String>,
         private val devicePlatform: JsonField<DevicePlatform>,
+        private val existingUser: JsonField<Boolean>,
         private val ip: JsonField<String>,
         private val isTrustedUser: JsonField<Boolean>,
         private val ja4Fingerprint: JsonField<String>,
@@ -1166,6 +1167,9 @@ private constructor(
             @JsonProperty("device_platform")
             @ExcludeMissing
             devicePlatform: JsonField<DevicePlatform> = JsonMissing.of(),
+            @JsonProperty("existing_user")
+            @ExcludeMissing
+            existingUser: JsonField<Boolean> = JsonMissing.of(),
             @JsonProperty("ip") @ExcludeMissing ip: JsonField<String> = JsonMissing.of(),
             @JsonProperty("is_trusted_user")
             @ExcludeMissing
@@ -1184,6 +1188,7 @@ private constructor(
             deviceId,
             deviceModel,
             devicePlatform,
+            existingUser,
             ip,
             isTrustedUser,
             ja4Fingerprint,
@@ -1226,6 +1231,18 @@ private constructor(
          */
         fun devicePlatform(): Optional<DevicePlatform> =
             devicePlatform.getOptional("device_platform")
+
+        /**
+         * Whether the end-user already exists in your system, for example an existing account
+         * signing in again rather than a first-time signup. Unlike `is_trusted_user`, this signal
+         * does not bypass fraud checks; it is taken into account as one additional anti-fraud
+         * signal. For more details, refer to
+         * [Signals](/verify/v2/documentation/prevent-fraud#signals).
+         *
+         * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
+         *   server responded with an unexpected value).
+         */
+        fun existingUser(): Optional<Boolean> = existingUser.getOptional("existing_user")
 
         /**
          * The public IP v4 or v6 address of the end-user's device. You should collect this from
@@ -1312,6 +1329,16 @@ private constructor(
         fun _devicePlatform(): JsonField<DevicePlatform> = devicePlatform
 
         /**
+         * Returns the raw JSON value of [existingUser].
+         *
+         * Unlike [existingUser], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("existing_user")
+        @ExcludeMissing
+        fun _existingUser(): JsonField<Boolean> = existingUser
+
+        /**
          * Returns the raw JSON value of [ip].
          *
          * Unlike [ip], this method doesn't throw if the JSON field has an unexpected type.
@@ -1377,6 +1404,7 @@ private constructor(
             private var deviceId: JsonField<String> = JsonMissing.of()
             private var deviceModel: JsonField<String> = JsonMissing.of()
             private var devicePlatform: JsonField<DevicePlatform> = JsonMissing.of()
+            private var existingUser: JsonField<Boolean> = JsonMissing.of()
             private var ip: JsonField<String> = JsonMissing.of()
             private var isTrustedUser: JsonField<Boolean> = JsonMissing.of()
             private var ja4Fingerprint: JsonField<String> = JsonMissing.of()
@@ -1390,6 +1418,7 @@ private constructor(
                 deviceId = signals.deviceId
                 deviceModel = signals.deviceModel
                 devicePlatform = signals.devicePlatform
+                existingUser = signals.existingUser
                 ip = signals.ip
                 isTrustedUser = signals.isTrustedUser
                 ja4Fingerprint = signals.ja4Fingerprint
@@ -1453,6 +1482,26 @@ private constructor(
              */
             fun devicePlatform(devicePlatform: JsonField<DevicePlatform>) = apply {
                 this.devicePlatform = devicePlatform
+            }
+
+            /**
+             * Whether the end-user already exists in your system, for example an existing account
+             * signing in again rather than a first-time signup. Unlike `is_trusted_user`, this
+             * signal does not bypass fraud checks; it is taken into account as one additional
+             * anti-fraud signal. For more details, refer to
+             * [Signals](/verify/v2/documentation/prevent-fraud#signals).
+             */
+            fun existingUser(existingUser: Boolean) = existingUser(JsonField.of(existingUser))
+
+            /**
+             * Sets [Builder.existingUser] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.existingUser] with a well-typed [Boolean] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun existingUser(existingUser: JsonField<Boolean>) = apply {
+                this.existingUser = existingUser
             }
 
             /**
@@ -1567,6 +1616,7 @@ private constructor(
                     deviceId,
                     deviceModel,
                     devicePlatform,
+                    existingUser,
                     ip,
                     isTrustedUser,
                     ja4Fingerprint,
@@ -1596,6 +1646,7 @@ private constructor(
             deviceId()
             deviceModel()
             devicePlatform().ifPresent { it.validate() }
+            existingUser()
             ip()
             isTrustedUser()
             ja4Fingerprint()
@@ -1624,6 +1675,7 @@ private constructor(
                 (if (deviceId.asKnown().isPresent) 1 else 0) +
                 (if (deviceModel.asKnown().isPresent) 1 else 0) +
                 (devicePlatform.asKnown().getOrNull()?.validity() ?: 0) +
+                (if (existingUser.asKnown().isPresent) 1 else 0) +
                 (if (ip.asKnown().isPresent) 1 else 0) +
                 (if (isTrustedUser.asKnown().isPresent) 1 else 0) +
                 (if (ja4Fingerprint.asKnown().isPresent) 1 else 0) +
@@ -1801,6 +1853,7 @@ private constructor(
                 deviceId == other.deviceId &&
                 deviceModel == other.deviceModel &&
                 devicePlatform == other.devicePlatform &&
+                existingUser == other.existingUser &&
                 ip == other.ip &&
                 isTrustedUser == other.isTrustedUser &&
                 ja4Fingerprint == other.ja4Fingerprint &&
@@ -1815,6 +1868,7 @@ private constructor(
                 deviceId,
                 deviceModel,
                 devicePlatform,
+                existingUser,
                 ip,
                 isTrustedUser,
                 ja4Fingerprint,
@@ -1827,7 +1881,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Signals{appVersion=$appVersion, deviceId=$deviceId, deviceModel=$deviceModel, devicePlatform=$devicePlatform, ip=$ip, isTrustedUser=$isTrustedUser, ja4Fingerprint=$ja4Fingerprint, osVersion=$osVersion, userAgent=$userAgent, additionalProperties=$additionalProperties}"
+            "Signals{appVersion=$appVersion, deviceId=$deviceId, deviceModel=$deviceModel, devicePlatform=$devicePlatform, existingUser=$existingUser, ip=$ip, isTrustedUser=$isTrustedUser, ja4Fingerprint=$ja4Fingerprint, osVersion=$osVersion, userAgent=$userAgent, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {

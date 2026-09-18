@@ -15,6 +15,8 @@ import so.prelude.sdk.core.http.QueryParams
  * within a subscription configuration.
  *
  * Events are ordered by timestamp in descending order (most recent first).
+ *
+ * In order to get access to this endpoint, contact our support team.
  */
 class NotifyListSubscriptionPhoneNumberEventsParams
 private constructor(

@@ -37,7 +37,11 @@ interface NotifyServiceAsync {
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): NotifyServiceAsync
 
-    /** Retrieve a specific subscription management configuration by its ID. */
+    /**
+     * Retrieve a specific subscription management configuration by its ID.
+     *
+     * In order to get access to this endpoint, contact our support team.
+     */
     fun getSubscriptionConfig(
         configId: String
     ): CompletableFuture<NotifyGetSubscriptionConfigResponse> =
@@ -80,6 +84,8 @@ interface NotifyServiceAsync {
     /**
      * Retrieve the current subscription status for a specific phone number within a subscription
      * configuration.
+     *
+     * In order to get access to this endpoint, contact our support team.
      */
     fun getSubscriptionPhoneNumber(
         phoneNumber: String,
@@ -115,6 +121,8 @@ interface NotifyServiceAsync {
      *
      * Each configuration represents a subscription management setup with phone numbers for
      * receiving opt-out/opt-in requests and a callback URL for webhook events.
+     *
+     * In order to get access to this endpoint, contact our support team.
      */
     fun listSubscriptionConfigs(): CompletableFuture<NotifyListSubscriptionConfigsResponse> =
         listSubscriptionConfigs(NotifyListSubscriptionConfigsParams.none())
@@ -142,6 +150,8 @@ interface NotifyServiceAsync {
      * within a subscription configuration.
      *
      * Events are ordered by timestamp in descending order (most recent first).
+     *
+     * In order to get access to this endpoint, contact our support team.
      */
     fun listSubscriptionPhoneNumberEvents(
         phoneNumber: String,
@@ -177,6 +187,8 @@ interface NotifyServiceAsync {
      * subscription configuration.
      *
      * You can optionally filter by subscription state (SUB or UNSUB).
+     *
+     * In order to get access to this endpoint, contact our support team.
      */
     fun listSubscriptionPhoneNumbers(
         configId: String
