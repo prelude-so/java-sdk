@@ -7,6 +7,8 @@ import java.util.function.Consumer
 import so.prelude.sdk.core.ClientOptions
 import so.prelude.sdk.core.RequestOptions
 import so.prelude.sdk.core.http.HttpResponseFor
+import so.prelude.sdk.models.WatchEvaluateParams
+import so.prelude.sdk.models.WatchEvaluateResponse
 import so.prelude.sdk.models.WatchPredictParams
 import so.prelude.sdk.models.WatchPredictResponse
 import so.prelude.sdk.models.WatchSendEventsParams
@@ -28,6 +30,26 @@ interface WatchServiceAsync {
      * The original service is not modified.
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): WatchServiceAsync
+
+    /**
+     * **Beta.** The request and response shapes may still change, and flows and recipes are
+     * configured by Prelude on your behalf for now. Talk to us before you build against it.
+     *
+     * Score a target against the rules configured for one moment in your product — signup,
+     * checkout, password reset. The flow selects which recipes run; each recipe scores its rules
+     * against a threshold and returns its own verdict, and the evaluation answers with the most
+     * severe verdict and action across them. Where Predict returns a single model-derived outcome,
+     * Eval returns the full breakdown, so you can see which rules fired and which could not run.
+     * Scoring-only — it does not update counters by itself.
+     */
+    fun evaluate(params: WatchEvaluateParams): CompletableFuture<WatchEvaluateResponse> =
+        evaluate(params, RequestOptions.none())
+
+    /** @see evaluate */
+    fun evaluate(
+        params: WatchEvaluateParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<WatchEvaluateResponse>
 
     /**
      * At signup, score the user's phone number or email address (target) as legitimate or
@@ -90,6 +112,21 @@ interface WatchServiceAsync {
         fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
         ): WatchServiceAsync.WithRawResponse
+
+        /**
+         * Returns a raw HTTP response for `post /v2/watch/eval`, but is otherwise the same as
+         * [WatchServiceAsync.evaluate].
+         */
+        fun evaluate(
+            params: WatchEvaluateParams
+        ): CompletableFuture<HttpResponseFor<WatchEvaluateResponse>> =
+            evaluate(params, RequestOptions.none())
+
+        /** @see evaluate */
+        fun evaluate(
+            params: WatchEvaluateParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<WatchEvaluateResponse>>
 
         /**
          * Returns a raw HTTP response for `post /v2/watch/predict`, but is otherwise the same as

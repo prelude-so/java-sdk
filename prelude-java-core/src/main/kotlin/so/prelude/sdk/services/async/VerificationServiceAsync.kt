@@ -11,6 +11,7 @@ import so.prelude.sdk.models.VerificationCheckParams
 import so.prelude.sdk.models.VerificationCheckResponse
 import so.prelude.sdk.models.VerificationCreateParams
 import so.prelude.sdk.models.VerificationCreateResponse
+import so.prelude.sdk.services.async.verification.PhoneServiceAsync
 
 /** Verify phone numbers. */
 interface VerificationServiceAsync {
@@ -26,6 +27,8 @@ interface VerificationServiceAsync {
      * The original service is not modified.
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): VerificationServiceAsync
+
+    fun phone(): PhoneServiceAsync
 
     /**
      * Create a new verification for a specific phone number. If another non-expired verification
@@ -65,6 +68,8 @@ interface VerificationServiceAsync {
         fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
         ): VerificationServiceAsync.WithRawResponse
+
+        fun phone(): PhoneServiceAsync.WithRawResponse
 
         /**
          * Returns a raw HTTP response for `post /v2/verification`, but is otherwise the same as

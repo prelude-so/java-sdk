@@ -2,8 +2,8 @@
 
 <!-- x-release-please-start-version -->
 
-[![Maven Central](https://img.shields.io/maven-central/v/so.prelude.sdk/prelude-java)](https://central.sonatype.com/artifact/so.prelude.sdk/prelude-java/0.14.0)
-[![javadoc](https://javadoc.io/badge2/so.prelude.sdk/prelude-java/javadoc.svg)](https://javadoc.io/doc/so.prelude.sdk/prelude-java/0.14.0)
+[![Maven Central](https://img.shields.io/maven-central/v/so.prelude.sdk/prelude-java)](https://central.sonatype.com/artifact/so.prelude.sdk/prelude-java/0.15.0)
+[![javadoc](https://javadoc.io/badge2/so.prelude.sdk/prelude-java/javadoc.svg)](https://javadoc.io/doc/so.prelude.sdk/prelude-java/0.15.0)
 
 <!-- x-release-please-end -->
 
@@ -13,7 +13,7 @@ It is generated with [Stainless](https://www.stainless.com/).
 
 <!-- x-release-please-start-version -->
 
-The REST API documentation can be found on [docs.prelude.so](https://docs.prelude.so). Javadocs are available on [javadoc.io](https://javadoc.io/doc/so.prelude.sdk/prelude-java/0.14.0).
+The REST API documentation can be found on [docs.prelude.so](https://docs.prelude.so). Javadocs are available on [javadoc.io](https://javadoc.io/doc/so.prelude.sdk/prelude-java/0.15.0).
 
 <!-- x-release-please-end -->
 
@@ -24,7 +24,7 @@ The REST API documentation can be found on [docs.prelude.so](https://docs.prelud
 ### Gradle
 
 ```kotlin
-implementation("so.prelude.sdk:prelude-java:0.14.0")
+implementation("so.prelude.sdk:prelude-java:0.15.0")
 ```
 
 ### Maven
@@ -33,7 +33,7 @@ implementation("so.prelude.sdk:prelude-java:0.14.0")
 <dependency>
   <groupId>so.prelude.sdk</groupId>
   <artifactId>prelude-java</artifactId>
-  <version>0.14.0</version>
+  <version>0.15.0</version>
 </dependency>
 ```
 
@@ -48,6 +48,7 @@ This library requires Java 8 or later.
 ```java
 import so.prelude.sdk.client.PreludeClient;
 import so.prelude.sdk.client.okhttp.PreludeOkHttpClient;
+import so.prelude.sdk.models.Target;
 import so.prelude.sdk.models.VerificationCreateParams;
 import so.prelude.sdk.models.VerificationCreateResponse;
 
@@ -56,8 +57,8 @@ import so.prelude.sdk.models.VerificationCreateResponse;
 PreludeClient client = PreludeOkHttpClient.fromEnv();
 
 VerificationCreateParams params = VerificationCreateParams.builder()
-    .target(VerificationCreateParams.Target.builder()
-        .type(VerificationCreateParams.Target.Type.PHONE_NUMBER)
+    .target(Target.builder()
+        .type(Target.Type.PHONE_NUMBER)
         .value("+30123456789")
         .build())
     .build();
@@ -152,6 +153,7 @@ The default client is synchronous. To switch to asynchronous execution, call the
 import java.util.concurrent.CompletableFuture;
 import so.prelude.sdk.client.PreludeClient;
 import so.prelude.sdk.client.okhttp.PreludeOkHttpClient;
+import so.prelude.sdk.models.Target;
 import so.prelude.sdk.models.VerificationCreateParams;
 import so.prelude.sdk.models.VerificationCreateResponse;
 
@@ -160,8 +162,8 @@ import so.prelude.sdk.models.VerificationCreateResponse;
 PreludeClient client = PreludeOkHttpClient.fromEnv();
 
 VerificationCreateParams params = VerificationCreateParams.builder()
-    .target(VerificationCreateParams.Target.builder()
-        .type(VerificationCreateParams.Target.Type.PHONE_NUMBER)
+    .target(Target.builder()
+        .type(Target.Type.PHONE_NUMBER)
         .value("+30123456789")
         .build())
     .build();
@@ -174,6 +176,7 @@ Or create an asynchronous client from the beginning:
 import java.util.concurrent.CompletableFuture;
 import so.prelude.sdk.client.PreludeClientAsync;
 import so.prelude.sdk.client.okhttp.PreludeOkHttpClientAsync;
+import so.prelude.sdk.models.Target;
 import so.prelude.sdk.models.VerificationCreateParams;
 import so.prelude.sdk.models.VerificationCreateResponse;
 
@@ -182,8 +185,8 @@ import so.prelude.sdk.models.VerificationCreateResponse;
 PreludeClientAsync client = PreludeOkHttpClientAsync.fromEnv();
 
 VerificationCreateParams params = VerificationCreateParams.builder()
-    .target(VerificationCreateParams.Target.builder()
-        .type(VerificationCreateParams.Target.Type.PHONE_NUMBER)
+    .target(Target.builder()
+        .type(Target.Type.PHONE_NUMBER)
         .value("+30123456789")
         .build())
     .build();
@@ -201,12 +204,13 @@ To access this data, prefix any HTTP method call on a client or service with `wi
 ```java
 import so.prelude.sdk.core.http.Headers;
 import so.prelude.sdk.core.http.HttpResponseFor;
+import so.prelude.sdk.models.Target;
 import so.prelude.sdk.models.VerificationCreateParams;
 import so.prelude.sdk.models.VerificationCreateResponse;
 
 VerificationCreateParams params = VerificationCreateParams.builder()
-    .target(VerificationCreateParams.Target.builder()
-        .type(VerificationCreateParams.Target.Type.PHONE_NUMBER)
+    .target(Target.builder()
+        .type(Target.Type.PHONE_NUMBER)
         .value("+30123456789")
         .build())
     .build();
@@ -486,10 +490,11 @@ To set undocumented parameters on _nested_ headers, query params, or body classe
 
 ```java
 import so.prelude.sdk.core.JsonValue;
+import so.prelude.sdk.models.Target;
 import so.prelude.sdk.models.VerificationCreateParams;
 
 VerificationCreateParams params = VerificationCreateParams.builder()
-    .target(VerificationCreateParams.Target.builder()
+    .target(Target.builder()
         .putAdditionalProperty("secretProperty", JsonValue.from("42"))
         .build())
     .build();
@@ -597,9 +602,9 @@ To access a property's raw JSON value, which may be undocumented, call its `_` p
 ```java
 import java.util.Optional;
 import so.prelude.sdk.core.JsonField;
-import so.prelude.sdk.models.VerificationCreateParams;
+import so.prelude.sdk.models.Target;
 
-JsonField<VerificationCreateParams.Target> target = client.verification().create(params)._target();
+JsonField<Target> target = client.verification().create(params)._target();
 
 if (target.isMissing()) {
   // The property is absent from the JSON response

@@ -12,6 +12,7 @@ import so.prelude.sdk.models.NotifyGetSubscriptionPhoneNumberParams
 import so.prelude.sdk.models.NotifyListSubscriptionConfigsParams
 import so.prelude.sdk.models.NotifyListSubscriptionPhoneNumberEventsParams
 import so.prelude.sdk.models.NotifyListSubscriptionPhoneNumbersParams
+import so.prelude.sdk.models.NotifyReplyParams
 import so.prelude.sdk.models.NotifySendBatchParams
 import so.prelude.sdk.models.NotifySendParams
 
@@ -111,6 +112,30 @@ internal class NotifyServiceAsyncTest {
                     .cursor("cursor")
                     .limit(1L)
                     .state(NotifyListSubscriptionPhoneNumbersParams.State.SUB)
+                    .build()
+            )
+
+        val response = responseFuture.get()
+        response.validate()
+    }
+
+    @Test
+    fun reply() {
+        val client =
+            PreludeOkHttpClientAsync.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .apiToken("My API Token")
+                .build()
+        val notifyServiceAsync = client.notify()
+
+        val responseFuture =
+            notifyServiceAsync.reply(
+                NotifyReplyParams.builder()
+                    .replyTo("im_01k8aq2zggeyssvt53zgvpx63a")
+                    .text("Thanks for reaching out! We'll look into your request.")
+                    .to("+33612345678")
+                    .callbackUrl("https://your-app.com/webhooks/notify")
+                    .correlationId("support-ticket-42")
                     .build()
             )
 

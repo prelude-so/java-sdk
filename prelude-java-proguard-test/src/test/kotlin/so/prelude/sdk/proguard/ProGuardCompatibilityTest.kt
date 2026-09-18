@@ -53,6 +53,7 @@ internal class ProGuardCompatibilityTest {
         assertThat(client.verification()).isNotNull()
         assertThat(client.verificationManagement()).isNotNull()
         assertThat(client.watch()).isNotNull()
+        assertThat(client.intel()).isNotNull()
     }
 
     @Test

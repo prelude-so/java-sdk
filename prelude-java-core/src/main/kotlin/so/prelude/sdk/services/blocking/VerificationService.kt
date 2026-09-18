@@ -11,6 +11,7 @@ import so.prelude.sdk.models.VerificationCheckParams
 import so.prelude.sdk.models.VerificationCheckResponse
 import so.prelude.sdk.models.VerificationCreateParams
 import so.prelude.sdk.models.VerificationCreateResponse
+import so.prelude.sdk.services.blocking.verification.PhoneService
 
 /** Verify phone numbers. */
 interface VerificationService {
@@ -26,6 +27,8 @@ interface VerificationService {
      * The original service is not modified.
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): VerificationService
+
+    fun phone(): PhoneService
 
     /**
      * Create a new verification for a specific phone number. If another non-expired verification
@@ -64,6 +67,8 @@ interface VerificationService {
         fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
         ): VerificationService.WithRawResponse
+
+        fun phone(): PhoneService.WithRawResponse
 
         /**
          * Returns a raw HTTP response for `post /v2/verification`, but is otherwise the same as
