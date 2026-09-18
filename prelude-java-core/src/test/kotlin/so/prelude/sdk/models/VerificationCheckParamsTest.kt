@@ -11,12 +11,7 @@ internal class VerificationCheckParamsTest {
     fun create() {
         VerificationCheckParams.builder()
             .code("12345")
-            .target(
-                VerificationCheckParams.Target.builder()
-                    .type(VerificationCheckParams.Target.Type.PHONE_NUMBER)
-                    .value("+30123456789")
-                    .build()
-            )
+            .target(Target.builder().type(Target.Type.PHONE_NUMBER).value("+30123456789").build())
             .psd2(
                 VerificationCheckParams.Psd2.builder()
                     .amount("99999.99")
@@ -33,10 +28,7 @@ internal class VerificationCheckParamsTest {
             VerificationCheckParams.builder()
                 .code("12345")
                 .target(
-                    VerificationCheckParams.Target.builder()
-                        .type(VerificationCheckParams.Target.Type.PHONE_NUMBER)
-                        .value("+30123456789")
-                        .build()
+                    Target.builder().type(Target.Type.PHONE_NUMBER).value("+30123456789").build()
                 )
                 .psd2(
                     VerificationCheckParams.Psd2.builder()
@@ -52,10 +44,7 @@ internal class VerificationCheckParamsTest {
         assertThat(body.code()).isEqualTo("12345")
         assertThat(body.target())
             .isEqualTo(
-                VerificationCheckParams.Target.builder()
-                    .type(VerificationCheckParams.Target.Type.PHONE_NUMBER)
-                    .value("+30123456789")
-                    .build()
+                Target.builder().type(Target.Type.PHONE_NUMBER).value("+30123456789").build()
             )
         assertThat(body.psd2())
             .contains(
@@ -73,10 +62,7 @@ internal class VerificationCheckParamsTest {
             VerificationCheckParams.builder()
                 .code("12345")
                 .target(
-                    VerificationCheckParams.Target.builder()
-                        .type(VerificationCheckParams.Target.Type.PHONE_NUMBER)
-                        .value("+30123456789")
-                        .build()
+                    Target.builder().type(Target.Type.PHONE_NUMBER).value("+30123456789").build()
                 )
                 .build()
 
@@ -85,10 +71,7 @@ internal class VerificationCheckParamsTest {
         assertThat(body.code()).isEqualTo("12345")
         assertThat(body.target())
             .isEqualTo(
-                VerificationCheckParams.Target.builder()
-                    .type(VerificationCheckParams.Target.Type.PHONE_NUMBER)
-                    .value("+30123456789")
-                    .build()
+                Target.builder().type(Target.Type.PHONE_NUMBER).value("+30123456789").build()
             )
     }
 }

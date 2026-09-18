@@ -16,6 +16,8 @@ import so.prelude.sdk.core.http.HttpResponseFor
 import so.prelude.sdk.core.http.json
 import so.prelude.sdk.core.http.parseable
 import so.prelude.sdk.core.prepare
+import so.prelude.sdk.models.WatchEvaluateParams
+import so.prelude.sdk.models.WatchEvaluateResponse
 import so.prelude.sdk.models.WatchPredictParams
 import so.prelude.sdk.models.WatchPredictResponse
 import so.prelude.sdk.models.WatchSendEventsParams
@@ -35,6 +37,13 @@ class WatchServiceImpl internal constructor(private val clientOptions: ClientOpt
 
     override fun withOptions(modifier: Consumer<ClientOptions.Builder>): WatchService =
         WatchServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
+
+    override fun evaluate(
+        params: WatchEvaluateParams,
+        requestOptions: RequestOptions,
+    ): WatchEvaluateResponse =
+        // post /v2/watch/eval
+        withRawResponse().evaluate(params, requestOptions).parse()
 
     override fun predict(
         params: WatchPredictParams,
@@ -69,6 +78,34 @@ class WatchServiceImpl internal constructor(private val clientOptions: ClientOpt
             WatchServiceImpl.WithRawResponseImpl(
                 clientOptions.toBuilder().apply(modifier::accept).build()
             )
+
+        private val evaluateHandler: Handler<WatchEvaluateResponse> =
+            jsonHandler<WatchEvaluateResponse>(clientOptions.jsonMapper)
+
+        override fun evaluate(
+            params: WatchEvaluateParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<WatchEvaluateResponse> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("v2", "watch", "eval")
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepare(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.execute(request, requestOptions)
+            return errorHandler.handle(response).parseable {
+                response
+                    .use { evaluateHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
+            }
+        }
 
         private val predictHandler: Handler<WatchPredictResponse> =
             jsonHandler<WatchPredictResponse>(clientOptions.jsonMapper)

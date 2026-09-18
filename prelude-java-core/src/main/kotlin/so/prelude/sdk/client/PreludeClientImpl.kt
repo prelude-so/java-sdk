@@ -5,6 +5,8 @@ package so.prelude.sdk.client
 import java.util.function.Consumer
 import so.prelude.sdk.core.ClientOptions
 import so.prelude.sdk.core.getPackageVersion
+import so.prelude.sdk.services.blocking.IntelService
+import so.prelude.sdk.services.blocking.IntelServiceImpl
 import so.prelude.sdk.services.blocking.LookupService
 import so.prelude.sdk.services.blocking.LookupServiceImpl
 import so.prelude.sdk.services.blocking.NotifyService
@@ -53,6 +55,8 @@ class PreludeClientImpl(private val clientOptions: ClientOptions) : PreludeClien
 
     private val watch: WatchService by lazy { WatchServiceImpl(clientOptionsWithUserAgent) }
 
+    private val intel: IntelService by lazy { IntelServiceImpl(clientOptionsWithUserAgent) }
+
     override fun async(): PreludeClientAsync = async
 
     override fun withRawResponse(): PreludeClient.WithRawResponse = withRawResponse
@@ -80,6 +84,8 @@ class PreludeClientImpl(private val clientOptions: ClientOptions) : PreludeClien
 
     /** Evaluate email addresses and phone numbers for trustworthiness. */
     override fun watch(): WatchService = watch
+
+    override fun intel(): IntelService = intel
 
     override fun close() = clientOptions.close()
 
@@ -110,6 +116,10 @@ class PreludeClientImpl(private val clientOptions: ClientOptions) : PreludeClien
             WatchServiceImpl.WithRawResponseImpl(clientOptions)
         }
 
+        private val intel: IntelService.WithRawResponse by lazy {
+            IntelServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
         override fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
         ): PreludeClient.WithRawResponse =
@@ -138,5 +148,7 @@ class PreludeClientImpl(private val clientOptions: ClientOptions) : PreludeClien
 
         /** Evaluate email addresses and phone numbers for trustworthiness. */
         override fun watch(): WatchService.WithRawResponse = watch
+
+        override fun intel(): IntelService.WithRawResponse = intel
     }
 }

@@ -11,12 +11,7 @@ internal class VerificationCreateParamsTest {
     @Test
     fun create() {
         VerificationCreateParams.builder()
-            .target(
-                VerificationCreateParams.Target.builder()
-                    .type(VerificationCreateParams.Target.Type.PHONE_NUMBER)
-                    .value("+30123456789")
-                    .build()
-            )
+            .target(Target.builder().type(Target.Type.PHONE_NUMBER).value("+30123456789").build())
             .dispatchId("123e4567-e89b-12d3-a456-426614174000")
             .metadata(
                 VerificationCreateParams.Metadata.builder().correlationId("correlation_id").build()
@@ -49,11 +44,11 @@ internal class VerificationCreateParamsTest {
                     .build()
             )
             .signals(
-                VerificationCreateParams.Signals.builder()
+                Signals.builder()
                     .appVersion("1.2.34")
                     .deviceId("8F0B8FDD-C2CB-4387-B20A-56E9B2E5A0D2")
                     .deviceModel("iPhone17,2")
-                    .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
+                    .devicePlatform(Signals.DevicePlatform.IOS)
                     .existingUser(false)
                     .ip("203.0.113.123")
                     .isTrustedUser(false)
@@ -72,10 +67,7 @@ internal class VerificationCreateParamsTest {
         val params =
             VerificationCreateParams.builder()
                 .target(
-                    VerificationCreateParams.Target.builder()
-                        .type(VerificationCreateParams.Target.Type.PHONE_NUMBER)
-                        .value("+30123456789")
-                        .build()
+                    Target.builder().type(Target.Type.PHONE_NUMBER).value("+30123456789").build()
                 )
                 .dispatchId("123e4567-e89b-12d3-a456-426614174000")
                 .metadata(
@@ -113,11 +105,11 @@ internal class VerificationCreateParamsTest {
                         .build()
                 )
                 .signals(
-                    VerificationCreateParams.Signals.builder()
+                    Signals.builder()
                         .appVersion("1.2.34")
                         .deviceId("8F0B8FDD-C2CB-4387-B20A-56E9B2E5A0D2")
                         .deviceModel("iPhone17,2")
-                        .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
+                        .devicePlatform(Signals.DevicePlatform.IOS)
                         .existingUser(false)
                         .ip("203.0.113.123")
                         .isTrustedUser(false)
@@ -134,10 +126,7 @@ internal class VerificationCreateParamsTest {
 
         assertThat(body.target())
             .isEqualTo(
-                VerificationCreateParams.Target.builder()
-                    .type(VerificationCreateParams.Target.Type.PHONE_NUMBER)
-                    .value("+30123456789")
-                    .build()
+                Target.builder().type(Target.Type.PHONE_NUMBER).value("+30123456789").build()
             )
         assertThat(body.dispatchId()).contains("123e4567-e89b-12d3-a456-426614174000")
         assertThat(body.metadata())
@@ -174,11 +163,11 @@ internal class VerificationCreateParamsTest {
             )
         assertThat(body.signals())
             .contains(
-                VerificationCreateParams.Signals.builder()
+                Signals.builder()
                     .appVersion("1.2.34")
                     .deviceId("8F0B8FDD-C2CB-4387-B20A-56E9B2E5A0D2")
                     .deviceModel("iPhone17,2")
-                    .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
+                    .devicePlatform(Signals.DevicePlatform.IOS)
                     .existingUser(false)
                     .ip("203.0.113.123")
                     .isTrustedUser(false)
@@ -196,10 +185,7 @@ internal class VerificationCreateParamsTest {
         val params =
             VerificationCreateParams.builder()
                 .target(
-                    VerificationCreateParams.Target.builder()
-                        .type(VerificationCreateParams.Target.Type.PHONE_NUMBER)
-                        .value("+30123456789")
-                        .build()
+                    Target.builder().type(Target.Type.PHONE_NUMBER).value("+30123456789").build()
                 )
                 .build()
 
@@ -207,10 +193,7 @@ internal class VerificationCreateParamsTest {
 
         assertThat(body.target())
             .isEqualTo(
-                VerificationCreateParams.Target.builder()
-                    .type(VerificationCreateParams.Target.Type.PHONE_NUMBER)
-                    .value("+30123456789")
-                    .build()
+                Target.builder().type(Target.Type.PHONE_NUMBER).value("+30123456789").build()
             )
     }
 }

@@ -4,6 +4,7 @@ package so.prelude.sdk.client
 
 import java.util.function.Consumer
 import so.prelude.sdk.core.ClientOptions
+import so.prelude.sdk.services.blocking.IntelService
 import so.prelude.sdk.services.blocking.LookupService
 import so.prelude.sdk.services.blocking.NotifyService
 import so.prelude.sdk.services.blocking.TransactionalService
@@ -68,6 +69,8 @@ interface PreludeClient {
     /** Evaluate email addresses and phone numbers for trustworthiness. */
     fun watch(): WatchService
 
+    fun intel(): IntelService
+
     /**
      * Closes this client, relinquishing any underlying resources.
      *
@@ -111,5 +114,7 @@ interface PreludeClient {
 
         /** Evaluate email addresses and phone numbers for trustworthiness. */
         fun watch(): WatchService.WithRawResponse
+
+        fun intel(): IntelService.WithRawResponse
     }
 }

@@ -28,6 +28,8 @@ import so.prelude.sdk.models.VerificationManagementSetPhoneNumberParams
 import so.prelude.sdk.models.VerificationManagementSetPhoneNumberResponse
 import so.prelude.sdk.models.VerificationManagementSubmitSenderIdParams
 import so.prelude.sdk.models.VerificationManagementSubmitSenderIdResponse
+import so.prelude.sdk.services.blocking.verificationManagement.SandboxService
+import so.prelude.sdk.services.blocking.verificationManagement.SandboxServiceImpl
 
 /** Verify phone numbers. */
 class VerificationManagementServiceImpl
@@ -37,12 +39,17 @@ internal constructor(private val clientOptions: ClientOptions) : VerificationMan
         WithRawResponseImpl(clientOptions)
     }
 
+    private val sandbox: SandboxService by lazy { SandboxServiceImpl(clientOptions) }
+
     override fun withRawResponse(): VerificationManagementService.WithRawResponse = withRawResponse
 
     override fun withOptions(
         modifier: Consumer<ClientOptions.Builder>
     ): VerificationManagementService =
         VerificationManagementServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
+
+    /** Verify phone numbers. */
+    override fun sandbox(): SandboxService = sandbox
 
     override fun deletePhoneNumber(
         params: VerificationManagementDeletePhoneNumberParams,
@@ -85,12 +92,19 @@ internal constructor(private val clientOptions: ClientOptions) : VerificationMan
         private val errorHandler: Handler<HttpResponse> =
             errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
+        private val sandbox: SandboxService.WithRawResponse by lazy {
+            SandboxServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
         override fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
         ): VerificationManagementService.WithRawResponse =
             VerificationManagementServiceImpl.WithRawResponseImpl(
                 clientOptions.toBuilder().apply(modifier::accept).build()
             )
+
+        /** Verify phone numbers. */
+        override fun sandbox(): SandboxService.WithRawResponse = sandbox
 
         private val deletePhoneNumberHandler:
             Handler<VerificationManagementDeletePhoneNumberResponse> =
