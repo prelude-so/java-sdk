@@ -22,7 +22,7 @@ internal class VerificationPhoneHistoryRetrieveResponseTest {
                 .status(VerificationPhoneHistoryRetrieveResponse.Status.CONVERTED)
                 .appVersion("app_version")
                 .addBlockReason(
-                    VerificationPhoneHistoryRetrieveResponse.BlockReason.BEHAVIORAL_PATTERN
+                    VerificationPhoneHistoryRetrieveResponse.BlockReason.AUTOMATION_SIGNATURE
                 )
                 .carrier(PhoneVerificationCarrier.builder().mccmnc("208-01").name("Orange").build())
                 .correlationId("correlation_id")
@@ -225,7 +225,7 @@ internal class VerificationPhoneHistoryRetrieveResponseTest {
         assertThat(verificationPhoneHistoryRetrieveResponse.appVersion()).contains("app_version")
         assertThat(verificationPhoneHistoryRetrieveResponse.blockReasons().getOrNull())
             .containsExactly(
-                VerificationPhoneHistoryRetrieveResponse.BlockReason.BEHAVIORAL_PATTERN
+                VerificationPhoneHistoryRetrieveResponse.BlockReason.AUTOMATION_SIGNATURE
             )
         assertThat(verificationPhoneHistoryRetrieveResponse.carrier())
             .contains(PhoneVerificationCarrier.builder().mccmnc("208-01").name("Orange").build())
@@ -429,7 +429,7 @@ internal class VerificationPhoneHistoryRetrieveResponseTest {
                 .status(VerificationPhoneHistoryRetrieveResponse.Status.CONVERTED)
                 .appVersion("app_version")
                 .addBlockReason(
-                    VerificationPhoneHistoryRetrieveResponse.BlockReason.BEHAVIORAL_PATTERN
+                    VerificationPhoneHistoryRetrieveResponse.BlockReason.AUTOMATION_SIGNATURE
                 )
                 .carrier(PhoneVerificationCarrier.builder().mccmnc("208-01").name("Orange").build())
                 .correlationId("correlation_id")
