@@ -13,8 +13,8 @@ internal class WatchSendFeedbacksParamsTest {
             .addFeedback(
                 WatchSendFeedbacksParams.Feedback.builder()
                     .target(
-                        WatchSendFeedbacksParams.Feedback.Target.builder()
-                            .type(WatchSendFeedbacksParams.Feedback.Target.Type.PHONE_NUMBER)
+                        Target.builder()
+                            .type(Target.Type.PHONE_NUMBER)
                             .value("+30123456789")
                             .build()
                     )
@@ -36,8 +36,8 @@ internal class WatchSendFeedbacksParamsTest {
                 .addFeedback(
                     WatchSendFeedbacksParams.Feedback.builder()
                         .target(
-                            WatchSendFeedbacksParams.Feedback.Target.builder()
-                                .type(WatchSendFeedbacksParams.Feedback.Target.Type.PHONE_NUMBER)
+                            Target.builder()
+                                .type(Target.Type.PHONE_NUMBER)
                                 .value("+30123456789")
                                 .build()
                         )
@@ -57,8 +57,8 @@ internal class WatchSendFeedbacksParamsTest {
             .containsExactly(
                 WatchSendFeedbacksParams.Feedback.builder()
                     .target(
-                        WatchSendFeedbacksParams.Feedback.Target.builder()
-                            .type(WatchSendFeedbacksParams.Feedback.Target.Type.PHONE_NUMBER)
+                        Target.builder()
+                            .type(Target.Type.PHONE_NUMBER)
                             .value("+30123456789")
                             .build()
                     )
@@ -79,8 +79,8 @@ internal class WatchSendFeedbacksParamsTest {
                 .addFeedback(
                     WatchSendFeedbacksParams.Feedback.builder()
                         .target(
-                            WatchSendFeedbacksParams.Feedback.Target.builder()
-                                .type(WatchSendFeedbacksParams.Feedback.Target.Type.PHONE_NUMBER)
+                            Target.builder()
+                                .type(Target.Type.PHONE_NUMBER)
                                 .value("+30123456789")
                                 .build()
                         )
@@ -95,8 +95,8 @@ internal class WatchSendFeedbacksParamsTest {
             .containsExactly(
                 WatchSendFeedbacksParams.Feedback.builder()
                     .target(
-                        WatchSendFeedbacksParams.Feedback.Target.builder()
-                            .type(WatchSendFeedbacksParams.Feedback.Target.Type.PHONE_NUMBER)
+                        Target.builder()
+                            .type(Target.Type.PHONE_NUMBER)
                             .value("+30123456789")
                             .build()
                     )

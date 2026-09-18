@@ -28,6 +28,8 @@ import so.prelude.sdk.models.NotifyListSubscriptionPhoneNumberEventsParams
 import so.prelude.sdk.models.NotifyListSubscriptionPhoneNumberEventsResponse
 import so.prelude.sdk.models.NotifyListSubscriptionPhoneNumbersParams
 import so.prelude.sdk.models.NotifyListSubscriptionPhoneNumbersResponse
+import so.prelude.sdk.models.NotifyReplyParams
+import so.prelude.sdk.models.NotifyReplyResponse
 import so.prelude.sdk.models.NotifySendBatchParams
 import so.prelude.sdk.models.NotifySendBatchResponse
 import so.prelude.sdk.models.NotifySendParams
@@ -80,6 +82,13 @@ class NotifyServiceImpl internal constructor(private val clientOptions: ClientOp
     ): NotifyListSubscriptionPhoneNumbersResponse =
         // get /v2/notify/management/subscriptions/{config_id}/phone_numbers
         withRawResponse().listSubscriptionPhoneNumbers(params, requestOptions).parse()
+
+    override fun reply(
+        params: NotifyReplyParams,
+        requestOptions: RequestOptions,
+    ): NotifyReplyResponse =
+        // post /v2/notify/reply
+        withRawResponse().reply(params, requestOptions).parse()
 
     override fun send(
         params: NotifySendParams,
@@ -280,6 +289,34 @@ class NotifyServiceImpl internal constructor(private val clientOptions: ClientOp
             return errorHandler.handle(response).parseable {
                 response
                     .use { listSubscriptionPhoneNumbersHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
+            }
+        }
+
+        private val replyHandler: Handler<NotifyReplyResponse> =
+            jsonHandler<NotifyReplyResponse>(clientOptions.jsonMapper)
+
+        override fun reply(
+            params: NotifyReplyParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<NotifyReplyResponse> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("v2", "notify", "reply")
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepare(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.execute(request, requestOptions)
+            return errorHandler.handle(response).parseable {
+                response
+                    .use { replyHandler.handle(it) }
                     .also {
                         if (requestOptions.responseValidation!!) {
                             it.validate()

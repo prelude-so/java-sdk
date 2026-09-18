@@ -10,20 +10,15 @@ internal class WatchPredictParamsTest {
     @Test
     fun create() {
         WatchPredictParams.builder()
-            .target(
-                WatchPredictParams.Target.builder()
-                    .type(WatchPredictParams.Target.Type.PHONE_NUMBER)
-                    .value("+30123456789")
-                    .build()
-            )
+            .target(Target.builder().type(Target.Type.PHONE_NUMBER).value("+30123456789").build())
             .dispatchId("123e4567-e89b-12d3-a456-426614174000")
             .metadata(WatchPredictParams.Metadata.builder().correlationId("correlation_id").build())
             .signals(
-                WatchPredictParams.Signals.builder()
+                Signals.builder()
                     .appVersion("1.2.34")
                     .deviceId("8F0B8FDD-C2CB-4387-B20A-56E9B2E5A0D2")
                     .deviceModel("iPhone17,2")
-                    .devicePlatform(WatchPredictParams.Signals.DevicePlatform.IOS)
+                    .devicePlatform(Signals.DevicePlatform.IOS)
                     .existingUser(false)
                     .ip("203.0.113.123")
                     .isTrustedUser(false)
@@ -42,21 +37,18 @@ internal class WatchPredictParamsTest {
         val params =
             WatchPredictParams.builder()
                 .target(
-                    WatchPredictParams.Target.builder()
-                        .type(WatchPredictParams.Target.Type.PHONE_NUMBER)
-                        .value("+30123456789")
-                        .build()
+                    Target.builder().type(Target.Type.PHONE_NUMBER).value("+30123456789").build()
                 )
                 .dispatchId("123e4567-e89b-12d3-a456-426614174000")
                 .metadata(
                     WatchPredictParams.Metadata.builder().correlationId("correlation_id").build()
                 )
                 .signals(
-                    WatchPredictParams.Signals.builder()
+                    Signals.builder()
                         .appVersion("1.2.34")
                         .deviceId("8F0B8FDD-C2CB-4387-B20A-56E9B2E5A0D2")
                         .deviceModel("iPhone17,2")
-                        .devicePlatform(WatchPredictParams.Signals.DevicePlatform.IOS)
+                        .devicePlatform(Signals.DevicePlatform.IOS)
                         .existingUser(false)
                         .ip("203.0.113.123")
                         .isTrustedUser(false)
@@ -73,21 +65,18 @@ internal class WatchPredictParamsTest {
 
         assertThat(body.target())
             .isEqualTo(
-                WatchPredictParams.Target.builder()
-                    .type(WatchPredictParams.Target.Type.PHONE_NUMBER)
-                    .value("+30123456789")
-                    .build()
+                Target.builder().type(Target.Type.PHONE_NUMBER).value("+30123456789").build()
             )
         assertThat(body.dispatchId()).contains("123e4567-e89b-12d3-a456-426614174000")
         assertThat(body.metadata())
             .contains(WatchPredictParams.Metadata.builder().correlationId("correlation_id").build())
         assertThat(body.signals())
             .contains(
-                WatchPredictParams.Signals.builder()
+                Signals.builder()
                     .appVersion("1.2.34")
                     .deviceId("8F0B8FDD-C2CB-4387-B20A-56E9B2E5A0D2")
                     .deviceModel("iPhone17,2")
-                    .devicePlatform(WatchPredictParams.Signals.DevicePlatform.IOS)
+                    .devicePlatform(Signals.DevicePlatform.IOS)
                     .existingUser(false)
                     .ip("203.0.113.123")
                     .isTrustedUser(false)
@@ -105,10 +94,7 @@ internal class WatchPredictParamsTest {
         val params =
             WatchPredictParams.builder()
                 .target(
-                    WatchPredictParams.Target.builder()
-                        .type(WatchPredictParams.Target.Type.PHONE_NUMBER)
-                        .value("+30123456789")
-                        .build()
+                    Target.builder().type(Target.Type.PHONE_NUMBER).value("+30123456789").build()
                 )
                 .build()
 
@@ -116,10 +102,7 @@ internal class WatchPredictParamsTest {
 
         assertThat(body.target())
             .isEqualTo(
-                WatchPredictParams.Target.builder()
-                    .type(WatchPredictParams.Target.Type.PHONE_NUMBER)
-                    .value("+30123456789")
-                    .build()
+                Target.builder().type(Target.Type.PHONE_NUMBER).value("+30123456789").build()
             )
     }
 }

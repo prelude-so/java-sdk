@@ -17,6 +17,8 @@ import so.prelude.sdk.models.NotifyListSubscriptionPhoneNumberEventsParams
 import so.prelude.sdk.models.NotifyListSubscriptionPhoneNumberEventsResponse
 import so.prelude.sdk.models.NotifyListSubscriptionPhoneNumbersParams
 import so.prelude.sdk.models.NotifyListSubscriptionPhoneNumbersResponse
+import so.prelude.sdk.models.NotifyReplyParams
+import so.prelude.sdk.models.NotifyReplyResponse
 import so.prelude.sdk.models.NotifySendBatchParams
 import so.prelude.sdk.models.NotifySendBatchResponse
 import so.prelude.sdk.models.NotifySendParams
@@ -234,6 +236,19 @@ interface NotifyServiceAsync {
             NotifyListSubscriptionPhoneNumbersParams.none(),
             requestOptions,
         )
+
+    /**
+     * Send a free-form text reply to an inbound WhatsApp message within the 24-hour conversation
+     * window. See [WhatsApp 2-Way Messaging](/notify/v2/documentation/whatsapp) for details.
+     */
+    fun reply(params: NotifyReplyParams): CompletableFuture<NotifyReplyResponse> =
+        reply(params, RequestOptions.none())
+
+    /** @see reply */
+    fun reply(
+        params: NotifyReplyParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<NotifyReplyResponse>
 
     /**
      * Send transactional and marketing messages to your users via SMS, RCS and WhatsApp with
@@ -466,6 +481,21 @@ interface NotifyServiceAsync {
                 NotifyListSubscriptionPhoneNumbersParams.none(),
                 requestOptions,
             )
+
+        /**
+         * Returns a raw HTTP response for `post /v2/notify/reply`, but is otherwise the same as
+         * [NotifyServiceAsync.reply].
+         */
+        fun reply(
+            params: NotifyReplyParams
+        ): CompletableFuture<HttpResponseFor<NotifyReplyResponse>> =
+            reply(params, RequestOptions.none())
+
+        /** @see reply */
+        fun reply(
+            params: NotifyReplyParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<NotifyReplyResponse>>
 
         /**
          * Returns a raw HTTP response for `post /v2/notify`, but is otherwise the same as

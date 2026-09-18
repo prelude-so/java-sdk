@@ -7,6 +7,8 @@ import org.junit.jupiter.api.extension.ExtendWith
 import so.prelude.sdk.TestServerExtension
 import so.prelude.sdk.client.okhttp.PreludeOkHttpClientAsync
 import so.prelude.sdk.core.JsonValue
+import so.prelude.sdk.models.Signals
+import so.prelude.sdk.models.Target
 import so.prelude.sdk.models.VerificationCheckParams
 import so.prelude.sdk.models.VerificationCreateParams
 
@@ -26,8 +28,8 @@ internal class VerificationServiceAsyncTest {
             verificationServiceAsync.create(
                 VerificationCreateParams.builder()
                     .target(
-                        VerificationCreateParams.Target.builder()
-                            .type(VerificationCreateParams.Target.Type.PHONE_NUMBER)
+                        Target.builder()
+                            .type(Target.Type.PHONE_NUMBER)
                             .value("+30123456789")
                             .build()
                     )
@@ -67,11 +69,11 @@ internal class VerificationServiceAsyncTest {
                             .build()
                     )
                     .signals(
-                        VerificationCreateParams.Signals.builder()
+                        Signals.builder()
                             .appVersion("1.2.34")
                             .deviceId("8F0B8FDD-C2CB-4387-B20A-56E9B2E5A0D2")
                             .deviceModel("iPhone17,2")
-                            .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
+                            .devicePlatform(Signals.DevicePlatform.IOS)
                             .existingUser(false)
                             .ip("203.0.113.123")
                             .isTrustedUser(false)
@@ -103,8 +105,8 @@ internal class VerificationServiceAsyncTest {
                 VerificationCheckParams.builder()
                     .code("12345")
                     .target(
-                        VerificationCheckParams.Target.builder()
-                            .type(VerificationCheckParams.Target.Type.PHONE_NUMBER)
+                        Target.builder()
+                            .type(Target.Type.PHONE_NUMBER)
                             .value("+30123456789")
                             .build()
                     )

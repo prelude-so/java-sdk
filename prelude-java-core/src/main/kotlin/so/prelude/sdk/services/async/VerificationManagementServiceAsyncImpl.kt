@@ -29,6 +29,8 @@ import so.prelude.sdk.models.VerificationManagementSetPhoneNumberParams
 import so.prelude.sdk.models.VerificationManagementSetPhoneNumberResponse
 import so.prelude.sdk.models.VerificationManagementSubmitSenderIdParams
 import so.prelude.sdk.models.VerificationManagementSubmitSenderIdResponse
+import so.prelude.sdk.services.async.verificationManagement.SandboxServiceAsync
+import so.prelude.sdk.services.async.verificationManagement.SandboxServiceAsyncImpl
 
 /** Verify phone numbers. */
 class VerificationManagementServiceAsyncImpl
@@ -39,6 +41,8 @@ internal constructor(private val clientOptions: ClientOptions) :
         WithRawResponseImpl(clientOptions)
     }
 
+    private val sandbox: SandboxServiceAsync by lazy { SandboxServiceAsyncImpl(clientOptions) }
+
     override fun withRawResponse(): VerificationManagementServiceAsync.WithRawResponse =
         withRawResponse
 
@@ -48,6 +52,9 @@ internal constructor(private val clientOptions: ClientOptions) :
         VerificationManagementServiceAsyncImpl(
             clientOptions.toBuilder().apply(modifier::accept).build()
         )
+
+    /** Verify phone numbers. */
+    override fun sandbox(): SandboxServiceAsync = sandbox
 
     override fun deletePhoneNumber(
         params: VerificationManagementDeletePhoneNumberParams,
@@ -90,12 +97,19 @@ internal constructor(private val clientOptions: ClientOptions) :
         private val errorHandler: Handler<HttpResponse> =
             errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
+        private val sandbox: SandboxServiceAsync.WithRawResponse by lazy {
+            SandboxServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
         override fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
         ): VerificationManagementServiceAsync.WithRawResponse =
             VerificationManagementServiceAsyncImpl.WithRawResponseImpl(
                 clientOptions.toBuilder().apply(modifier::accept).build()
             )
+
+        /** Verify phone numbers. */
+        override fun sandbox(): SandboxServiceAsync.WithRawResponse = sandbox
 
         private val deletePhoneNumberHandler:
             Handler<VerificationManagementDeletePhoneNumberResponse> =

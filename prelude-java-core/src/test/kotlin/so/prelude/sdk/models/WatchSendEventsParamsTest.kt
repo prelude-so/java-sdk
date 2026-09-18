@@ -15,8 +15,8 @@ internal class WatchSendEventsParamsTest {
                     .confidence(WatchSendEventsParams.Event.Confidence.MAXIMUM)
                     .label("account.banned")
                     .target(
-                        WatchSendEventsParams.Event.Target.builder()
-                            .type(WatchSendEventsParams.Event.Target.Type.PHONE_NUMBER)
+                        Target.builder()
+                            .type(Target.Type.PHONE_NUMBER)
                             .value("+30123456789")
                             .build()
                     )
@@ -34,8 +34,8 @@ internal class WatchSendEventsParamsTest {
                         .confidence(WatchSendEventsParams.Event.Confidence.MAXIMUM)
                         .label("account.banned")
                         .target(
-                            WatchSendEventsParams.Event.Target.builder()
-                                .type(WatchSendEventsParams.Event.Target.Type.PHONE_NUMBER)
+                            Target.builder()
+                                .type(Target.Type.PHONE_NUMBER)
                                 .value("+30123456789")
                                 .build()
                         )
@@ -51,8 +51,8 @@ internal class WatchSendEventsParamsTest {
                     .confidence(WatchSendEventsParams.Event.Confidence.MAXIMUM)
                     .label("account.banned")
                     .target(
-                        WatchSendEventsParams.Event.Target.builder()
-                            .type(WatchSendEventsParams.Event.Target.Type.PHONE_NUMBER)
+                        Target.builder()
+                            .type(Target.Type.PHONE_NUMBER)
                             .value("+30123456789")
                             .build()
                     )

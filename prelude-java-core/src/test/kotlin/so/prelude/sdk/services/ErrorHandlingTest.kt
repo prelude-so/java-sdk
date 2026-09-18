@@ -28,6 +28,8 @@ import so.prelude.sdk.errors.RateLimitException
 import so.prelude.sdk.errors.UnauthorizedException
 import so.prelude.sdk.errors.UnexpectedStatusCodeException
 import so.prelude.sdk.errors.UnprocessableEntityException
+import so.prelude.sdk.models.Signals
+import so.prelude.sdk.models.Target
 import so.prelude.sdk.models.VerificationCreateParams
 
 @WireMockTest
@@ -73,8 +75,8 @@ internal class ErrorHandlingTest {
                 verificationService.create(
                     VerificationCreateParams.builder()
                         .target(
-                            VerificationCreateParams.Target.builder()
-                                .type(VerificationCreateParams.Target.Type.PHONE_NUMBER)
+                            Target.builder()
+                                .type(Target.Type.PHONE_NUMBER)
                                 .value("+30123456789")
                                 .build()
                         )
@@ -117,11 +119,11 @@ internal class ErrorHandlingTest {
                                 .build()
                         )
                         .signals(
-                            VerificationCreateParams.Signals.builder()
+                            Signals.builder()
                                 .appVersion("1.2.34")
                                 .deviceId("8F0B8FDD-C2CB-4387-B20A-56E9B2E5A0D2")
                                 .deviceModel("iPhone17,2")
-                                .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
+                                .devicePlatform(Signals.DevicePlatform.IOS)
                                 .existingUser(false)
                                 .ip("203.0.113.123")
                                 .isTrustedUser(false)
@@ -156,8 +158,8 @@ internal class ErrorHandlingTest {
                 verificationService.create(
                     VerificationCreateParams.builder()
                         .target(
-                            VerificationCreateParams.Target.builder()
-                                .type(VerificationCreateParams.Target.Type.PHONE_NUMBER)
+                            Target.builder()
+                                .type(Target.Type.PHONE_NUMBER)
                                 .value("+30123456789")
                                 .build()
                         )
@@ -200,11 +202,11 @@ internal class ErrorHandlingTest {
                                 .build()
                         )
                         .signals(
-                            VerificationCreateParams.Signals.builder()
+                            Signals.builder()
                                 .appVersion("1.2.34")
                                 .deviceId("8F0B8FDD-C2CB-4387-B20A-56E9B2E5A0D2")
                                 .deviceModel("iPhone17,2")
-                                .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
+                                .devicePlatform(Signals.DevicePlatform.IOS)
                                 .existingUser(false)
                                 .ip("203.0.113.123")
                                 .isTrustedUser(false)
@@ -239,8 +241,8 @@ internal class ErrorHandlingTest {
                 verificationService.create(
                     VerificationCreateParams.builder()
                         .target(
-                            VerificationCreateParams.Target.builder()
-                                .type(VerificationCreateParams.Target.Type.PHONE_NUMBER)
+                            Target.builder()
+                                .type(Target.Type.PHONE_NUMBER)
                                 .value("+30123456789")
                                 .build()
                         )
@@ -283,11 +285,11 @@ internal class ErrorHandlingTest {
                                 .build()
                         )
                         .signals(
-                            VerificationCreateParams.Signals.builder()
+                            Signals.builder()
                                 .appVersion("1.2.34")
                                 .deviceId("8F0B8FDD-C2CB-4387-B20A-56E9B2E5A0D2")
                                 .deviceModel("iPhone17,2")
-                                .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
+                                .devicePlatform(Signals.DevicePlatform.IOS)
                                 .existingUser(false)
                                 .ip("203.0.113.123")
                                 .isTrustedUser(false)
@@ -322,8 +324,8 @@ internal class ErrorHandlingTest {
                 verificationService.create(
                     VerificationCreateParams.builder()
                         .target(
-                            VerificationCreateParams.Target.builder()
-                                .type(VerificationCreateParams.Target.Type.PHONE_NUMBER)
+                            Target.builder()
+                                .type(Target.Type.PHONE_NUMBER)
                                 .value("+30123456789")
                                 .build()
                         )
@@ -366,11 +368,11 @@ internal class ErrorHandlingTest {
                                 .build()
                         )
                         .signals(
-                            VerificationCreateParams.Signals.builder()
+                            Signals.builder()
                                 .appVersion("1.2.34")
                                 .deviceId("8F0B8FDD-C2CB-4387-B20A-56E9B2E5A0D2")
                                 .deviceModel("iPhone17,2")
-                                .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
+                                .devicePlatform(Signals.DevicePlatform.IOS)
                                 .existingUser(false)
                                 .ip("203.0.113.123")
                                 .isTrustedUser(false)
@@ -405,8 +407,8 @@ internal class ErrorHandlingTest {
                 verificationService.create(
                     VerificationCreateParams.builder()
                         .target(
-                            VerificationCreateParams.Target.builder()
-                                .type(VerificationCreateParams.Target.Type.PHONE_NUMBER)
+                            Target.builder()
+                                .type(Target.Type.PHONE_NUMBER)
                                 .value("+30123456789")
                                 .build()
                         )
@@ -449,11 +451,11 @@ internal class ErrorHandlingTest {
                                 .build()
                         )
                         .signals(
-                            VerificationCreateParams.Signals.builder()
+                            Signals.builder()
                                 .appVersion("1.2.34")
                                 .deviceId("8F0B8FDD-C2CB-4387-B20A-56E9B2E5A0D2")
                                 .deviceModel("iPhone17,2")
-                                .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
+                                .devicePlatform(Signals.DevicePlatform.IOS)
                                 .existingUser(false)
                                 .ip("203.0.113.123")
                                 .isTrustedUser(false)
@@ -488,8 +490,8 @@ internal class ErrorHandlingTest {
                 verificationService.create(
                     VerificationCreateParams.builder()
                         .target(
-                            VerificationCreateParams.Target.builder()
-                                .type(VerificationCreateParams.Target.Type.PHONE_NUMBER)
+                            Target.builder()
+                                .type(Target.Type.PHONE_NUMBER)
                                 .value("+30123456789")
                                 .build()
                         )
@@ -532,11 +534,11 @@ internal class ErrorHandlingTest {
                                 .build()
                         )
                         .signals(
-                            VerificationCreateParams.Signals.builder()
+                            Signals.builder()
                                 .appVersion("1.2.34")
                                 .deviceId("8F0B8FDD-C2CB-4387-B20A-56E9B2E5A0D2")
                                 .deviceModel("iPhone17,2")
-                                .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
+                                .devicePlatform(Signals.DevicePlatform.IOS)
                                 .existingUser(false)
                                 .ip("203.0.113.123")
                                 .isTrustedUser(false)
@@ -571,8 +573,8 @@ internal class ErrorHandlingTest {
                 verificationService.create(
                     VerificationCreateParams.builder()
                         .target(
-                            VerificationCreateParams.Target.builder()
-                                .type(VerificationCreateParams.Target.Type.PHONE_NUMBER)
+                            Target.builder()
+                                .type(Target.Type.PHONE_NUMBER)
                                 .value("+30123456789")
                                 .build()
                         )
@@ -615,11 +617,11 @@ internal class ErrorHandlingTest {
                                 .build()
                         )
                         .signals(
-                            VerificationCreateParams.Signals.builder()
+                            Signals.builder()
                                 .appVersion("1.2.34")
                                 .deviceId("8F0B8FDD-C2CB-4387-B20A-56E9B2E5A0D2")
                                 .deviceModel("iPhone17,2")
-                                .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
+                                .devicePlatform(Signals.DevicePlatform.IOS)
                                 .existingUser(false)
                                 .ip("203.0.113.123")
                                 .isTrustedUser(false)
@@ -654,8 +656,8 @@ internal class ErrorHandlingTest {
                 verificationService.create(
                     VerificationCreateParams.builder()
                         .target(
-                            VerificationCreateParams.Target.builder()
-                                .type(VerificationCreateParams.Target.Type.PHONE_NUMBER)
+                            Target.builder()
+                                .type(Target.Type.PHONE_NUMBER)
                                 .value("+30123456789")
                                 .build()
                         )
@@ -698,11 +700,11 @@ internal class ErrorHandlingTest {
                                 .build()
                         )
                         .signals(
-                            VerificationCreateParams.Signals.builder()
+                            Signals.builder()
                                 .appVersion("1.2.34")
                                 .deviceId("8F0B8FDD-C2CB-4387-B20A-56E9B2E5A0D2")
                                 .deviceModel("iPhone17,2")
-                                .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
+                                .devicePlatform(Signals.DevicePlatform.IOS)
                                 .existingUser(false)
                                 .ip("203.0.113.123")
                                 .isTrustedUser(false)
@@ -737,8 +739,8 @@ internal class ErrorHandlingTest {
                 verificationService.create(
                     VerificationCreateParams.builder()
                         .target(
-                            VerificationCreateParams.Target.builder()
-                                .type(VerificationCreateParams.Target.Type.PHONE_NUMBER)
+                            Target.builder()
+                                .type(Target.Type.PHONE_NUMBER)
                                 .value("+30123456789")
                                 .build()
                         )
@@ -781,11 +783,11 @@ internal class ErrorHandlingTest {
                                 .build()
                         )
                         .signals(
-                            VerificationCreateParams.Signals.builder()
+                            Signals.builder()
                                 .appVersion("1.2.34")
                                 .deviceId("8F0B8FDD-C2CB-4387-B20A-56E9B2E5A0D2")
                                 .deviceModel("iPhone17,2")
-                                .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
+                                .devicePlatform(Signals.DevicePlatform.IOS)
                                 .existingUser(false)
                                 .ip("203.0.113.123")
                                 .isTrustedUser(false)
@@ -820,8 +822,8 @@ internal class ErrorHandlingTest {
                 verificationService.create(
                     VerificationCreateParams.builder()
                         .target(
-                            VerificationCreateParams.Target.builder()
-                                .type(VerificationCreateParams.Target.Type.PHONE_NUMBER)
+                            Target.builder()
+                                .type(Target.Type.PHONE_NUMBER)
                                 .value("+30123456789")
                                 .build()
                         )
@@ -864,11 +866,11 @@ internal class ErrorHandlingTest {
                                 .build()
                         )
                         .signals(
-                            VerificationCreateParams.Signals.builder()
+                            Signals.builder()
                                 .appVersion("1.2.34")
                                 .deviceId("8F0B8FDD-C2CB-4387-B20A-56E9B2E5A0D2")
                                 .deviceModel("iPhone17,2")
-                                .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
+                                .devicePlatform(Signals.DevicePlatform.IOS)
                                 .existingUser(false)
                                 .ip("203.0.113.123")
                                 .isTrustedUser(false)
@@ -903,8 +905,8 @@ internal class ErrorHandlingTest {
                 verificationService.create(
                     VerificationCreateParams.builder()
                         .target(
-                            VerificationCreateParams.Target.builder()
-                                .type(VerificationCreateParams.Target.Type.PHONE_NUMBER)
+                            Target.builder()
+                                .type(Target.Type.PHONE_NUMBER)
                                 .value("+30123456789")
                                 .build()
                         )
@@ -947,11 +949,11 @@ internal class ErrorHandlingTest {
                                 .build()
                         )
                         .signals(
-                            VerificationCreateParams.Signals.builder()
+                            Signals.builder()
                                 .appVersion("1.2.34")
                                 .deviceId("8F0B8FDD-C2CB-4387-B20A-56E9B2E5A0D2")
                                 .deviceModel("iPhone17,2")
-                                .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
+                                .devicePlatform(Signals.DevicePlatform.IOS)
                                 .existingUser(false)
                                 .ip("203.0.113.123")
                                 .isTrustedUser(false)
@@ -986,8 +988,8 @@ internal class ErrorHandlingTest {
                 verificationService.create(
                     VerificationCreateParams.builder()
                         .target(
-                            VerificationCreateParams.Target.builder()
-                                .type(VerificationCreateParams.Target.Type.PHONE_NUMBER)
+                            Target.builder()
+                                .type(Target.Type.PHONE_NUMBER)
                                 .value("+30123456789")
                                 .build()
                         )
@@ -1030,11 +1032,11 @@ internal class ErrorHandlingTest {
                                 .build()
                         )
                         .signals(
-                            VerificationCreateParams.Signals.builder()
+                            Signals.builder()
                                 .appVersion("1.2.34")
                                 .deviceId("8F0B8FDD-C2CB-4387-B20A-56E9B2E5A0D2")
                                 .deviceModel("iPhone17,2")
-                                .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
+                                .devicePlatform(Signals.DevicePlatform.IOS)
                                 .existingUser(false)
                                 .ip("203.0.113.123")
                                 .isTrustedUser(false)
@@ -1069,8 +1071,8 @@ internal class ErrorHandlingTest {
                 verificationService.create(
                     VerificationCreateParams.builder()
                         .target(
-                            VerificationCreateParams.Target.builder()
-                                .type(VerificationCreateParams.Target.Type.PHONE_NUMBER)
+                            Target.builder()
+                                .type(Target.Type.PHONE_NUMBER)
                                 .value("+30123456789")
                                 .build()
                         )
@@ -1113,11 +1115,11 @@ internal class ErrorHandlingTest {
                                 .build()
                         )
                         .signals(
-                            VerificationCreateParams.Signals.builder()
+                            Signals.builder()
                                 .appVersion("1.2.34")
                                 .deviceId("8F0B8FDD-C2CB-4387-B20A-56E9B2E5A0D2")
                                 .deviceModel("iPhone17,2")
-                                .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
+                                .devicePlatform(Signals.DevicePlatform.IOS)
                                 .existingUser(false)
                                 .ip("203.0.113.123")
                                 .isTrustedUser(false)
@@ -1152,8 +1154,8 @@ internal class ErrorHandlingTest {
                 verificationService.create(
                     VerificationCreateParams.builder()
                         .target(
-                            VerificationCreateParams.Target.builder()
-                                .type(VerificationCreateParams.Target.Type.PHONE_NUMBER)
+                            Target.builder()
+                                .type(Target.Type.PHONE_NUMBER)
                                 .value("+30123456789")
                                 .build()
                         )
@@ -1196,11 +1198,11 @@ internal class ErrorHandlingTest {
                                 .build()
                         )
                         .signals(
-                            VerificationCreateParams.Signals.builder()
+                            Signals.builder()
                                 .appVersion("1.2.34")
                                 .deviceId("8F0B8FDD-C2CB-4387-B20A-56E9B2E5A0D2")
                                 .deviceModel("iPhone17,2")
-                                .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
+                                .devicePlatform(Signals.DevicePlatform.IOS)
                                 .existingUser(false)
                                 .ip("203.0.113.123")
                                 .isTrustedUser(false)
@@ -1235,8 +1237,8 @@ internal class ErrorHandlingTest {
                 verificationService.create(
                     VerificationCreateParams.builder()
                         .target(
-                            VerificationCreateParams.Target.builder()
-                                .type(VerificationCreateParams.Target.Type.PHONE_NUMBER)
+                            Target.builder()
+                                .type(Target.Type.PHONE_NUMBER)
                                 .value("+30123456789")
                                 .build()
                         )
@@ -1279,11 +1281,11 @@ internal class ErrorHandlingTest {
                                 .build()
                         )
                         .signals(
-                            VerificationCreateParams.Signals.builder()
+                            Signals.builder()
                                 .appVersion("1.2.34")
                                 .deviceId("8F0B8FDD-C2CB-4387-B20A-56E9B2E5A0D2")
                                 .deviceModel("iPhone17,2")
-                                .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
+                                .devicePlatform(Signals.DevicePlatform.IOS)
                                 .existingUser(false)
                                 .ip("203.0.113.123")
                                 .isTrustedUser(false)
@@ -1318,8 +1320,8 @@ internal class ErrorHandlingTest {
                 verificationService.create(
                     VerificationCreateParams.builder()
                         .target(
-                            VerificationCreateParams.Target.builder()
-                                .type(VerificationCreateParams.Target.Type.PHONE_NUMBER)
+                            Target.builder()
+                                .type(Target.Type.PHONE_NUMBER)
                                 .value("+30123456789")
                                 .build()
                         )
@@ -1362,11 +1364,11 @@ internal class ErrorHandlingTest {
                                 .build()
                         )
                         .signals(
-                            VerificationCreateParams.Signals.builder()
+                            Signals.builder()
                                 .appVersion("1.2.34")
                                 .deviceId("8F0B8FDD-C2CB-4387-B20A-56E9B2E5A0D2")
                                 .deviceModel("iPhone17,2")
-                                .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
+                                .devicePlatform(Signals.DevicePlatform.IOS)
                                 .existingUser(false)
                                 .ip("203.0.113.123")
                                 .isTrustedUser(false)
@@ -1399,8 +1401,8 @@ internal class ErrorHandlingTest {
                 verificationService.create(
                     VerificationCreateParams.builder()
                         .target(
-                            VerificationCreateParams.Target.builder()
-                                .type(VerificationCreateParams.Target.Type.PHONE_NUMBER)
+                            Target.builder()
+                                .type(Target.Type.PHONE_NUMBER)
                                 .value("+30123456789")
                                 .build()
                         )
@@ -1443,11 +1445,11 @@ internal class ErrorHandlingTest {
                                 .build()
                         )
                         .signals(
-                            VerificationCreateParams.Signals.builder()
+                            Signals.builder()
                                 .appVersion("1.2.34")
                                 .deviceId("8F0B8FDD-C2CB-4387-B20A-56E9B2E5A0D2")
                                 .deviceModel("iPhone17,2")
-                                .devicePlatform(VerificationCreateParams.Signals.DevicePlatform.IOS)
+                                .devicePlatform(Signals.DevicePlatform.IOS)
                                 .existingUser(false)
                                 .ip("203.0.113.123")
                                 .isTrustedUser(false)

@@ -21,6 +21,8 @@ import so.prelude.sdk.models.VerificationCheckParams
 import so.prelude.sdk.models.VerificationCheckResponse
 import so.prelude.sdk.models.VerificationCreateParams
 import so.prelude.sdk.models.VerificationCreateResponse
+import so.prelude.sdk.services.async.verification.PhoneServiceAsync
+import so.prelude.sdk.services.async.verification.PhoneServiceAsyncImpl
 
 /** Verify phone numbers. */
 class VerificationServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -30,10 +32,14 @@ class VerificationServiceAsyncImpl internal constructor(private val clientOption
         WithRawResponseImpl(clientOptions)
     }
 
+    private val phone: PhoneServiceAsync by lazy { PhoneServiceAsyncImpl(clientOptions) }
+
     override fun withRawResponse(): VerificationServiceAsync.WithRawResponse = withRawResponse
 
     override fun withOptions(modifier: Consumer<ClientOptions.Builder>): VerificationServiceAsync =
         VerificationServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
+
+    override fun phone(): PhoneServiceAsync = phone
 
     override fun create(
         params: VerificationCreateParams,
@@ -55,12 +61,18 @@ class VerificationServiceAsyncImpl internal constructor(private val clientOption
         private val errorHandler: Handler<HttpResponse> =
             errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
+        private val phone: PhoneServiceAsync.WithRawResponse by lazy {
+            PhoneServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
         override fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
         ): VerificationServiceAsync.WithRawResponse =
             VerificationServiceAsyncImpl.WithRawResponseImpl(
                 clientOptions.toBuilder().apply(modifier::accept).build()
             )
+
+        override fun phone(): PhoneServiceAsync.WithRawResponse = phone
 
         private val createHandler: Handler<VerificationCreateResponse> =
             jsonHandler<VerificationCreateResponse>(clientOptions.jsonMapper)

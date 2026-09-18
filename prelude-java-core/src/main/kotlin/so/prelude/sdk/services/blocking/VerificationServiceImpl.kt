@@ -20,6 +20,8 @@ import so.prelude.sdk.models.VerificationCheckParams
 import so.prelude.sdk.models.VerificationCheckResponse
 import so.prelude.sdk.models.VerificationCreateParams
 import so.prelude.sdk.models.VerificationCreateResponse
+import so.prelude.sdk.services.blocking.verification.PhoneService
+import so.prelude.sdk.services.blocking.verification.PhoneServiceImpl
 
 /** Verify phone numbers. */
 class VerificationServiceImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -29,10 +31,14 @@ class VerificationServiceImpl internal constructor(private val clientOptions: Cl
         WithRawResponseImpl(clientOptions)
     }
 
+    private val phone: PhoneService by lazy { PhoneServiceImpl(clientOptions) }
+
     override fun withRawResponse(): VerificationService.WithRawResponse = withRawResponse
 
     override fun withOptions(modifier: Consumer<ClientOptions.Builder>): VerificationService =
         VerificationServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
+
+    override fun phone(): PhoneService = phone
 
     override fun create(
         params: VerificationCreateParams,
@@ -54,12 +60,18 @@ class VerificationServiceImpl internal constructor(private val clientOptions: Cl
         private val errorHandler: Handler<HttpResponse> =
             errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
+        private val phone: PhoneService.WithRawResponse by lazy {
+            PhoneServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
         override fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
         ): VerificationService.WithRawResponse =
             VerificationServiceImpl.WithRawResponseImpl(
                 clientOptions.toBuilder().apply(modifier::accept).build()
             )
+
+        override fun phone(): PhoneService.WithRawResponse = phone
 
         private val createHandler: Handler<VerificationCreateResponse> =
             jsonHandler<VerificationCreateResponse>(clientOptions.jsonMapper)

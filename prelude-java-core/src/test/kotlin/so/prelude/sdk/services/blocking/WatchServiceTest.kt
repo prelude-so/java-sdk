@@ -6,12 +6,64 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import so.prelude.sdk.TestServerExtension
 import so.prelude.sdk.client.okhttp.PreludeOkHttpClient
+import so.prelude.sdk.core.JsonValue
+import so.prelude.sdk.models.Signals
+import so.prelude.sdk.models.Target
+import so.prelude.sdk.models.WatchEvaluateParams
 import so.prelude.sdk.models.WatchPredictParams
 import so.prelude.sdk.models.WatchSendEventsParams
 import so.prelude.sdk.models.WatchSendFeedbacksParams
 
 @ExtendWith(TestServerExtension::class)
 internal class WatchServiceTest {
+
+    @Test
+    fun evaluate() {
+        val client =
+            PreludeOkHttpClient.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .apiToken("My API Token")
+                .build()
+        val watchService = client.watch()
+
+        val response =
+            watchService.evaluate(
+                WatchEvaluateParams.builder()
+                    .flowId("flo_01jc0t6fwwfgfsq1md24mhyztj")
+                    .target(
+                        Target.builder()
+                            .type(Target.Type.PHONE_NUMBER)
+                            .value("+30123456789")
+                            .build()
+                    )
+                    .attributes(
+                        WatchEvaluateParams.Attributes.builder()
+                            .putAdditionalProperty("plan_tier", JsonValue.from("free"))
+                            .putAdditionalProperty("account_age_days", JsonValue.from("3"))
+                            .build()
+                    )
+                    .dispatchId("123e4567-e89b-12d3-a456-426614174000")
+                    .signals(
+                        Signals.builder()
+                            .appVersion("1.2.34")
+                            .deviceId("8F0B8FDD-C2CB-4387-B20A-56E9B2E5A0D2")
+                            .deviceModel("iPhone17,2")
+                            .devicePlatform(Signals.DevicePlatform.IOS)
+                            .existingUser(false)
+                            .ip("203.0.113.123")
+                            .isTrustedUser(false)
+                            .ja4Fingerprint("t13d1516h2_8daaf6152771_e5627efa2ab1")
+                            .osVersion("18.0.1")
+                            .userAgent(
+                                "Mozilla/5.0 (iPhone; CPU iPhone OS 14_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1"
+                            )
+                            .build()
+                    )
+                    .build()
+            )
+
+        response.validate()
+    }
 
     @Test
     fun predict() {
@@ -26,8 +78,8 @@ internal class WatchServiceTest {
             watchService.predict(
                 WatchPredictParams.builder()
                     .target(
-                        WatchPredictParams.Target.builder()
-                            .type(WatchPredictParams.Target.Type.PHONE_NUMBER)
+                        Target.builder()
+                            .type(Target.Type.PHONE_NUMBER)
                             .value("+30123456789")
                             .build()
                     )
@@ -38,11 +90,11 @@ internal class WatchServiceTest {
                             .build()
                     )
                     .signals(
-                        WatchPredictParams.Signals.builder()
+                        Signals.builder()
                             .appVersion("1.2.34")
                             .deviceId("8F0B8FDD-C2CB-4387-B20A-56E9B2E5A0D2")
                             .deviceModel("iPhone17,2")
-                            .devicePlatform(WatchPredictParams.Signals.DevicePlatform.IOS)
+                            .devicePlatform(Signals.DevicePlatform.IOS)
                             .existingUser(false)
                             .ip("203.0.113.123")
                             .isTrustedUser(false)
@@ -76,8 +128,8 @@ internal class WatchServiceTest {
                             .confidence(WatchSendEventsParams.Event.Confidence.MAXIMUM)
                             .label("account.banned")
                             .target(
-                                WatchSendEventsParams.Event.Target.builder()
-                                    .type(WatchSendEventsParams.Event.Target.Type.PHONE_NUMBER)
+                                Target.builder()
+                                    .type(Target.Type.PHONE_NUMBER)
                                     .value("+30123456789")
                                     .build()
                             )
@@ -104,10 +156,8 @@ internal class WatchServiceTest {
                     .addFeedback(
                         WatchSendFeedbacksParams.Feedback.builder()
                             .target(
-                                WatchSendFeedbacksParams.Feedback.Target.builder()
-                                    .type(
-                                        WatchSendFeedbacksParams.Feedback.Target.Type.PHONE_NUMBER
-                                    )
+                                Target.builder()
+                                    .type(Target.Type.PHONE_NUMBER)
                                     .value("+30123456789")
                                     .build()
                             )

@@ -17,6 +17,7 @@ import so.prelude.sdk.models.VerificationManagementSetPhoneNumberParams
 import so.prelude.sdk.models.VerificationManagementSetPhoneNumberResponse
 import so.prelude.sdk.models.VerificationManagementSubmitSenderIdParams
 import so.prelude.sdk.models.VerificationManagementSubmitSenderIdResponse
+import so.prelude.sdk.services.blocking.verificationManagement.SandboxService
 
 /** Verify phone numbers. */
 interface VerificationManagementService {
@@ -32,6 +33,9 @@ interface VerificationManagementService {
      * The original service is not modified.
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): VerificationManagementService
+
+    /** Verify phone numbers. */
+    fun sandbox(): SandboxService
 
     /**
      * Remove a phone number from the allow or block list.
@@ -206,6 +210,9 @@ interface VerificationManagementService {
         fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
         ): VerificationManagementService.WithRawResponse
+
+        /** Verify phone numbers. */
+        fun sandbox(): SandboxService.WithRawResponse
 
         /**
          * Returns a raw HTTP response for `delete
