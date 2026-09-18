@@ -519,7 +519,9 @@ private constructor(
 
         /**
          * One result per rule in the recipe, in membership order. Every rule runs — a score is only
-         * meaningful when complete, so there is no short-circuit on the first trigger.
+         * meaningful when complete, so there is no short-circuit on the first trigger. The
+         * exception is a recipe whose verdict a preempting rule has already determined, where a
+         * rule that could no longer change it may report `SKIPPED` instead.
          *
          * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
@@ -704,7 +706,9 @@ private constructor(
 
             /**
              * One result per rule in the recipe, in membership order. Every rule runs — a score is
-             * only meaningful when complete, so there is no short-circuit on the first trigger.
+             * only meaningful when complete, so there is no short-circuit on the first trigger. The
+             * exception is a recipe whose verdict a preempting rule has already determined, where a
+             * rule that could no longer change it may report `SKIPPED` instead.
              */
             fun rules(rules: List<Rule>) = rules(JsonField.of(rules))
 
@@ -895,10 +899,12 @@ private constructor(
         private constructor(
             private val outcome: JsonField<Outcome>,
             private val ruleId: JsonField<String>,
+            private val type: JsonField<Type>,
             private val weight: JsonField<Long>,
             private val blockedBy: JsonField<String>,
             private val name: JsonField<String>,
             private val unavailable: JsonField<Boolean>,
+            private val versionId: JsonField<String>,
             private val additionalProperties: MutableMap<String, JsonValue>,
         ) {
 
@@ -910,6 +916,7 @@ private constructor(
                 @JsonProperty("rule_id")
                 @ExcludeMissing
                 ruleId: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("type") @ExcludeMissing type: JsonField<Type> = JsonMissing.of(),
                 @JsonProperty("weight") @ExcludeMissing weight: JsonField<Long> = JsonMissing.of(),
                 @JsonProperty("blocked_by")
                 @ExcludeMissing
@@ -918,7 +925,20 @@ private constructor(
                 @JsonProperty("unavailable")
                 @ExcludeMissing
                 unavailable: JsonField<Boolean> = JsonMissing.of(),
-            ) : this(outcome, ruleId, weight, blockedBy, name, unavailable, mutableMapOf())
+                @JsonProperty("version_id")
+                @ExcludeMissing
+                versionId: JsonField<String> = JsonMissing.of(),
+            ) : this(
+                outcome,
+                ruleId,
+                type,
+                weight,
+                blockedBy,
+                name,
+                unavailable,
+                versionId,
+                mutableMapOf(),
+            )
 
             /**
              * What the rule concluded.
@@ -927,6 +947,10 @@ private constructor(
              * * `NOT_EVALUATED` - The rule could not run, because something it reads never arrived.
              *   This is not a quieter `NOT_TRIGGERED`: it contributed nothing either way, and it is
              *   why `partial_evidence` is set on the recipe.
+             * * `SKIPPED` - The rule was not run, because another rule had already determined the
+             *   recipe's verdict — see `determined_by`. Nothing was missing and nothing failed, so
+             *   `partial_evidence` is not set: `determined_by` is what accounts for the recipe's
+             *   score resting on fewer rules.
              *
              * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
              *   unexpectedly missing or null (e.g. if the server responded with an unexpected
@@ -944,6 +968,19 @@ private constructor(
              *   value).
              */
             fun ruleId(): String = ruleId.getRequired("rule_id")
+
+            /**
+             * Who authored the rule, which is what says how much of the rest of this result you
+             * get.
+             * * `MANAGED` - Prelude-owned, shared with customers: `name` and `version_id` are
+             *   omitted, and `blocked_by` reports only `missing_data`.
+             * * `CUSTOM` - Yours: every field is returned.
+             *
+             * @throws PreludeInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
+            fun type(): Type = type.getRequired("type")
 
             /**
              * What this rule contributes to the recipe's score when it triggers.
@@ -986,6 +1023,16 @@ private constructor(
             fun unavailable(): Optional<Boolean> = unavailable.getOptional("unavailable")
 
             /**
+             * The version of the rule that scored — the one this recipe is pinned to, or the
+             * version current at evaluation time when it is not pinned. Present for a rule you
+             * authored, and omitted for a Prelude-managed one.
+             *
+             * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if
+             *   the server responded with an unexpected value).
+             */
+            fun versionId(): Optional<String> = versionId.getOptional("version_id")
+
+            /**
              * Returns the raw JSON value of [outcome].
              *
              * Unlike [outcome], this method doesn't throw if the JSON field has an unexpected type.
@@ -998,6 +1045,13 @@ private constructor(
              * Unlike [ruleId], this method doesn't throw if the JSON field has an unexpected type.
              */
             @JsonProperty("rule_id") @ExcludeMissing fun _ruleId(): JsonField<String> = ruleId
+
+            /**
+             * Returns the raw JSON value of [type].
+             *
+             * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
+             */
+            @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
             /**
              * Returns the raw JSON value of [weight].
@@ -1033,6 +1087,16 @@ private constructor(
             @ExcludeMissing
             fun _unavailable(): JsonField<Boolean> = unavailable
 
+            /**
+             * Returns the raw JSON value of [versionId].
+             *
+             * Unlike [versionId], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
+            @JsonProperty("version_id")
+            @ExcludeMissing
+            fun _versionId(): JsonField<String> = versionId
+
             @JsonAnySetter
             private fun putAdditionalProperty(key: String, value: JsonValue) {
                 additionalProperties.put(key, value)
@@ -1054,6 +1118,7 @@ private constructor(
                  * ```java
                  * .outcome()
                  * .ruleId()
+                 * .type()
                  * .weight()
                  * ```
                  */
@@ -1065,20 +1130,24 @@ private constructor(
 
                 private var outcome: JsonField<Outcome>? = null
                 private var ruleId: JsonField<String>? = null
+                private var type: JsonField<Type>? = null
                 private var weight: JsonField<Long>? = null
                 private var blockedBy: JsonField<String> = JsonMissing.of()
                 private var name: JsonField<String> = JsonMissing.of()
                 private var unavailable: JsonField<Boolean> = JsonMissing.of()
+                private var versionId: JsonField<String> = JsonMissing.of()
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
                 internal fun from(rule: Rule) = apply {
                     outcome = rule.outcome
                     ruleId = rule.ruleId
+                    type = rule.type
                     weight = rule.weight
                     blockedBy = rule.blockedBy
                     name = rule.name
                     unavailable = rule.unavailable
+                    versionId = rule.versionId
                     additionalProperties = rule.additionalProperties.toMutableMap()
                 }
 
@@ -1089,6 +1158,10 @@ private constructor(
                  * * `NOT_EVALUATED` - The rule could not run, because something it reads never
                  *   arrived. This is not a quieter `NOT_TRIGGERED`: it contributed nothing either
                  *   way, and it is why `partial_evidence` is set on the recipe.
+                 * * `SKIPPED` - The rule was not run, because another rule had already determined
+                 *   the recipe's verdict — see `determined_by`. Nothing was missing and nothing
+                 *   failed, so `partial_evidence` is not set: `determined_by` is what accounts for
+                 *   the recipe's score resting on fewer rules.
                  */
                 fun outcome(outcome: Outcome) = outcome(JsonField.of(outcome))
 
@@ -1116,6 +1189,24 @@ private constructor(
                  * yet supported value.
                  */
                 fun ruleId(ruleId: JsonField<String>) = apply { this.ruleId = ruleId }
+
+                /**
+                 * Who authored the rule, which is what says how much of the rest of this result you
+                 * get.
+                 * * `MANAGED` - Prelude-owned, shared with customers: `name` and `version_id` are
+                 *   omitted, and `blocked_by` reports only `missing_data`.
+                 * * `CUSTOM` - Yours: every field is returned.
+                 */
+                fun type(type: Type) = type(JsonField.of(type))
+
+                /**
+                 * Sets [Builder.type] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.type] with a well-typed [Type] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
+                 */
+                fun type(type: JsonField<Type>) = apply { this.type = type }
 
                 /** What this rule contributes to the recipe's score when it triggers. */
                 fun weight(weight: Long) = weight(JsonField.of(weight))
@@ -1181,6 +1272,22 @@ private constructor(
                     this.unavailable = unavailable
                 }
 
+                /**
+                 * The version of the rule that scored — the one this recipe is pinned to, or the
+                 * version current at evaluation time when it is not pinned. Present for a rule you
+                 * authored, and omitted for a Prelude-managed one.
+                 */
+                fun versionId(versionId: String) = versionId(JsonField.of(versionId))
+
+                /**
+                 * Sets [Builder.versionId] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.versionId] with a well-typed [String] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
+                fun versionId(versionId: JsonField<String>) = apply { this.versionId = versionId }
+
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
                     putAllAdditionalProperties(additionalProperties)
@@ -1212,6 +1319,7 @@ private constructor(
                  * ```java
                  * .outcome()
                  * .ruleId()
+                 * .type()
                  * .weight()
                  * ```
                  *
@@ -1221,10 +1329,12 @@ private constructor(
                     Rule(
                         checkRequired("outcome", outcome),
                         checkRequired("ruleId", ruleId),
+                        checkRequired("type", type),
                         checkRequired("weight", weight),
                         blockedBy,
                         name,
                         unavailable,
+                        versionId,
                         additionalProperties.toMutableMap(),
                     )
             }
@@ -1248,10 +1358,12 @@ private constructor(
 
                 outcome().validate()
                 ruleId()
+                type().validate()
                 weight()
                 blockedBy()
                 name()
                 unavailable()
+                versionId()
                 validated = true
             }
 
@@ -1273,10 +1385,12 @@ private constructor(
             internal fun validity(): Int =
                 (outcome.asKnown().getOrNull()?.validity() ?: 0) +
                     (if (ruleId.asKnown().isPresent) 1 else 0) +
+                    (type.asKnown().getOrNull()?.validity() ?: 0) +
                     (if (weight.asKnown().isPresent) 1 else 0) +
                     (if (blockedBy.asKnown().isPresent) 1 else 0) +
                     (if (name.asKnown().isPresent) 1 else 0) +
-                    (if (unavailable.asKnown().isPresent) 1 else 0)
+                    (if (unavailable.asKnown().isPresent) 1 else 0) +
+                    (if (versionId.asKnown().isPresent) 1 else 0)
 
             /**
              * What the rule concluded.
@@ -1285,6 +1399,10 @@ private constructor(
              * * `NOT_EVALUATED` - The rule could not run, because something it reads never arrived.
              *   This is not a quieter `NOT_TRIGGERED`: it contributed nothing either way, and it is
              *   why `partial_evidence` is set on the recipe.
+             * * `SKIPPED` - The rule was not run, because another rule had already determined the
+             *   recipe's verdict — see `determined_by`. Nothing was missing and nothing failed, so
+             *   `partial_evidence` is not set: `determined_by` is what accounts for the recipe's
+             *   score resting on fewer rules.
              */
             class Outcome @JsonCreator private constructor(private val value: JsonField<String>) :
                 Enum {
@@ -1307,6 +1425,8 @@ private constructor(
 
                     @JvmField val NOT_EVALUATED = of("NOT_EVALUATED")
 
+                    @JvmField val SKIPPED = of("SKIPPED")
+
                     @JvmStatic fun of(value: String) = Outcome(JsonField.of(value))
                 }
 
@@ -1315,6 +1435,7 @@ private constructor(
                     TRIGGERED,
                     NOT_TRIGGERED,
                     NOT_EVALUATED,
+                    SKIPPED,
                 }
 
                 /**
@@ -1330,6 +1451,7 @@ private constructor(
                     TRIGGERED,
                     NOT_TRIGGERED,
                     NOT_EVALUATED,
+                    SKIPPED,
                     /**
                      * An enum member indicating that [Outcome] was instantiated with an unknown
                      * value.
@@ -1349,6 +1471,7 @@ private constructor(
                         TRIGGERED -> Value.TRIGGERED
                         NOT_TRIGGERED -> Value.NOT_TRIGGERED
                         NOT_EVALUATED -> Value.NOT_EVALUATED
+                        SKIPPED -> Value.SKIPPED
                         else -> Value._UNKNOWN
                     }
 
@@ -1366,6 +1489,7 @@ private constructor(
                         TRIGGERED -> Known.TRIGGERED
                         NOT_TRIGGERED -> Known.NOT_TRIGGERED
                         NOT_EVALUATED -> Known.NOT_EVALUATED
+                        SKIPPED -> Known.SKIPPED
                         else -> throw PreludeInvalidDataException("Unknown Outcome: $value")
                     }
 
@@ -1433,6 +1557,153 @@ private constructor(
                 override fun toString() = value.toString()
             }
 
+            /**
+             * Who authored the rule, which is what says how much of the rest of this result you
+             * get.
+             * * `MANAGED` - Prelude-owned, shared with customers: `name` and `version_id` are
+             *   omitted, and `blocked_by` reports only `missing_data`.
+             * * `CUSTOM` - Yours: every field is returned.
+             */
+            class Type @JsonCreator private constructor(private val value: JsonField<String>) :
+                Enum {
+
+                /**
+                 * Returns this class instance's raw value.
+                 *
+                 * This is usually only useful if this instance was deserialized from data that
+                 * doesn't match any known member, and you want to know that value. For example, if
+                 * the SDK is on an older version than the API, then the API may respond with new
+                 * members that the SDK is unaware of.
+                 */
+                @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+                companion object {
+
+                    @JvmField val MANAGED = of("MANAGED")
+
+                    @JvmField val CUSTOM = of("CUSTOM")
+
+                    @JvmStatic fun of(value: String) = Type(JsonField.of(value))
+                }
+
+                /** An enum containing [Type]'s known values. */
+                enum class Known {
+                    MANAGED,
+                    CUSTOM,
+                }
+
+                /**
+                 * An enum containing [Type]'s known values, as well as an [_UNKNOWN] member.
+                 *
+                 * An instance of [Type] can contain an unknown value in a couple of cases:
+                 * - It was deserialized from data that doesn't match any known member. For example,
+                 *   if the SDK is on an older version than the API, then the API may respond with
+                 *   new members that the SDK is unaware of.
+                 * - It was constructed with an arbitrary value using the [of] method.
+                 */
+                enum class Value {
+                    MANAGED,
+                    CUSTOM,
+                    /**
+                     * An enum member indicating that [Type] was instantiated with an unknown value.
+                     */
+                    _UNKNOWN,
+                }
+
+                /**
+                 * Returns an enum member corresponding to this class instance's value, or
+                 * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+                 *
+                 * Use the [known] method instead if you're certain the value is always known or if
+                 * you want to throw for the unknown case.
+                 */
+                fun value(): Value =
+                    when (this) {
+                        MANAGED -> Value.MANAGED
+                        CUSTOM -> Value.CUSTOM
+                        else -> Value._UNKNOWN
+                    }
+
+                /**
+                 * Returns an enum member corresponding to this class instance's value.
+                 *
+                 * Use the [value] method instead if you're uncertain the value is always known and
+                 * don't want to throw for the unknown case.
+                 *
+                 * @throws PreludeInvalidDataException if this class instance's value is a not a
+                 *   known member.
+                 */
+                fun known(): Known =
+                    when (this) {
+                        MANAGED -> Known.MANAGED
+                        CUSTOM -> Known.CUSTOM
+                        else -> throw PreludeInvalidDataException("Unknown Type: $value")
+                    }
+
+                /**
+                 * Returns this class instance's primitive wire representation.
+                 *
+                 * This differs from the [toString] method because that method is primarily for
+                 * debugging and generally doesn't throw.
+                 *
+                 * @throws PreludeInvalidDataException if this class instance's value does not have
+                 *   the expected primitive type.
+                 */
+                fun asString(): String =
+                    _value().asString().orElseThrow {
+                        PreludeInvalidDataException("Value is not a String")
+                    }
+
+                private var validated: Boolean = false
+
+                /**
+                 * Validates that the types of all values in this object match their expected types
+                 * recursively.
+                 *
+                 * This method is _not_ forwards compatible with new types from the API for existing
+                 * fields.
+                 *
+                 * @throws PreludeInvalidDataException if any value type in this object doesn't
+                 *   match its expected type.
+                 */
+                fun validate(): Type = apply {
+                    if (validated) {
+                        return@apply
+                    }
+
+                    known()
+                    validated = true
+                }
+
+                fun isValid(): Boolean =
+                    try {
+                        validate()
+                        true
+                    } catch (e: PreludeInvalidDataException) {
+                        false
+                    }
+
+                /**
+                 * Returns a score indicating how many valid values are contained in this object
+                 * recursively.
+                 *
+                 * Used for best match union deserialization.
+                 */
+                @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+                override fun equals(other: Any?): Boolean {
+                    if (this === other) {
+                        return true
+                    }
+
+                    return other is Type && value == other.value
+                }
+
+                override fun hashCode() = value.hashCode()
+
+                override fun toString() = value.toString()
+            }
+
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
                     return true
@@ -1441,10 +1712,12 @@ private constructor(
                 return other is Rule &&
                     outcome == other.outcome &&
                     ruleId == other.ruleId &&
+                    type == other.type &&
                     weight == other.weight &&
                     blockedBy == other.blockedBy &&
                     name == other.name &&
                     unavailable == other.unavailable &&
+                    versionId == other.versionId &&
                     additionalProperties == other.additionalProperties
             }
 
@@ -1452,10 +1725,12 @@ private constructor(
                 Objects.hash(
                     outcome,
                     ruleId,
+                    type,
                     weight,
                     blockedBy,
                     name,
                     unavailable,
+                    versionId,
                     additionalProperties,
                 )
             }
@@ -1463,7 +1738,7 @@ private constructor(
             override fun hashCode(): Int = hashCode
 
             override fun toString() =
-                "Rule{outcome=$outcome, ruleId=$ruleId, weight=$weight, blockedBy=$blockedBy, name=$name, unavailable=$unavailable, additionalProperties=$additionalProperties}"
+                "Rule{outcome=$outcome, ruleId=$ruleId, type=$type, weight=$weight, blockedBy=$blockedBy, name=$name, unavailable=$unavailable, versionId=$versionId, additionalProperties=$additionalProperties}"
         }
 
         /**

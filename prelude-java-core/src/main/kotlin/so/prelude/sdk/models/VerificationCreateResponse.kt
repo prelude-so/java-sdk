@@ -120,8 +120,10 @@ private constructor(
      * * `invalid_phone_line` - The phone number is not a valid line number (e.g. landline).
      * * `invalid_phone_number` - The phone number is not a valid phone number (e.g. unallocated
      *   range).
-     * * `invalid_signature` - The signature of the SDK signals is invalid.
-     * * `repeated_attempts` - The phone number has made too many verification attempts.
+     * * `invalid_signature` - The SDK signature did not verify, so the request cannot be attributed
+     *   to the device it claims to come from.
+     * * `repeated_attempts` - The phone number exceeded the allowed number of verification attempts
+     *   in a short period.
      * * `suspicious` - The verification attempt was deemed suspicious by the anti-fraud system.
      *
      * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -138,26 +140,37 @@ private constructor(
     /**
      * The risk factors that contributed to the verification being blocked. Only present when status
      * is "blocked" or "shadow_blocked" and the anti-fraud system detected specific risk signals.
-     * * `behavioral_pattern` - The phone number past behavior during verification flows exhibits
-     *   suspicious patterns.
-     * * `device_attribute` - The device exhibits characteristics associated with suspicious
-     *   activity patterns.
-     * * `fraud_database` - The phone number has been flagged as suspicious in one or more of our
-     *   fraud databases.
-     * * `location_discrepancy` - The phone number prefix and IP address discrepancy indicates
-     *   potential fraud.
-     * * `network_fingerprint` - The network connection exhibits characteristics associated with
-     *   suspicious activity patterns.
-     * * `poor_conversion_history` - The phone number has a history of poorly converting to a
-     *   verified phone number.
-     * * `prefix_concentration` - The phone number is part of a range known to be associated with
-     *   suspicious activity patterns.
-     * * `suspected_request_tampering` - The SDK signature is invalid and the request is considered
-     *   to be tampered with.
-     * * `suspicious_ip_address` - The IP address is deemed to be associated with suspicious
-     *   activity patterns.
-     * * `temporary_phone_number` - The phone number is known to be a temporary or disposable
-     *   number.
+     * * `automation_signature` - The request appears to come from an automated client rather than a
+     *   person.
+     * * `carrier_not_permitted` - The destination carrier is one this account does not accept
+     *   traffic for.
+     * * `client_fingerprint_mismatch` - The client does not appear to be the platform it identifies
+     *   itself as.
+     * * `custom_policy` - A rule configured for your account matched this request.
+     * * `device_emulator` - The request appears to come from an emulator rather than a physical
+     *   device.
+     * * `device_not_permitted` - The device platform is one your account blocks.
+     * * `device_reuse` - One device is driving verifications for an unusual number of phone
+     *   numbers.
+     * * `expired_signals` - The SDK signals were collected too long before the request to still
+     *   attest to it.
+     * * `fraud_database` - The phone number is flagged in one or more of the fraud databases
+     *   Prelude consults.
+     * * `invalid_signature` - The SDK signature did not verify, so the request cannot be attributed
+     *   to the device it claims to come from.
+     * * `ip_concentration` - The request shares its origin with an unusual volume of other
+     *   verifications.
+     * * `ip_reputation` - The originating IP address is not trusted.
+     * * `location_mismatch` - The network location and the phone number's country are inconsistent.
+     * * `missing_signals` - The verification expected Prelude SDK signals and none arrived.
+     * * `number_range_abuse` - The phone number belongs to a range currently associated with abuse.
+     * * `poor_conversion_history` - Traffic resembling this request rarely completes a
+     *   verification.
+     * * `proxy_network` - The request did not arrive over the subscriber's own access network.
+     * * `repeated_attempts` - The phone number exceeded the allowed number of verification attempts
+     *   in a short period.
+     * * `temporary_phone_number` - The phone number belongs to a disposable or short-lived
+     *   numbering service.
      *
      * @throws PreludeInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
@@ -383,8 +396,10 @@ private constructor(
          * * `invalid_phone_line` - The phone number is not a valid line number (e.g. landline).
          * * `invalid_phone_number` - The phone number is not a valid phone number (e.g. unallocated
          *   range).
-         * * `invalid_signature` - The signature of the SDK signals is invalid.
-         * * `repeated_attempts` - The phone number has made too many verification attempts.
+         * * `invalid_signature` - The SDK signature did not verify, so the request cannot be
+         *   attributed to the device it claims to come from.
+         * * `repeated_attempts` - The phone number exceeded the allowed number of verification
+         *   attempts in a short period.
          * * `suspicious` - The verification attempt was deemed suspicious by the anti-fraud system.
          */
         fun reason(reason: Reason) = reason(JsonField.of(reason))
@@ -412,26 +427,39 @@ private constructor(
          * The risk factors that contributed to the verification being blocked. Only present when
          * status is "blocked" or "shadow_blocked" and the anti-fraud system detected specific risk
          * signals.
-         * * `behavioral_pattern` - The phone number past behavior during verification flows
-         *   exhibits suspicious patterns.
-         * * `device_attribute` - The device exhibits characteristics associated with suspicious
-         *   activity patterns.
-         * * `fraud_database` - The phone number has been flagged as suspicious in one or more of
-         *   our fraud databases.
-         * * `location_discrepancy` - The phone number prefix and IP address discrepancy indicates
-         *   potential fraud.
-         * * `network_fingerprint` - The network connection exhibits characteristics associated with
-         *   suspicious activity patterns.
-         * * `poor_conversion_history` - The phone number has a history of poorly converting to a
-         *   verified phone number.
-         * * `prefix_concentration` - The phone number is part of a range known to be associated
-         *   with suspicious activity patterns.
-         * * `suspected_request_tampering` - The SDK signature is invalid and the request is
-         *   considered to be tampered with.
-         * * `suspicious_ip_address` - The IP address is deemed to be associated with suspicious
-         *   activity patterns.
-         * * `temporary_phone_number` - The phone number is known to be a temporary or disposable
-         *   number.
+         * * `automation_signature` - The request appears to come from an automated client rather
+         *   than a person.
+         * * `carrier_not_permitted` - The destination carrier is one this account does not accept
+         *   traffic for.
+         * * `client_fingerprint_mismatch` - The client does not appear to be the platform it
+         *   identifies itself as.
+         * * `custom_policy` - A rule configured for your account matched this request.
+         * * `device_emulator` - The request appears to come from an emulator rather than a physical
+         *   device.
+         * * `device_not_permitted` - The device platform is one your account blocks.
+         * * `device_reuse` - One device is driving verifications for an unusual number of phone
+         *   numbers.
+         * * `expired_signals` - The SDK signals were collected too long before the request to still
+         *   attest to it.
+         * * `fraud_database` - The phone number is flagged in one or more of the fraud databases
+         *   Prelude consults.
+         * * `invalid_signature` - The SDK signature did not verify, so the request cannot be
+         *   attributed to the device it claims to come from.
+         * * `ip_concentration` - The request shares its origin with an unusual volume of other
+         *   verifications.
+         * * `ip_reputation` - The originating IP address is not trusted.
+         * * `location_mismatch` - The network location and the phone number's country are
+         *   inconsistent.
+         * * `missing_signals` - The verification expected Prelude SDK signals and none arrived.
+         * * `number_range_abuse` - The phone number belongs to a range currently associated with
+         *   abuse.
+         * * `poor_conversion_history` - Traffic resembling this request rarely completes a
+         *   verification.
+         * * `proxy_network` - The request did not arrive over the subscriber's own access network.
+         * * `repeated_attempts` - The phone number exceeded the allowed number of verification
+         *   attempts in a short period.
+         * * `temporary_phone_number` - The phone number belongs to a disposable or short-lived
+         *   numbering service.
          */
         fun riskFactors(riskFactors: List<RiskFactor>) = riskFactors(JsonField.of(riskFactors))
 
@@ -1221,8 +1249,10 @@ private constructor(
      * * `invalid_phone_line` - The phone number is not a valid line number (e.g. landline).
      * * `invalid_phone_number` - The phone number is not a valid phone number (e.g. unallocated
      *   range).
-     * * `invalid_signature` - The signature of the SDK signals is invalid.
-     * * `repeated_attempts` - The phone number has made too many verification attempts.
+     * * `invalid_signature` - The SDK signature did not verify, so the request cannot be attributed
+     *   to the device it claims to come from.
+     * * `repeated_attempts` - The phone number exceeded the allowed number of verification attempts
+     *   in a short period.
      * * `suspicious` - The verification attempt was deemed suspicious by the anti-fraud system.
      */
     class Reason @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
@@ -1403,23 +1433,41 @@ private constructor(
 
         companion object {
 
-            @JvmField val BEHAVIORAL_PATTERN = of("behavioral_pattern")
+            @JvmField val AUTOMATION_SIGNATURE = of("automation_signature")
 
-            @JvmField val DEVICE_ATTRIBUTE = of("device_attribute")
+            @JvmField val CARRIER_NOT_PERMITTED = of("carrier_not_permitted")
+
+            @JvmField val CLIENT_FINGERPRINT_MISMATCH = of("client_fingerprint_mismatch")
+
+            @JvmField val CUSTOM_POLICY = of("custom_policy")
+
+            @JvmField val DEVICE_EMULATOR = of("device_emulator")
+
+            @JvmField val DEVICE_NOT_PERMITTED = of("device_not_permitted")
+
+            @JvmField val DEVICE_REUSE = of("device_reuse")
+
+            @JvmField val EXPIRED_SIGNALS = of("expired_signals")
 
             @JvmField val FRAUD_DATABASE = of("fraud_database")
 
-            @JvmField val LOCATION_DISCREPANCY = of("location_discrepancy")
+            @JvmField val INVALID_SIGNATURE = of("invalid_signature")
 
-            @JvmField val NETWORK_FINGERPRINT = of("network_fingerprint")
+            @JvmField val IP_CONCENTRATION = of("ip_concentration")
+
+            @JvmField val IP_REPUTATION = of("ip_reputation")
+
+            @JvmField val LOCATION_MISMATCH = of("location_mismatch")
+
+            @JvmField val MISSING_SIGNALS = of("missing_signals")
+
+            @JvmField val NUMBER_RANGE_ABUSE = of("number_range_abuse")
 
             @JvmField val POOR_CONVERSION_HISTORY = of("poor_conversion_history")
 
-            @JvmField val PREFIX_CONCENTRATION = of("prefix_concentration")
+            @JvmField val PROXY_NETWORK = of("proxy_network")
 
-            @JvmField val SUSPECTED_REQUEST_TAMPERING = of("suspected_request_tampering")
-
-            @JvmField val SUSPICIOUS_IP_ADDRESS = of("suspicious_ip_address")
+            @JvmField val REPEATED_ATTEMPTS = of("repeated_attempts")
 
             @JvmField val TEMPORARY_PHONE_NUMBER = of("temporary_phone_number")
 
@@ -1428,15 +1476,24 @@ private constructor(
 
         /** An enum containing [RiskFactor]'s known values. */
         enum class Known {
-            BEHAVIORAL_PATTERN,
-            DEVICE_ATTRIBUTE,
+            AUTOMATION_SIGNATURE,
+            CARRIER_NOT_PERMITTED,
+            CLIENT_FINGERPRINT_MISMATCH,
+            CUSTOM_POLICY,
+            DEVICE_EMULATOR,
+            DEVICE_NOT_PERMITTED,
+            DEVICE_REUSE,
+            EXPIRED_SIGNALS,
             FRAUD_DATABASE,
-            LOCATION_DISCREPANCY,
-            NETWORK_FINGERPRINT,
+            INVALID_SIGNATURE,
+            IP_CONCENTRATION,
+            IP_REPUTATION,
+            LOCATION_MISMATCH,
+            MISSING_SIGNALS,
+            NUMBER_RANGE_ABUSE,
             POOR_CONVERSION_HISTORY,
-            PREFIX_CONCENTRATION,
-            SUSPECTED_REQUEST_TAMPERING,
-            SUSPICIOUS_IP_ADDRESS,
+            PROXY_NETWORK,
+            REPEATED_ATTEMPTS,
             TEMPORARY_PHONE_NUMBER,
         }
 
@@ -1450,15 +1507,24 @@ private constructor(
          * - It was constructed with an arbitrary value using the [of] method.
          */
         enum class Value {
-            BEHAVIORAL_PATTERN,
-            DEVICE_ATTRIBUTE,
+            AUTOMATION_SIGNATURE,
+            CARRIER_NOT_PERMITTED,
+            CLIENT_FINGERPRINT_MISMATCH,
+            CUSTOM_POLICY,
+            DEVICE_EMULATOR,
+            DEVICE_NOT_PERMITTED,
+            DEVICE_REUSE,
+            EXPIRED_SIGNALS,
             FRAUD_DATABASE,
-            LOCATION_DISCREPANCY,
-            NETWORK_FINGERPRINT,
+            INVALID_SIGNATURE,
+            IP_CONCENTRATION,
+            IP_REPUTATION,
+            LOCATION_MISMATCH,
+            MISSING_SIGNALS,
+            NUMBER_RANGE_ABUSE,
             POOR_CONVERSION_HISTORY,
-            PREFIX_CONCENTRATION,
-            SUSPECTED_REQUEST_TAMPERING,
-            SUSPICIOUS_IP_ADDRESS,
+            PROXY_NETWORK,
+            REPEATED_ATTEMPTS,
             TEMPORARY_PHONE_NUMBER,
             /**
              * An enum member indicating that [RiskFactor] was instantiated with an unknown value.
@@ -1475,15 +1541,24 @@ private constructor(
          */
         fun value(): Value =
             when (this) {
-                BEHAVIORAL_PATTERN -> Value.BEHAVIORAL_PATTERN
-                DEVICE_ATTRIBUTE -> Value.DEVICE_ATTRIBUTE
+                AUTOMATION_SIGNATURE -> Value.AUTOMATION_SIGNATURE
+                CARRIER_NOT_PERMITTED -> Value.CARRIER_NOT_PERMITTED
+                CLIENT_FINGERPRINT_MISMATCH -> Value.CLIENT_FINGERPRINT_MISMATCH
+                CUSTOM_POLICY -> Value.CUSTOM_POLICY
+                DEVICE_EMULATOR -> Value.DEVICE_EMULATOR
+                DEVICE_NOT_PERMITTED -> Value.DEVICE_NOT_PERMITTED
+                DEVICE_REUSE -> Value.DEVICE_REUSE
+                EXPIRED_SIGNALS -> Value.EXPIRED_SIGNALS
                 FRAUD_DATABASE -> Value.FRAUD_DATABASE
-                LOCATION_DISCREPANCY -> Value.LOCATION_DISCREPANCY
-                NETWORK_FINGERPRINT -> Value.NETWORK_FINGERPRINT
+                INVALID_SIGNATURE -> Value.INVALID_SIGNATURE
+                IP_CONCENTRATION -> Value.IP_CONCENTRATION
+                IP_REPUTATION -> Value.IP_REPUTATION
+                LOCATION_MISMATCH -> Value.LOCATION_MISMATCH
+                MISSING_SIGNALS -> Value.MISSING_SIGNALS
+                NUMBER_RANGE_ABUSE -> Value.NUMBER_RANGE_ABUSE
                 POOR_CONVERSION_HISTORY -> Value.POOR_CONVERSION_HISTORY
-                PREFIX_CONCENTRATION -> Value.PREFIX_CONCENTRATION
-                SUSPECTED_REQUEST_TAMPERING -> Value.SUSPECTED_REQUEST_TAMPERING
-                SUSPICIOUS_IP_ADDRESS -> Value.SUSPICIOUS_IP_ADDRESS
+                PROXY_NETWORK -> Value.PROXY_NETWORK
+                REPEATED_ATTEMPTS -> Value.REPEATED_ATTEMPTS
                 TEMPORARY_PHONE_NUMBER -> Value.TEMPORARY_PHONE_NUMBER
                 else -> Value._UNKNOWN
             }
@@ -1499,15 +1574,24 @@ private constructor(
          */
         fun known(): Known =
             when (this) {
-                BEHAVIORAL_PATTERN -> Known.BEHAVIORAL_PATTERN
-                DEVICE_ATTRIBUTE -> Known.DEVICE_ATTRIBUTE
+                AUTOMATION_SIGNATURE -> Known.AUTOMATION_SIGNATURE
+                CARRIER_NOT_PERMITTED -> Known.CARRIER_NOT_PERMITTED
+                CLIENT_FINGERPRINT_MISMATCH -> Known.CLIENT_FINGERPRINT_MISMATCH
+                CUSTOM_POLICY -> Known.CUSTOM_POLICY
+                DEVICE_EMULATOR -> Known.DEVICE_EMULATOR
+                DEVICE_NOT_PERMITTED -> Known.DEVICE_NOT_PERMITTED
+                DEVICE_REUSE -> Known.DEVICE_REUSE
+                EXPIRED_SIGNALS -> Known.EXPIRED_SIGNALS
                 FRAUD_DATABASE -> Known.FRAUD_DATABASE
-                LOCATION_DISCREPANCY -> Known.LOCATION_DISCREPANCY
-                NETWORK_FINGERPRINT -> Known.NETWORK_FINGERPRINT
+                INVALID_SIGNATURE -> Known.INVALID_SIGNATURE
+                IP_CONCENTRATION -> Known.IP_CONCENTRATION
+                IP_REPUTATION -> Known.IP_REPUTATION
+                LOCATION_MISMATCH -> Known.LOCATION_MISMATCH
+                MISSING_SIGNALS -> Known.MISSING_SIGNALS
+                NUMBER_RANGE_ABUSE -> Known.NUMBER_RANGE_ABUSE
                 POOR_CONVERSION_HISTORY -> Known.POOR_CONVERSION_HISTORY
-                PREFIX_CONCENTRATION -> Known.PREFIX_CONCENTRATION
-                SUSPECTED_REQUEST_TAMPERING -> Known.SUSPECTED_REQUEST_TAMPERING
-                SUSPICIOUS_IP_ADDRESS -> Known.SUSPICIOUS_IP_ADDRESS
+                PROXY_NETWORK -> Known.PROXY_NETWORK
+                REPEATED_ATTEMPTS -> Known.REPEATED_ATTEMPTS
                 TEMPORARY_PHONE_NUMBER -> Known.TEMPORARY_PHONE_NUMBER
                 else -> throw PreludeInvalidDataException("Unknown RiskFactor: $value")
             }
