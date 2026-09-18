@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.15.0 (2026-09-18)
+
+Full Changelog: [v0.14.0...v0.15.0](https://github.com/prelude-so/java-sdk/compare/v0.14.0...v0.15.0)
+
+### Features
+
+* **api:** manual updates ([9121aca](https://github.com/prelude-so/java-sdk/commit/9121acadfe49924dbf383d9ba7a363a4282afdb4))
+
 ## 0.14.0 (2026-09-15)
 
 Full Changelog: [v0.13.0...v0.14.0](https://github.com/prelude-so/java-sdk/compare/v0.13.0...v0.14.0)
