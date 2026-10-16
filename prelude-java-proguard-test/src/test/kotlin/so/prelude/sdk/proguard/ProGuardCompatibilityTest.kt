@@ -72,7 +72,7 @@ internal class ProGuardCompatibilityTest {
                 )
                 .reason(VerificationCreateResponse.Reason.INVALID_PHONE_NUMBER)
                 .requestId("request_id")
-                .addRiskFactor(VerificationCreateResponse.RiskFactor.SUSPICIOUS_IP_ADDRESS)
+                .addRiskFactor(VerificationCreateResponse.RiskFactor.PROXY_NETWORK)
                 .addRiskFactor(VerificationCreateResponse.RiskFactor.FRAUD_DATABASE)
                 .silent(
                     VerificationCreateResponse.Silent.builder().requestUrl("request_url").build()
